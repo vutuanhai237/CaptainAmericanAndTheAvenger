@@ -10,6 +10,7 @@ public:
 	void Pause(float time);
 	void Stop();
 	void Continue();
+	void SetFrame(int Frame);
 private:
 	void SetFrame();
 

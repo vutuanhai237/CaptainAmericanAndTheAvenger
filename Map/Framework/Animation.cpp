@@ -51,6 +51,12 @@ void Animation::Continue()
 	IsStop = false;
 }
 
+void Animation::SetFrame(int Frame)
+{
+	CurrentFrame = Frame;
+	SetFrame();
+}
+
 
 
 void Animation::SetFrame()
