@@ -6,6 +6,7 @@ class Sprite
 {
 public:
 	Sprite(int ID);
+	Sprite(LPCWSTR Path, D3DXCOLOR TransparentColor);
 	virtual void Draw();
 	
 	void SetPosition(D3DXVECTOR2 Position); // Set tam render

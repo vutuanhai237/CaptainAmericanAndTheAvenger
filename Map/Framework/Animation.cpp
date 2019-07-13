@@ -13,6 +13,18 @@ Animation::Animation(int ID, int Total, int StartFrame) : Sprite(ID)
 	delta = 0;
 }
 
+Animation::Animation(LPCWSTR Path, D3DXCOLOR TransparentColor, int Total, int StartFrame) : Sprite(Path, TransparentColor)
+{
+	TotalFrame = Total;
+	CurrentFrame = StartFrame;
+	width = Info.Width / Total;
+	SetFrame();
+
+	DelayTime = 1.0f / 60;
+	RepeatTime = 0;
+	delta = 0;
+}
+
 void Animation::SetTime(float Delay, float Repeat)
 {
 	DelayTime = Delay;
@@ -56,8 +68,6 @@ void Animation::SetFrame(int Frame)
 	CurrentFrame = Frame;
 	SetFrame();
 }
-
-
 
 void Animation::SetFrame()
 {

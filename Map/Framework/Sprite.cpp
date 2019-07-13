@@ -5,15 +5,23 @@
 Sprite::Sprite(int ID)
 {
 	Texture *Instance = Texture::GetInstance();
+	
 	texture = Instance->GetTexture(ID);
 	Info = Instance->GetInfo(ID);
-
+	
 	Position = D3DXVECTOR2(0, 0);
 	SetRect(0, Info.Height, 0, Info.Width);
 	Scale = D3DXVECTOR2(1, 1);
 	Rotation = 0.0f;
 
 	UpdateMatrix();
+}
+
+Sprite::Sprite(LPCWSTR Path, D3DXCOLOR TransparentColor)
+{
+	int ID;
+	Texture::GetInstance()->Add(ID, Path, TransparentColor);
+	Sprite::Sprite(ID);
 }
 
 void Sprite::Draw()
