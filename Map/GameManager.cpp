@@ -5,7 +5,7 @@
 #include "Framework/Texture.h"
 #include "Framework/Sprite.h"
 #include "SceneManager.h"
-
+#include "Charleston.h"
 #include "World11.h"
 #include "Framework/Debug.h"
 
@@ -30,9 +30,10 @@ void GameManager::Init(int fps)
 	Texture *texture = Texture::GetInstance();
 	int ID;
 
-	texture->Add(ID, L"World11.png", NULL);
+	//texture->Add(ID, L"World11.png", NULL);
+	texture->Add(ID, L"Resources//Charleston.png", NULL);
 
-	SceneManager::GetInstance()->ReplaceScene(new World11());
+	SceneManager::GetInstance()->ReplaceScene(new Charleston());
 }
 
 int GameManager::GetFPS()

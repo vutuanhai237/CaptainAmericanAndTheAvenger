@@ -8,14 +8,20 @@ public:
 	Sprite(int ID);
 	Sprite(LPCWSTR Path, D3DXCOLOR TransparentColor);
 	virtual void Draw();
-	
+	virtual void Draw(D3DXVECTOR2 WorldPosition);
+	virtual void Draw(FLOAT WorldPositionX, FLOAT WorldPositionY);
+	void ImperiouslyDraw(); // Only call inside other draw function
+
 	void SetPosition(D3DXVECTOR2 Position); // Set tam render
 	void SetPosition(FLOAT x, FLOAT y); // Set tam render
 	void SetRotation(float radian);
 	void SetRotation(int degree);
 	void SetScale(D3DXVECTOR2 Scale); // Set Scale
 	void SetScale(FLOAT dx, FLOAT dy); // Set Scale
+
+	D3DXMATRIX GetMatrix();
 protected:
+
 	void SetRect(RECT Rect);
 	void SetRect(LONG top, LONG bottom, LONG left, LONG right);
 
@@ -32,4 +38,5 @@ protected:
 	~Sprite() {};
 private:
 	void UpdateMatrix();
+	void Init(int ID);
 };

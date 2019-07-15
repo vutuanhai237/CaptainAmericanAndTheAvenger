@@ -1,27 +1,18 @@
 #include "Sprite.h"
 #include "Texture.h"
 #include "d3d.h"
+#include "../Camera.h"
 
 Sprite::Sprite(int ID)
 {
-	Texture *Instance = Texture::GetInstance();
-	
-	texture = Instance->GetTexture(ID);
-	Info = Instance->GetInfo(ID);
-	
-	Position = D3DXVECTOR2(0, 0);
-	SetRect(0, Info.Height, 0, Info.Width);
-	Scale = D3DXVECTOR2(1, 1);
-	Rotation = 0.0f;
-
-	UpdateMatrix();
+	Init(ID);
 }
 
 Sprite::Sprite(LPCWSTR Path, D3DXCOLOR TransparentColor)
 {
 	int ID;
 	Texture::GetInstance()->Add(ID, Path, TransparentColor);
-	Sprite::Sprite(ID);
+	Init(ID);
 }
 
 void Sprite::Draw()
@@ -36,6 +27,24 @@ void Sprite::Draw()
 	Hander->End();
 
 	Hander->SetTransform(&OldMatrix);
+}
+
+void Sprite::Draw(D3DXVECTOR2 WorldPosition)
+{
+	SetPosition(Camera::GetInstance()->World2Render(WorldPosition));
+	Draw();
+}
+
+void Sprite::Draw(FLOAT X, FLOAT Y)
+{
+	Draw(D3DXVECTOR2(X, Y));
+}
+
+void Sprite::ImperiouslyDraw() // Only call inside other draw function
+{
+	LPD3DXSPRITE Hander = d3d::GetInstance()->GetSpriteHander();
+	Hander->SetTransform(&Matrix);
+	Hander->Draw(texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
 }
 
 void Sprite::SetRect(RECT Rect)
@@ -97,7 +106,27 @@ void Sprite::SetScale(FLOAT dx, FLOAT dy)
 	SetScale(D3DXVECTOR2(dx, dy));
 }
 
+D3DXMATRIX Sprite::GetMatrix()
+{
+	return Matrix;
+}
+
 void Sprite::UpdateMatrix()
 {
 	D3DXMatrixTransformation2D(&Matrix, &CenterRect, 0, &Scale, &CenterRect, Rotation, &D3DXVECTOR2(Position.x - CenterRect.x, Position.y - CenterRect.y));
+}
+
+void Sprite::Init(int ID)
+{
+	Texture *Instance = Texture::GetInstance();
+
+	texture = Instance->GetTexture(ID);
+	Info = Instance->GetInfo(ID);
+
+	Position = D3DXVECTOR2(0, 0);
+	SetRect(0, Info.Height, 0, Info.Width);
+	Scale = D3DXVECTOR2(1, 1);
+	Rotation = 0.0f;
+
+	UpdateMatrix();
 }

@@ -1,0 +1,4 @@
+﻿  Player.cpp
+  c:\program files (x86)\microsoft directx sdk (june 2010)\include\dinput.h: DIRECTINPUT_VERSION undefined. Defaulting to version 0x0800
+c:\users\admin\documents\github\maptest\map\player.cpp(27): warning C4305: 'argument': truncation from 'double' to 'float'
+  Map.vcxproj -> C:\Users\Admin\Documents\GitHub\MapTest\x64\Debug\Map.exe

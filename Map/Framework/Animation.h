@@ -15,11 +15,11 @@ public:
 private:
 
 	void SetFrame();
-
+	int width;
 	float delta, RepeatTime, DelayTime;
 	int CurrentFrame;
 	int TotalFrame;
-	int width;
+	
 
 	bool IsStop = false;
 };

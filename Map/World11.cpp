@@ -1,31 +1,51 @@
 #include "World11.h"
 #include "Framework/DirectInput.h"
 #include "Framework/Debug.h"
+#include "PlayerIdleState.h"
+#include "PlayerRunningState.h"
+#include <math.h>
 
 void World11::Update(float dt)
 {
-	auto input = DirectInput::GetInstance();
-	auto cam = map->GetCameraPosition();
-	if (input->KeyDown(DIK_LEFT))
-		cam.x --;
-	if (input->KeyDown(DIK_RIGHT))
-		cam.x ++;
-	if (cam != map->GetCameraPosition())
-		map->SetCamera(cam);
-	//Debug::PrintOut(L"%f,%f\n", cam.x, cam.y);
+	Player *player = Player::GetInstance();
+	player->HandleInput();
+	player->Update(dt);
+	
 }
 
 void World11::Draw()
 {
-	map->Draw();
+	Player *player = Player::GetInstance();
+	
+	if (player->GetMoveDirection()) {
+		player->GetCurrentAnimation()->SetScale(1, 1);
+		player->SetVelocityX(-abs(player->GetVelocityX()));
+	}
+	else {
+
+		player->GetCurrentAnimation()->SetScale(-1, 1);
+		player->SetVelocityX(abs(player->GetVelocityX()));
+	}
+	player->Draw();
+
+}
+
+void World11::Init()
+{
+	Player::GetInstance()->Init();
+	Player::GetInstance()->SetPosition(50.0f, 100.0f);
 }
 
 World11::World11()
 {
-	map = new WorldMap(L"World11.txt", 0, 16);
+	World11::Init();
+
 }
 
 World11::~World11()
 {
-	delete map;
+	//delete map;
+	for (auto item : sprites) {
+		delete item;
+	}
 }

@@ -2,14 +2,12 @@
 #include "Debug.h"
 
 DirectInput* DirectInput::Instance = NULL;
-
 DirectInput* DirectInput::GetInstance()
 {
 	if (!Instance)
 		Instance = new DirectInput();
 	return Instance;
 }
-
 HRESULT DirectInput::Init(HWND hWnd)
 {
 	HRESULT result = DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&dinput, NULL);
@@ -60,7 +58,62 @@ void DirectInput::MouseSnapShot()
 
 int DirectInput::KeyDown(int key)
 {
-	return (keys[key] & 0x80);
+	return (keys[key] & 0x80)>0;
+}
+
+int DirectInput::GetKeyDown(int DIK_key)
+{
+	return this->keys[DIK_key];
+}
+
+void DirectInput::ProcessKeyboard()
+{
+	HRESULT hr;
+
+	// Collect all key states first
+	hr = dikeyboard->GetDeviceState(sizeof(keys), keys);
+	if (FAILED(hr))
+	{
+		// If the keyboard lost focus or was not acquired then try to get control back.
+		if ((hr == DIERR_INPUTLOST) || (hr == DIERR_NOTACQUIRED))
+		{
+			HRESULT h = dikeyboard->Acquire();
+			if (h == DI_OK)
+			{
+				Debug::PrintOut(L"[INFO] Keyboard re-acquired!\n");
+			}
+			else return;
+		}
+		else
+		{
+			Debug::PrintOut(L"[ERROR] DINPUT::GetDeviceState failed. Error: %d\n", hr);
+			return;
+		}
+	}
+
+	keyHandler->KeyState((BYTE *)&keys);
+
+
+
+	// Collect all buffered events
+	DWORD dwElements = KEYBOARD_BUFFER_SIZE;
+	hr = dikeyboard->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), keyEvents, &dwElements, 0);
+	if (FAILED(hr))
+	{
+		Debug::PrintOut(L"[ERROR] DINPUT::GetDeviceData failed. Error: %d\n", hr);
+		return;
+	}
+
+	// Scan through all buffered events, check if the key is pressed or released
+	for (DWORD i = 0; i < dwElements; i++)
+	{
+		int KeyCode = keyEvents[i].dwOfs;
+		int KeyState = keyEvents[i].dwData;
+		if ((KeyState & 0x80) > 0)
+			keyHandler->OnKeyDown(KeyCode);
+		else
+			keyHandler->OnKeyUp(KeyCode);
+	}
 }
 
 void DirectInput::Release()

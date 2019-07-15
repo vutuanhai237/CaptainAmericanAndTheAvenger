@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{3C8F973D-7C46-4F0A-B98D-578BDDF7D1E5}</ProjectGuid>
     <RootNamespace>Map</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -128,6 +128,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Charleston.cpp" />
+    <ClCompile Include="CharlestonMap.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Framework\Animation.cpp" />
     <ClCompile Include="Framework\d3d.cpp" />
     <ClCompile Include="Framework\Debug.cpp" />
@@ -137,6 +142,11 @@
     <ClCompile Include="Framework\Supporter.cpp" />
     <ClCompile Include="Framework\Texture.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerIdleState.cpp" />
+    <ClCompile Include="PlayerJumpingState.cpp" />
+    <ClCompile Include="PlayerRunningState.cpp" />
+    <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="WinMain.cpp" />
@@ -144,6 +154,12 @@
     <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BoxCollider.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Charleston.h" />
+    <ClInclude Include="CharlestonMap.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Entity.h" />
     <ClInclude Include="Framework\Animation.h" />
     <ClInclude Include="Framework\d3d.h" />
     <ClInclude Include="Framework\Debug.h" />
@@ -154,10 +170,19 @@
     <ClInclude Include="Framework\Supporter.h" />
     <ClInclude Include="Framework\Texture.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerIdleState.h" />
+    <ClInclude Include="PlayerJumpingState.h" />
+    <ClInclude Include="PlayerRunningState.h" />
+    <ClInclude Include="PlayerState.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="World11.h" />
     <ClInclude Include="WorldMap.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Map.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
