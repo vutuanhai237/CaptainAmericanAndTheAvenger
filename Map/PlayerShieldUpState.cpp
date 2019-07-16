@@ -48,16 +48,16 @@ void PlayerShieldUpState::HandleInput(float dt)
 	}
 	// Nếu vẫn up và down cùng lúc thì về idle
 
-	if (keyboard->KeyDown(UP_KEY) && keyboard->KeyDown(DOWN_KEY)) {
+	if (keyboard->KeyPress(UP_KEY) && keyboard->KeyPress(DOWN_KEY)) {
 		player->ChangeState(new PlayerIdleState());
 
 		return;
 	}
 	// Nếu vẫn nhấn thì giữ nguyên trạng thái
-	if (keyboard->KeyDown(UP_KEY)) {
+	if (keyboard->KeyPress(UP_KEY)) {
 		return;
 	}
-	if (keyboard->KeyDown(DOWN_KEY)) {
+	if (keyboard->KeyPress(DOWN_KEY)) {
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
@@ -69,6 +69,6 @@ void PlayerShieldUpState::HandleInput(float dt)
 		player->ChangeState(new PlayerJumpingState());
 		return;
 	}
-	player->ChangeState(new PlayerIdleState());
+	//player->ChangeState(new PlayerIdleState());
 	return;
 }

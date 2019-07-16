@@ -47,13 +47,30 @@ void PlayerDashingState::HandleInput(float dt)
 	{
 		player->GetCurrentAnimation()->Pause(0.016f * 18.0f);
 	}
-	if (player->GetCurrentAnimation()->GetAnimationTime() >= 0.016f * 20.0f)
+	if (player->GetCurrentAnimation()->GetAnimationTime() >= 0.016f * 20.0f || keyboard->KeyUp(RIGHT_KEY))
 	{
 		player->GetCurrentAnimation()->ResetAnimation();
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
-	player->GetCurrentAnimation()->ResetAnimation();
-	player->ChangeState(new PlayerIdleState());
+
+	if (player->GetCurrentAnimation()->GetAnimationTime() >= 0.016f * 20.0f || keyboard->KeyUp(LEFT_KEY))
+	{
+		player->GetCurrentAnimation()->ResetAnimation();
+		player->ChangeState(new PlayerIdleState());
+		return;
+	}
+
+
+	if (player->GetMoveDirection() == Entity::Entity_Direction::RightToLeft)
+	{
+		return;
+	}
+	if (player->GetMoveDirection() == Entity::Entity_Direction::LeftToRight)
+	{
+		return;
+	}
+	//player->GetCurrentAnimation()->ResetAnimation();
+	//player->ChangeState(new PlayerIdleState());
 
 }

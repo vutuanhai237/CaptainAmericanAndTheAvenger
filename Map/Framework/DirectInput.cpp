@@ -2,11 +2,14 @@
 #include "Debug.h"
 
 DirectInput* DirectInput::Instance = NULL;
+
 DirectInput* DirectInput::GetInstance()
 {
-	if (!Instance) Instance = new DirectInput();
+	if (!Instance) 
+		Instance = new DirectInput();
 	return Instance;
 }
+
 HRESULT DirectInput::Init(HWND hWnd)
 {
 	HRESULT result = DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&dinput, NULL);
@@ -38,15 +41,21 @@ HRESULT DirectInput::Init(HWND hWnd)
 		Debug::PrintOut(L"[Error code %d] Error while Acquire Mouse!", &result);	
 	return result;
 }
-void DirectInput::KeySnapShot()
+
+void DirectInput::KeySnapShot(float dt)
 {
+	delta += dt;
+	if (delta > KEYBOARD_LAST_PRESS_TIME)
+		ReleaseLastPressKey();
+	for (int i = 0; i < 256; i++)
+		buffer[i] = keys[i];
+
 	HRESULT result = dikeyboard->GetDeviceState(sizeof(keys), (LPVOID)&keys);
 	while (result != DI_OK && (result == DIERR_INPUTLOST || result == DIERR_NOTACQUIRED) )
 	{
 		//Debug::PrintOut(L"[Error code %d] Error while Acquire Keyboard!", &result);
 		result = dikeyboard->Acquire();
 	}
-	dikeyboard->GetDeviceState(sizeof(keys), (LPVOID)&keys);
 }
 
 void DirectInput::MouseSnapShot()
@@ -54,73 +63,29 @@ void DirectInput::MouseSnapShot()
 	dimouse->GetDeviceState(sizeof(mouse_state), (LPVOID)&mouse_state);
 }
 
-int DirectInput::KeyDown(int key)
+bool DirectInput::KeyPress(int key)
 {
-	return ((keys[key] & 0x80)) ? true : false;
-}
-
-int DirectInput::KeyReleased(int key)
-{
-	this->SetTimePressed(key, 0);
-	return ((keys[key] & 0x80)) ? false : true;
-
-}
-
-int DirectInput::KeyPressed(int key, float dt)
-{
-	this->UpdateTimePressed(key, dt);
-	return (time_pressed[key] > TIME_PRESSED) ? true : false;
-
-}
-
-void DirectInput::ProcessKeyboard()
-{
-	HRESULT hr;
-
-	// Collect all key states first
-	hr = dikeyboard->GetDeviceState(sizeof(keys), keys);
-	if (FAILED(hr))
+	if (keys[key] & 0x80)
 	{
-		// If the keyboard lost focus or was not acquired then try to get control back.
-		if ((hr == DIERR_INPUTLOST) || (hr == DIERR_NOTACQUIRED))
+		if (buffer[key] != keys[key])
 		{
-			HRESULT h = dikeyboard->Acquire();
-			if (h == DI_OK)
-			{
-				Debug::PrintOut(L"[INFO] Keyboard re-acquired!\n");
-			}
-			else return;
+			BufferLastKey = LastKey;
+			LastKey = key;
+			delta = 0.0f;
 		}
-		else
-		{
-			Debug::PrintOut(L"[ERROR] DINPUT::GetDeviceState failed. Error: %d\n", hr);
-			return;
-		}
+		return true;
 	}
+	return false;
+}
 
-	keyHandler->KeyState((BYTE *)&keys);
+bool DirectInput::KeyDown(int Key)
+{
+	return KeyPress(Key) && !BufferCheck(Key);
+}
 
-
-
-	// Collect all buffered events
-	DWORD dwElements = KEYBOARD_BUFFER_SIZE;
-	hr = dikeyboard->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), keyEvents, &dwElements, 0);
-	if (FAILED(hr))
-	{
-		Debug::PrintOut(L"[ERROR] DINPUT::GetDeviceData failed. Error: %d\n", hr);
-		return;
-	}
-
-	// Scan through all buffered events, check if the key is pressed or released
-	for (DWORD i = 0; i < dwElements; i++)
-	{
-		int KeyCode = keyEvents[i].dwOfs;
-		int KeyState = keyEvents[i].dwData;
-		if ((KeyState & 0x80) > 0)
-			keyHandler->OnKeyDown(KeyCode);
-		else
-			keyHandler->OnKeyUp(KeyCode);
-	}
+bool DirectInput::KeyUp(int Key)
+{
+	return !KeyPress(Key) && BufferCheck(Key);
 }
 
 void DirectInput::Release()
@@ -128,22 +93,17 @@ void DirectInput::Release()
 	delete Instance;
 }
 
-float DirectInput::GetTimePressed(int key)
+int DirectInput::GetLastPressKey()
 {
-	return this->time_pressed[key];
+	return BufferLastKey;
 }
 
-void DirectInput::SetTimePressed(int key, float dt)
+void DirectInput::ReleaseLastPressKey()
 {
-	this->time_pressed[key] = dt;
+	delta = 0.0f;
+	BufferLastKey = -1;
+	LastKey = -1;
 }
-
-void DirectInput::UpdateTimePressed(int key, float dt)
-{
-	this->time_pressed[key] += dt;
-}
-
-
 
 DirectInput::~DirectInput()
 {
@@ -161,4 +121,9 @@ DirectInput::~DirectInput()
 	}
 	if (dinput != NULL)
 		dinput->Release();
+}
+
+bool DirectInput::BufferCheck(int key)
+{
+	return buffer[key] & 0x80;
 }

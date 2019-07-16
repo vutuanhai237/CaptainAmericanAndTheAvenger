@@ -79,7 +79,7 @@ GameManager::~GameManager()
 
 void GameManager::Update(float delta)
 {
-	DirectInput::GetInstance()->KeySnapShot();
+	DirectInput::GetInstance()->KeySnapShot(delta);
 	SceneManager::GetInstance()->GetCurrentScene()->Update(delta);
 }
 

@@ -24,7 +24,18 @@ public:
 		beaten,
 		shield_up,
 		ducking,
-		ducking_punching
+		ducking_punching,
+		rolling,
+		die,
+		die_on_air,
+		diving,
+		flowing,
+		hang_on,
+		jumping_down,
+		jump_from_rope,
+		kicking,
+		punching,
+		shield_down
 	};
 	PlayerState();
 	PlayerState(PlayerState::NameState current_state);
@@ -39,5 +50,8 @@ public:
 protected:
 	PlayerState::NameState current_state;
 	bool IsDucking;
+	bool IsDucking_Punching;
+	bool IsThrowing;
+	bool IsPunching;
 };
 

@@ -27,18 +27,34 @@ Player::Player() :Entity()
 	Animation* dashing = new Animation(L"Resources//CaptainState//CaptainDashingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 	Animation* ducking = new Animation(L"Resources//CaptainState//CaptainDuckingState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	Animation* throwing = new Animation(L"Resources//CaptainState//CaptainThrowingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
-	Animation* ducking_punching = new Animation(L"Resources//CaptainState//CaptainDuckingPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 
-	
-	
+	Animation* ducking_punching = new Animation(L"Resources//CaptainState//CaptainDuckingPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
+	Animation* rolling = new Animation(L"Resources//CaptainState//CaptainRollingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
+	Animation* die = new Animation(L"Resources//CaptainState//CaptainDieState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
+	Animation* die_on_air = new Animation(L"Resources//CaptainState//CaptainDieOnAirState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
+	Animation* diving = new Animation(L"Resources//CaptainState//CaptainDivingState.png", D3DCOLOR_XRGB(255, 0, 255), 6);
+	Animation* flowing = new Animation(L"Resources//CaptainState//CaptainFlowingState.png", D3DCOLOR_XRGB(255, 0, 255), 9);
+	Animation* hang_on = new Animation(L"Resources//CaptainState//CaptainHangOnState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
+	Animation* jumping_down = new Animation(L"Resources//CaptainState//CaptainJumpingDownState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
+	Animation* jump_from_rope = new Animation(L"Resources//CaptainState//CaptainJumpingFromRopeState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
+	Animation* kicking = new Animation(L"Resources//CaptainState//CaptainKickingState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
+	Animation* punching = new Animation(L"Resources//CaptainState//CaptainPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
+	Animation* shield_down = new Animation(L"Resources//CaptainState//CaptainShielDownState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	// Chỉ những animation nào có số sprite > 1 thì mới set time
 	running->SetTime(0.1);
 	dashing->SetTime(0.1);
 	throwing->SetTime(0.1);
 	ducking_punching->SetTime(0.1);
+	rolling->SetTime(0.1);
+	die->SetTime(0.1);
+	die_on_air->SetTime(0.1);
+	diving->SetTime(0.1);
+	flowing->SetTime(0.1);
+	hang_on->SetTime(0.1);
+	jump_from_rope->SetTime(0.1);
+	punching->SetTime(0.1);
 
-
-
+	// Cập nhật vào cơ sở dữ liệu
 	this->animations[PlayerState::idle] = idle;
 	this->animations[PlayerState::running] = running;
 	this->animations[PlayerState::jumping] = jumping;
@@ -46,8 +62,18 @@ Player::Player() :Entity()
 	this->animations[PlayerState::dashing] = dashing;
 	this->animations[PlayerState::ducking] = ducking;
 	this->animations[PlayerState::throwing] = throwing;
-	this->animations[PlayerState::ducking_punching] = throwing;
-
+	this->animations[PlayerState::ducking_punching] = ducking_punching;
+	this->animations[PlayerState::rolling] = rolling;
+	this->animations[PlayerState::die] = die;
+	this->animations[PlayerState::die_on_air] = die_on_air;
+	this->animations[PlayerState::diving] = diving;
+	this->animations[PlayerState::flowing] = flowing;
+	this->animations[PlayerState::hang_on] = hang_on;
+	this->animations[PlayerState::jumping_down] = jumping_down;
+	this->animations[PlayerState::jump_from_rope] = jump_from_rope;
+	this->animations[PlayerState::kicking] = kicking;
+	this->animations[PlayerState::punching] = punching;
+	this->animations[PlayerState::shield_down] = shield_down;
 
 	///End load resources
 	this->animation = this->animations[current_state];

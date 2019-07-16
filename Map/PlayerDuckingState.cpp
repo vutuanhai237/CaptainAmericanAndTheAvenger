@@ -47,27 +47,30 @@ void PlayerDuckingState::HandleInput(float dt)
 		return;
 	}
 	// Chuyển sang đứng
-	if (keyboard->KeyDown(UP_KEY)) {
+	if (keyboard->KeyPress(UP_KEY)) {
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
 	// Tiếp tục giữ state
-	if (keyboard->KeyDown(DOWN_KEY)) {
-		return;
-	}
+	
 	// Chuyển sang state chui xuyên đất
 	if (keyboard->KeyDown(JUMP_KEY)) {
-		player->ChangeState(new PlayerJumpingState());
+		//player->ChangeState(new PlayerJumpingState());
 		return;
 	}
 	
 	// Ngồi đấm
-	if (keyboard->KeyDown(ATTACK_KEY)) {
+	if (keyboard->KeyPress(ATTACK_KEY) && keyboard->KeyPress(DOWN_KEY)) {
 		player->ChangeState(new PlayerDuckingPunchingState());
-
 		return;
 	}
-	
+	if (keyboard->KeyPress(ATTACK_KEY)) {
+		player->ChangeState(new PlayerDuckingPunchingState());
+		return;
+	}
+	if (keyboard->KeyPress(DOWN_KEY)) {
+		return;
+	}
 	player->ChangeState(new PlayerIdleState());
 	return;
 }

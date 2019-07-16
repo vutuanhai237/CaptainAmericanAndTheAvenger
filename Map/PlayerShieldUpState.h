@@ -4,7 +4,7 @@
 #include "PlayerRunningState.h"
 #include "PlayerJumpingState.h"
 #include "PlayerIdleState.h"
-#include "PlayerThrowingState.h"
+#include "PlayerState.h"
 #include "Framework//DirectInput.h"
 class PlayerShieldUpState : public PlayerState
 {

@@ -36,10 +36,18 @@ void PlayerDuckingPunchingState::HandleInput(float dt)
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
 	// Nếu đấm liên tục thì vẫn giữ nguyên
+	if (keyboard->KeyDown(ATTACK_KEY) && keyboard->KeyDown(DOWN_KEY)) {
+		return;
+	}
 	if (keyboard->KeyDown(ATTACK_KEY)) {
 		return;
 	}
+	if (keyboard->KeyDown(DOWN_KEY)) {
+		player->ChangeState(new PlayerDuckingState());
+
+		return;
+	}
 	// Chuyển về duck
-	player->ChangeState(new PlayerDuckingState());
+	player->ChangeState(new PlayerIdleState());
 	return;
 }

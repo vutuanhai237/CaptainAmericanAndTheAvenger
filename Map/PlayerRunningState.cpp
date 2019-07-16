@@ -42,28 +42,33 @@ void PlayerRunningState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
+	// Set trạng thái lướt
+	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->GetLastPressKey() == RIGHT_KEY) {
+		keyboard->ReleaseLastPressKey();
+		player->SetVelocityX(VELOCITY_X * 3);
+		player->ChangeState(new PlayerDashingState());
+		return;
+	}
+	if (keyboard->KeyPress(LEFT_KEY) && keyboard->GetLastPressKey() == LEFT_KEY) {
+		keyboard->ReleaseLastPressKey();
+
+		player->SetVelocityX(-VELOCITY_X * 3);
+		player->ChangeState(new PlayerDashingState());
+		return;
+	}
 	// Đang ở trạng thái running, nếu ấn left thì vẫn giữ trạng thái
-	if (keyboard->KeyDown(LEFT_KEY)) {
+	if (keyboard->KeyPress(LEFT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		player->SetVelocityX(-VELOCITY_X);
 		// vừa ấn left-arrow vừa nhấn x thì nhảy chéo
 		if (keyboard->KeyDown(JUMP_KEY)) {
 			player->ChangeState(new PlayerJumpingState());
 			return;
-		}
-		/*
-		// Nhấn left thêm lần nữa thì dashing
-		if (keyboard->KeyDown(LEFT_KEY) && player->GetTimeBuffer() < 0.16f) {
-			player->SetVelocityX(-VELOCITY_X * 3);
-			player->ChangeState(new PlayerDashingState());
-			return;
-		}
-		*/
+		}	
 		return;
 
 	}
-
-	if (keyboard->KeyDown(RIGHT_KEY)) {
+	if (keyboard->KeyPress(RIGHT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		player->SetVelocityX(VELOCITY_X);
 		// vừa ấn right-arrow vừa nhấn x thì nhảy chéo
@@ -72,36 +77,7 @@ void PlayerRunningState::HandleInput(float dt)
 			return;
 		}
 		
-		/*
-		if (keyboard->KeyUp(DIK_RIGHTARROW) == true && keyboard->KeyPressed(DIK_RIGHTARROW) == true) {
-			DataCollect* data_collect = DataCollect::GetInstance();
-			data_collect->SetIsDashing(true);
-			if (data_collect->GetIsDashing()) {
-				Debug::PrintOut(L"IsDashing true");
-			}
-		}
-		
-		if (keyboard->KeyDown(DIK_RIGHTARROW)) {
-			Debug::PrintOut(L"KeyDown down\n");
-			keyboard->UpdateTimePressed(dt, DIK_RIGHTARROW);
-		}
-		Debug::PrintOut(L"%f",keyboard->GetTimePressed(DIK_RIGHTARROW));
-		if (keyboard->KeyPressed(DIK_RIGHTARROW)) {
-			Debug::PrintOut(L"KeyPressed\n");
-			keyboard->GetTimePressed(DIK_RIGHTARROW);
-		}
-		if (keyboard->KeyReleased(DIK_NUMPAD6)) {
-			Debug::PrintOut(L"KeyReleased down\n");
-			keyboard->SetTimePressed(DIK_RIGHTARROW, 0);
-		}
-		
-		// Nhấn right thêm lần nữa thì dashing
-		if (keyboard->KeyDown(DIK_RIGHTARROW) && player->GetTimeBuffer() < 0.16f) {
-			player->SetVelocityX(3 * VELOCITY_X);
-			player->ChangeState(new PlayerDashingState());
-			return;
-		}
-		*/
+	
 		return;
 	}
 	player->ChangeState(new PlayerIdleState());

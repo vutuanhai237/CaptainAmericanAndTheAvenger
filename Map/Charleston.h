@@ -16,4 +16,6 @@ protected:
 	void Init();
 	CharlestonMap *map;
 	Camera *cam;
+	Animation* exit;
+	int i;
 };

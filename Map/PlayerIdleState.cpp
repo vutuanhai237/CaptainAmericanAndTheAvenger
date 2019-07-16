@@ -39,35 +39,39 @@ void PlayerIdleState::HandleInput(float dt)
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		return;
 	}
+	
 	// Nếu ấn left-arrow thì chạy qua trái
 	if (keyboard->KeyDown(LEFT_KEY)) {
 		player->ChangeState(new PlayerRunningState());
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		return;
 	}
+	
 	// Nếu ấn X thì nhảy
 	if (keyboard->KeyDown(JUMP_KEY)) {
 		player->ChangeState(new PlayerJumpingState());
-		return;
-	}
-	// Nếu vừa ấn cả up và down arrow thì giữ nghuyên idle
-	if (keyboard->KeyDown(UP_KEY) && keyboard->KeyDown(DOWN_KEY)) {
-		return;
-	}
-
-	// Nếu nhấn up-arrow thì gồng - shield up 
-	if (keyboard->KeyDown(UP_KEY)) {
-		player->ChangeState(new PlayerShieldUpState());
-		return;
-	} 
-	
-	// Nếu nhấn down-arrow thì duck
-	if (keyboard->KeyDown(DOWN_KEY)) {
-		player->ChangeState(new PlayerDuckingState());
 		return;
 	}
 	if (keyboard->KeyDown(ATTACK_KEY)) {
 		player->ChangeState(new PlayerThrowingState());
 		return;
 	}
+
+	// Nếu vừa ấn cả up và down arrow thì giữ nghuyên idle
+	if (keyboard->KeyDown(UP_KEY) && keyboard->KeyDown(DOWN_KEY)) {
+		return;
+	}
+
+	// Nếu nhấn up-arrow thì gồng - shield up 
+	if (keyboard->KeyUp(UP_KEY)) {
+		player->ChangeState(new PlayerShieldUpState());
+		return;
+	} 
+	
+	// Nếu nhấn down-arrow thì duck
+	if (keyboard->KeyUp(DOWN_KEY)) {
+		player->ChangeState(new PlayerDuckingState());
+		return;
+	}
+
 }

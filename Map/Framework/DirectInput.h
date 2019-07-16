@@ -1,44 +1,39 @@
 #pragma once
 #include <InitGuid.h>
 #include <dinput.h>
+#include <vector>
 #define KEYBOARD_BUFFER_SIZE 1024
-#define TIME_PRESSED 0.06
-class KeyEventHandler
-{
-public:
-	virtual void KeyState(BYTE *state) = 0;
-	virtual void OnKeyDown(int KeyCode) = 0;
-	virtual void OnKeyUp(int KeyCode) = 0;
-};
+#define KEYBOARD_LAST_PRESS_TIME 0.125f
 
-typedef KeyEventHandler * LPKeyEventHandler;
 class DirectInput
 {
 public:
 	static DirectInput* GetInstance();
 	HRESULT Init(HWND hWnd);
-	void KeySnapShot();
+	void KeySnapShot(float dt);
 	void MouseSnapShot();
-	int KeyDown(int key);
-	int KeyReleased(int key);
-	int KeyPressed(int key, float dt);
-	void ProcessKeyboard();
+	bool KeyPress(int DIK_Key);
+	bool KeyDown(int DIK_Key);
+	bool KeyUp(int DIK_Key);
 	void Release();
-	float GetTimePressed(int key);
-	void SetTimePressed(int key, float dt);
-	void UpdateTimePressed(int key, float dt);
+
+	int GetLastPressKey();
+	void ReleaseLastPressKey();
 private:
 	DirectInput() {};
 	~DirectInput();
 
+	bool BufferCheck(int DIK_Key);
+
 	LPDIRECTINPUT8 dinput = NULL;
 	LPDIRECTINPUTDEVICE8 dikeyboard = NULL;
 	LPDIRECTINPUTDEVICE8 dimouse = NULL;
-	DIDEVICEOBJECTDATA keyEvents[KEYBOARD_BUFFER_SIZE];		// Buffered keyboard data
-	LPKeyEventHandler keyHandler;
+
+	float delta;
+	int LastKey, BufferLastKey;
 
 	char keys[256];
-	float time_pressed[256];
+	char buffer[256];
 	DIMOUSESTATE mouse_state;
 	static DirectInput* Instance;
 };
