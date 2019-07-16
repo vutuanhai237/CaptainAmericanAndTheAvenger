@@ -4,8 +4,6 @@
 #include <fstream>
 #include <math.h>
 
-#include "Framework/Debug.h"
-
 using namespace std;
 
 WorldMap::WorldMap(LPCWSTR Path, int IDTitleMap) : Sprite(IDTitleMap)
@@ -27,8 +25,6 @@ void WorldMap::Draw()
 	D3DXVECTOR2 pos = Camera::GetInstance()->GetCameraPosition();
 	int gStartX = (int)(pos.x / PIXEL_PER_TITLE);
 	int gStartY = Height - (int)(pos.y / PIXEL_PER_TITLE) - GRID_HIGHT_BLOCK - 1;
-
-	Debug::PrintOut(L"%d ", gStartY);
 
 	Hander->Begin(D3DXSPRITE_ALPHABLEND);
 
@@ -70,10 +66,18 @@ WorldMap::~WorldMap()
 	delete Map;
 }
 
+SIZE WorldMap::GetMapSize()
+{
+	SIZE ret;
+	ret.cx = Width * PIXEL_PER_TITLE;
+	ret.cy = Height * PIXEL_PER_TITLE;
+	return ret;
+}
+
 void WorldMap::Init(LPCWSTR Path)
 {
 	fstream data(Path, ios_base::in);
-	data >> TotalTitle >> Width >> Height;
+	data >> Width >> Height;
 	Map = new int*[Height];
 	for (int i = 0; i < Height; i++)
 	{
@@ -81,5 +85,4 @@ void WorldMap::Init(LPCWSTR Path)
 		for (int j = 0; j < Width; j++)
 			data >> Map[i][j];
 	}
-	Camera::GetInstance()->Init(Width * PIXEL_PER_TITLE, Height * PIXEL_PER_TITLE);
 }

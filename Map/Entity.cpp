@@ -118,6 +118,16 @@ bool Entity::GetIsOnAir()
 	return this->IsOnAir;
 }
 
+void Entity::SetPositionX(float x)
+{
+	this->position.x = x;
+}
+
+void Entity::SetPositionY(float y)
+{
+	this->position.y = y;
+}
+
 
 void Entity::SetMoveDirection(Entity_Direction _direction)
 {

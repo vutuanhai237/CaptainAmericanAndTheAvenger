@@ -15,6 +15,12 @@ void Camera::Release()
 	delete Instance;
 }
 
+void Camera::Init(SIZE MapSize)
+{
+	PixelWidth = MapSize.cx;
+	PixelHeight = MapSize.cy;
+}
+
 void Camera::Init(int Width, int Height)
 {
 	PixelWidth = Width;

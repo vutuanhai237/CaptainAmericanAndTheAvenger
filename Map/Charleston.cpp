@@ -5,15 +5,25 @@
 #include "Camera.h"
 #include "WorldMap.h"
 #include "Player.h"
+
+#include "Framework/DirectInput.h"
+#include "SceneManager.h"
+#include "CharlestonBoss.h"
+
 void Charleston::Update(float dt)
 {
-	
-
 	map->Update(dt);
 	Player *player = Player::GetInstance();
-	player->HandleInput();
+	player->HandleInput(dt);
 	player->Update(dt);
 	cam->SetCameraPosition(player->GetPosition());
+
+	auto tmp = DirectInput::GetInstance();
+	if (tmp->KeyDown(DIK_N))
+	{
+		CharlestonBoss *boss = new CharlestonBoss();
+		SceneManager::GetInstance()->ReplaceScene(boss);
+	}
 }
 
 void Charleston::Draw()
@@ -45,11 +55,9 @@ Charleston::Charleston()
 	map = new CharlestonMap();
 	cam = Camera::GetInstance();
 	Charleston::Init();
-
 }
 
 Charleston::~Charleston()
 {
 	delete map;
-
 }

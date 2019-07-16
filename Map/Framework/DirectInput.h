@@ -2,6 +2,7 @@
 #include <InitGuid.h>
 #include <dinput.h>
 #define KEYBOARD_BUFFER_SIZE 1024
+#define TIME_PRESSED 0.06
 class KeyEventHandler
 {
 public:
@@ -18,10 +19,14 @@ public:
 	HRESULT Init(HWND hWnd);
 	void KeySnapShot();
 	void MouseSnapShot();
-	int KeyDown(int DIK_key);
-	int GetKeyDown(int DIK_key);
+	int KeyDown(int key);
+	int KeyReleased(int key);
+	int KeyPressed(int key, float dt);
 	void ProcessKeyboard();
 	void Release();
+	float GetTimePressed(int key);
+	void SetTimePressed(int key, float dt);
+	void UpdateTimePressed(int key, float dt);
 private:
 	DirectInput() {};
 	~DirectInput();
@@ -33,6 +38,7 @@ private:
 	LPKeyEventHandler keyHandler;
 
 	char keys[256];
+	float time_pressed[256];
 	DIMOUSESTATE mouse_state;
 	static DirectInput* Instance;
 };

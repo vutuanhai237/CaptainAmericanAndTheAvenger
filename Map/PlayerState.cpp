@@ -27,7 +27,7 @@ void PlayerState::Render()
 {
 }
 
-void PlayerState::HandleInput()
+void PlayerState::HandleInput(float dt)
 {
 	
 }

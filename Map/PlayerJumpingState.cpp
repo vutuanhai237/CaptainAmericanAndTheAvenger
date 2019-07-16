@@ -1,4 +1,4 @@
-#include "PlayerJumpingState.h"
+﻿#include "PlayerJumpingState.h"
 #include "PlayerIdleState.h"
 
 #include "Framework//Debug.h"
@@ -7,8 +7,10 @@ PlayerJumpingState::PlayerJumpingState()
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::jumping);
 	this->current_state = PlayerState::NameState::jumping;
-	player->SetVelocityY(20.0f);
+	player->SetVelocityY(VELOCITY_Y);
 	player->SetIsOnAir(true);
+	player->SetTimeBuffer(0);
+
 }
 PlayerJumpingState::~PlayerJumpingState()
 {
@@ -22,11 +24,11 @@ void PlayerJumpingState::Update(float dt)
 	player->GetCurrentAnimation()->Update(dt);
 	float new_y = player->GetPosition().y;
 	float velocity_y = player->GetVelocity().y;
-	if (player->GetPosition().y == 120.0f) {
-		player->SetVelocityY(abs(velocity_y - 5.0f));
+	if (player->GetPosition().y >= 100.0f) {
+		player->SetVelocityY(-abs(velocity_y - 5.0f));
 	}
-	player->SetPosition(50.0f, new_y + dt * velocity_y);
-	Debug::PrintOut(L"y = %f\n", player->GetPosition().y);
+	player->SetPosition(player->GetPosition().x, new_y + dt * velocity_y);
+	//Debug::PrintOut(L"y = %f\n", player->GetPosition().y);
 }
 
 void PlayerJumpingState::Draw()
@@ -38,23 +40,24 @@ void PlayerJumpingState::Render()
 {
 }
 
-void PlayerJumpingState::HandleInput()
+void PlayerJumpingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
-	/*
-	if (keyboard->GetKeyDown(DIK_LEFTARROW)) {
+	// Đang ở trên không, nếu ấn left thì dịch qua trái
+	if (keyboard->KeyDown(LEFT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-		player->SetVelocity(-20.0f, 0.0f);
-		return;
+		player->SetPositionX(player->GetPosition().x - 1.5f);
+		//return;
 	}
-	if (keyboard->GetKeyDown(DIK_RIGHTARROW)) {
+	// Đang ở trên không, nếu ấn left thì dịch qua phải
+	if (keyboard->KeyDown(RIGHT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-		player->SetVelocity(20.0f, 0.0f);
-		return;
+		player->SetPositionX(player->GetPosition().x + 1.5f);
+		//return;
 	}
-	*/
-	if (player->GetPosition().y == 100.0f) {
+	// Code xong va chạm thì xóa hàm này với bỏ comment return chỗ left & right
+	if (player->GetPosition().y <= 50.0f) {
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}

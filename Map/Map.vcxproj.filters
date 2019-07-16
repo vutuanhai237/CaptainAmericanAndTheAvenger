@@ -61,9 +61,6 @@
     <ClCompile Include="WorldMap.cpp">
       <Filter>GameComponents</Filter>
     </ClCompile>
-    <ClCompile Include="World11.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Object</Filter>
     </ClCompile>
@@ -92,6 +89,30 @@
       <Filter>Framework</Filter>
     </ClCompile>
     <ClCompile Include="CharlestonMap.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerShieldUpState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDashingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="DataCollect.cpp">
+      <Filter>GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDuckingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerThrowingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDuckingPunchingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CharlestonBoss.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="CharlestonBossMap.cpp">
       <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
@@ -132,9 +153,6 @@
     <ClInclude Include="SceneManager.h">
       <Filter>GameControler</Filter>
     </ClInclude>
-    <ClInclude Include="World11.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="WorldMap.h">
       <Filter>GameComponents</Filter>
     </ClInclude>
@@ -170,6 +188,30 @@
       <Filter>Framework</Filter>
     </ClInclude>
     <ClInclude Include="CharlestonMap.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerShieldUpState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDashingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="DataCollect.h">
+      <Filter>GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDuckingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerThrowingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDuckingPunchingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CharlestonBoss.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="CharlestonBossMap.h">
       <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>

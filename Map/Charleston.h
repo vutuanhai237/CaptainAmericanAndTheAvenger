@@ -12,8 +12,8 @@ public:
 	void Draw() override;
 	Charleston();
 	~Charleston();
-	void Init();
 protected:
+	void Init();
 	CharlestonMap *map;
 	Camera *cam;
 };

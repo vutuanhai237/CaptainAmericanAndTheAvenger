@@ -9,10 +9,9 @@ public:
 	void Draw() override;
 	void SetRect(int IDTitle);
 	~WorldMap();
+	SIZE GetMapSize();
 protected:
 	void Init(LPCWSTR Path);
-
-	int TotalTitle;
 	int Width, Height;
 	int **Map;
 };

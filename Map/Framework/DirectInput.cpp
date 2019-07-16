@@ -4,8 +4,7 @@
 DirectInput* DirectInput::Instance = NULL;
 DirectInput* DirectInput::GetInstance()
 {
-	if (!Instance)
-		Instance = new DirectInput();
+	if (!Instance) Instance = new DirectInput();
 	return Instance;
 }
 HRESULT DirectInput::Init(HWND hWnd)
@@ -39,7 +38,6 @@ HRESULT DirectInput::Init(HWND hWnd)
 		Debug::PrintOut(L"[Error code %d] Error while Acquire Mouse!", &result);	
 	return result;
 }
-
 void DirectInput::KeySnapShot()
 {
 	HRESULT result = dikeyboard->GetDeviceState(sizeof(keys), (LPVOID)&keys);
@@ -58,12 +56,21 @@ void DirectInput::MouseSnapShot()
 
 int DirectInput::KeyDown(int key)
 {
-	return (keys[key] & 0x80)>0;
+	return ((keys[key] & 0x80)) ? true : false;
 }
 
-int DirectInput::GetKeyDown(int DIK_key)
+int DirectInput::KeyReleased(int key)
 {
-	return this->keys[DIK_key];
+	this->SetTimePressed(key, 0);
+	return ((keys[key] & 0x80)) ? false : true;
+
+}
+
+int DirectInput::KeyPressed(int key, float dt)
+{
+	this->UpdateTimePressed(key, dt);
+	return (time_pressed[key] > TIME_PRESSED) ? true : false;
+
 }
 
 void DirectInput::ProcessKeyboard()
@@ -120,6 +127,23 @@ void DirectInput::Release()
 {
 	delete Instance;
 }
+
+float DirectInput::GetTimePressed(int key)
+{
+	return this->time_pressed[key];
+}
+
+void DirectInput::SetTimePressed(int key, float dt)
+{
+	this->time_pressed[key] = dt;
+}
+
+void DirectInput::UpdateTimePressed(int key, float dt)
+{
+	this->time_pressed[key] += dt;
+}
+
+
 
 DirectInput::~DirectInput()
 {

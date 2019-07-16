@@ -12,6 +12,11 @@ public:
 	void Stop();
 	void Continue();
 	void SetFrame(int Frame);
+	int GetNumberCurrentFrame();
+
+	float GetAnimationTime();
+
+	void ResetAnimation();
 private:
 
 	void SetFrame();
@@ -19,7 +24,6 @@ private:
 	float delta, RepeatTime, DelayTime;
 	int CurrentFrame;
 	int TotalFrame;
-	
-
+	float AnimationTime;
 	bool IsStop = false;
 };

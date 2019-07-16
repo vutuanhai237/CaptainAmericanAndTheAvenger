@@ -2,7 +2,7 @@
 #include "Framework/d3d.h"
 #include "Camera.h"
 
-CharlestonMap::CharlestonMap() : WorldMap(L"Resources/Map/Charleston.txt", L"Resources/Map/Charleston.png")
+CharlestonMap::CharlestonMap() : WorldMap(L"Resources/Map/charleston_map.txt", 0)
 {
 	sewer = new Animation(L"Resources/Map/sewer.png", D3DCOLOR_ARGB(0, 0, 0, 0), 3, 1);
 	sewer->SetTime(4.0f / 60);
@@ -10,6 +10,7 @@ CharlestonMap::CharlestonMap() : WorldMap(L"Resources/Map/Charleston.txt", L"Res
 	warter1->SetTime(4.0f / 60);
 	warter2 = new Animation(L"Resources/Map/water_2.png", D3DCOLOR_ARGB(0, 0, 0, 0), 3, 1);
 	warter2->SetTime(4.0f / 60);
+	Camera::GetInstance()->Init(this->GetMapSize());
 }
 
 void CharlestonMap::Update(float dt)

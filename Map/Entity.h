@@ -98,6 +98,8 @@ public:
 	virtual void SetIsOnAir(float IsOnAir);
 	virtual bool GetIsOnAir();
 
+	virtual void SetPositionX(float x);
+	virtual void SetPositionY(float y);
 
 
 

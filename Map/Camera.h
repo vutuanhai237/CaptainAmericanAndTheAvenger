@@ -13,6 +13,7 @@ public:
 	static Camera* GetInstance();
 	void Release();
 
+	void Init(SIZE MapSize);
 	void Init(int PixelWidth, int PixelHeight);
 
 	D3DXVECTOR2 World2Render(const D3DXVECTOR2 &Point);
