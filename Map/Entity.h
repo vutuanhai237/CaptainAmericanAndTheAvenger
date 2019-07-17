@@ -111,8 +111,9 @@ public:
 	virtual void SetJumpDirection(Entity_Jump_Direction _jump_direction);
 	virtual Entity_Jump_Direction GetJumpDirection();
 	virtual void Update(float dt);
-	virtual void SetBoudingBox(const BoundingBox &Box);
-	virtual void SetBoudingBox(int width, int height);
+	virtual void SetSize(const SIZE &size);
+	virtual void SetSize(long width, long height);
+	virtual SIZE GetSize();
 protected:
 	BoundingBox box;
 	bool IsStatic;
@@ -127,8 +128,7 @@ protected:
 	D3DXVECTOR2 position;
 	D3DXVECTOR2 velocity;
 	//size of entity
-	float width;
-	float height;
+	SIZE size;
 	bool IsOnAir;
 };
 

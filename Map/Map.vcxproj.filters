@@ -121,6 +121,9 @@
     <ClCompile Include="PlayerJumpingDownState.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerKickingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Animation.h">
@@ -224,6 +227,9 @@
       <Filter>GameComponents</Filter>
     </ClInclude>
     <ClInclude Include="PlayerJumpingDownState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerKickingState.h">
       <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>

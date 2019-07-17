@@ -8,7 +8,7 @@ PlayerRunningState::PlayerRunningState()
 	player->SetCurrentState(PlayerState::NameState::running);
 	this->current_state = PlayerState::NameState::running;
 	player->SetVelocityX(VELOCITY_X);
-	player->SetBoudingBox(2 >> 3, 5 >> 3);
+	player->SetSize(2 >> 3, 5 >> 3);
 
 	
 }

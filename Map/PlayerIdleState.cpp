@@ -4,12 +4,14 @@ PlayerIdleState::PlayerIdleState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::idle);
-	player->SetBoudingBox(2 >> 3, 5 >> 3);
+	player->SetSize(2 >> 3, 5 >> 3);
 
 	player->SetIsRolling(false);
 	this->current_state = PlayerState::NameState::idle;
 	//player->SetPositionIdle(player->GetPosition());
-
+	//D3DXVECTOR2 idle_position = player->GetPositionIdle();
+	//player->SetPositionY(idle_position.y);
+	player->SetPositionIdle(player->GetPosition());
 }
 PlayerIdleState::~PlayerIdleState()
 {

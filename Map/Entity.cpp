@@ -174,15 +174,19 @@ void Entity::Update(float dt)
 
 }
 
-void Entity::SetBoudingBox(const BoundingBox &box)
+void Entity::SetSize(const SIZE & size)
 {
-	this->box = box;
+	this->size = size;
 }
 
-void Entity::SetBoudingBox(int width, int height)
+void Entity::SetSize(long width, long height)
 {
-	SIZE size;
-	size.cx = width;
-	size.cy = height;
-	this->SetBoudingBox(BoundingBox(size));
+	this->size.cx = width;
+	this->size.cy = height;
 }
+
+SIZE Entity::GetSize()
+{
+	return size;
+}
+

@@ -4,7 +4,7 @@ PlayerDuckingState::PlayerDuckingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::ducking);
-	player->SetBoudingBox(3 >> 3, 3 >> 3);
+	player->SetSize(3 >> 3, 3 >> 3);
 
 	this->current_state = PlayerState::NameState::ducking;
 	player->SetTimeBuffer(0);

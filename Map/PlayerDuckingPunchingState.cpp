@@ -6,7 +6,7 @@ PlayerDuckingPunchingState::PlayerDuckingPunchingState()
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::ducking_punching);
 	this->current_state = PlayerState::NameState::ducking_punching;
-	player->SetBoudingBox(3 >> 3, 3 >> 3);
+	player->SetSize(3 >> 3, 3 >> 3);
 	player->SetTimeBuffer(0);
 	player->SetVelocity(0, 0);
 

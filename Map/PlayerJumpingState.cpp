@@ -7,7 +7,7 @@ PlayerJumpingState::PlayerJumpingState()
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::jumping);
 	player->SetVelocityY(VELOCITY_Y);
-	player->SetBoudingBox(2 >> 3, 5 >> 3);
+	player->SetSize(2 >> 3, 5 >> 3);
 
 	player->SetIsOnAir(true);
 	player->SetTimeBuffer(0);
@@ -26,19 +26,20 @@ void PlayerJumpingState::Update(float dt)
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
 	
-	if (this->time_air < 0) {
-		player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
+	if (this->time_air <= 0) {
+		player->ChangeState(new PlayerJumpingDownState());
+		return;
+	} 
+	else {
+		this->time_air -= dt;
 	}
-	this->time_air -= dt;
 	if (player->GetPosition().y >= player->GetPositionIdle().y + DISTANCE_JUMPING && player->GetIsRolling() == false) {
 		player->ChangeState(new PlayerRollingState());
 		return;
 	}
 	if (player->GetPosition().y <= player->GetPositionIdle().y) {
 		player->ChangeState(new PlayerIdleState());
-		D3DXVECTOR2 idle_position = player->GetPositionIdle();
-		player->SetPositionY(idle_position.y);
-		player->SetPositionIdle(player->GetPosition());
+		
 		return;
 	}
 	Debug::PrintOut(L"y = %f\n", player->GetPosition().y);
@@ -59,9 +60,7 @@ void PlayerJumpingState::HandleInput(float dt)
 	auto keyboard = DirectInput::GetInstance();
 	// Tiếp tục ở trên không nếu nhấn giữ X
 	if (keyboard->KeyPress(JUMP_KEY) && player->GetIsRolling() == false ) {
-		// New chỗ này để xét lại time_air
-		player->ChangeState(new PlayerJumpingState());
-		player->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
+		this->time_air = TIME_AIR;
 		return;
 	}
 	// Đang ở trên không, nếu ấn left thì dịch qua trái
@@ -76,6 +75,11 @@ void PlayerJumpingState::HandleInput(float dt)
 		player->SetPositionX(player->GetPosition().x + DELTA_JUMP);
 		//return;
 	}
+	if (keyboard->KeyDown(ATTACK_KEY)) {
+		player->ChangeState(new PlayerKickingState());
+		return;
+	}
+	
 	// Code xong va chạm thì xóa hàm này với bỏ comment return chỗ left & right
 	// SWEPT AABB sẽ giải quyết được bug chỗ này
 	

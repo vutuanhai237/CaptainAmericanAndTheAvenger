@@ -6,7 +6,7 @@ PlayerThrowingState::PlayerThrowingState()
 	player->SetCurrentState(PlayerState::NameState::throwing);
 	player->SetTimeBuffer(0);
 	this->current_state = PlayerState::NameState::throwing;
-	player->SetBoudingBox(2 >> 3, 5 >> 3);
+	player->SetSize(2 >> 3, 5 >> 3);
 
 
 }

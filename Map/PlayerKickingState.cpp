@@ -1,36 +1,51 @@
-﻿#include "PlayerIdleState.h"
-#include "PlayerRollingState.h"
+﻿#include "PlayerKickingState.h"
+#include "PlayerIdleState.h"
+
 #include "Framework//Debug.h"
-PlayerJumpingDownState::PlayerJumpingDownState()
+PlayerKickingState::PlayerKickingState()
 {
 	Player* player = Player::GetInstance();
-	player->SetCurrentState(PlayerState::NameState::jumping_down);
-	player->SetSize(2 >> 3, 5 >> 3);
-	player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
-	this->current_state = PlayerState::NameState::jumping_down;
+	player->SetCurrentState(PlayerState::NameState::kicking);
+	this->current_state = PlayerState::NameState::kicking;
+	player->SetVelocityY(VELOCITY_Y);
+	this->time_kicking = TIME_KICKING;
+
 }
-PlayerJumpingDownState::~PlayerJumpingDownState()
+PlayerKickingState::~PlayerKickingState()
 {
 
 }
 
-void PlayerJumpingDownState::Update(float dt)
+void PlayerKickingState::Update(float dt)
 {
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
+	if (this->time_kicking < 0) {
+		if (player->GetJumpDirection() == Entity::Entity_Jump_Direction::BotToTop) {
+			player->ChangeState(new PlayerJumpingState());
+			return;
+		}
+		if (player->GetJumpDirection() == Entity::Entity_Jump_Direction::TopToBot) {
+			player->ChangeState(new PlayerJumpingDownState());
+			return;
+		}
+	}
+	else {
+		time_kicking -= dt;
+	}
 	Debug::PrintOut(L"y = %f\n", player->GetPosition().y);
 }
 
-void PlayerJumpingDownState::Draw()
+void PlayerKickingState::Draw()
 {
 
 }
 
-void PlayerJumpingDownState::Render()
+void PlayerKickingState::Render()
 {
 }
 
-void PlayerJumpingDownState::HandleInput(float dt)
+void PlayerKickingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
@@ -41,21 +56,13 @@ void PlayerJumpingDownState::HandleInput(float dt)
 		//return;
 	}
 	// Đang ở trên không, nếu ấn left thì dịch qua phải
-	if (keyboard->KeyPress(RIGHT_KEY)) {
+	if (keyboard->KeyDown(RIGHT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		player->SetPositionX(player->GetPosition().x + DELTA_JUMP);
 		//return;
 	}
-	if (keyboard->KeyDown(ATTACK_KEY)) {
-		player->ChangeState(new PlayerKickingState());
-		return;
-	}
-	if (player->GetPosition().y <= player->GetPositionIdle().y) {
-		player->ChangeState(new PlayerIdleState());
-		return;
-	}
+	
 	// Code xong va chạm thì xóa hàm này với bỏ comment return chỗ left & right
 	// SWEPT AABB sẽ giải quyết được bug chỗ này
-
 
 }

@@ -6,7 +6,7 @@ PlayerShieldUpState::PlayerShieldUpState()
 	player->SetCurrentState(PlayerState::NameState::shield_up);
 	player->SetTimeBuffer(0);
 	this->current_state = PlayerState::NameState::shield_up;
-	player->SetBoudingBox(2 >> 3, 5 >> 3);
+	player->SetSize(2 >> 3, 5 >> 3);
 
 
 }

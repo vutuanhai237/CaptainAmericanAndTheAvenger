@@ -1,17 +1,15 @@
 #pragma once
 #include "PlayerState.h"
-#include "PlayerJumpingDownState.h"
-#include "PlayerKickingState.h"
 #include "Player.h"
-class PlayerJumpingState: public PlayerState
+class PlayerKickingState : public PlayerState
 {
 public:
-	float time_air;
-	PlayerJumpingState();
-	~PlayerJumpingState();
+	PlayerKickingState();
+	~PlayerKickingState();
 	virtual void Update(float dt);
 	virtual void Draw();
 	virtual void Render();
 	virtual void HandleInput(float dt);
+	float time_kicking;
 };
 

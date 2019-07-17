@@ -7,7 +7,7 @@ PlayerDashingState::PlayerDashingState()
 	player->SetCurrentState(PlayerState::NameState::dashing);
 	player->SetTimeBuffer(0);
 	player->SetVelocityX(VELOCITY_X * 3);
-	player->SetBoudingBox(4 >> 3, 3 >> 3);
+	player->SetSize(4 >> 3, 3 >> 3);
 	this->current_state = PlayerState::NameState::dashing;
 
 
