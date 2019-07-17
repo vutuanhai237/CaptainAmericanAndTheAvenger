@@ -53,5 +53,6 @@ protected:
 	bool IsDucking_Punching;
 	bool IsThrowing;
 	bool IsPunching;
+	bool IsRolling;
 };
 

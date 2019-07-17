@@ -4,8 +4,11 @@ PlayerThrowingState::PlayerThrowingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::throwing);
-	this->current_state = PlayerState::NameState::throwing;
 	player->SetTimeBuffer(0);
+	this->current_state = PlayerState::NameState::throwing;
+	player->SetBoudingBox(2 >> 3, 5 >> 3);
+
+
 }
 PlayerThrowingState::~PlayerThrowingState()
 {
@@ -17,8 +20,6 @@ void PlayerThrowingState::Update(float dt)
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
 	player->SetVelocity(0, 0);
-	//Debug::PrintOut(L"x = %f\n", player->GetPosition().x);
-
 }
 
 void PlayerThrowingState::Draw()

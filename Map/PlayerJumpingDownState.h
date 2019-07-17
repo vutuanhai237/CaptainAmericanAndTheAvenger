@@ -1,12 +1,12 @@
 #pragma once
 #include "PlayerState.h"
 #include "Player.h"
-class PlayerJumpingState: public PlayerState
+class PlayerJumpingDownState : public PlayerState
 {
 public:
 	float time_air;
-	PlayerJumpingState();
-	~PlayerJumpingState();
+	PlayerJumpingDownState();
+	~PlayerJumpingDownState();
 	virtual void Update(float dt);
 	virtual void Draw();
 	virtual void Render();

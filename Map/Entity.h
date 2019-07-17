@@ -1,7 +1,8 @@
 #pragma once
 #include <d3d9.h>
 #include <d3dx9.h>
-#include "BoxCollider.h"
+#include "Collision.h"
+#include <math.h>
 class Entity
 {
 public:
@@ -27,6 +28,7 @@ public:
 		ground,
 		wall,
 		climb_wall,
+		spike,
 		// item
 		item_container,
 		item,
@@ -65,14 +67,16 @@ public:
 		LeftToRight,
 		RightToLeft
 	};
+
+	enum Entity_Jump_Direction {
+		BotToTop,
+		TopToBot
+	};
 	enum Status_Item {
 		AvailableItem,
 		UnavailableItem
 	};
-	struct CollsionResult {
-		bool isCollided;
-		BoxCollider region;
-	};
+	
 	// function zone
 	Entity();
 	virtual ~Entity();
@@ -87,6 +91,7 @@ public:
 	virtual void SetVelocity(D3DXVECTOR2 _velocity);
 	virtual void SetVelocity(float x, float y);
 	virtual void SetPosition(float x, float y);
+	virtual void SetPosition(D3DXVECTOR2 position);
 	virtual D3DXVECTOR2 GetPosition();
 	virtual D3DXVECTOR2 GetVelocity();
 	virtual float GetVelocityX();
@@ -101,26 +106,24 @@ public:
 	virtual void SetPositionX(float x);
 	virtual void SetPositionY(float y);
 
-
-
-
 	virtual void SetMoveDirection(Entity_Direction _direction);
 	virtual Entity_Direction GetMoveDirection();
+	virtual void SetJumpDirection(Entity_Jump_Direction _jump_direction);
+	virtual Entity_Jump_Direction GetJumpDirection();
 	virtual void Update(float dt);
-
-
-
-
-
+	virtual void SetBoudingBox(const BoundingBox &Box);
+	virtual void SetBoudingBox(int width, int height);
 protected:
+	BoundingBox box;
 	bool IsStatic;
 	bool IsActive;
 	int ID;
 	Entity_Tag tag;
+
 	Entity_Type type;
 	Entity_AliveState alive_state;
 	Entity_Direction direction;
-
+	Entity_Jump_Direction jump_direction;
 	D3DXVECTOR2 position;
 	D3DXVECTOR2 velocity;
 	//size of entity

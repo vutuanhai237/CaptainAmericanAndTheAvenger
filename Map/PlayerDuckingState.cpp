@@ -4,8 +4,12 @@ PlayerDuckingState::PlayerDuckingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::ducking);
+	player->SetBoudingBox(3 >> 3, 3 >> 3);
+
 	this->current_state = PlayerState::NameState::ducking;
 	player->SetTimeBuffer(0);
+	player->SetVelocity(0, 0);
+
 }
 PlayerDuckingState::~PlayerDuckingState()
 {
@@ -16,8 +20,6 @@ void PlayerDuckingState::Update(float dt)
 {
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
-	player->SetVelocity(0, 0);
-	//Debug::PrintOut(L"x = %f\n", player->GetPosition().x);
 
 }
 
@@ -35,6 +37,11 @@ void PlayerDuckingState::HandleInput(float dt)
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
 	this->IsDucking = true;
+	// Ngồi đấm
+	if (keyboard->KeyPress(ATTACK_KEY) && keyboard->KeyPress(DOWN_KEY)) {
+		player->ChangeState(new PlayerDuckingPunchingState());
+		return;
+	}
 	// Ưu tiên trạng thái running
 	if (keyboard->KeyDown(RIGHT_KEY)) {
 		player->ChangeState(new PlayerRunningState());
@@ -51,26 +58,17 @@ void PlayerDuckingState::HandleInput(float dt)
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
-	// Tiếp tục giữ state
-	
-	// Chuyển sang state chui xuyên đất
+	// Chuyển sang state chui xuyên đất hoặc nhảy lên nếu tường không lọt được
 	if (keyboard->KeyDown(JUMP_KEY)) {
-		//player->ChangeState(new PlayerJumpingState());
+		player->ChangeState(new PlayerJumpingState());
 		return;
 	}
-	
-	// Ngồi đấm
-	if (keyboard->KeyPress(ATTACK_KEY) && keyboard->KeyPress(DOWN_KEY)) {
-		player->ChangeState(new PlayerDuckingPunchingState());
-		return;
-	}
-	if (keyboard->KeyPress(ATTACK_KEY)) {
-		player->ChangeState(new PlayerDuckingPunchingState());
-		return;
-	}
+	// Tiếp tục giữ state
 	if (keyboard->KeyPress(DOWN_KEY)) {
+		player->ChangeState(new PlayerDuckingState());
 		return;
 	}
+
 	player->ChangeState(new PlayerIdleState());
 	return;
 }

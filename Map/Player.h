@@ -3,10 +3,13 @@
 #include "PlayerState.h"
 #include <map>
 
-#define VELOCITY_X 40.0f
-#define VELOCITY_Y 80.0f
-
-
+#define VELOCITY_X 80.0f
+#define VELOCITY_Y 140.0f
+#define DELTA_JUMP 1.0f
+#define DISTANCE_JUMPING 120.0f
+#define DISTANCE_ROLLING 140.0f
+#define TIME_AIR 0.016*15;
+#define TIME_ROLLING 0.016* 30;
 
 
 
@@ -36,14 +39,20 @@ public:
 	void SetPosition(float x, float y) override;
 	void AddTimeBuffer(float dt);
 	float GetTimeBuffer();
-
 	void SetTimeBuffer(float dt);
+	void SetIsRolling(bool IsRolling);
+	bool GetIsRolling();
+	void SetPositionIdle(D3DXVECTOR2 position_idle);
+	D3DXVECTOR2 GetPositionIdle();
+
 protected:
 	static Player *instance;
 	std::map<int, Animation*> animations;
 	PlayerState::NameState current_state;
 	PlayerState* player_state;
 	Animation* animation;
+	D3DXVECTOR2 position_idle;
 	float time_buffer;
+	bool IsRolling;
 };
 

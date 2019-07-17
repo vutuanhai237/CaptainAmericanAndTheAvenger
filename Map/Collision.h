@@ -1,19 +1,54 @@
-﻿#pragma once
-#include "Entity.h"
+#pragma once
+#include<Windows.h>
+
+enum CollisionSide {
+	none,
+	top,
+	left,
+	right,
+	bottom
+};
+
+struct collisionOut {
+	float collisionTime;
+	CollisionSide side;
+};
+
+struct BoundingBox {
+	float top, left, right, bottom;
+	int vx, vy;
+	SIZE size;
+	BoundingBox(float top_, float left_, float bottom_, float right_, int vx_, int vy_)
+	{
+		top = top_;
+		left = left_;
+		bottom=bottom_;
+		right = right_;
+		vx = vx_;
+		vy = vy_;
+		size.cx = right_ - left_;
+		size.cy = bottom_ - top_;
+	}
+	BoundingBox(SIZE _size)
+	{
+		size = _size;
+		top = left = 0;
+	}
+	BoundingBox() {};
+	~BoundingBox() {};
+};
 
 class Collision
 {
+private:
+	float dxEntry, dyEntry, dxExit, dyExit;
+	float txEntry, tyEntry, txExit, tyExit;
+	float entryTime, exitTime;
+
+	static Collision *instance;
 public:
-	Collision();
-	~Collision();
-	// Lấy box collider tại vị trí sẽ va chạm
-	//static BoxCollider GetBoardPhasing(BoxCollider box1, D3DXVECTOR2 velocity);
-
-	//static Entity::CollsionResult RectvsRect(BoxCollider rec1, BoxCollider rec2); // Kiểm tra 2 rectangle với nhau
-	//static bool IsCollide(BoxCollider rec1, BoxCollider rec2, D3DXVECTOR2 vel = D3DXVECTOR2(0,0));
-
-	// Kiểm tra vị trí va chạm
-	//static float SweptAABB(BoxCollider rec1, BoxCollider rec2, D3DXVECTOR2 vel1, D3DXVECTOR2 vel2, Entity::Side_Collision &side, float dt = 1 / 60);
-	//static float SweptAABB(Entity* entity1, Entity* entity2, Entity::Side_Collision &side, float dt = 1 / 60);
+	static Collision * getInstance();
+	collisionOut SweptAABB(BoundingBox recta, BoundingBox rectb);
+	bool IsCollide(BoundingBox box1, BoundingBox box2);
 };
 

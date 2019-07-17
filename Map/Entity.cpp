@@ -68,6 +68,11 @@ void Entity::SetPosition(float x, float y)
 	this->position.y = y;
 }
 
+void Entity::SetPosition(D3DXVECTOR2 position)
+{
+	this->position = position;
+}
+
 D3DXVECTOR2 Entity::GetPosition()
 {
 	return this->position;
@@ -139,9 +144,45 @@ Entity::Entity_Direction Entity::GetMoveDirection()
 	return this->direction;
 }
 
+void Entity::SetJumpDirection(Entity_Jump_Direction _jump_direction)
+{
+	this->jump_direction = _jump_direction;
+}
+
+Entity::Entity_Jump_Direction Entity::GetJumpDirection()
+{
+	return this->jump_direction;
+}
+
 void Entity::Update(float dt)
 {
+
+	if (this->direction == Entity::Entity_Direction::LeftToRight) {
+		this->velocity.x = fabs(this->GetVelocityX());
+	}
+	else {
+		this->velocity.x = -fabs(this->GetVelocityX());
+	}
+	if (this->jump_direction == Entity::Entity_Jump_Direction::BotToTop) {
+		this->velocity.y = fabs(this->GetVelocityY());
+	}
+	else {
+		this->velocity.y = -fabs(this->GetVelocityY());
+	}
 	this->position.x += this->velocity.x*dt;
 	this->position.y += this->velocity.y*dt;
 
+}
+
+void Entity::SetBoudingBox(const BoundingBox &box)
+{
+	this->box = box;
+}
+
+void Entity::SetBoudingBox(int width, int height)
+{
+	SIZE size;
+	size.cx = width;
+	size.cy = height;
+	this->SetBoudingBox(BoundingBox(size));
 }

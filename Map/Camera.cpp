@@ -40,6 +40,8 @@ D3DXVECTOR2 Camera::Render2World(const D3DXVECTOR2 &p)
 void Camera::SetCameraPosition(D3DXVECTOR2 p)
 {
 	FollowPoint = p;
+	if (IsFreze)
+		return;
 	D3DXVECTOR2 tmp = World2Render(p);
 
 	if (tmp.x > BoxFollow.right)
@@ -59,6 +61,11 @@ void Camera::SetCameraPosition(D3DXVECTOR2 p)
 		PointBL.y = 0;
 	else if (PointBL.y > PixelHeight - GAME_SCREEN_HEIGHT)
 		PointBL.y = PixelHeight - GAME_SCREEN_HEIGHT;
+}
+
+void Camera::SetCameraPosition(FLOAT x, FLOAT y)
+{
+	SetCameraPosition(D3DXVECTOR2(x, y));
 }
 
 D3DXVECTOR2 Camera::GetCameraPosition()
@@ -81,12 +88,28 @@ void Camera::MoveY(float dy)
 	SetCameraPosition(D3DXVECTOR2(FollowPoint.x, FollowPoint.y - dy));
 }
 
+RECT Camera::GetCameraViewRect()
+{
+	RECT ret;
+	ret.bottom = PointBL.y;
+	ret.top = ret.bottom + GAME_SCREEN_HEIGHT;
+	ret.left = PointBL.x;
+	ret.right = ret.left + GAME_SCREEN_WIDTH;
+	return ret;
+}
+
+void Camera::SetCameraFreeze(bool IsFreeze)
+{
+	this->IsFreze = IsFreeze;
+}
+
 Camera::Camera()
 {
-	BoxFollow.top = 80;
-	BoxFollow.bottom = GAME_SCREEN_HEIGHT - 80; //144 
-	BoxFollow.left = 80;
-	BoxFollow.right = GAME_SCREEN_WIDTH - 80; //176
+	BoxFollow.top = FAR_TOP;
+	BoxFollow.bottom = GAME_SCREEN_HEIGHT - FAR_BOTTOM; 
+	BoxFollow.left = FAR_LEFT;
+	BoxFollow.right = GAME_SCREEN_WIDTH - FAR_RIGHT; 
 
 	PointBL = FollowPoint = D3DXVECTOR2(0, 0);
+	IsFreze = 0;
 }

@@ -1,14 +1,14 @@
-﻿#include "PlayerJumpingState.h"
+﻿#include "PlayerJumpingDownState.h"
 #include "PlayerIdleState.h"
 #include "PlayerRollingState.h"
 #include "Framework//Debug.h"
-PlayerJumpingState::PlayerJumpingState()
+PlayerJumpingDownState::PlayerJumpingDownState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::jumping);
-	player->SetVelocityY(VELOCITY_Y);
 	player->SetBoudingBox(2 >> 3, 5 >> 3);
 
+	player->SetVelocityY(VELOCITY_Y);
 	player->SetIsOnAir(true);
 	player->SetTimeBuffer(0);
 	player->SetIsRolling(false);
@@ -16,24 +16,16 @@ PlayerJumpingState::PlayerJumpingState()
 	this->current_state = PlayerState::NameState::jumping;
 	this->time_air = TIME_AIR;
 }
-PlayerJumpingState::~PlayerJumpingState()
+PlayerJumpingDownState::~PlayerJumpingDownState()
 {
 
 }
 
-void PlayerJumpingState::Update(float dt)
+void PlayerJumpingDownState::Update(float dt)
 {
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
-	
-	if (this->time_air < 0) {
-		player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
-	}
-	this->time_air -= dt;
-	if (player->GetPosition().y >= player->GetPositionIdle().y + DISTANCE_JUMPING && player->GetIsRolling() == false) {
-		player->ChangeState(new PlayerRollingState());
-		return;
-	}
+
 	if (player->GetPosition().y <= player->GetPositionIdle().y) {
 		player->ChangeState(new PlayerIdleState());
 		D3DXVECTOR2 idle_position = player->GetPositionIdle();
@@ -44,21 +36,21 @@ void PlayerJumpingState::Update(float dt)
 	Debug::PrintOut(L"y = %f\n", player->GetPosition().y);
 }
 
-void PlayerJumpingState::Draw()
+void PlayerJumpingDownState::Draw()
 {
 
 }
 
-void PlayerJumpingState::Render()
+void PlayerJumpingDownState::Render()
 {
 }
 
-void PlayerJumpingState::HandleInput(float dt)
+void PlayerJumpingDownState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
 	// Tiếp tục ở trên không nếu nhấn giữ X
-	if (keyboard->KeyPress(JUMP_KEY) && player->GetIsRolling() == false ) {
+	if (keyboard->KeyPress(JUMP_KEY) && player->GetIsRolling() == false) {
 		// New chỗ này để xét lại time_air
 		player->ChangeState(new PlayerJumpingState());
 		player->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
@@ -78,6 +70,6 @@ void PlayerJumpingState::HandleInput(float dt)
 	}
 	// Code xong va chạm thì xóa hàm này với bỏ comment return chỗ left & right
 	// SWEPT AABB sẽ giải quyết được bug chỗ này
-	
-	
+
+
 }

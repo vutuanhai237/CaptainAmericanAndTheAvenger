@@ -77,7 +77,11 @@ Player::Player() :Entity()
 
 	///End load resources
 	this->animation = this->animations[current_state];
-	
+
+
+
+	// Cập nhật trạng thái rolling hay diving
+	this->IsRolling = false;
 }
 
 
@@ -162,4 +166,24 @@ float Player::GetTimeBuffer()
 void Player::SetTimeBuffer(float dt)
 {
 	this->time_buffer = dt;
+}
+
+void Player::SetIsRolling(bool IsRolling)
+{
+	this->IsRolling = IsRolling;
+}
+
+bool Player::GetIsRolling()
+{
+	return this->IsRolling;
+}
+
+void Player::SetPositionIdle(D3DXVECTOR2 position_idle)
+{
+	this->position_idle = position_idle;
+}
+
+D3DXVECTOR2 Player::GetPositionIdle()
+{
+	return this->position_idle;
 }

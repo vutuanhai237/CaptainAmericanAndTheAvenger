@@ -53,11 +53,14 @@ void Charleston::Draw()
 
 void Charleston::Init()
 {
-	Player::GetInstance()->Init();
-	Player::GetInstance()->SetPosition(50.0f, 100.0f);
-	exit = new Animation(L"Resources\\exit.png", D3DCOLOR_ARGB(0, 0, 0, 0), 1);
+	Player* player = Player::GetInstance();
+	player->Init();
+	player->SetPosition(48.0f, 69.0f);
+	player->SetPositionIdle(player->GetPosition());
+
+	exit = new Animation(L"Resources\\exit.png", D3DCOLOR_XRGB(255,0,255), 1);
 	i = 0;
-	exit->SetPosition(50.0f, 50.0f);
+	exit->SetPosition(48.0f, 27.0f);
 }
 
 Charleston::Charleston()

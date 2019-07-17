@@ -85,9 +85,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>GameComponents</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
     <ClCompile Include="CharlestonMap.cpp">
       <Filter>Map</Filter>
     </ClCompile>
@@ -114,6 +111,15 @@
     </ClCompile>
     <ClCompile Include="CharlestonBossMap.cpp">
       <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRollingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerJumpingDownState.cpp">
+      <Filter>Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,9 +190,6 @@
     <ClInclude Include="BoxCollider.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
     <ClInclude Include="CharlestonMap.h">
       <Filter>Map</Filter>
     </ClInclude>
@@ -213,6 +216,15 @@
     </ClInclude>
     <ClInclude Include="CharlestonBossMap.h">
       <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRollingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerJumpingDownState.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
