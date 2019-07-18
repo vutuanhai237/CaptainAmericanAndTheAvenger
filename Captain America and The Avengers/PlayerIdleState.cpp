@@ -4,11 +4,18 @@ PlayerIdleState::PlayerIdleState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::idle);
-	player->SetIsThrowing(false);
-	player->SetIsRolling(false);
 	this->current_state = PlayerState::NameState::idle;
 	player->SetVelocity(0, 0);
 	player->SetPositionIdle(player->GetPosition());
+
+
+	// Đảm bảo trạng thái nhảy chỉ được tiếp tục lần tới sau khi chạm đất
+	player->time_air_jumping = 0;
+	player->time_kicking = 0;
+	player->time_air_rolling = 0;
+	player->IsJumpingDown = false;
+	player->IsJumping = false;
+	player->IsRolling = false;
 
 }
 PlayerIdleState::~PlayerIdleState()

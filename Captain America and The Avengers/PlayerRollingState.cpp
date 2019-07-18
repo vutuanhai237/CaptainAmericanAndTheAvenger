@@ -1,18 +1,20 @@
 ﻿#include "PlayerRollingState.h"
 #include "PlayerIdleState.h"
-
 #include "Framework//Debug.h"
 PlayerRollingState::PlayerRollingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::rolling);
 	this->current_state = PlayerState::NameState::rolling;
-	player->SetVelocityY(VELOCITY_Y);
-	player->SetIsOnAir(true);
+	player->SetVelocityX(0);
+	if (player->IsRolling == false) {
+		player->SetVelocityY(VELOCITY_Y);
+		player->IsRolling = true;
+	}
 	player->SetTimeBuffer(0);
-	player->SetIsRolling(true);
-	player->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
-	this->time_air = 0;
+	//player->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
+	// Khi từ đá chuyển về nhảy thì mới có quyền đá tiếp
+	player->time_kicking = 0;
 }
 PlayerRollingState::~PlayerRollingState()
 {
@@ -47,7 +49,7 @@ void PlayerRollingState::HandleInput(float dt)
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
 	
-	this->time_air += dt;
+	player->time_air_rolling += dt;
 	// Thêm xử lý va chạm cho rolling chứ ko cần
 	if (player->IsCollisionWithGround(dt, 6))
 	{

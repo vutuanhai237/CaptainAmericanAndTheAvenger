@@ -7,7 +7,13 @@ PlayerJumpingDownState::PlayerJumpingDownState()
 	player->SetCurrentState(PlayerState::NameState::jumping_down);
 	player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 	this->current_state = PlayerState::NameState::jumping_down;
-	player->SetVelocityY(VELOCITY_Y);
+	player->SetVelocityX(0);
+	if (player->IsJumpingDown == false) {
+		player->SetVelocityY(VELOCITY_Y);
+		player->IsJumpingDown = true;
+	}
+	// Khi từ đá chuyển về nhảy thì mới có quyền đá tiếp
+	player->time_kicking = 0;
 }
 PlayerJumpingDownState::~PlayerJumpingDownState()
 {
@@ -18,7 +24,9 @@ void PlayerJumpingDownState::Update(float dt)
 {
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
-	
+	if (player->GetVelocityY() >= -VELOCITY_Y) {
+		player->SetVelocityY(abs(player->GetVelocityY()) + JUMPING_ACCELERATION);
+	}
 }
 
 void PlayerJumpingDownState::Draw()
@@ -40,6 +48,10 @@ void PlayerJumpingDownState::HandleInput(float dt)
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
+	if (keyboard->KeyDown(ATTACK_KEY)) {
+		player->ChangeState(new PlayerKickingState());
+		return;
+	}
 	if (!keyboard->KeyPress(RIGHT_KEY) && !keyboard->KeyPress(LEFT_KEY)) {
 		player->SetVelocityX(0);
 		return;
@@ -56,10 +68,7 @@ void PlayerJumpingDownState::HandleInput(float dt)
 	
 	}
 	
-	if (keyboard->KeyDown(ATTACK_KEY)) {
-		player->ChangeState(new PlayerKickingState());
-		return;
-	}
+	
 	
 	// Code xong va chạm thì xóa hàm này với bỏ comment return chỗ left & right
 	// SWEPT AABB sẽ giải quyết được bug chỗ này

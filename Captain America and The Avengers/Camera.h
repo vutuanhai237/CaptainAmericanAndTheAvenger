@@ -4,8 +4,8 @@
 
 #define FAR_LEFT 104
 #define FAR_RIGHT 104
-#define FAR_TOP 80
-#define FAR_BOTTOM 80
+#define FAR_TOP 70
+#define FAR_BOTTOM 70
 
 class Camera
 {

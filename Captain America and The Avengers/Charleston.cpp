@@ -43,13 +43,7 @@ void Charleston::Draw()
 	}
 	player->Draw();
 
-	if ((i>>3) % 2 == 0) {
-		exit->Draw();
-	}
-	else {
-
-	}
-	i++;
+	
 }
 
 WorldMap * Charleston::GetCurrentMap()

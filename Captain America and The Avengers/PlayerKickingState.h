@@ -10,6 +10,5 @@ public:
 	virtual void Draw();
 	virtual void Render();
 	virtual void HandleInput(float dt);
-	float time_kicking;
 };
 

@@ -157,7 +157,7 @@ Entity::Entity_Jump_Direction Entity::GetJumpDirection()
 
 void Entity::Update(float dt)
 {
-
+	
 	if (this->direction == Entity::Entity_Direction::LeftToRight) {
 		this->velocity.x = fabs(this->GetVelocityX());
 	}
@@ -170,9 +170,11 @@ void Entity::Update(float dt)
 	else {
 		this->velocity.y = -fabs(this->GetVelocityY());
 	}
-	this->position.x += this->velocity.x*dt;
-	this->position.y += this->velocity.y*dt;
-
+	if (this->GetIsLocking()) {
+		this->position.x += this->velocity.x*dt;
+		this->position.y += this->velocity.y*dt;
+	}
+	
 }
 
 void Entity::SetSize(const SIZE & size)
@@ -189,5 +191,15 @@ void Entity::SetSize(long width, long height)
 SIZE Entity::GetSize()
 {
 	return size;
+}
+
+void Entity::SetIsLocking(bool Islocking)
+{
+	this->IsLocking = Islocking;
+}
+
+bool Entity::GetIsLocking()
+{
+	return this->IsLocking;
 }
 

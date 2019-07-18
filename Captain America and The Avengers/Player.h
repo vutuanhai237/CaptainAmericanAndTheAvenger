@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Entity.h"
 #include "PlayerState.h"
 #include <map>
@@ -10,14 +10,18 @@
 #define PLAYER_FOOT_HEIGHT 8
 //
 #define VELOCITY_X 80.0f
-#define VELOCITY_Y 160.0f
+#define VELOCITY_Y 150.0f
 // jumping
-#define DELTA_JUMP 0.3f
+#define DELTA_JUMP 1.2f
 #define DISTANCE_JUMPING 90.0f
-#define TIME_AIR 0.4f
-#define TIME_JUMPING 0.2f
-#define TIME_ROLLING 0.3f
-#define TIME_KICKING 0.16
+#define TIME_AIR 0.40f
+#define TIME_JUMPING 0.3f
+#define TIME_ROLLING 0.4f
+#define TIME_KICKING 0.15f
+#define JUMPING_ACCELERATION 20.0F
+#define ROLLING_ACCELERATION 20.0f
+#define JUMPING_VELOCITY_BEGIN 300.0f
+#define ROLLING_ACCELERATION 20.0f
 // Dashing
 #define TIME_DASHING 0.016 * 36
 #define TIME_DUCK_BEFORE_DASHING  0.016* 1
@@ -40,8 +44,7 @@ class Player : public Entity
 public:
 	
 	static Player* GetInstance();
-	Player();
-	~Player();
+	void Release();
 	void Update(float dt);
 	void Render();
 	void Draw();
@@ -55,6 +58,7 @@ public:
 
 	Animation* GetCurrentAnimation();
 	Animation* GetAnimation(PlayerState::NameState state);
+	int GetPreviousState();
 
 	void SetPosition(float x, float y) override;
 	void AddTimeBuffer(float dt);
@@ -69,18 +73,37 @@ public:
 	Entity::Entity_Direction previous_direction;
 	void SetIsDuckingPunching(bool IsDuckingpunching);
 	bool GetIsDuckingPunching();
-
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
+
+
+
+	// Các biến này đáng lẽ phải ở riêng mỗi state, nhưng ở kicking, khi chuyển từ
+	// kicking về jumping, jumpingdown hay rolling thì lại phải tạo mới state,
+	// như vậy thì time_on_air sẽ được reset lại
+	float time_air_rolling;
+	float time_air_jumping;
+	float time_kicking;
+	// Code đi rời để biết tại sao phải tạo những biến này, có một vấn đề là các trạng thái
+	// khi new sẽ khởi tạo vận tốc khác nhau, nên khi jumping -> kicking -> jumping thì vận tốc
+	// bị khởi động lại 1 lần nữa, những biến này sẽ do idle có quyền định đoạt
+	bool IsJumpingDown;
+	bool IsJumping;
+	bool IsRolling;
+	bool IsThrowing;
+	bool IsDuckingPunching;
 protected:
 	static Player *instance;
 	std::map<int, Animation*> animations;
 	PlayerState::NameState current_state;
+	int previous_state;
+
 	PlayerState* player_state;
 	Animation* animation;
 	D3DXVECTOR2 position_idle;
 	float time_buffer;
-	bool IsRolling;
-	bool IsThrowing;
-	bool IsDuckingPunching;
+
+private:
+	Player();
+	~Player();
 };
 

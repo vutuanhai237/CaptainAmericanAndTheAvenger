@@ -7,9 +7,14 @@ Player*Player::instance = NULL;
 
 Player * Player::GetInstance()
 {
-	if (!instance) 
+	if (!instance)
 		instance = new Player();
 	return instance;
+}
+
+void Player::Release()
+{
+	delete instance;
 }
 
 Player::Player() :Entity()
@@ -30,7 +35,7 @@ Player::Player() :Entity()
 	Animation* throwing = new Animation(PlayerState::NameState::throwing, L"Resources//CaptainState//CaptainThrowingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 
 	Animation* ducking_punching = new Animation(PlayerState::NameState::ducking_punching, L"Resources//CaptainState//CaptainDuckingPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
-	Animation* rolling = new Animation(PlayerState::NameState::rolling,L"Resources//CaptainState//CaptainRollingState.png", D3DCOLOR_XRGB(255, 0, 255), 4);
+	Animation* rolling = new Animation(PlayerState::NameState::rolling, L"Resources//CaptainState//CaptainRollingState.png", D3DCOLOR_XRGB(255, 0, 255), 4);
 	Animation* die = new Animation(PlayerState::NameState::die, L"Resources//CaptainState//CaptainDieState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 	Animation* die_on_air = new Animation(PlayerState::NameState::die_on_air, L"Resources//CaptainState//CaptainDieOnAirState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
 	Animation* diving = new Animation(PlayerState::NameState::diving, L"Resources//CaptainState//CaptainDivingState.png", D3DCOLOR_XRGB(255, 0, 255), 6);
@@ -54,7 +59,6 @@ Player::Player() :Entity()
 	hang_on->SetTime(0.1);
 	jump_from_rope->SetTime(0.1);
 	punching->SetTime(0.1);
-
 	// Cập nhật vào cơ sở dữ liệu
 	this->animations[PlayerState::idle] = idle;
 	this->animations[PlayerState::running] = running;
@@ -75,20 +79,29 @@ Player::Player() :Entity()
 	this->animations[PlayerState::kicking] = kicking;
 	this->animations[PlayerState::punching] = punching;
 	this->animations[PlayerState::shield_down] = shield_down;
-
 	///End load resources
 	this->animation = this->animations[current_state];
-
-
-
+	this->previous_state = 0;
+	Entity::IsLocking = true;
 	// Cập nhật trạng thái rolling hay diving
+	this->IsJumpingDown = false;
+	this->IsJumping = false;
 	this->IsRolling = false;
 	this->IsDuckingPunching = true;
+	this->time_air_jumping = 0;
+	this->time_kicking = 0;
+	this->time_air_rolling = 0;
+
+
+
 }
 
 
 Player::~Player()
 {
+	for (int i = 0; i < 20; i++) {
+		delete this->animations[i];
+	}
 }
 
 void Player::Update(float dt)
@@ -117,7 +130,7 @@ void Player::HandleInput(float dt)
 void Player::Init()
 {
 	this->player_state = new PlayerIdleState();
-	
+
 }
 
 void Player::ChangeState(PlayerState *new_state)
@@ -125,8 +138,8 @@ void Player::ChangeState(PlayerState *new_state)
 	delete this->player_state;
 	player_state = new_state;
 	this->current_state = player_state->GetCurrentState();
-	this->animation = this->animations[current_state];
-
+	this->SetCurrentAnimation(this->animations[current_state]);
+	
 }
 
 PlayerState::NameState Player::GetCurrentState()
@@ -146,6 +159,7 @@ void Player::SetCurrentState(PlayerState::NameState new_state)
 
 void Player::SetCurrentAnimation(Animation * animation)
 {
+	this->previous_state = this->animation->GetName();
 	this->animation = animation;
 }
 
@@ -157,6 +171,11 @@ Animation * Player::GetCurrentAnimation()
 Animation * Player::GetAnimation(PlayerState::NameState state)
 {
 	return this->animations[state];
+}
+
+int Player::GetPreviousState()
+{
+	return this->previous_state;
 }
 
 void Player::SetPosition(float x, float y)
@@ -235,7 +254,7 @@ bool Player::IsCollisionWithGround(float dt, int delta_y)
 	{
 		for (auto item : obj)
 		{
-			if (Checker->IsCollide(foot, BoundingBox(item->GetPosition(), item->GetSize(), 0, 0)))
+			if (item->GetTag() == Entity::Entity_Tag::ground && Checker->IsCollide(foot, BoundingBox(item->GetPosition(), item->GetSize(), 0, 0)))
 				return true;
 		}
 		return false;
@@ -245,9 +264,8 @@ bool Player::IsCollisionWithGround(float dt, int delta_y)
 	for (auto item : obj)
 	{
 		BoundingBox box2;
-		switch (item->GetTag())
+		if (item->GetTag() == Entity::Entity_Tag::ground)
 		{
-		case Entity::Entity_Tag::ground:
 			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
 			tmp = Checker->SweptAABB(foot, box2);
 			if (tmp.side == CollisionSide::bottom)
@@ -255,9 +273,6 @@ bool Player::IsCollisionWithGround(float dt, int delta_y)
 				position.y = item->GetPosition().y + PLAYER_SIZE_HEIGHT / 2;
 				return true;
 			}
-			break;
-		default:
-			break;
 		}
 	}
 	return false;

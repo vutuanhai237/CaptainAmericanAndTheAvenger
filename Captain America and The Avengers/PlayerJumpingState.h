@@ -6,7 +6,6 @@
 class PlayerJumpingState: public PlayerState
 {
 public:
-	float time_air;
 	PlayerJumpingState();
 	~PlayerJumpingState();
 	virtual void Update(float dt);

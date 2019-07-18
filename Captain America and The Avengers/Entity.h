@@ -117,9 +117,11 @@ public:
 	virtual void SetSize(const SIZE &size);
 	virtual void SetSize(long width, long height);
 	virtual SIZE GetSize();
-
+	virtual void SetIsLocking(bool Islocking);
+	virtual bool GetIsLocking();
 protected:
 	BoundingBox box;
+	bool IsLocking;
 	bool IsStatic;
 	bool IsActive;
 	int ID;

@@ -6,6 +6,7 @@
 #include "Framework/Sprite.h"
 #include "SceneManager.h"
 #include "Charleston.h"
+#include "Player.h"
 #include "Framework/Debug.h"
 
 DWORD GameManager::StTime = GetTickCount();
@@ -75,6 +76,7 @@ GameManager::~GameManager()
 	DirectInput::GetInstance()->Release();
 	Texture::GetInstance()->Release();
 	SceneManager::GetInstance()->Release();
+	Player::GetInstance()->Release();
 }
 
 void GameManager::Update(float delta)
