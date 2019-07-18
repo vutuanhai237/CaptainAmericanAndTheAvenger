@@ -1,7 +1,7 @@
 #pragma once
 
-#define GAME_CLASS L"MyGameClass"
-#define GAME_NAME L"My Game Name"
+#define GAME_CLASS L"CaptainAmerica"
+#define GAME_NAME L"Captain America and The Avengers"
 #define GAME_SCREEN_WIDTH 256
 #define GAME_SCREEN_HEIGHT 224
 

@@ -2,7 +2,7 @@
 #include "PlayerIdleState.h"
 #include "PlayerRunningState.h"
 #include "SceneManager.h"
-#include "../Map/Framework/Debug.h"
+#include "Framework/Debug.h"
 Player*Player::instance = NULL;
 
 Player * Player::GetInstance()
