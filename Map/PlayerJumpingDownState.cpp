@@ -7,6 +7,7 @@ PlayerJumpingDownState::PlayerJumpingDownState()
 	player->SetCurrentState(PlayerState::NameState::jumping_down);
 	player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 	this->current_state = PlayerState::NameState::jumping_down;
+	player->SetVelocityY(VELOCITY_Y);
 }
 PlayerJumpingDownState::~PlayerJumpingDownState()
 {
@@ -34,9 +35,8 @@ void PlayerJumpingDownState::HandleInput(float dt)
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
 
-	auto res = player->IsCollisionWithGround(dt);
-	if (res.side == CollisionSide::bottom) {
-		player->SetPositionY(player->GetPosition().y + res.CollisionTime*dt*player->GetVelocityY());
+	if (player->IsCollisionWithGround(dt))
+	{
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
@@ -57,10 +57,7 @@ void PlayerJumpingDownState::HandleInput(float dt)
 		player->ChangeState(new PlayerKickingState());
 		return;
 	}
-	if (player->GetPosition().y <= player->GetPositionIdle().y) {
-		player->ChangeState(new PlayerIdleState());
-		return;
-	}
+	
 	// Code xong va chạm thì xóa hàm này với bỏ comment return chỗ left & right
 	// SWEPT AABB sẽ giải quyết được bug chỗ này
 

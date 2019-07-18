@@ -37,6 +37,11 @@ void PlayerRunningState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
+	if (!player->IsCollisionWithGround(dt)) {
+		player->ChangeState(new PlayerJumpingDownState());
+
+		return;
+	}
 	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyPress(LEFT_KEY)) {
 		player->ChangeState(new PlayerIdleState());
 		return;

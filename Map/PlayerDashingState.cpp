@@ -34,6 +34,11 @@ void PlayerDashingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
+	if (!player->IsCollisionWithGround(dt)) {
+		player->SetVelocityX(VELOCITY_X);
+		player->ChangeState(new PlayerJumpingDownState());
+		return;
+	}
 	// Hiển thị sprite đầu trong time_duck_before dashing, sau đó xét đến sprite 2
 	if (player->GetCurrentAnimation()->GetNumberCurrentFrame() == 1 && IsDucking == false)
 	{

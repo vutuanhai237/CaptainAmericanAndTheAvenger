@@ -30,7 +30,7 @@ void PlayerRollingState::Update(float dt)
 		player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 	}
 	if (player->GetPosition().y <= DISTANCE_JUMPING && player->GetIsRolling() == true) {
-		player->ChangeState(new PlayerJumpingState());
+		player->ChangeState(new PlayerJumpingDownState());
 
 	}
 	Debug::PrintOut(L"y = %f\n", player->GetPosition().y);
@@ -49,6 +49,11 @@ void PlayerRollingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
+	if (player->IsCollisionWithGround(dt))
+	{
+		player->ChangeState(new PlayerIdleState());
+		return;
+	}
 	// Đang ở trên không, nếu ấn left thì dịch qua trái
 	if (keyboard->KeyPress(LEFT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);

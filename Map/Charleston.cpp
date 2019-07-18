@@ -9,6 +9,7 @@
 #include "Framework/DirectInput.h"
 #include "SceneManager.h"
 #include "CharlestonBoss.h"
+
 void Charleston::Update(float dt)
 {
 	map->Update(dt);
@@ -60,7 +61,7 @@ void Charleston::Init()
 {
 	Player* player = Player::GetInstance();
 	player->Init();
-	player->SetPosition(48.0f, 69.0f);
+	player->SetPosition(48.0f, 100.0f); //48:69
 	player->SetPositionIdle(player->GetPosition());
 
 	exit = new Animation(111, L"Resources\\exit.png", D3DCOLOR_XRGB(255,0,255), 1);

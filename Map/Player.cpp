@@ -222,10 +222,10 @@ bool Player::GetIsDuckingPunching()
 	return this->IsDuckingPunching;
 }
 
-CollisionOut Player::IsCollisionWithGround(float dt)
+bool Player::IsCollisionWithGround(float dt)
 {
 	SIZE FootSize;
-	FootSize.cx = PLAYER_FOOT_WIDTH;
+	FootSize.cx = PLAYER_SIZE_WIDTH;
 	FootSize.cy = PLAYER_FOOT_HEIGHT;
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y - 17), FootSize, velocity.x*dt, velocity.y*dt);
 	foot.vy = foot.vy > 0 ? foot.vy : -2;
@@ -242,15 +242,15 @@ CollisionOut Player::IsCollisionWithGround(float dt)
 		case Entity::Entity_Tag::ground:
 			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
 			tmp = Checker->SweptAABB(foot, box2);
-			if (tmp.side == CollisionSide::bottom)
+			if (tmp.side == CollisionSide::bottom || tmp.side == CollisionSide::top)
 			{
-				position.y -= tmp.CollisionTime*dt*velocity.y;
-				return tmp;
+				position.y = item->GetPosition().y + PLAYER_SIZE_HEIGHT / 2 - 4;
+				return true;
 			}
 			break;
 		default:
 			break;
 		}
 	}
-	return CollisionOut();
+	return false;
 }

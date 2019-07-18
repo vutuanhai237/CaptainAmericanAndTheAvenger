@@ -5,17 +5,18 @@
 #include "Collision.h"
 
 // Player
-#define PLAYER_SIZE_WIDTH 16
+#define PLAYER_SIZE_WIDTH 8
 #define PLAYER_SIZE_HEIGHT 40
-#define PLAYER_FOOT_WIDTH 16
 #define PLAYER_FOOT_HEIGHT 8
 //
 #define VELOCITY_X 80.0f
 #define VELOCITY_Y 140.0f
+// jumping
 #define DELTA_JUMP 1.0f
 #define DISTANCE_JUMPING 120.0f
 #define DISTANCE_ROLLING 140.0f
-#define TIME_AIR 0.016*15
+#define TIME_AIR 0.5f
+#define TIME_JUMPING 0.2f
 #define TIME_ROLLING 0.016* 30
 #define TIME_KICKING 0.016* 10
 // Dashing
@@ -68,7 +69,8 @@ public:
 	Entity::Entity_Direction previous_direction;
 	void SetIsDuckingPunching(bool IsDuckingpunching);
 	bool GetIsDuckingPunching();
-	CollisionOut IsCollisionWithGround(float dt);
+
+	bool IsCollisionWithGround(float dt);
 protected:
 	static Player *instance;
 	std::map<int, Animation*> animations;

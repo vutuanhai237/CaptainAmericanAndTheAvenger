@@ -7,9 +7,7 @@ PlayerIdleState::PlayerIdleState()
 	player->SetIsThrowing(false);
 	player->SetIsRolling(false);
 	this->current_state = PlayerState::NameState::idle;
-	//player->SetPositionIdle(player->GetPosition());
-	//D3DXVECTOR2 idle_position = player->GetPositionIdle();
-	//player->SetPositionY(idle_position.y);
+	player->SetVelocity(0, 0);
 	player->SetPositionIdle(player->GetPosition());
 
 }
@@ -41,7 +39,7 @@ void PlayerIdleState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
-	if (player->IsCollisionWithGround(dt).side == CollisionSide::none)
+	if (!player->IsCollisionWithGround(dt))
 	{
 		player->ChangeState(new PlayerJumpingDownState());
 		return;
