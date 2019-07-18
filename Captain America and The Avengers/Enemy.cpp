@@ -1,5 +1,11 @@
 #include "Enemy.h"
 
+void Enemy::Update(float dt)
+{
+	Entity::Update(dt);
+
+}
+
 void Enemy::Spawn()
 {
 }
@@ -11,6 +17,11 @@ void Enemy::SetSpawnBox(float top, float left, float width, float height, Entity
 	this->spawn_box.bot = top-height;
 	this->spawn_box.right = left + width;
 	this->direction = direction;
+}
+
+void Enemy::SetBoxCollider(BoxCollider box)
+{
+	this->box = box;
 }
 
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "PlayerState.h"
 #include "Player.h"
+#define ROLLING_ACCELERATION 15.0f
 class PlayerRollingState : public PlayerState
 {
 public:

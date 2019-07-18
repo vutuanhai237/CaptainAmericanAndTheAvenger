@@ -60,17 +60,19 @@ void PlayerJumpingState::HandleInput(float dt)
 			return;
 		}
 	}
+	if (!keyboard->KeyPress(RIGHT_KEY) && !keyboard->KeyPress(LEFT_KEY)) {
+		player->SetVelocityX(0);
+		return;
+	}
 	// Đang ở trên không, nếu ấn left thì dịch qua trái
 	if (keyboard->KeyPress(LEFT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		player->SetPositionX(player->GetPosition().x - DELTA_JUMP);
-		return;
 	}
 	// Đang ở trên không, nếu ấn left thì dịch qua phải
 	if (keyboard->KeyPress(RIGHT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		player->SetPositionX(player->GetPosition().x + DELTA_JUMP);
-		return;
 	}
 	if (keyboard->KeyDown(ATTACK_KEY)) {
 		player->ChangeState(new PlayerKickingState());

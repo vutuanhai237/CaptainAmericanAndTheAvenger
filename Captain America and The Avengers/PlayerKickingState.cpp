@@ -1,6 +1,6 @@
 ﻿#include "PlayerKickingState.h"
 #include "PlayerIdleState.h"
-
+#include "PlayerRollingState.h"
 #include "Framework//Debug.h"
 PlayerKickingState::PlayerKickingState()
 {
@@ -8,7 +8,7 @@ PlayerKickingState::PlayerKickingState()
 	player->SetCurrentState(PlayerState::NameState::kicking);
 	this->current_state = PlayerState::NameState::kicking;
 	player->SetVelocityY(VELOCITY_Y);
-	this->time_kicking = TIME_KICKING;
+	this->time_kicking = 0;
 
 }
 PlayerKickingState::~PlayerKickingState()
@@ -20,7 +20,8 @@ void PlayerKickingState::Update(float dt)
 {
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
-	if (this->time_kicking < 0) {
+	time_kicking += dt;
+	if (this->time_kicking >= TIME_KICKING) {
 		if (player->GetJumpDirection() == Entity::Entity_Jump_Direction::BotToTop) {
 			player->ChangeState(new PlayerJumpingState());
 			return;
@@ -29,11 +30,9 @@ void PlayerKickingState::Update(float dt)
 			player->ChangeState(new PlayerJumpingDownState());
 			return;
 		}
+	
 	}
-	else {
-		time_kicking -= dt;
-	}
-	Debug::PrintOut(L"y = %f\n", player->GetPosition().y);
+	
 }
 
 void PlayerKickingState::Draw()

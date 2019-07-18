@@ -37,9 +37,8 @@ void PlayerDuckingState::HandleInput(float dt)
 	auto keyboard = DirectInput::GetInstance();
 	this->IsDucking = true;
 	// Ngồi đấm
-	if (keyboard->KeyPress(ATTACK_KEY) && keyboard->KeyPress(DOWN_KEY) && player->GetIsDuckingPunching()) {
+	if (keyboard->KeyDown(ATTACK_KEY) && keyboard->KeyPress(DOWN_KEY)) {
 		player->ChangeState(new PlayerDuckingPunchingState());
-		player->SetIsDuckingPunching(false);
 		return;
 	}
 	
@@ -61,7 +60,7 @@ void PlayerDuckingState::HandleInput(float dt)
 	}
 	// Chuyển sang state chui xuyên đất hoặc nhảy lên nếu tường không lọt được
 	if (keyboard->KeyDown(JUMP_KEY)) {
-		player->ChangeState(new PlayerJumpingState());
+		player->ChangeState(new PlayerJumpingDownState());
 		return;
 	}
 	// Tiếp tục giữ state

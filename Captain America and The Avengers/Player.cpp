@@ -30,7 +30,7 @@ Player::Player() :Entity()
 	Animation* throwing = new Animation(PlayerState::NameState::throwing, L"Resources//CaptainState//CaptainThrowingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 
 	Animation* ducking_punching = new Animation(PlayerState::NameState::ducking_punching, L"Resources//CaptainState//CaptainDuckingPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
-	Animation* rolling = new Animation(PlayerState::NameState::rolling,L"Resources//CaptainState//CaptainRollingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
+	Animation* rolling = new Animation(PlayerState::NameState::rolling,L"Resources//CaptainState//CaptainRollingState.png", D3DCOLOR_XRGB(255, 0, 255), 4);
 	Animation* die = new Animation(PlayerState::NameState::die, L"Resources//CaptainState//CaptainDieState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 	Animation* die_on_air = new Animation(PlayerState::NameState::die_on_air, L"Resources//CaptainState//CaptainDieOnAirState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
 	Animation* diving = new Animation(PlayerState::NameState::diving, L"Resources//CaptainState//CaptainDivingState.png", D3DCOLOR_XRGB(255, 0, 255), 6);
@@ -222,16 +222,24 @@ bool Player::GetIsDuckingPunching()
 	return this->IsDuckingPunching;
 }
 
-bool Player::IsCollisionWithGround(float dt)
+bool Player::IsCollisionWithGround(float dt, int delta_y)
 {
 	SIZE FootSize;
 	FootSize.cx = PLAYER_SIZE_WIDTH;
 	FootSize.cy = PLAYER_FOOT_HEIGHT;
-	BoundingBox foot(D3DXVECTOR2(position.x, position.y - 17), FootSize, velocity.x*dt, velocity.y*dt);
-	foot.vy = foot.vy > 0 ? foot.vy : -2;
+	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
 	auto Checker = Collision::getInstance();
-
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
+
+	if (foot.vy == 0)
+	{
+		for (auto item : obj)
+		{
+			if (Checker->IsCollide(foot, BoundingBox(item->GetPosition(), item->GetSize(), 0, 0)))
+				return true;
+		}
+		return false;
+	}
 
 	CollisionOut tmp;
 	for (auto item : obj)
@@ -242,9 +250,9 @@ bool Player::IsCollisionWithGround(float dt)
 		case Entity::Entity_Tag::ground:
 			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
 			tmp = Checker->SweptAABB(foot, box2);
-			if (tmp.side == CollisionSide::bottom || tmp.side == CollisionSide::top)
+			if (tmp.side == CollisionSide::bottom)
 			{
-				position.y = item->GetPosition().y + PLAYER_SIZE_HEIGHT / 2 - 4;
+				position.y = item->GetPosition().y + PLAYER_SIZE_HEIGHT / 2;
 				return true;
 			}
 			break;

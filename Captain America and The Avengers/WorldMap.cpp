@@ -107,7 +107,7 @@ void WorldMap::Init(LPCWSTR Path)
 		switch (id)
 		{
 		case MAPOBJ_GROUND:
-			top -= 4;
+			top -= 8;
 			obj->SetTag(Entity::Entity_Tag::ground);
 			break;
 		case MAPOBJ_WALL:

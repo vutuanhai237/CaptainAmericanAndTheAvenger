@@ -19,6 +19,7 @@ CollisionOut Collision::SweptAABB(BoundingBox recta, BoundingBox rectb)
 	out.side = CollisionSide::none;
 	recta.vx = recta.vx - rectb.vx;
 	recta.vy = recta.vy - rectb.vy;
+
 	BoundingBox test;
 	test.top = recta.vy > 0 ? recta.top + recta.vy : recta.top;
 	test.bottom = recta.vy > 0 ? recta.bottom : recta.bottom + recta.vy;
@@ -37,6 +38,7 @@ CollisionOut Collision::SweptAABB(BoundingBox recta, BoundingBox rectb)
 	{
 		dxEntry = rectb.right - recta.left;
 		dxExit = rectb.left - recta.right;
+
 	}
 	if (recta.vy > 0.0f)
 	{
@@ -47,6 +49,7 @@ CollisionOut Collision::SweptAABB(BoundingBox recta, BoundingBox rectb)
 	{
 		dyEntry = rectb.top - recta.bottom;
 		dyExit = rectb.bottom - recta.top;
+
 	}
 
 
@@ -73,32 +76,29 @@ CollisionOut Collision::SweptAABB(BoundingBox recta, BoundingBox rectb)
 
 	float entryTime = max(txEntry, tyEntry);
 	float exitTime = min(tyExit, txExit);
+	if (entryTime > exitTime || (txEntry < 0.0f&&tyEntry < 0.0f) || txEntry > 1.0f || tyEntry > 1.0f)
+		return out;
 	out.CollisionTime = entryTime;
 	if (txEntry > tyEntry)
 	{
-		if (dxEntry > 0)
-			out.side = CollisionSide::right;
+		if (dxEntry < 0)
+			out.side = CollisionSide::left;
 		else
 		{
-			out.side = CollisionSide::left;
+			out.side = CollisionSide::right;
 		}
 	}
 	else
 	{
-		if (dyEntry > 0)
-			out.side = CollisionSide::top;
+		if (dyEntry < 0)
+			out.side = CollisionSide::bottom;
 		else
 		{
-			out.side = CollisionSide::bottom;
+			out.side = CollisionSide::top;
 		}
-	}
-	if (out.side == CollisionSide::bottom)
-	{
-		int a = 1;
 	}
 	return out;
 }
-
 
 bool Collision::IsCollide(BoundingBox box1, BoundingBox box2)
 {
