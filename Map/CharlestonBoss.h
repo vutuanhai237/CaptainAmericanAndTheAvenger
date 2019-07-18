@@ -10,6 +10,7 @@ class CharlestonBoss : public Scene
 public:
 	void Update(float dt) override;
 	void Draw() override;
+	WorldMap *GetCurrentMap() override;
 	CharlestonBoss();
 	~CharlestonBoss();
 protected:

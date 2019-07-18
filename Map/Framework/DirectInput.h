@@ -29,6 +29,7 @@ private:
 	LPDIRECTINPUTDEVICE8 dikeyboard = NULL;
 	LPDIRECTINPUTDEVICE8 dimouse = NULL;
 
+	bool FirstCheck;
 	float delta;
 	int LastKey, BufferLastKey;
 

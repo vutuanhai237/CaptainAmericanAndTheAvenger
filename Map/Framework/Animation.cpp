@@ -14,8 +14,9 @@ Animation::Animation(int ID, int Total, int StartFrame) : Sprite(ID)
 	AnimationTime = 0;
 }
 
-Animation::Animation(LPCWSTR Path, D3DXCOLOR TransparentColor, int Total, int StartFrame) : Sprite(Path, TransparentColor)
+Animation::Animation(int name, LPCWSTR Path, D3DXCOLOR TransparentColor, int Total, int StartFrame) : Sprite(Path, TransparentColor)
 {
+	this->name = name;
 	TotalFrame = Total;
 	CurrentFrame = StartFrame;
 	width = Info.Width / Total;
@@ -72,6 +73,7 @@ void Animation::Continue()
 void Animation::SetFrame(int Frame)
 {
 	CurrentFrame = Frame;
+	delta = 0.0f;
 	SetFrame();
 }
 
@@ -85,11 +87,21 @@ float Animation::GetAnimationTime()
 	return this->AnimationTime;
 }
 
+void Animation::SetAnimationTime(float time)
+{
+	this->AnimationTime = time;
+}
+
 void Animation::ResetAnimation()
 {
 	delta = 0.0f;
 	AnimationTime = 0.0f;
 	SetFrame(1);
+}
+
+int Animation::GetName()
+{
+	return this->name;
 }
 
 void Animation::SetFrame()

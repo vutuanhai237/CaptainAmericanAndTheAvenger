@@ -8,7 +8,6 @@ PlayerRunningState::PlayerRunningState()
 	player->SetCurrentState(PlayerState::NameState::running);
 	this->current_state = PlayerState::NameState::running;
 	player->SetVelocityX(VELOCITY_X);
-	player->SetSize(2 >> 3, 5 >> 3);
 
 	
 }
@@ -38,6 +37,10 @@ void PlayerRunningState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
+	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyPress(LEFT_KEY)) {
+		player->ChangeState(new PlayerIdleState());
+		return;
+	}
 	// Set trạng thái lướt
 	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->GetLastPressKey() == RIGHT_KEY) {
 		keyboard->ReleaseLastPressKey();
@@ -45,6 +48,7 @@ void PlayerRunningState::HandleInput(float dt)
 		player->ChangeState(new PlayerDashingState());
 		return;
 	}
+	// Lỗi keyboard nên set tạm ở đây bằng previous d
 	if (keyboard->KeyPress(LEFT_KEY) && keyboard->GetLastPressKey() == LEFT_KEY) {
 		keyboard->ReleaseLastPressKey();
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
@@ -54,6 +58,7 @@ void PlayerRunningState::HandleInput(float dt)
 	// Đang ở trạng thái running, nếu ấn left thì vẫn giữ trạng thái
 	if (keyboard->KeyPress(LEFT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
+		player->previous_direction = Entity::Entity_Direction::RightToLeft;
 		// vừa ấn left-arrow vừa nhấn x thì nhảy chéo
 		if (keyboard->KeyDown(JUMP_KEY)) {
 			player->ChangeState(new PlayerJumpingState());
@@ -68,6 +73,8 @@ void PlayerRunningState::HandleInput(float dt)
 	}
 	if (keyboard->KeyPress(RIGHT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
+		player->previous_direction = Entity::Entity_Direction::LeftToRight;
+
 		// vừa ấn right-arrow vừa nhấn x thì nhảy chéo
 		if (keyboard->KeyDown(JUMP_KEY)) {
 			player->ChangeState(new PlayerJumpingState());

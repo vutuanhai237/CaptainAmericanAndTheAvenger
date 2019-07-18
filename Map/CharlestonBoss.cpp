@@ -13,6 +13,11 @@ void CharlestonBoss::Draw()
 	map->Draw();
 }
 
+WorldMap *CharlestonBoss::GetCurrentMap()
+{
+	return map->GetCurrentMap();
+}
+
 CharlestonBoss::CharlestonBoss()
 {
 	map = new CharlestonBossMap();

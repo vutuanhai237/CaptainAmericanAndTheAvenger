@@ -7,7 +7,6 @@ PlayerRollingState::PlayerRollingState()
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::rolling);
 	this->current_state = PlayerState::NameState::rolling;
-	player->SetSize(0, 0);
 
 	player->SetVelocityY(VELOCITY_Y);
 	player->SetIsOnAir(true);

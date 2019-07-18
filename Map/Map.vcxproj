@@ -135,6 +135,8 @@
     <ClCompile Include="CharlestonMap.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DataCollect.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyWeapon.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Framework\Animation.cpp" />
     <ClCompile Include="Framework\d3d.cpp" />
@@ -142,7 +144,6 @@
     <ClCompile Include="Framework\DirectInput.cpp" />
     <ClCompile Include="Framework\GameTimer.cpp" />
     <ClCompile Include="Framework\Sprite.cpp" />
-    <ClCompile Include="Framework\Supporter.cpp" />
     <ClCompile Include="Framework\Texture.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -153,11 +154,14 @@
     <ClCompile Include="PlayerJumpingDownState.cpp" />
     <ClCompile Include="PlayerJumpingState.cpp" />
     <ClCompile Include="PlayerKickingState.cpp" />
+    <ClCompile Include="PlayerPunchingState.cpp" />
     <ClCompile Include="PlayerRollingState.cpp" />
     <ClCompile Include="PlayerRunningState.cpp" />
     <ClCompile Include="PlayerShieldUpState.cpp" />
     <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="PlayerThrowingState.cpp" />
+    <ClCompile Include="RedRocket.cpp" />
+    <ClCompile Include="RedRocketRobot.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="WinMain.cpp" />
@@ -172,6 +176,8 @@
     <ClInclude Include="CharlestonMap.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="DataCollect.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyWeapon.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Framework\Animation.h" />
     <ClInclude Include="Framework\d3d.h" />
@@ -180,7 +186,6 @@
     <ClInclude Include="Framework\GameSetting.h" />
     <ClInclude Include="Framework\GameTimer.h" />
     <ClInclude Include="Framework\Sprite.h" />
-    <ClInclude Include="Framework\Supporter.h" />
     <ClInclude Include="Framework\Texture.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Player.h" />
@@ -191,11 +196,14 @@
     <ClInclude Include="PlayerJumpingDownState.h" />
     <ClInclude Include="PlayerJumpingState.h" />
     <ClInclude Include="PlayerKickingState.h" />
+    <ClInclude Include="PlayerPunchingState.h" />
     <ClInclude Include="PlayerRollingState.h" />
     <ClInclude Include="PlayerRunningState.h" />
     <ClInclude Include="PlayerShieldUpState.h" />
     <ClInclude Include="PlayerState.h" />
     <ClInclude Include="PlayerThrowingState.h" />
+    <ClInclude Include="RedRocket.h" />
+    <ClInclude Include="RedRocketRobot.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />

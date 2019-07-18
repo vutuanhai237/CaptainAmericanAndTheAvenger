@@ -5,7 +5,6 @@ PlayerJumpingDownState::PlayerJumpingDownState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::jumping_down);
-	player->SetSize(2 >> 3, 5 >> 3);
 	player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 	this->current_state = PlayerState::NameState::jumping_down;
 }
@@ -18,7 +17,7 @@ void PlayerJumpingDownState::Update(float dt)
 {
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
-	Debug::PrintOut(L"y = %f\n", player->GetPosition().y);
+	
 }
 
 void PlayerJumpingDownState::Draw()
@@ -34,17 +33,25 @@ void PlayerJumpingDownState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
+
+	auto res = player->IsCollisionWithGround(dt);
+	if (res.side == CollisionSide::bottom) {
+		player->SetPositionY(player->GetPosition().y + res.CollisionTime*dt*player->GetVelocityY());
+		player->ChangeState(new PlayerIdleState());
+		return;
+	}
+
 	// Đang ở trên không, nếu ấn left thì dịch qua trái
 	if (keyboard->KeyPress(LEFT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		player->SetPositionX(player->GetPosition().x - DELTA_JUMP);
-		//return;
+		return;
 	}
 	// Đang ở trên không, nếu ấn left thì dịch qua phải
 	if (keyboard->KeyPress(RIGHT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		player->SetPositionX(player->GetPosition().x + DELTA_JUMP);
-		//return;
+		return;
 	}
 	if (keyboard->KeyDown(ATTACK_KEY)) {
 		player->ChangeState(new PlayerKickingState());

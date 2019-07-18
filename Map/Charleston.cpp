@@ -51,6 +51,11 @@ void Charleston::Draw()
 	i++;
 }
 
+WorldMap * Charleston::GetCurrentMap()
+{
+	return this->map;
+}
+
 void Charleston::Init()
 {
 	Player* player = Player::GetInstance();
@@ -58,7 +63,8 @@ void Charleston::Init()
 	player->SetPosition(48.0f, 69.0f);
 	player->SetPositionIdle(player->GetPosition());
 
-	exit = new Animation(L"Resources\\exit.png", D3DCOLOR_XRGB(255,0,255), 1);
+	exit = new Animation(111, L"Resources\\exit.png", D3DCOLOR_XRGB(255,0,255), 1);
+	//vector<Entity*> obj = *SceneManager::GetInstance()->GetCurr
 	i = 0;
 	exit->SetPosition(48.0f, 27.0f);
 }

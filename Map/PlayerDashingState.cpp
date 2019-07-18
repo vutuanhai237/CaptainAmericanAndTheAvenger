@@ -7,10 +7,9 @@ PlayerDashingState::PlayerDashingState()
 	player->SetCurrentState(PlayerState::NameState::dashing);
 	player->SetTimeBuffer(0);
 	player->SetVelocityX(VELOCITY_X * 3);
-	player->SetSize(4 >> 3, 3 >> 3);
 	this->current_state = PlayerState::NameState::dashing;
-
-
+	IsDucking = false;
+	IsGong = false;
 }
 
 PlayerDashingState::~PlayerDashingState()
@@ -30,56 +29,53 @@ void PlayerDashingState::Draw()
 void PlayerDashingState::Render()
 {
 }
-
+//Perfect, không được sửa nữa
 void PlayerDashingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
-	// Chỉ hiển thị 1 sprite đầu khi dashing, còn lại giữ nguyên sprite 2
-	if (player->GetCurrentAnimation()->GetNumberCurrentFrame() == 2)
+	// Hiển thị sprite đầu trong time_duck_before dashing, sau đó xét đến sprite 2
+	if (player->GetCurrentAnimation()->GetNumberCurrentFrame() == 1 && IsDucking == false)
 	{
-		player->GetCurrentAnimation()->Pause(0.016f * 18.0f);
+		player->GetCurrentAnimation()->Pause(TIME_DUCK_BEFORE_DASHING);
+		IsDucking = true;
+		goto CHECK;
+	}
+	// Giữ sprite 2 trong TIME_WAIT_DASHING, sau đó xét đến sprite 3
+	if (player->GetCurrentAnimation()->GetNumberCurrentFrame() == 2 && IsGong == false)
+	{
+		player->GetCurrentAnimation()->Pause(TIME_WAIT_DASHING);
+		IsGong = true;
+		goto CHECK;
+	}
+	if (player->GetCurrentAnimation()->GetNumberCurrentFrame() == 3)
+	{
+		player->GetCurrentAnimation()->Pause(TIME_DASHING-(TIME_WAIT_DASHING+TIME_DUCK_BEFORE_DASHING));
 	}
 	// Dừng dashing khi time out hoặc thả nút left/right
-	if (player->GetCurrentAnimation()->GetAnimationTime() >= 0.016f * 20.0f || keyboard->KeyUp(RIGHT_KEY))
+	CHECK:
+	if (player->GetCurrentAnimation()->GetAnimationTime() >= TIME_DASHING)
 	{
-		if (keyboard->KeyPress(LEFT_KEY)) {
-			goto LEFT;
-		}
+		player->GetCurrentAnimation()->SetAnimationTime(0.0f);
 		player->GetCurrentAnimation()->ResetAnimation();
-		// Nếu vẫn còn giữ phím right thì chuyển sang running
-		if (keyboard->KeyPress(RIGHT_KEY)) {
+		player->ChangeState(new PlayerRunningState());
+		return;
+	}
+	else {
+		if (player->GetMoveDirection() == Entity::Entity_Direction::LeftToRight && keyboard->KeyUp(RIGHT_KEY)) {
+			player->GetCurrentAnimation()->SetAnimationTime(0.0f);
+			player->GetCurrentAnimation()->ResetAnimation();
 			player->ChangeState(new PlayerRunningState());
 			return;
 		}
-		// Không ấn gì nữa thì idle
-		player->ChangeState(new PlayerIdleState());
-		return;
-	}
-
-	if (player->GetCurrentAnimation()->GetAnimationTime() >= 0.016f * 20.0f || keyboard->KeyUp(LEFT_KEY))
-	{
-		player->GetCurrentAnimation()->ResetAnimation();
-		// Nếu vẫn còn giữ phím left thì chuyển sang running
-		if (keyboard->KeyPress(LEFT_KEY)) {
-		LEFT:
+		if (player->GetMoveDirection() == Entity::Entity_Direction::RightToLeft && keyboard->KeyUp(LEFT_KEY)) {
+			player->GetCurrentAnimation()->SetAnimationTime(0.0f);
+			player->GetCurrentAnimation()->ResetAnimation();
 			player->ChangeState(new PlayerRunningState());
 			return;
 		}
-		player->ChangeState(new PlayerIdleState());
-		return;
 	}
+		
 
-
-	if (player->GetMoveDirection() == Entity::Entity_Direction::RightToLeft)
-	{
-		return;
-	}
-	if (player->GetMoveDirection() == Entity::Entity_Direction::LeftToRight)
-	{
-		return;
-	}
-	//player->GetCurrentAnimation()->ResetAnimation();
-	//player->ChangeState(new PlayerIdleState());
 
 }

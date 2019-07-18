@@ -1,5 +1,5 @@
 ﻿#include "Collision.h"
-#include<iostream>
+#include <iostream>
 using namespace std;
 
 Collision* Collision::instance = NULL;
@@ -12,16 +12,20 @@ Collision* Collision::getInstance()
 	return instance;
 }
 
-collisionOut Collision::SweptAABB(BoundingBox recta, BoundingBox rectb)
+CollisionOut Collision::SweptAABB(BoundingBox recta, BoundingBox rectb)
 {
-	collisionOut out;
-	out.collisionTime = 2;
+	CollisionOut out;
+	out.CollisionTime = 2;
 	out.side = CollisionSide::none;
-	//recta.vx = rectb.vx - recta.vx;
-	//recta.vy = rectb.vy - recta.vy;
-	if (!IsCollide(recta, rectb))
+	recta.vx = recta.vx - rectb.vx;
+	recta.vy = recta.vy - rectb.vy;
+	BoundingBox test;
+	test.top = recta.vy > 0 ? recta.top + recta.vy : recta.top;
+	test.bottom = recta.vy > 0 ? recta.bottom : recta.bottom + recta.vy;
+	test.left = recta.vx > 0 ? recta.left : recta.left + recta.vx;
+	test.right = recta.vx > 0 ? recta.right + recta.vx : recta.right;
+	if (!IsCollide(test, rectb))
 	{
-		int a = 1;
 		return out;
 	}
 	if (recta.vx > 0.0f)
@@ -31,10 +35,8 @@ collisionOut Collision::SweptAABB(BoundingBox recta, BoundingBox rectb)
 	}
 	else
 	{
-		/*dxEntry = rectb.right - recta.left;
-		dxExit = rectb.left - recta.right;*/
-		dxEntry = recta.left - rectb.right;
-		dxExit = recta.right - rectb.left;
+		dxEntry = rectb.right - recta.left;
+		dxExit = rectb.left - recta.right;
 	}
 	if (recta.vy > 0.0f)
 	{
@@ -43,13 +45,11 @@ collisionOut Collision::SweptAABB(BoundingBox recta, BoundingBox rectb)
 	}
 	else
 	{
-		/*dyEntry = rectb.bottom - recta.top;
-		dyExit = rectb.top - recta.bottom;*/
-		dyEntry = recta.bottom - rectb.top;
-		dyExit = recta.top - rectb.bottom;
+		dyEntry = rectb.top - recta.bottom;
+		dyExit = rectb.bottom - recta.top;
 	}
 
-	
+
 	if (recta.vx == 0.0f)
 	{
 		txEntry = -std::numeric_limits<float>::infinity();
@@ -73,26 +73,20 @@ collisionOut Collision::SweptAABB(BoundingBox recta, BoundingBox rectb)
 
 	float entryTime = max(txEntry, tyEntry);
 	float exitTime = min(tyExit, txExit);
-	out.collisionTime = entryTime;
-	
-	if (txEntry < tyEntry)
+	out.CollisionTime = entryTime;
+	if (txEntry > tyEntry)
 	{
-		if (dyEntry > 0.0f)
-		{
-			out.side = CollisionSide::top;
-		}
+		if (dxEntry > 0)
+			out.side = CollisionSide::right;
 		else
 		{
-			out.side = CollisionSide::bottom;
+			out.side = CollisionSide::left;
 		}
-
 	}
 	else
 	{
-		if (dxEntry > 0.0f)
-		{
-			out.side = CollisionSide::right;
-		}
+		if (dyEntry > 0)
+			out.side = CollisionSide::top;
 		else
 		{
 			out.side = CollisionSide::bottom;

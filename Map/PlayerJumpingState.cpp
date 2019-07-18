@@ -7,7 +7,6 @@ PlayerJumpingState::PlayerJumpingState()
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::jumping);
 	player->SetVelocityY(VELOCITY_Y);
-	player->SetSize(2 >> 3, 5 >> 3);
 
 	player->SetIsOnAir(true);
 	player->SetTimeBuffer(0);

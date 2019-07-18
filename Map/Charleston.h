@@ -9,7 +9,8 @@ class Charleston : public Scene
 {
 public:
 	void Update(float dt) override;
-	void Draw() override;
+	void Draw() override; 
+	WorldMap *GetCurrentMap() override;
 	Charleston();
 	~Charleston();
 protected:

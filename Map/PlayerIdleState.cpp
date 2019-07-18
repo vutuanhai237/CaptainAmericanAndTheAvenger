@@ -4,14 +4,14 @@ PlayerIdleState::PlayerIdleState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::idle);
-	player->SetSize(2 >> 3, 5 >> 3);
-
+	player->SetIsThrowing(false);
 	player->SetIsRolling(false);
 	this->current_state = PlayerState::NameState::idle;
 	//player->SetPositionIdle(player->GetPosition());
 	//D3DXVECTOR2 idle_position = player->GetPositionIdle();
 	//player->SetPositionY(idle_position.y);
 	player->SetPositionIdle(player->GetPosition());
+
 }
 PlayerIdleState::~PlayerIdleState()
 {
@@ -41,6 +41,15 @@ void PlayerIdleState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
+	if (player->IsCollisionWithGround(dt).side == CollisionSide::none)
+	{
+		player->ChangeState(new PlayerJumpingDownState());
+		return;
+	}
+		
+
+
+
 
 	// Nếu ấn X thì nhảy
 	if (keyboard->KeyDown(JUMP_KEY)) {
@@ -51,7 +60,9 @@ void PlayerIdleState::HandleInput(float dt)
 		player->ChangeState(new PlayerThrowingState());
 		return;
 	}
-
+	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyPress(LEFT_KEY)) {
+		return;
+	}
 	// Nếu vừa ấn cả up và down arrow thì giữ nghuyên idle
 	if (keyboard->KeyPress(UP_KEY) && keyboard->KeyPress(DOWN_KEY)) {
 		return;

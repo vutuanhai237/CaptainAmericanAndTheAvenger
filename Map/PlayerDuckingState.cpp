@@ -4,7 +4,6 @@ PlayerDuckingState::PlayerDuckingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::ducking);
-	player->SetSize(3 >> 3, 3 >> 3);
 
 	this->current_state = PlayerState::NameState::ducking;
 	player->SetTimeBuffer(0);
@@ -38,10 +37,12 @@ void PlayerDuckingState::HandleInput(float dt)
 	auto keyboard = DirectInput::GetInstance();
 	this->IsDucking = true;
 	// Ngồi đấm
-	if (keyboard->KeyPress(ATTACK_KEY) && keyboard->KeyPress(DOWN_KEY)) {
+	if (keyboard->KeyPress(ATTACK_KEY) && keyboard->KeyPress(DOWN_KEY) && player->GetIsDuckingPunching()) {
 		player->ChangeState(new PlayerDuckingPunchingState());
+		player->SetIsDuckingPunching(false);
 		return;
 	}
+	
 	// Ưu tiên trạng thái running
 	if (keyboard->KeyDown(RIGHT_KEY)) {
 		player->ChangeState(new PlayerRunningState());

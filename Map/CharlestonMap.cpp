@@ -4,11 +4,11 @@
 
 CharlestonMap::CharlestonMap() : WorldMap(L"Resources/Map/charleston_map.txt", 0)
 {
-	sewer = new Animation(L"Resources/Map/sewer.png", D3DCOLOR_ARGB(0, 0, 0, 0), 3, 1);
+	sewer = new Animation(1, L"Resources/Map/sewer.png", D3DCOLOR_ARGB(0, 0, 0, 0), 3, 1);
 	sewer->SetTime(4.0f / 60);
-	warter1 = new Animation(L"Resources/Map/water_1.png", D3DCOLOR_ARGB(0, 0, 0, 0), 3, 1);
+	warter1 = new Animation(1, L"Resources/Map/water_1.png", D3DCOLOR_ARGB(0, 0, 0, 0), 3, 1);
 	warter1->SetTime(4.0f / 60);
-	warter2 = new Animation(L"Resources/Map/water_2.png", D3DCOLOR_ARGB(0, 0, 0, 0), 3, 1);
+	warter2 = new Animation(1, L"Resources/Map/water_2.png", D3DCOLOR_ARGB(0, 0, 0, 0), 3, 1);
 	warter2->SetTime(4.0f / 60);
 	Camera::GetInstance()->Init(this->GetMapSize());
 }

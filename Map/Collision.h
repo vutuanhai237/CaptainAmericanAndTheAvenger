@@ -1,7 +1,9 @@
 #pragma once
-#include<Windows.h>
+#include <Windows.h>
+#include <d3dx9.h>
 
-enum CollisionSide {
+enum CollisionSide 
+{
 	none,
 	top,
 	left,
@@ -9,30 +11,37 @@ enum CollisionSide {
 	bottom
 };
 
-struct collisionOut {
-	float collisionTime;
+struct CollisionOut 
+{
+	float CollisionTime;
 	CollisionSide side;
+	CollisionOut() {
+		CollisionTime = 2.0f;
+		side = CollisionSide::none;
+	}
 };
 
-struct BoundingBox {
+struct BoundingBox // top > bottom
+{
 	float top, left, right, bottom;
-	int vx, vy;
-	SIZE size;
-	BoundingBox(float top_, float left_, float bottom_, float right_, int vx_, int vy_)
+	float vx, vy;
+	BoundingBox(float top, float left, float bottom, float right, float vx, float vy) 
 	{
-		top = top_;
-		left = left_;
-		bottom=bottom_;
-		right = right_;
-		vx = vx_;
-		vy = vy_;
-		size.cx = right_ - left_;
-		size.cy = bottom_ - top_;
+		this->top = top;
+		this->left = left;
+		this->bottom = bottom;
+		this->right = right;
+		this->vx = vx;
+		this->vy = vy;
 	}
-	BoundingBox(SIZE _size)
+	BoundingBox(D3DXVECTOR2 position, SIZE size, float vx, float vy)
 	{
-		size = _size;
-		top = left = 0;
+		this->top = position.y + size.cy / 2.0f;
+		this->bottom = top - size.cy;
+		this->left = position.x - size.cx / 2.0f;
+		this->right = left + size.cx;
+		this->vx = vx;
+		this->vy = vy;
 	}
 	BoundingBox() {};
 	~BoundingBox() {};
@@ -47,8 +56,8 @@ private:
 
 	static Collision *instance;
 public:
-	static Collision * getInstance();
-	collisionOut SweptAABB(BoundingBox recta, BoundingBox rectb);
+	static Collision *getInstance();
+	CollisionOut SweptAABB(BoundingBox recta, BoundingBox rectb);
 	bool IsCollide(BoundingBox box1, BoundingBox box2);
 };
 

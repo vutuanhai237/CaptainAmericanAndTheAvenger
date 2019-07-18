@@ -42,7 +42,7 @@ public:
 		cannon,
 		cannon_bullet,
 		flyer,
-		container,
+		redrobotrocket,
 		soldier,
 		soldier_bullet,
 		// none
@@ -80,6 +80,11 @@ public:
 	// function zone
 	Entity();
 	virtual ~Entity();
+
+	virtual void OnCollision() {};
+
+
+
 	virtual void SetActive(bool _IsActive);
 	virtual bool GetActive();
 	virtual void SetTag(Entity_Tag _tag);
@@ -102,10 +107,8 @@ public:
 	virtual void AddVelocityY(float dy);
 	virtual void SetIsOnAir(float IsOnAir);
 	virtual bool GetIsOnAir();
-
 	virtual void SetPositionX(float x);
 	virtual void SetPositionY(float y);
-
 	virtual void SetMoveDirection(Entity_Direction _direction);
 	virtual Entity_Direction GetMoveDirection();
 	virtual void SetJumpDirection(Entity_Jump_Direction _jump_direction);
@@ -114,13 +117,13 @@ public:
 	virtual void SetSize(const SIZE &size);
 	virtual void SetSize(long width, long height);
 	virtual SIZE GetSize();
+
 protected:
 	BoundingBox box;
 	bool IsStatic;
 	bool IsActive;
 	int ID;
 	Entity_Tag tag;
-
 	Entity_Type type;
 	Entity_AliveState alive_state;
 	Entity_Direction direction;

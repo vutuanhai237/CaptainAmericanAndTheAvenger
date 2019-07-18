@@ -12,6 +12,8 @@ public:
 	void Draw();
 	void SwapMode();
 	void SwapMode(MapMode mode);
+
+	WorldMap *GetCurrentMap();
 private:
 	WorldMap *LightMap, *DarkMap;
 	MapMode CurrentMapMode;

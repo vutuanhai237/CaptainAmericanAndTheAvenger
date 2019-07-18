@@ -44,6 +44,7 @@ HRESULT DirectInput::Init(HWND hWnd)
 
 void DirectInput::KeySnapShot(float dt)
 {
+
 	delta += dt;
 	if (delta > KEYBOARD_LAST_PRESS_TIME)
 		ReleaseLastPressKey();
@@ -56,6 +57,7 @@ void DirectInput::KeySnapShot(float dt)
 		//Debug::PrintOut(L"[Error code %d] Error while Acquire Keyboard!", &result);
 		result = dikeyboard->Acquire();
 	}
+	FirstCheck = true;
 }
 
 void DirectInput::MouseSnapShot()
@@ -67,11 +69,12 @@ bool DirectInput::KeyPress(int key)
 {
 	if (keys[key] & 0x80)
 	{
-		if (buffer[key] != keys[key])
+		if (FirstCheck && buffer[key] != keys[key])
 		{
 			BufferLastKey = LastKey;
 			LastKey = key;
 			delta = 0.0f;
+			FirstCheck = false;
 		}
 		return true;
 	}

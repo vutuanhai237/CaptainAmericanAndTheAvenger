@@ -22,6 +22,12 @@
     <Filter Include="Map">
       <UniqueIdentifier>{4d8f4a1c-d5a1-4aac-8ca0-a09bcf7c0880}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{ca426e89-ba5d-47cb-9484-6d4f422952be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\RedRocketRobot">
+      <UniqueIdentifier>{be33280e-667a-41db-9367-323c53cf0f99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Animation.cpp">
@@ -40,9 +46,6 @@
       <Filter>Framework</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Sprite.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Supporter.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Texture.cpp">
@@ -124,6 +127,21 @@
     <ClCompile Include="PlayerKickingState.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerPunchingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyWeapon.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="RedRocket.cpp">
+      <Filter>Enemy\RedRocketRobot</Filter>
+    </ClCompile>
+    <ClCompile Include="RedRocketRobot.cpp">
+      <Filter>Enemy\RedRocketRobot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Animation.h">
@@ -145,9 +163,6 @@
       <Filter>Framework</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Sprite.h">
-      <Filter>Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="Framework\Supporter.h">
       <Filter>Framework</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Texture.h">
@@ -231,6 +246,21 @@
     </ClInclude>
     <ClInclude Include="PlayerKickingState.h">
       <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerPunchingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyWeapon.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="RedRocketRobot.h">
+      <Filter>Enemy\RedRocketRobot</Filter>
+    </ClInclude>
+    <ClInclude Include="RedRocket.h">
+      <Filter>Enemy\RedRocketRobot</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

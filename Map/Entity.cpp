@@ -24,6 +24,7 @@ bool Entity::GetActive()
 
 void Entity::SetTag(Entity_Tag _tag)
 {
+	this->tag = _tag;
 }
 
 Entity::Entity_Tag Entity::GetTag()

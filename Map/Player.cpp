@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 #include "PlayerIdleState.h"
 #include "PlayerRunningState.h"
+#include "SceneManager.h"
 #include "../Map/Framework/Debug.h"
 Player*Player::instance = NULL;
 
@@ -20,26 +21,26 @@ Player::Player() :Entity()
 	this->SetAliveState(Entity::Entity_AliveState::Alive);
 	this->SetActive(true);
 	/// Load resources
-	Animation* idle = new Animation(L"Resources//CaptainState//CaptainIdleState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
-	Animation* running = new Animation(L"Resources//CaptainState//CaptainRunningState.png", D3DCOLOR_XRGB(255, 0, 255), 4);
-	Animation* jumping = new Animation(L"Resources//CaptainState//CaptainJumpingState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
-	Animation* shield_up = new Animation(L"Resources//CaptainState//CaptainShieldUpState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
-	Animation* dashing = new Animation(L"Resources//CaptainState//CaptainDashingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
-	Animation* ducking = new Animation(L"Resources//CaptainState//CaptainDuckingState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
-	Animation* throwing = new Animation(L"Resources//CaptainState//CaptainThrowingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
+	Animation* idle = new Animation(PlayerState::NameState::idle, L"Resources//CaptainState//CaptainIdleState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
+	Animation* running = new Animation(PlayerState::NameState::running, L"Resources//CaptainState//CaptainRunningState.png", D3DCOLOR_XRGB(255, 0, 255), 4);
+	Animation* jumping = new Animation(PlayerState::NameState::jumping, L"Resources//CaptainState//CaptainJumpingState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
+	Animation* shield_up = new Animation(PlayerState::NameState::shield_up, L"Resources//CaptainState//CaptainShieldUpState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
+	Animation* dashing = new Animation(PlayerState::NameState::dashing, L"Resources//CaptainState//CaptainDashingState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
+	Animation* ducking = new Animation(PlayerState::NameState::ducking, L"Resources//CaptainState//CaptainDuckingState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
+	Animation* throwing = new Animation(PlayerState::NameState::throwing, L"Resources//CaptainState//CaptainThrowingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 
-	Animation* ducking_punching = new Animation(L"Resources//CaptainState//CaptainDuckingPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
-	Animation* rolling = new Animation(L"Resources//CaptainState//CaptainRollingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
-	Animation* die = new Animation(L"Resources//CaptainState//CaptainDieState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
-	Animation* die_on_air = new Animation(L"Resources//CaptainState//CaptainDieOnAirState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
-	Animation* diving = new Animation(L"Resources//CaptainState//CaptainDivingState.png", D3DCOLOR_XRGB(255, 0, 255), 6);
-	Animation* flowing = new Animation(L"Resources//CaptainState//CaptainFlowingState.png", D3DCOLOR_XRGB(255, 0, 255), 9);
-	Animation* hang_on = new Animation(L"Resources//CaptainState//CaptainHangOnState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
-	Animation* jumping_down = new Animation(L"Resources//CaptainState//CaptainJumpingDownState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
-	Animation* jump_from_rope = new Animation(L"Resources//CaptainState//CaptainJumpingFromRopeState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
-	Animation* kicking = new Animation(L"Resources//CaptainState//CaptainKickingState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
-	Animation* punching = new Animation(L"Resources//CaptainState//CaptainPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
-	Animation* shield_down = new Animation(L"Resources//CaptainState//CaptainShielDownState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
+	Animation* ducking_punching = new Animation(PlayerState::NameState::ducking_punching, L"Resources//CaptainState//CaptainDuckingPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
+	Animation* rolling = new Animation(PlayerState::NameState::rolling,L"Resources//CaptainState//CaptainRollingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
+	Animation* die = new Animation(PlayerState::NameState::die, L"Resources//CaptainState//CaptainDieState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
+	Animation* die_on_air = new Animation(PlayerState::NameState::die_on_air, L"Resources//CaptainState//CaptainDieOnAirState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
+	Animation* diving = new Animation(PlayerState::NameState::diving, L"Resources//CaptainState//CaptainDivingState.png", D3DCOLOR_XRGB(255, 0, 255), 6);
+	Animation* flowing = new Animation(PlayerState::NameState::flowing, L"Resources//CaptainState//CaptainFlowingState.png", D3DCOLOR_XRGB(255, 0, 255), 9);
+	Animation* hang_on = new Animation(PlayerState::NameState::hang_on, L"Resources//CaptainState//CaptainHangOnState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
+	Animation* jumping_down = new Animation(PlayerState::NameState::jumping_down, L"Resources//CaptainState//CaptainJumpingDownState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
+	Animation* jump_from_rope = new Animation(PlayerState::NameState::jump_from_rope, L"Resources//CaptainState//CaptainJumpingFromRopeState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
+	Animation* kicking = new Animation(PlayerState::NameState::kicking, L"Resources//CaptainState//CaptainKickingState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
+	Animation* punching = new Animation(PlayerState::NameState::punching, L"Resources//CaptainState//CaptainPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
+	Animation* shield_down = new Animation(PlayerState::NameState::shield_up, L"Resources//CaptainState//CaptainShielDownState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	// Chỉ những animation nào có số sprite > 1 thì mới set time
 	running->SetTime(0.1);
 	dashing->SetTime(0.1);
@@ -82,6 +83,7 @@ Player::Player() :Entity()
 
 	// Cập nhật trạng thái rolling hay diving
 	this->IsRolling = false;
+	this->IsDuckingPunching = true;
 }
 
 
@@ -142,9 +144,19 @@ void Player::SetCurrentState(PlayerState::NameState new_state)
 	this->current_state = new_state;
 }
 
+void Player::SetCurrentAnimation(Animation * animation)
+{
+	this->animation = animation;
+}
+
 Animation * Player::GetCurrentAnimation()
 {
 	return this->animation;
+}
+
+Animation * Player::GetAnimation(PlayerState::NameState state)
+{
+	return this->animations[state];
 }
 
 void Player::SetPosition(float x, float y)
@@ -178,12 +190,67 @@ bool Player::GetIsRolling()
 	return this->IsRolling;
 }
 
+void Player::SetIsThrowing(bool IsThrowing)
+{
+	this->IsThrowing = IsThrowing;
+}
+
+bool Player::GetIsThrowing()
+{
+	return this->IsThrowing;
+}
+
 void Player::SetPositionIdle(D3DXVECTOR2 position_idle)
 {
 	this->position_idle = position_idle;
 }
 
+
+
 D3DXVECTOR2 Player::GetPositionIdle()
 {
 	return this->position_idle;
+}
+
+void Player::SetIsDuckingPunching(bool IsDuckingpunching)
+{
+	this->IsDuckingPunching = IsDuckingPunching;
+}
+
+bool Player::GetIsDuckingPunching()
+{
+	return this->IsDuckingPunching;
+}
+
+CollisionOut Player::IsCollisionWithGround(float dt)
+{
+	SIZE FootSize;
+	FootSize.cx = PLAYER_FOOT_WIDTH;
+	FootSize.cy = PLAYER_FOOT_HEIGHT;
+	BoundingBox foot(D3DXVECTOR2(position.x, position.y - 17), FootSize, velocity.x*dt, velocity.y*dt);
+	foot.vy = foot.vy > 0 ? foot.vy : -2;
+	auto Checker = Collision::getInstance();
+
+	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
+
+	CollisionOut tmp;
+	for (auto item : obj)
+	{
+		BoundingBox box2;
+		switch (item->GetTag())
+		{
+		case Entity::Entity_Tag::ground:
+			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
+			tmp = Checker->SweptAABB(foot, box2);
+			if (tmp.side == CollisionSide::bottom)
+			{
+				position.y -= tmp.CollisionTime*dt*velocity.y;
+				return tmp;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	return CollisionOut();
 }
