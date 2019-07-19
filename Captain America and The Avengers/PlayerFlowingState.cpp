@@ -10,7 +10,15 @@ PlayerFlowingState::PlayerFlowingState()
 	player->SetTimeBuffer(0);
 	player->SetPositionY(34.0f);
 	player->SetVelocity(0, 0);
+	///
+	player->time_air_jumping = 0;
+	player->time_kicking = 0;
+	player->time_air_rolling = 0;
+	player->time_ducking_before_idle = 0;
+	player->time_jumping_before_flowing = 0;
 
+	player->IsJumpingDown = false;
+	player->IsJumping = false;
 }
 PlayerFlowingState::~PlayerFlowingState()
 {

@@ -267,9 +267,9 @@ bool Player::IsCollisionWithGround(float dt, int delta_y)
 	}
 
 	CollisionOut tmp;
+	BoundingBox box2;
 	for (auto item : obj)
 	{
-		BoundingBox box2;
 		if (item->GetTag() == Entity::Entity_Tag::ground)
 		{
 			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
@@ -293,9 +293,10 @@ bool Player::IsCollisionWithWater(float dt, int delta_y)
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
 	CollisionOut tmp;
+	BoundingBox box2;
 	for (auto item : obj)
 	{
-		BoundingBox box2;
+		
 		if (item->GetTag() == Entity::Entity_Tag::water)
 		{
 			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);

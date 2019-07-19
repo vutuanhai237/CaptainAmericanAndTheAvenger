@@ -26,6 +26,7 @@ void Shield::Draw()
 
 void Shield::SetShieldState(ShieldState *state)
 {
+	delete this->state;
 	this->state = state;
 }
 

@@ -59,18 +59,8 @@ void PlayerJumpingDownState::HandleInput(float dt)
 	{
 		player->ChangeState(new PlayerFlowingState());
 		return;
-		player->SetCurrentAnimation(this->animation_before_flowing);
-		player->time_jumping_before_flowing += dt;
-		if (player->time_jumping_before_flowing >= TIME_JUMPING_DOWN_BEFORE_FLOWING) {
-		
-		}
-		return;
 	}
-	/*
-	if (keyboard->KeyPress(DOWN_KEY)) {
-		player->ChangeState(new PlayerShieldDownState());
-		return;
-	}*/
+	
 	if (keyboard->KeyDown(ATTACK_KEY)) {
 		player->ChangeState(new PlayerKickingState());
 		return;
@@ -90,11 +80,11 @@ void PlayerJumpingDownState::HandleInput(float dt)
 		player->SetPositionX(player->GetPosition().x + DELTA_JUMP * dt);
 
 	}
-	
-	
-	
-	// Code xong va chạm thì xóa hàm này với bỏ comment return chỗ left & right
-	// SWEPT AABB sẽ giải quyết được bug chỗ này
 
+	if (keyboard->KeyPress(DOWN_KEY)) {
+		player->ChangeState(new PlayerShieldDownState());
+		return;
+	}
+	
 
 }

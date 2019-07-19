@@ -53,6 +53,7 @@ void PlayerKickingState::Update(float dt)
 	if (player->GetPreviousState() == PlayerState::NameState::rolling && player->time_air_jumping >= TIME_AIR )
 	{
 		player->SetVelocityY(player->GetVelocityY() - ROLLING_ACCELERATION);
+		player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 	}
 
 }

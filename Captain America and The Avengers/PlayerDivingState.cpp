@@ -41,9 +41,7 @@ void PlayerDivingState::HandleInput(float dt)
 	auto keyboard = DirectInput::GetInstance();
 
 	if (keyboard->KeyDown(JUMP_KEY)) {
-		player->ChangeState(new PlayerJumpingDownState());
-		player->GetCurrentAnimation()->SetAnimationTime(0.0f);
-		player->GetCurrentAnimation()->ResetAnimation();
+		player->ChangeState(new PlayerJumpingState());
 		return;
 	}
 	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyPress(DOWN_KEY)) {

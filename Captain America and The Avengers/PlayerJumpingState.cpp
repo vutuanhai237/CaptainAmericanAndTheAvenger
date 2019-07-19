@@ -65,8 +65,13 @@ void PlayerJumpingState::HandleInput(float dt)
 	if (keyboard->KeyPress(JUMP_KEY))
 	{
 		player->time_air_jumping += dt;
-		if (player->time_air_jumping >= TIME_AIR)
+		
+		if (player->time_air_jumping >= TIME_AIR )
 		{
+			if (player->GetPreviousState() == PlayerState::NameState::flowing || player->GetPreviousState() == PlayerState::NameState::diving) {
+				player->ChangeState(new PlayerJumpingDownState());
+				return;
+			}
 			player->ChangeState(new PlayerRollingState());
 			return;
 		}
