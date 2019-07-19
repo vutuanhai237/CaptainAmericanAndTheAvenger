@@ -149,8 +149,10 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerDashingState.cpp" />
+    <ClCompile Include="PlayerDivingState.cpp" />
     <ClCompile Include="PlayerDuckingPunchingState.cpp" />
     <ClCompile Include="PlayerDuckingState.cpp" />
+    <ClCompile Include="PlayerFlowingState.cpp" />
     <ClCompile Include="PlayerIdleState.cpp" />
     <ClCompile Include="PlayerJumpingDownState.cpp" />
     <ClCompile Include="PlayerJumpingState.cpp" />
@@ -191,8 +193,10 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerDashingState.h" />
+    <ClInclude Include="PlayerDivingState.h" />
     <ClInclude Include="PlayerDuckingPunchingState.h" />
     <ClInclude Include="PlayerDuckingState.h" />
+    <ClInclude Include="PlayerFlowingState.h" />
     <ClInclude Include="PlayerIdleState.h" />
     <ClInclude Include="PlayerJumpingDownState.h" />
     <ClInclude Include="PlayerJumpingState.h" />

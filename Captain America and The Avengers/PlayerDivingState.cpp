@@ -1,6 +1,6 @@
-﻿#include "PlayerDuckingState.h"
+﻿#include "PlayerDivingState.h"
 #include "Framework//Debug.h"
-PlayerDuckingState::PlayerDuckingState()
+PlayerDivingState::PlayerDivingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::ducking);
@@ -10,28 +10,28 @@ PlayerDuckingState::PlayerDuckingState()
 	player->SetVelocity(0, 0);
 
 }
-PlayerDuckingState::~PlayerDuckingState()
+PlayerDivingState::~PlayerDivingState()
 {
 
 }
 
-void PlayerDuckingState::Update(float dt)
+void PlayerDivingState::Update(float dt)
 {
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
 
 }
 
-void PlayerDuckingState::Draw()
+void PlayerDivingState::Draw()
 {
 
 }
 
-void PlayerDuckingState::Render()
+void PlayerDivingState::Render()
 {
 }
 
-void PlayerDuckingState::HandleInput(float dt)
+void PlayerDivingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
@@ -44,12 +44,12 @@ void PlayerDuckingState::HandleInput(float dt)
 		}
 		return;
 	}
- 	// Ngồi đấm
+	// Ngồi đấm
 	if (keyboard->KeyDown(ATTACK_KEY) && keyboard->KeyPress(DOWN_KEY)) {
 		player->ChangeState(new PlayerDuckingPunchingState());
 		return;
 	}
-	
+
 	// Ưu tiên trạng thái running
 	if (keyboard->KeyDown(RIGHT_KEY)) {
 		player->ChangeState(new PlayerRunningState());

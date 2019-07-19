@@ -51,7 +51,7 @@ Player::Player() :Entity()
 	dashing->SetTime(0.1);
 	throwing->SetTime(0.1);
 	ducking_punching->SetTime(0.1);
-	rolling->SetTime(0.1);
+	rolling->SetTime(0.05);
 	die->SetTime(0.1);
 	die_on_air->SetTime(0.1);
 	diving->SetTime(0.1);
@@ -269,6 +269,43 @@ bool Player::IsCollisionWithGround(float dt, int delta_y)
 			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
 			tmp = Checker->SweptAABB(foot, box2);
 			if (tmp.side == CollisionSide::bottom)
+			{
+				position.y = item->GetPosition().y + PLAYER_SIZE_HEIGHT / 2;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool Player::IsCollisionWithWater(float dt, int delta_y)
+{
+	SIZE FootSize;
+	FootSize.cx = PLAYER_SIZE_WIDTH;
+	FootSize.cy = PLAYER_FOOT_HEIGHT;
+	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
+	auto Checker = Collision::getInstance();
+	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
+
+	if (foot.vy == 0)
+	{
+		for (auto item : obj)
+		{
+			if (item->GetTag() == Entity::Entity_Tag::water && Checker->IsCollide(foot, BoundingBox(item->GetPosition(), item->GetSize(), 0, 0)))
+				return true;
+		}
+		return false;
+	}
+
+	CollisionOut tmp;
+	for (auto item : obj)
+	{
+		BoundingBox box2;
+		if (item->GetTag() == Entity::Entity_Tag::water)
+		{
+			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
+			tmp = Checker->SweptAABB(foot, box2);
+			if (tmp.side == CollisionSide::top)
 			{
 				position.y = item->GetPosition().y + PLAYER_SIZE_HEIGHT / 2;
 				return true;

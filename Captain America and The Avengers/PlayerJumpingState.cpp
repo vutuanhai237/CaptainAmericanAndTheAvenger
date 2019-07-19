@@ -79,12 +79,12 @@ void PlayerJumpingState::HandleInput(float dt)
 	// Đang ở trên không, nếu ấn left thì dịch qua trái
 	if (keyboard->KeyPress(LEFT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-		player->SetPositionX(player->GetPosition().x - DELTA_JUMP);
+		player->SetPositionX(player->GetPosition().x - DELTA_JUMP * dt);
 	}
 	// Đang ở trên không, nếu ấn left thì dịch qua phải
 	if (keyboard->KeyPress(RIGHT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-		player->SetPositionX(player->GetPosition().x + DELTA_JUMP);
+		player->SetPositionX(player->GetPosition().x + DELTA_JUMP * dt);
 	}
 	
 

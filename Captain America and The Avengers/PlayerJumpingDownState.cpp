@@ -43,11 +43,13 @@ void PlayerJumpingDownState::HandleInput(float dt)
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
 
-	if (player->IsCollisionWithGround(dt))
+	if (player->IsCollisionWithGround(dt, 8))
 	{
-		player->ChangeState(new PlayerIdleState());
+		
+		player->ChangeState(new PlayerDuckingState());
 		return;
 	}
+
 	if (keyboard->KeyDown(ATTACK_KEY)) {
 		player->ChangeState(new PlayerKickingState());
 		return;
@@ -59,13 +61,13 @@ void PlayerJumpingDownState::HandleInput(float dt)
 	// Đang ở trên không, nếu ấn left thì dịch qua trái
 	if (keyboard->KeyPress(LEFT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-		player->SetVelocityX(VELOCITY_X);
+		player->SetPositionX(player->GetPosition().x - DELTA_JUMP * dt);
 	}
 	// Đang ở trên không, nếu ấn left thì dịch qua phải
 	if (keyboard->KeyPress(RIGHT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-		player->SetVelocityX(VELOCITY_X);	
-	
+		player->SetPositionX(player->GetPosition().x + DELTA_JUMP * dt);
+
 	}
 	
 	

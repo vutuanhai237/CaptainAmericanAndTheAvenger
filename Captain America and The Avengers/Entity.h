@@ -22,9 +22,10 @@ public:
 		// player
 		player,
 		shield,
-		// fyler object
+		// flying object
 		fly_wall,
 		// static object
+		water,
 		ground,
 		wall,
 		climb_wall,
@@ -80,11 +81,7 @@ public:
 	// function zone
 	Entity();
 	virtual ~Entity();
-
 	virtual void OnCollision() {};
-
-
-
 	virtual void SetActive(bool _IsActive);
 	virtual bool GetActive();
 	virtual void SetTag(Entity_Tag _tag);

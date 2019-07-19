@@ -12,12 +12,12 @@
 #define VELOCITY_X 80.0f
 #define VELOCITY_Y 150.0f
 // jumping
-#define DELTA_JUMP 1.2f
+#define DELTA_JUMP VELOCITY_X
 #define DISTANCE_JUMPING 90.0f
 #define TIME_AIR 0.40f
-#define TIME_JUMPING 0.3f
+#define TIME_JUMPING 0.25f
 #define TIME_ROLLING 0.4f
-#define TIME_KICKING 0.15f
+#define TIME_KICKING 0.2f
 #define JUMPING_ACCELERATION 20.0F
 #define ROLLING_ACCELERATION 20.0f
 #define JUMPING_VELOCITY_BEGIN 300.0f
@@ -35,7 +35,8 @@
 // Ducking - Punching
 #define TIME_DUCKING_PUNCHING 0.016f*8
 #define TIME_WAITING_DUCKING_PUNCHING 0.016*3
-
+// Ducking
+#define TIME_DUCKING_BEFORE_IDLE 0.016*5
 
 
 using namespace std;
@@ -74,6 +75,7 @@ public:
 	void SetIsDuckingPunching(bool IsDuckingpunching);
 	bool GetIsDuckingPunching();
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
+	bool IsCollisionWithWater(float dt, int delta_y = 12);
 
 
 
@@ -83,6 +85,7 @@ public:
 	float time_air_rolling;
 	float time_air_jumping;
 	float time_kicking;
+	float time_ducking_before_idle;
 	// Code đi rời để biết tại sao phải tạo những biến này, có một vấn đề là các trạng thái
 	// khi new sẽ khởi tạo vận tốc khác nhau, nên khi jumping -> kicking -> jumping thì vận tốc
 	// bị khởi động lại 1 lần nữa, những biến này sẽ do idle có quyền định đoạt
