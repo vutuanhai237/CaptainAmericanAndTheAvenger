@@ -1,5 +1,9 @@
 ﻿#include "PlayerShieldDownState.h"
 #include "Framework//Debug.h"
+
+#include "Shield.h"
+#include "ShieldDownState.h"
+
 PlayerShieldDownState::PlayerShieldDownState()
 {
 	Player* player = Player::GetInstance();
@@ -9,6 +13,8 @@ PlayerShieldDownState::PlayerShieldDownState()
 	player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 	player->SetVelocityY(VELOCITY_Y);
 
+
+	Shield::GetInstance()->SetShieldState(new ShieldDownState());
 }
 PlayerShieldDownState::~PlayerShieldDownState()
 {
