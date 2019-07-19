@@ -2,11 +2,15 @@
 #include "PlayerIdleState.h"
 #include "PlayerRollingState.h"
 #include "Framework//Debug.h"
+#include "Shield.h"
+#include "ShieldKickState.h"
+
 PlayerKickingState::PlayerKickingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::kicking);
 	this->current_state = PlayerState::NameState::kicking;
+	Shield::GetInstance()->SetShieldState(new ShieldKickState());
 }
 PlayerKickingState::~PlayerKickingState()
 {
@@ -46,7 +50,7 @@ void PlayerKickingState::Update(float dt)
 		}
 		
 	}
-	if (player->GetPreviousState() == PlayerState::NameState::rolling || player->time_air_jumping >= TIME_AIR)
+	if (player->GetPreviousState() == PlayerState::NameState::rolling && player->time_air_jumping >= TIME_AIR )
 	{
 		player->SetVelocityY(player->GetVelocityY() - ROLLING_ACCELERATION);
 	}

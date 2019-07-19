@@ -161,12 +161,19 @@
     <ClCompile Include="PlayerRollingState.cpp" />
     <ClCompile Include="PlayerRunningState.cpp" />
     <ClCompile Include="PlayerShieldUpState.cpp" />
+    <ClCompile Include="PlayerShieldDownState.cpp" />
     <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="PlayerThrowingState.cpp" />
     <ClCompile Include="RedRocket.cpp" />
     <ClCompile Include="RedRocketRobot.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Shield.cpp" />
+    <ClCompile Include="ShieldKickState.cpp" />
+    <ClCompile Include="ShieldNomalState.cpp" />
+    <ClCompile Include="ShieldOnAirState.cpp" />
+    <ClCompile Include="ShieldState.cpp" />
+    <ClCompile Include="ShieldUpState.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
@@ -205,6 +212,7 @@
     <ClInclude Include="PlayerRollingState.h" />
     <ClInclude Include="PlayerRunningState.h" />
     <ClInclude Include="PlayerShieldUpState.h" />
+    <ClInclude Include="PlayerShieldDownState.h" />
     <ClInclude Include="PlayerState.h" />
     <ClInclude Include="PlayerThrowingState.h" />
     <ClInclude Include="RedRocket.h" />
@@ -212,6 +220,13 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="Shield.h" />
+    <ClInclude Include="ShieldDashState.h" />
+    <ClInclude Include="ShieldKickState.h" />
+    <ClInclude Include="ShieldNomalState.h" />
+    <ClInclude Include="ShieldOnAirState.h" />
+    <ClInclude Include="ShieldState.h" />
+    <ClInclude Include="ShieldUpState.h" />
     <ClInclude Include="WorldMap.h" />
   </ItemGroup>
   <ItemGroup>

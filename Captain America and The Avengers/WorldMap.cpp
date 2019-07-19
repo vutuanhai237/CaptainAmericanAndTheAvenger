@@ -114,6 +114,10 @@ void WorldMap::Init(LPCWSTR Path)
 			top -= 8;
 			obj->SetTag(Entity::Entity_Tag::wall);
 			break;
+		case MAPOBJ_WATER:
+			top -= 8;
+			obj->SetTag(Entity::Entity_Tag::water);
+			break;
 		default:
 			break;
 		}

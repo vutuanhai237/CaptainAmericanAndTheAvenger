@@ -1,5 +1,7 @@
 ﻿#include "PlayerShieldUpState.h"
 #include "Framework//Debug.h"
+#include "ShieldUpState.h"
+#include "Shield.h"
 PlayerShieldUpState::PlayerShieldUpState()
 {
 	Player* player = Player::GetInstance();
@@ -7,7 +9,7 @@ PlayerShieldUpState::PlayerShieldUpState()
 	player->SetTimeBuffer(0);
 	this->current_state = PlayerState::NameState::shield_up;
 
-
+	Shield::GetInstance()->SetShieldState(new ShieldUpState());
 }
 PlayerShieldUpState::~PlayerShieldUpState()
 {

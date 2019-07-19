@@ -6,6 +6,7 @@
 #include "PlayerIdleState.h"
 #include "PlayerState.h"
 #include "Framework//DirectInput.h"
+
 class PlayerShieldUpState : public PlayerState
 {
 public:

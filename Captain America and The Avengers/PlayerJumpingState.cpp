@@ -2,6 +2,9 @@
 #include "PlayerIdleState.h"
 #include "PlayerRollingState.h"
 #include "Framework//Debug.h"
+#include "Shield.h"
+#include "ShieldOnAirState.h"
+
 PlayerJumpingState::PlayerJumpingState()
 {
 	Player* player = Player::GetInstance();
@@ -18,6 +21,8 @@ PlayerJumpingState::PlayerJumpingState()
 	this->current_state = PlayerState::NameState::jumping;
 	// Khi từ đá chuyển về nhảy thì mới có quyền đá tiếp
 	player->time_kicking = 0;
+	Shield::GetInstance()->SetShieldState(new ShieldOnAirState());
+
 }
 PlayerJumpingState::~PlayerJumpingState()
 {
@@ -46,7 +51,12 @@ void PlayerJumpingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
-
+	if (player->IsCollisionWithGround(dt, 8) && player->IsLockCollision == false && player->GetPreviousState() == PlayerState::NameState::flowing)
+	{
+		player->ChangeState(new PlayerDuckingState());
+		player->IsLockCollision == true;
+		return;
+	}
 	if (keyboard->KeyDown(ATTACK_KEY)) {
 		player->ChangeState(new PlayerKickingState());
 		return;

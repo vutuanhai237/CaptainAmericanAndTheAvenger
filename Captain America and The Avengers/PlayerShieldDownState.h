@@ -1,20 +1,19 @@
 #pragma once
 #include "PlayerState.h"
 #include "Player.h"
-#include "PlayerRunningState.h"
-#include "PlayerJumpingState.h"
-#include "PlayerDuckingPunchingState.h"
+#include "PlayerRollingState.h"
+#include "PlayerJumpingDownState.h"
 #include "PlayerIdleState.h"
+#include "PlayerState.h"
 #include "Framework//DirectInput.h"
-class PlayerDivingState : public PlayerState
+class PlayerShieldDownState : public PlayerState
 {
 public:
-	PlayerDivingState();
-	~PlayerDivingState();
+	PlayerShieldDownState();
+	~PlayerShieldDownState();
 	virtual void Update(float dt);
 	virtual void Draw();
 	virtual void Render();
 	virtual void HandleInput(float dt);
-	
 };
 

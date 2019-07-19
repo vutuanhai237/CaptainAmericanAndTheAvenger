@@ -16,11 +16,11 @@ public:
 
 	float GetAnimationTime();
 	void SetAnimationTime(float time);
-
+	void SetFrameReset(int frame);
 	void ResetAnimation();
 	int GetName();
 private:
-
+	int frame_reset;
 	void SetFrame();
 	int width;
 	float delta, RepeatTime, DelayTime;

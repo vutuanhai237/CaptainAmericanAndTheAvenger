@@ -33,13 +33,12 @@ Player::Player() :Entity()
 	Animation* dashing = new Animation(PlayerState::NameState::dashing, L"Resources//CaptainState//CaptainDashingState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
 	Animation* ducking = new Animation(PlayerState::NameState::ducking, L"Resources//CaptainState//CaptainDuckingState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	Animation* throwing = new Animation(PlayerState::NameState::throwing, L"Resources//CaptainState//CaptainThrowingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
-
 	Animation* ducking_punching = new Animation(PlayerState::NameState::ducking_punching, L"Resources//CaptainState//CaptainDuckingPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 	Animation* rolling = new Animation(PlayerState::NameState::rolling, L"Resources//CaptainState//CaptainRollingState.png", D3DCOLOR_XRGB(255, 0, 255), 4);
 	Animation* die = new Animation(PlayerState::NameState::die, L"Resources//CaptainState//CaptainDieState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 	Animation* die_on_air = new Animation(PlayerState::NameState::die_on_air, L"Resources//CaptainState//CaptainDieOnAirState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
 	Animation* diving = new Animation(PlayerState::NameState::diving, L"Resources//CaptainState//CaptainDivingState.png", D3DCOLOR_XRGB(255, 0, 255), 6);
-	Animation* flowing = new Animation(PlayerState::NameState::flowing, L"Resources//CaptainState//CaptainFlowingState.png", D3DCOLOR_XRGB(255, 0, 255), 9);
+	Animation* flowing = new Animation(PlayerState::NameState::flowing, L"Resources//CaptainState//CaptainFlowingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 	Animation* hang_on = new Animation(PlayerState::NameState::hang_on, L"Resources//CaptainState//CaptainHangOnState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
 	Animation* jumping_down = new Animation(PlayerState::NameState::jumping_down, L"Resources//CaptainState//CaptainJumpingDownState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	Animation* jump_from_rope = new Animation(PlayerState::NameState::jump_from_rope, L"Resources//CaptainState//CaptainJumpingFromRopeState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
@@ -54,11 +53,15 @@ Player::Player() :Entity()
 	rolling->SetTime(0.05);
 	die->SetTime(0.1);
 	die_on_air->SetTime(0.1);
-	diving->SetTime(0.1);
+	// diving
+	diving->SetTime(0.2);
+	diving->SetFrameReset(4);
+
 	flowing->SetTime(0.1);
 	hang_on->SetTime(0.1);
 	jump_from_rope->SetTime(0.1);
 	punching->SetTime(0.1);
+
 	// Cập nhật vào cơ sở dữ liệu
 	this->animations[PlayerState::idle] = idle;
 	this->animations[PlayerState::running] = running;
@@ -88,10 +91,13 @@ Player::Player() :Entity()
 	this->IsJumping = false;
 	this->IsRolling = false;
 	this->IsDuckingPunching = true;
+	this->IsDuckingPunching = false;
+	this->IsLockCollision = false;
+	this->IsShieldDown = false;
 	this->time_air_jumping = 0;
 	this->time_kicking = 0;
 	this->time_air_rolling = 0;
-
+	this->time_jumping_before_flowing = 0;
 
 
 }
@@ -286,17 +292,6 @@ bool Player::IsCollisionWithWater(float dt, int delta_y)
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
-
-	if (foot.vy == 0)
-	{
-		for (auto item : obj)
-		{
-			if (item->GetTag() == Entity::Entity_Tag::water && Checker->IsCollide(foot, BoundingBox(item->GetPosition(), item->GetSize(), 0, 0)))
-				return true;
-		}
-		return false;
-	}
-
 	CollisionOut tmp;
 	for (auto item : obj)
 	{
@@ -305,12 +300,15 @@ bool Player::IsCollisionWithWater(float dt, int delta_y)
 		{
 			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
 			tmp = Checker->SweptAABB(foot, box2);
-			if (tmp.side == CollisionSide::top)
+			if (tmp.side == CollisionSide::bottom)
 			{
-				position.y = item->GetPosition().y + PLAYER_SIZE_HEIGHT / 2;
+				//position.y = item->GetPosition().y + PLAYER_SIZE_HEIGHT / 2;
 				return true;
 			}
 		}
 	}
 	return false;
 }
+
+
+

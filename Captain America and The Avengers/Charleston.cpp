@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "WorldMap.h"
 #include "Player.h"
+#include "Shield.h"
 
 #include "Framework/DirectInput.h"
 #include "SceneManager.h"
@@ -16,6 +17,9 @@ void Charleston::Update(float dt)
 	Player *player = Player::GetInstance();
 	player->HandleInput(dt);
 	player->Update(dt);
+
+	Shield::GetInstance()->Update(dt);
+
 	cam->SetCameraPosition(player->GetPosition());
 
 	auto tmp = DirectInput::GetInstance();
@@ -31,19 +35,21 @@ void Charleston::Draw()
 	map->Draw();
 	
 	Player *player = Player::GetInstance();
+	Shield *shield = Shield::GetInstance();
 
 	if (player->GetMoveDirection()) {
 		player->GetCurrentAnimation()->SetScale(1, 1);
+		shield->GetAnimation()->SetScale(1, 1);
 		player->SetVelocityX(-abs(player->GetVelocityX()));
 	}
 	else {
 
 		player->GetCurrentAnimation()->SetScale(-1, 1);
+		shield->GetAnimation()->SetScale(-1, 1);
 		player->SetVelocityX(abs(player->GetVelocityX()));
 	}
 	player->Draw();
-
-	
+	shield->Draw();
 }
 
 WorldMap * Charleston::GetCurrentMap()

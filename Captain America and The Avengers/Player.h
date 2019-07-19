@@ -15,7 +15,7 @@
 #define DELTA_JUMP VELOCITY_X
 #define DISTANCE_JUMPING 90.0f
 #define TIME_AIR 0.40f
-#define TIME_JUMPING 0.25f
+#define TIME_JUMPING 0.30f
 #define TIME_ROLLING 0.4f
 #define TIME_KICKING 0.2f
 #define JUMPING_ACCELERATION 20.0F
@@ -23,9 +23,9 @@
 #define JUMPING_VELOCITY_BEGIN 300.0f
 #define ROLLING_ACCELERATION 20.0f
 // Dashing
-#define TIME_DASHING 0.016 * 36
+#define TIME_DASHING 0.016 * 30
 #define TIME_DUCK_BEFORE_DASHING  0.016* 1
-#define TIME_WAIT_DASHING 0.016f * 0
+#define TIME_WAIT_DASHING 0.016f * 1
 // Throwing
 #define TIME_THROWING 0.016 * 14
 #define TIME_WAIT_THROWING 0.016f * 4
@@ -37,8 +37,9 @@
 #define TIME_WAITING_DUCKING_PUNCHING 0.016*3
 // Ducking
 #define TIME_DUCKING_BEFORE_IDLE 0.016*5
-
-
+// flowing
+#define TIME_JUMPING_DOWN_BEFORE_FLOWING 0.016f*23
+// diving
 using namespace std;
 class Player : public Entity
 {
@@ -77,8 +78,6 @@ public:
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
 	bool IsCollisionWithWater(float dt, int delta_y = 12);
 
-
-
 	// Các biến này đáng lẽ phải ở riêng mỗi state, nhưng ở kicking, khi chuyển từ
 	// kicking về jumping, jumpingdown hay rolling thì lại phải tạo mới state,
 	// như vậy thì time_on_air sẽ được reset lại
@@ -86,6 +85,7 @@ public:
 	float time_air_jumping;
 	float time_kicking;
 	float time_ducking_before_idle;
+	float time_jumping_before_flowing;
 	// Code đi rời để biết tại sao phải tạo những biến này, có một vấn đề là các trạng thái
 	// khi new sẽ khởi tạo vận tốc khác nhau, nên khi jumping -> kicking -> jumping thì vận tốc
 	// bị khởi động lại 1 lần nữa, những biến này sẽ do idle có quyền định đoạt
@@ -94,6 +94,10 @@ public:
 	bool IsRolling;
 	bool IsThrowing;
 	bool IsDuckingPunching;
+	bool IsFlowing;
+	bool IsDonTho;
+	bool IsLockCollision;
+	bool IsShieldDown;
 protected:
 	static Player *instance;
 	std::map<int, Animation*> animations;

@@ -1,14 +1,18 @@
 ﻿#include "PlayerDivingState.h"
+#include "PlayerFlowingState.h"
 #include "Framework//Debug.h"
 PlayerDivingState::PlayerDivingState()
 {
 	Player* player = Player::GetInstance();
-	player->SetCurrentState(PlayerState::NameState::ducking);
+	player->SetCurrentState(PlayerState::NameState::diving);
 
-	this->current_state = PlayerState::NameState::ducking;
+	this->current_state = PlayerState::NameState::diving;
 	player->SetTimeBuffer(0);
 	player->SetVelocity(0, 0);
+	player->SetPositionY(44.0f);
 
+	auto tmp = player->GetCurrentAnimation();
+	
 }
 PlayerDivingState::~PlayerDivingState()
 {
@@ -19,7 +23,7 @@ void PlayerDivingState::Update(float dt)
 {
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
-
+	player->SetPositionX(player->GetPosition().x - VELOCITY_X / 2 * dt);
 }
 
 void PlayerDivingState::Draw()
@@ -35,48 +39,35 @@ void PlayerDivingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
-	this->IsDucking = true;
-	player->time_ducking_before_idle += dt;
-	if (player->GetPreviousState() == PlayerState::NameState::jumping_down) {
-		if (player->time_ducking_before_idle >= TIME_DUCKING_BEFORE_IDLE) {
-			player->ChangeState(new PlayerIdleState());
-			return;
-		}
-		return;
-	}
-	// Ngồi đấm
-	if (keyboard->KeyDown(ATTACK_KEY) && keyboard->KeyPress(DOWN_KEY)) {
-		player->ChangeState(new PlayerDuckingPunchingState());
-		return;
-	}
 
-	// Ưu tiên trạng thái running
-	if (keyboard->KeyDown(RIGHT_KEY)) {
-		player->ChangeState(new PlayerRunningState());
-		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-		return;
-	}
-	if (keyboard->KeyDown(LEFT_KEY)) {
-		player->ChangeState(new PlayerRunningState());
-		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-		return;
-	}
-	// Chuyển sang đứng
-	if (keyboard->KeyPress(UP_KEY)) {
-		player->ChangeState(new PlayerIdleState());
-		return;
-	}
-	// Chuyển sang state chui xuyên đất hoặc nhảy lên nếu tường không lọt được
 	if (keyboard->KeyDown(JUMP_KEY)) {
 		player->ChangeState(new PlayerJumpingDownState());
+		player->GetCurrentAnimation()->SetAnimationTime(0.0f);
+		player->GetCurrentAnimation()->ResetAnimation();
 		return;
 	}
-	// Tiếp tục giữ state
-	if (keyboard->KeyPress(DOWN_KEY)) {
-		player->ChangeState(new PlayerDuckingState());
+	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyPress(DOWN_KEY)) {
+		player->ChangeState(new PlayerFlowingState());
+		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
+		player->GetCurrentAnimation()->SetAnimationTime(0.0f);
+		player->GetCurrentAnimation()->ResetAnimation();
+		return;
+	}
+	if (keyboard->KeyPress(LEFT_KEY) && keyboard->KeyPress(DOWN_KEY)) {
+		player->ChangeState(new PlayerFlowingState());
+		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
+		player->GetCurrentAnimation()->SetAnimationTime(0.0f);
+		player->GetCurrentAnimation()->ResetAnimation();
 		return;
 	}
 
-	player->ChangeState(new PlayerIdleState());
+	if (keyboard->KeyPress(DOWN_KEY)) {
+		return;
+	}
+	
+	
+	player->ChangeState(new PlayerFlowingState());
+	player->GetCurrentAnimation()->SetAnimationTime(0.0f);
+	player->GetCurrentAnimation()->ResetAnimation();
 	return;
 }

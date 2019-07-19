@@ -1,19 +1,20 @@
 ﻿#include "PlayerRollingState.h"
 #include "PlayerIdleState.h"
 #include "Framework//Debug.h"
+#include "PlayerShieldDownState.h"
 PlayerRollingState::PlayerRollingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::rolling);
 	this->current_state = PlayerState::NameState::rolling;
 	player->SetVelocityX(0);
-	if (player->IsRolling == false) {
-		player->IsRolling = true;
-	}
+	player->IsRolling = true;
 	player->SetTimeBuffer(0);
 	//player->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
 	// Khi từ đá chuyển về nhảy thì mới có quyền đá tiếp
 	player->time_kicking = 0;
+	player->IsShieldDown = true;
+
 }
 PlayerRollingState::~PlayerRollingState()
 {
@@ -50,14 +51,20 @@ void PlayerRollingState::HandleInput(float dt)
 	
 	player->time_air_rolling += dt;
 	// Thêm xử lý va chạm cho rolling chứ ko cần
-	if (player->IsCollisionWithGround(dt, 6))
+	if (player->IsCollisionWithGround(dt, 6) && player->IsLockCollision == false)
 	{
 		player->ChangeState(new PlayerIdleState());
+		player->IsLockCollision == true;
+
 		return;
 	}
 	if (player->GetVelocityY() <= -VELOCITY_Y)
 	{
 		player->ChangeState(new PlayerJumpingDownState());
+		return;
+	}
+	if (keyboard->KeyPress(DOWN_KEY)) {
+		player->ChangeState(new PlayerShieldDownState());
 		return;
 	}
 	// Đang ở trên không, nếu ấn left thì dịch qua trái

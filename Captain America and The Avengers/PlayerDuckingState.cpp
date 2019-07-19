@@ -69,6 +69,7 @@ void PlayerDuckingState::HandleInput(float dt)
 	// Chuyển sang state chui xuyên đất hoặc nhảy lên nếu tường không lọt được
 	if (keyboard->KeyDown(JUMP_KEY)) {
 		player->ChangeState(new PlayerJumpingDownState());
+		player->IsDonTho = true;
 		return;
 	}
 	// Tiếp tục giữ state

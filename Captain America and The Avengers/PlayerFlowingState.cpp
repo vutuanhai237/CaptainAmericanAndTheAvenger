@@ -1,4 +1,5 @@
 ﻿#include "PlayerFlowingState.h"
+#include "PlayerDivingState.h"
 #include "Framework//Debug.h"
 PlayerFlowingState::PlayerFlowingState()
 {
@@ -7,6 +8,7 @@ PlayerFlowingState::PlayerFlowingState()
 
 	this->current_state = PlayerState::NameState::flowing;
 	player->SetTimeBuffer(0);
+	player->SetPositionY(34.0f);
 	player->SetVelocity(0, 0);
 
 }
@@ -19,6 +21,7 @@ void PlayerFlowingState::Update(float dt)
 {
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
+	player->SetPositionX(player->GetPosition().x - VELOCITY_X / 2 * dt);
 
 }
 
@@ -35,48 +38,46 @@ void PlayerFlowingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
-	this->IsDucking = true;
-	player->time_ducking_before_idle += dt;
-	if (player->GetPreviousState() == PlayerState::NameState::jumping_down) {
-		if (player->time_ducking_before_idle >= TIME_DUCKING_BEFORE_IDLE) {
-			player->ChangeState(new PlayerIdleState());
-			return;
-		}
-		return;
-	}
-	// Ngồi đấm
-	if (keyboard->KeyDown(ATTACK_KEY) && keyboard->KeyPress(DOWN_KEY)) {
-		player->ChangeState(new PlayerDuckingPunchingState());
-		return;
-	}
-
-	// Ưu tiên trạng thái running
-	if (keyboard->KeyDown(RIGHT_KEY)) {
-		player->ChangeState(new PlayerRunningState());
-		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-		return;
-	}
-	if (keyboard->KeyDown(LEFT_KEY)) {
-		player->ChangeState(new PlayerRunningState());
-		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-		return;
-	}
-	// Chuyển sang đứng
-	if (keyboard->KeyPress(UP_KEY)) {
-		player->ChangeState(new PlayerIdleState());
-		return;
-	}
-	// Chuyển sang state chui xuyên đất hoặc nhảy lên nếu tường không lọt được
+	
 	if (keyboard->KeyDown(JUMP_KEY)) {
-		player->ChangeState(new PlayerJumpingDownState());
+		player->ChangeState(new PlayerJumpingState());
 		return;
 	}
-	// Tiếp tục giữ state
-	if (keyboard->KeyPress(DOWN_KEY)) {
-		player->ChangeState(new PlayerDuckingState());
-		return;
-	}
+	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyPress(DOWN_KEY)) {
+		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
+		player->SetPositionX(player->GetPosition().x + DELTA_JUMP * dt);
+		player->GetCurrentAnimation()->Continue();
 
-	player->ChangeState(new PlayerIdleState());
-	return;
+		return;
+	}
+	if (keyboard->KeyPress(LEFT_KEY) && keyboard->KeyPress(DOWN_KEY)) {
+		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
+		player->SetPositionX(player->GetPosition().x - DELTA_JUMP * dt);
+		player->GetCurrentAnimation()->Continue();
+
+		return;
+	}
+	if (keyboard->KeyPress(RIGHT_KEY)) {
+		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
+		player->SetPositionX(player->GetPosition().x + DELTA_JUMP * dt);
+		player->GetCurrentAnimation()->Continue();
+
+		return;
+	}
+	if (keyboard->KeyPress(LEFT_KEY)) {
+		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
+		player->SetPositionX(player->GetPosition().x - DELTA_JUMP * dt);
+		player->GetCurrentAnimation()->Continue();
+
+		return;
+	}
+	if (keyboard->KeyPress(DOWN_KEY)) {
+		player->SetCurrentAnimation(player->GetAnimation(PlayerState::NameState::diving));
+		player->GetCurrentAnimation()->SetFrame(1);
+		player->ChangeState(new PlayerDivingState());
+		return;
+	}
+	
+	player->GetCurrentAnimation()->SetFrame(1);
+	player->GetCurrentAnimation()->Stop();
 }

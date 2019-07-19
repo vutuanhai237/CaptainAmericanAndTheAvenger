@@ -28,6 +28,9 @@
     <Filter Include="Enemy\RedRocketRobot">
       <UniqueIdentifier>{be33280e-667a-41db-9367-323c53cf0f99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player\Shield">
+      <UniqueIdentifier>{8fa90513-e92e-44d8-9174-17e061a5f19d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Animation.cpp">
@@ -147,6 +150,27 @@
     </ClCompile>
     <ClCompile Include="PlayerDivingState.cpp">
       <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerShieldDownState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Shield.cpp">
+      <Filter>Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="ShieldKickState.cpp">
+      <Filter>Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="ShieldNomalState.cpp">
+      <Filter>Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="ShieldOnAirState.cpp">
+      <Filter>Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="ShieldState.cpp">
+      <Filter>Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="ShieldUpState.cpp">
+      <Filter>Player\Shield</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -273,6 +297,30 @@
     </ClInclude>
     <ClInclude Include="PlayerDivingState.h">
       <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerShieldDownState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Shield.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldDashState.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldKickState.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldNomalState.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldOnAirState.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldState.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldUpState.h">
+      <Filter>Player\Shield</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

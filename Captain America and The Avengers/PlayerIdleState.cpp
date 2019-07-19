@@ -1,5 +1,7 @@
 ﻿#include "PlayerIdleState.h"
 #include "Framework//Debug.h"
+#include "Shield.h"
+#include "ShieldNomalState.h"
 PlayerIdleState::PlayerIdleState()
 {
 	Player* player = Player::GetInstance();
@@ -14,11 +16,16 @@ PlayerIdleState::PlayerIdleState()
 	player->time_kicking = 0;
 	player->time_air_rolling = 0;
 	player->time_ducking_before_idle = 0;
+	player->time_jumping_before_flowing = 0;
 
 	player->IsJumpingDown = false;
 	player->IsJumping = false;
 	player->IsRolling = false;
+	player->IsDonTho = false;
+	player->IsLockCollision = false;
+	player->IsShieldDown = false;
 
+	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
 }
 PlayerIdleState::~PlayerIdleState()
 {

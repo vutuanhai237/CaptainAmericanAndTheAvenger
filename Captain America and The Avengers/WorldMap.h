@@ -6,7 +6,7 @@ using namespace std;
 
 #define MAPOBJ_GROUND 0
 #define MAPOBJ_WALL 1
-#define MAPOBJ_WARTER 2
+#define MAPOBJ_WATER 2
 #define MAPOBJ_ROPE 3
 #define MAPOBJ_ONOFF 4
 #define MAPOBJ_WAVE 5

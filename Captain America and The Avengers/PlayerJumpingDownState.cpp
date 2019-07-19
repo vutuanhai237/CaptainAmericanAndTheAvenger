@@ -1,19 +1,26 @@
 ﻿#include "PlayerIdleState.h"
 #include "PlayerRollingState.h"
+#include "PlayerFlowingState.h"
+#include "PlayerShieldDownState.h"
 #include "Framework//Debug.h"
+#include "Shield.h"
+#include "ShieldOnAirState.h"
+
 PlayerJumpingDownState::PlayerJumpingDownState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::jumping_down);
 	player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 	this->current_state = PlayerState::NameState::jumping_down;
+	this->animation_before_flowing = new Animation(-1, L"Resources//CaptainState//CaptainBeforeFlowing.png", D3DCOLOR_XRGB(255, 0, 255), 7);
+
 	player->SetVelocityX(0);
-	if (player->IsJumpingDown == false) {
-		player->SetVelocityY(VELOCITY_Y);
-		player->IsJumpingDown = true;
-	}
+	player->IsJumpingDown == false;
+	player->IsRolling = false;
 	// Khi từ đá chuyển về nhảy thì mới có quyền đá tiếp
 	player->time_kicking = 0;
+	Shield::GetInstance()->SetShieldState(new ShieldOnAirState());
+
 }
 PlayerJumpingDownState::~PlayerJumpingDownState()
 {
@@ -44,12 +51,26 @@ void PlayerJumpingDownState::HandleInput(float dt)
 	auto keyboard = DirectInput::GetInstance();
 
 	if (player->IsCollisionWithGround(dt, 8))
-	{
-		
+	{	
 		player->ChangeState(new PlayerDuckingState());
 		return;
 	}
-
+	if (player->IsCollisionWithWater(dt))
+	{
+		player->ChangeState(new PlayerFlowingState());
+		return;
+		player->SetCurrentAnimation(this->animation_before_flowing);
+		player->time_jumping_before_flowing += dt;
+		if (player->time_jumping_before_flowing >= TIME_JUMPING_DOWN_BEFORE_FLOWING) {
+		
+		}
+		return;
+	}
+	/*
+	if (keyboard->KeyPress(DOWN_KEY)) {
+		player->ChangeState(new PlayerShieldDownState());
+		return;
+	}*/
 	if (keyboard->KeyDown(ATTACK_KEY)) {
 		player->ChangeState(new PlayerKickingState());
 		return;
