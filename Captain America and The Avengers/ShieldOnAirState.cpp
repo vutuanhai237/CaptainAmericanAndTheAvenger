@@ -19,7 +19,6 @@ void ShieldOnAirState::Update(float dt)
 		VirtualPoint.x = player->GetPosition().x + SHIELD_ON_AIR_DELTA_X;
 	else
 		VirtualPoint.x = player->GetPosition().x - SHIELD_ON_AIR_DELTA_X;
-	Debug::PrintOut(L"y = %f\n", player->GetVelocityY());
 }
 
 void ShieldOnAirState::Draw()

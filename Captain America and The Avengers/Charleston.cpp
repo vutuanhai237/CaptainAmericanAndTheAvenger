@@ -6,21 +6,23 @@
 #include "WorldMap.h"
 #include "Player.h"
 #include "Shield.h"
-
 #include "Framework/DirectInput.h"
 #include "SceneManager.h"
 #include "CharlestonBoss.h"
-
+#include "RedRocketRobot.h"
+RedRocketRobot * bot1;
 void Charleston::Update(float dt)
 {
-	map->Update(dt);
+	
 	Player *player = Player::GetInstance();
+	// Update zone
+	map->Update(dt);
 	player->HandleInput(dt);
 	player->Update(dt);
-
 	Shield::GetInstance()->Update(dt);
-
 	cam->SetCameraPosition(player->GetPosition());
+	bot1->Update(dt);
+
 
 	auto tmp = DirectInput::GetInstance();
 	if (tmp->KeyDown(DIK_N))
@@ -28,6 +30,9 @@ void Charleston::Update(float dt)
 		CharlestonBoss *boss = new CharlestonBoss();
 		SceneManager::GetInstance()->ReplaceScene(boss);
 	}
+
+
+	
 }
 
 void Charleston::Draw()
@@ -49,6 +54,7 @@ void Charleston::Draw()
 		player->SetVelocityX(abs(player->GetVelocityX()));
 	}
 	player->Draw();
+	bot1->Draw();
 	shield->Draw();
 }
 
@@ -63,6 +69,12 @@ void Charleston::Init()
 	player->Init();
 	player->SetPosition(48.0f, 100.0f); //48:69
 
+
+
+
+
+	bot1 = new RedRocketRobot();
+	bot1->SetPosition(100.0f, 50.0f);
 	exit = new Animation(111, L"Resources\\exit.png", D3DCOLOR_XRGB(255,0,255), 1);
 	//vector<Entity*> obj = *SceneManager::GetInstance()->GetCurr
 	i = 0;

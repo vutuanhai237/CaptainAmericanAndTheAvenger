@@ -17,8 +17,5 @@ void ShieldDownState::Update(float dt)
 
 void ShieldDownState::Draw()
 {
-	if (Player::GetInstance()->OnTheWater && Player::GetInstance()->IsShieldDown == false) {
-		return;
-	}
 	Shield::GetInstance()->GetAnimation()->Draw(VirtualPoint);
 }

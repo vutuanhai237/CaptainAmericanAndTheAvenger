@@ -13,7 +13,7 @@ PlayerShieldDownState::PlayerShieldDownState()
 	player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 	player->SetVelocityY(VELOCITY_Y);
 
-
+	i = 0;
 	Shield::GetInstance()->SetShieldState(new ShieldDownState());
 }
 PlayerShieldDownState::~PlayerShieldDownState()
@@ -23,8 +23,10 @@ PlayerShieldDownState::~PlayerShieldDownState()
 
 void PlayerShieldDownState::Update(float dt)
 {
+	i++;
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
+	
 }
 
 void PlayerShieldDownState::Draw()

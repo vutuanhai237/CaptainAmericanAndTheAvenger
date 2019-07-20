@@ -9,6 +9,7 @@
 class PlayerShieldDownState : public PlayerState
 {
 public:
+	int i = 0;
 	PlayerShieldDownState();
 	~PlayerShieldDownState();
 	virtual void Update(float dt);

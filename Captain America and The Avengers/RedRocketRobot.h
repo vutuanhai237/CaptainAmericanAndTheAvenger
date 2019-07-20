@@ -13,6 +13,7 @@ private:
 	RedRocket* red_rocket;
 public:
 	enum RedRocketRobotState {
+		none,
 		idle,
 		running,
 		ducking,
@@ -22,11 +23,14 @@ public:
 	virtual void Render();
 	virtual void OnCollision();
 	virtual void SetActive(bool IsActive);
+	virtual void Draw();
 	bool IsRunning;
 	bool IsDucking;
 	bool Isbeaten;
-	
-
+	bool IsIdle;
+	float time_ducking;
+	float time_idle;
+	RedRocketRobotState current_state;
 	RedRocketRobot();
 	~RedRocketRobot();
 };

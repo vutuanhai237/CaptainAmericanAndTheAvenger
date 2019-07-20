@@ -4,6 +4,7 @@
 #include "BoxCollider.h"
 #include "Framework/Animation.h"
 #include <math.h>
+#include "SceneManager.h"
 class Enemy: public Entity
 {
 public:
@@ -15,7 +16,9 @@ public:
 	virtual void Spawn(); // sinh ra quái từ vị trí đc đọc từ file
 	virtual void SetSpawnBox(float top, float left, float width, float height, Entity::Entity_Direction direction);
 	virtual void SetBoxCollider(BoxCollider box);
+	bool IsCollisionWithGround(float dt, int delta_y = 12);
 
+	virtual void Draw() {};
 	Enemy();
 	~Enemy();
 protected:
@@ -25,6 +28,5 @@ protected:
 	bool IsExplode;
 	BoxCollider spawn_box; // box spawn cố định còn box va chạm khác
 	BoxCollider box;
-	float timer;
 };
 
