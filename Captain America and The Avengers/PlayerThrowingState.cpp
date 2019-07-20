@@ -1,5 +1,9 @@
 ﻿#include "PlayerThrowingState.h"
 #include "Framework//Debug.h"
+
+#include "Shield.h"
+#include "ShieldAttackState.h"
+
 PlayerThrowingState::PlayerThrowingState()
 {
 	Player* player = Player::GetInstance();
@@ -7,7 +11,7 @@ PlayerThrowingState::PlayerThrowingState()
 	player->SetTimeBuffer(0);
 	this->current_state = PlayerState::NameState::throwing;
 
-
+	Shield::GetInstance()->SetShieldState(new ShieldAttackState);
 }
 PlayerThrowingState::~PlayerThrowingState()
 {

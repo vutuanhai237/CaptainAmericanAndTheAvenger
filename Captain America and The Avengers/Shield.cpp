@@ -26,11 +26,28 @@ void Shield::Draw()
 
 void Shield::SetShieldState(ShieldState *state)
 {
-	delete this->state;
-	this->state = state;
+	if (this->state->GetCurrentState() == ShieldState::NameState::ShieldAttack)
+	{
+		buffer = state;
+	}
+	else
+	{
+		delete this->state;
+		this->state = state;
+	}
 }
 
-Animation * Shield::GetAnimation()
+ShieldState *Shield::GetShieldState()
+{
+	return state;
+}
+
+ShieldState *Shield::GetBufferState()
+{
+	return buffer;
+}
+
+Animation *Shield::GetAnimation()
 {
 	return shield;
 }
