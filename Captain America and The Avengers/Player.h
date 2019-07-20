@@ -39,6 +39,7 @@
 #define TIME_DUCKING_BEFORE_IDLE 0.016*5
 // flowing
 #define TIME_JUMPING_DOWN_BEFORE_FLOWING 0.016f*23
+#define TIME_ANIMATION_BEFORE_FLOWING 0.5
 // diving
 using namespace std;
 class Player : public Entity
@@ -70,7 +71,6 @@ public:
 	bool GetIsRolling();
 	void SetIsThrowing(bool IsThrowing);
 	bool GetIsThrowing();
-	void SetPositionIdle(D3DXVECTOR2 position_idle);
 	D3DXVECTOR2 GetPositionIdle();
 	Entity::Entity_Direction previous_direction;
 	void SetIsDuckingPunching(bool IsDuckingpunching);
@@ -98,6 +98,8 @@ public:
 	bool IsDonTho;
 	bool IsLockCollision;
 	bool IsShieldDown;
+	bool OnTheWater;
+	//bool IsShiledDownOnTheWater;
 protected:
 	static Player *instance;
 	std::map<int, Animation*> animations;

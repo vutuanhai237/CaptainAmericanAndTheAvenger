@@ -19,6 +19,8 @@ PlayerFlowingState::PlayerFlowingState()
 
 	player->IsJumpingDown = false;
 	player->IsJumping = false;
+	player->OnTheWater = true;
+
 }
 PlayerFlowingState::~PlayerFlowingState()
 {
@@ -49,6 +51,7 @@ void PlayerFlowingState::HandleInput(float dt)
 	
 	if (keyboard->KeyDown(JUMP_KEY)) {
 		player->ChangeState(new PlayerJumpingState());
+		player->OnTheWater = false;
 		return;
 	}
 	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyPress(DOWN_KEY)) {

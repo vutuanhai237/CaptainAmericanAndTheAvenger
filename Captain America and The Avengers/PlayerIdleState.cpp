@@ -8,7 +8,6 @@ PlayerIdleState::PlayerIdleState()
 	player->SetCurrentState(PlayerState::NameState::idle);
 	this->current_state = PlayerState::NameState::idle;
 	player->SetVelocity(0, 0);
-	player->SetPositionIdle(player->GetPosition());
 
 
 	// Đảm bảo trạng thái nhảy chỉ được tiếp tục lần tới sau khi chạm đất
@@ -24,7 +23,7 @@ PlayerIdleState::PlayerIdleState()
 	player->IsDonTho = false;
 	player->IsLockCollision = false;
 	player->IsShieldDown = false;
-
+	player->OnTheWater = false;
 	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
 }
 PlayerIdleState::~PlayerIdleState()

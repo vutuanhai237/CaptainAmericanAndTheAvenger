@@ -2,13 +2,15 @@
 #include "PlayerIdleState.h"
 #include "PlayerDashingState.h"
 #include "Framework//Debug.h"
+#include "Shield.h"
+#include "ShieldNomalState.h"
 PlayerRunningState::PlayerRunningState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::running);
 	this->current_state = PlayerState::NameState::running;
 	player->SetVelocityX(VELOCITY_X);
-
+	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
 	
 }
 

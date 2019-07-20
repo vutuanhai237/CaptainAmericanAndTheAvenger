@@ -13,7 +13,6 @@ PlayerRollingState::PlayerRollingState()
 	//player->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
 	// Khi từ đá chuyển về nhảy thì mới có quyền đá tiếp
 	player->time_kicking = 0;
-	player->IsShieldDown = true;
 
 }
 PlayerRollingState::~PlayerRollingState()
@@ -28,6 +27,8 @@ void PlayerRollingState::Update(float dt)
 	player->SetVelocityY(player->GetVelocityY() - ROLLING_ACCELERATION);
 	if (player->GetVelocityY() <= 0) {
 		player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
+		player->IsShieldDown = true;
+
 	}
 	else {
 		player->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);

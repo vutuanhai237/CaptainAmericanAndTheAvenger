@@ -107,22 +107,22 @@ void WorldMap::Init(LPCWSTR Path)
 		switch (id)
 		{
 		case MAPOBJ_GROUND:
-			top -= 8;
+			//top -= 8;
 			obj->SetTag(Entity::Entity_Tag::ground);
 			break;
 		case MAPOBJ_WALL:
-			top -= 8;
+			//top -= 8;
 			obj->SetTag(Entity::Entity_Tag::wall);
 			break;
 		case MAPOBJ_WATER:
-			top -= 8;
+			//top -= 8;
 			obj->SetTag(Entity::Entity_Tag::water);
 			break;
 		default:
 			break;
 		}
 		obj->SetSize(width, height);
-		obj->SetPosition(left + width / 2.0f, top + height / 2.0f);
+		obj->SetPosition(left + width / 2.0f, top - height / 2.0f);
 		MapObj.push_back(obj);
 	}
 }

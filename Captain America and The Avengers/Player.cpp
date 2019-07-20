@@ -225,12 +225,6 @@ bool Player::GetIsThrowing()
 	return this->IsThrowing;
 }
 
-void Player::SetPositionIdle(D3DXVECTOR2 position_idle)
-{
-	this->position_idle = position_idle;
-}
-
-
 
 D3DXVECTOR2 Player::GetPositionIdle()
 {

@@ -169,6 +169,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shield.cpp" />
+    <ClCompile Include="ShieldDownState.cpp" />
     <ClCompile Include="ShieldKickState.cpp" />
     <ClCompile Include="ShieldNomalState.cpp" />
     <ClCompile Include="ShieldOnAirState.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shield.h" />
     <ClInclude Include="ShieldDashState.h" />
+    <ClInclude Include="ShieldDownState.h" />
     <ClInclude Include="ShieldKickState.h" />
     <ClInclude Include="ShieldNomalState.h" />
     <ClInclude Include="ShieldOnAirState.h" />
