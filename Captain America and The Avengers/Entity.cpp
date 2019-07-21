@@ -114,16 +114,6 @@ void Entity::AddVelocityY(float dy)
 	this->velocity.y += dy;
 }
 
-void Entity::SetIsOnAir(float IsOnAir)
-{
-	this->IsOnAir = IsOnAir;
-}
-
-bool Entity::GetIsOnAir()
-{
-	return this->IsOnAir;
-}
-
 void Entity::SetPositionX(float x)
 {
 	this->position.x = x;

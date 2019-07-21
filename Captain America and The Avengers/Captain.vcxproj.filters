@@ -175,9 +175,6 @@
     <ClCompile Include="ShieldDownState.cpp">
       <Filter>Player\Shield</Filter>
     </ClCompile>
-    <ClCompile Include="ShieldAttackState.cpp">
-      <Filter>Player\Shield</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Animation.h">
@@ -329,9 +326,6 @@
       <Filter>Player\Shield</Filter>
     </ClInclude>
     <ClInclude Include="ShieldDownState.h">
-      <Filter>Player\Shield</Filter>
-    </ClInclude>
-    <ClInclude Include="ShieldAttackState.h">
       <Filter>Player\Shield</Filter>
     </ClInclude>
   </ItemGroup>
