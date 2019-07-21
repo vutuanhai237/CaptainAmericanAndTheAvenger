@@ -1,10 +1,12 @@
 ﻿#include "PlayerDuckingState.h"
 #include "Framework//Debug.h"
+#include "Shield.h"
+#include "ShieldNomalState.h"
 PlayerDuckingState::PlayerDuckingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::ducking);
-
+	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
 	this->current_state = PlayerState::NameState::ducking;
 	player->SetTimeBuffer(0);
 	player->SetVelocity(0, 0);

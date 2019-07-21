@@ -20,6 +20,7 @@ PlayerJumpingDownState::PlayerJumpingDownState()
 	player->SetVelocityX(0);
 	player->IsJumpingDown == false;
 	player->IsRolling = false;
+	player->IsOnAir = true;
 	// Khi từ đá chuyển về nhảy thì mới có quyền đá tiếp
 	player->time_kicking = 0;
 	Shield::GetInstance()->SetShieldState(new ShieldOnAirState());
@@ -80,14 +81,16 @@ void PlayerJumpingDownState::HandleInput(float dt)
 		}
 	}
 
-
-
 	if (keyboard->KeyDown(ATTACK_KEY)) {
 		player->ChangeState(new PlayerKickingState());
 		return;
 	}
+	
+	if (keyboard->KeyDown(DOWN_KEY) && player->IsShieldDown) {
+		player->ChangeState(new PlayerShieldDownState());
+		return;
+	}
 	if (!keyboard->KeyPress(RIGHT_KEY) && !keyboard->KeyPress(LEFT_KEY)) {
-		player->SetVelocityX(0);
 		return;
 	}
 	// Đang ở trên không, nếu ấn left thì dịch qua trái
@@ -102,10 +105,5 @@ void PlayerJumpingDownState::HandleInput(float dt)
 
 	}
 
-	if (keyboard->KeyPress(DOWN_KEY)) {
-		player->ChangeState(new PlayerShieldDownState());
-		return;
-	}
 	
-
 }

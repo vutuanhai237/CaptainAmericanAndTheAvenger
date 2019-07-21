@@ -45,16 +45,21 @@ void Charleston::Draw()
 	if (player->GetMoveDirection()) {
 		player->GetCurrentAnimation()->SetScale(1, 1);
 		shield->GetAnimation()->SetScale(1, 1);
-		player->SetVelocityX(-abs(player->GetVelocityX()));
 	}
 	else {
 
 		player->GetCurrentAnimation()->SetScale(-1, 1);
 		shield->GetAnimation()->SetScale(-1, 1);
-		player->SetVelocityX(abs(player->GetVelocityX()));
 	}
-	player->Draw();
+	if (bot1->GetMoveDirection()) {
+		bot1->GetCurrentAnimation()->SetScale(1, 1);
+	}
+	else {
+		bot1->GetCurrentAnimation()->SetScale(-1, 1);
+	}
 	bot1->Draw();
+
+	player->Draw();
 	shield->Draw();
 }
 
@@ -69,12 +74,8 @@ void Charleston::Init()
 	player->Init();
 	player->SetPosition(48.0f, 100.0f); //48:69
 
-
-
-
-
 	bot1 = new RedRocketRobot();
-	bot1->SetPosition(100.0f, 50.0f);
+	bot1->SetPosition(50.0f, 150.0f);
 	exit = new Animation(111, L"Resources\\exit.png", D3DCOLOR_XRGB(255,0,255), 1);
 	//vector<Entity*> obj = *SceneManager::GetInstance()->GetCurr
 	i = 0;

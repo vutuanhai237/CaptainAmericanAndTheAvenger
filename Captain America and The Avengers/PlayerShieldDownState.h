@@ -9,7 +9,8 @@
 class PlayerShieldDownState : public PlayerState
 {
 public:
-	int i = 0;
+	float time_nhuns;
+	bool IsNhunsLen;
 	PlayerShieldDownState();
 	~PlayerShieldDownState();
 	virtual void Update(float dt);
