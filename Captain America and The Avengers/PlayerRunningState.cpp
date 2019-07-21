@@ -11,19 +11,7 @@ PlayerRunningState::PlayerRunningState()
 	this->current_state = PlayerState::NameState::running;
 	player->SetVelocityX(VELOCITY_X);
 	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
-	player->time_air_jumping = 0;
-	player->time_kicking = 0;
-	player->time_air_rolling = 0;
-	player->time_ducking_before_idle = 0;
-	player->time_jumping_before_flowing = 0;
-	player->IsJumpingDown = false;
-	player->IsJumping = false;
-	player->IsRolling = false;
-	player->IsDonTho = false;
-	player->IsLockCollision = false;
-	player->IsShieldDown = false;
-	player->OnTheWater = false;
-	player->IsOnAir = false;
+	
 }
 
 PlayerRunningState::~PlayerRunningState()
@@ -53,6 +41,7 @@ void PlayerRunningState::HandleInput(float dt)
 	auto keyboard = DirectInput::GetInstance();
 	if (!player->IsCollisionWithGround(dt)) {
 		player->ChangeState(new PlayerJumpingDownState());
+
 		return;
 	}
 	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyPress(LEFT_KEY)) {
@@ -74,42 +63,37 @@ void PlayerRunningState::HandleInput(float dt)
 		return;
 	}
 	// Đang ở trạng thái running, nếu ấn left thì vẫn giữ trạng thái
-	if (keyboard->KeyPress(LEFT_KEY) && keyboard->KeyDown(JUMP_KEY)) {
-		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-		player->previous_direction = Entity::Entity_Direction::RightToLeft;
-		player->ChangeState(new PlayerJumpingState());
-		return;
-	}
-	if (keyboard->KeyPress(LEFT_KEY) && keyboard->KeyDown(ATTACK_KEY)) {
-		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-		player->previous_direction = Entity::Entity_Direction::RightToLeft;
-		player->ChangeState(new PlayerThrowingState());
-		return;
-	}
-		
-	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyDown(JUMP_KEY)) {
-		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-		player->previous_direction = Entity::Entity_Direction::LeftToRight;
-		player->ChangeState(new PlayerJumpingState());
-		return;
-	}
-	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyDown(ATTACK_KEY)) {
-		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-		player->previous_direction = Entity::Entity_Direction::LeftToRight;
-		player->ChangeState(new PlayerThrowingState());
-		return;
-		
-	}
 	if (keyboard->KeyPress(LEFT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		player->previous_direction = Entity::Entity_Direction::RightToLeft;
+		// vừa ấn left-arrow vừa nhấn x thì nhảy chéo
+		if (keyboard->KeyDown(JUMP_KEY)) {
+			player->ChangeState(new PlayerJumpingState());
+			return;
+		}	
+		if (keyboard->KeyDown(ATTACK_KEY)) {
+			player->ChangeState(new PlayerThrowingState());
+			return;
+		}
 		return;
+
 	}
 	if (keyboard->KeyPress(RIGHT_KEY)) {
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		player->previous_direction = Entity::Entity_Direction::LeftToRight;
+
+		// vừa ấn right-arrow vừa nhấn x thì nhảy chéo
+		if (keyboard->KeyDown(JUMP_KEY)) {
+			player->ChangeState(new PlayerJumpingState());
+			return;
+		}
+		if (keyboard->KeyDown(ATTACK_KEY)) {
+			player->ChangeState(new PlayerThrowingState());
+			return;
+		}	
 		return;
 	}
+
 	// Nếu không ấn gì thì đứng
 	player->ChangeState(new PlayerIdleState());
 	return;

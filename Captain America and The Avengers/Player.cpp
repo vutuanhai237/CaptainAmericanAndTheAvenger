@@ -94,7 +94,6 @@ Player::Player() :Entity()
 	this->IsDuckingPunching = false;
 	this->IsLockCollision = false;
 	this->IsShieldDown = false;
-	this->IsOnAir = false;
 	this->time_air_jumping = 0;
 	this->time_kicking = 0;
 	this->time_air_rolling = 0;

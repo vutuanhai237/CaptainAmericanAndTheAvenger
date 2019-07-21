@@ -4,19 +4,11 @@
 
 void RedRocketRobot::Update(float dt)
 {
-	Player *player = Player::GetInstance();
-	if (player->GetPosition().x - this->GetPosition().x > 0) {
-		this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-	}
-	else {
-		this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-
-	}
-	this->current_animation->Update(dt);
-	while (this->position_spawn.x - this->position_goto.x > 3) {
+	if (this->IsCollisionWithGround(dt, 8))
+	{
 		return;
 	}
-
+	this->current_animation->Update(dt);
 	if (this->IsIdle) {
 		this->time_idle += dt;
 	}
@@ -36,13 +28,7 @@ void RedRocketRobot::Update(float dt)
 		this->time_ducking = 0.0f;
 	}
 	this->current_animation->Update(dt);
-	if (this->IsCollisionWithGround(dt, 6))
-	{
-		return;
-	}
-	else {
-		this->SetPositionY(this->GetPosition().y - 5);
-	}
+
 }
 
 void RedRocketRobot::Render()
@@ -62,43 +48,6 @@ void RedRocketRobot::Draw()
 	this->current_animation->Draw(this->position);
 }
 
-bool RedRocketRobot::IsCollisionWithGround(float dt, int delta_y)
-{
-	SIZE FootSize;
-	FootSize.cx = RED_ROCKET_ROBOT_SIZE_WIDTH;
-	FootSize.cy = RED_ROCKET_ROBOT_FOOT_HEIGHT;
-	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
-	auto Checker = Collision::getInstance();
-	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
-
-	if (foot.vy == 0)
-	{
-		for (auto item : obj)
-		{
-			if (item->GetTag() == Entity::Entity_Tag::ground && Checker->IsCollide(foot, BoundingBox(item->GetPosition(), item->GetSize(), 0, 0)))
-				return true;
-		}
-		return false;
-	}
-
-	CollisionOut tmp;
-	BoundingBox box2;
-	for (auto item : obj)
-	{
-		if (item->GetTag() == Entity::Entity_Tag::ground)
-		{
-			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
-			tmp = Checker->SweptAABB(foot, box2);
-			if (tmp.side == CollisionSide::bottom)
-			{
-				position.y = item->GetPosition().y + RED_ROCKET_ROBOT_SIZE_HEIGHT / 2;
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
 RedRocketRobot::RedRocketRobot()
 {
 	this->idle_ani = new Animation(RedRocketRobot::RedRocketRobotState::idle, 2);
@@ -116,16 +65,6 @@ RedRocketRobot::RedRocketRobot()
 	this->IsIdle = true;
 	this->current_state = RedRocketRobotState::idle;
 	this->current_animation = idle_ani;
-	this->SetVelocityY(-5.0f);
-	//
-	if (position_spawn.x > position_goto.x) {
-		this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-	}
-	else {
-		this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-
-	}
-	this->SetVelocityX(RED_ROCKET_ROBOT_VELOCITY);
 }
 
 

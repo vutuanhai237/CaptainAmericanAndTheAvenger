@@ -96,7 +96,6 @@ public:
 	bool IsDuckingPunching;
 	bool IsFlowing;
 	bool IsDonTho;
-	bool IsOnAir;
 	bool IsLockCollision;
 	bool IsShieldDown;
 	bool OnTheWater;

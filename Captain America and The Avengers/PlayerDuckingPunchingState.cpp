@@ -1,6 +1,5 @@
 ﻿#include "PlayerDuckingPunchingState.h"
-#include "Shield.h"
-#include "ShieldOnAirState.h"
+
 #include "Framework//Debug.h"
 PlayerDuckingPunchingState::PlayerDuckingPunchingState()
 {
@@ -10,9 +9,7 @@ PlayerDuckingPunchingState::PlayerDuckingPunchingState()
 	player->SetTimeBuffer(0);
 	player->SetVelocity(0, 0);
 	this->time_punch = 0;
-
-	Shield::GetInstance()->SetShieldState(new ShieldOnAirState());
-
+	
 }
 PlayerDuckingPunchingState::~PlayerDuckingPunchingState()
 {

@@ -102,6 +102,8 @@ public:
 	virtual float GetVelocityY();
 	virtual void SetVelocityY(float y);
 	virtual void AddVelocityY(float dy);
+	virtual void SetIsOnAir(float IsOnAir);
+	virtual bool GetIsOnAir();
 	virtual void SetPositionX(float x);
 	virtual void SetPositionY(float y);
 	virtual void SetMoveDirection(Entity_Direction _direction);
@@ -129,5 +131,6 @@ protected:
 	D3DXVECTOR2 velocity;
 	//size of entity
 	SIZE size;
+	bool IsOnAir;
 };
 

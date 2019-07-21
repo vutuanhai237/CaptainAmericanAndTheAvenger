@@ -24,7 +24,6 @@ PlayerIdleState::PlayerIdleState()
 	player->IsLockCollision = false;
 	player->IsShieldDown = false;
 	player->OnTheWater = false;
-	player->IsOnAir = false;
 	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
 }
 PlayerIdleState::~PlayerIdleState()
