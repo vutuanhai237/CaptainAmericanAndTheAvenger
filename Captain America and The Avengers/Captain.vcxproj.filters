@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{c0217b35-f2f8-4dbe-98eb-bf79c9ff2870}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameComponents">
+      <UniqueIdentifier>{83a507e0-3ac2-45f0-aa8b-bd8be1a83a54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameControler">
+      <UniqueIdentifier>{53e6e235-2f0c-4a1c-ab52-4a8b3c7b498b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{1e022eaa-546e-418e-b861-b9b3ccb6cfd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{3af8f3c1-3ee0-4ee1-a0cd-18505c1e1cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{74e2cd97-33b3-4abb-b48e-76118e6575e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{4d8f4a1c-d5a1-4aac-8ca0-a09bcf7c0880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{ca426e89-ba5d-47cb-9484-6d4f422952be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\RedRocketRobot">
+      <UniqueIdentifier>{be33280e-667a-41db-9367-323c53cf0f99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player\Shield">
+      <UniqueIdentifier>{8fa90513-e92e-44d8-9174-17e061a5f19d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Framework\Animation.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\d3d.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Debug.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\DirectInput.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\GameTimer.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Sprite.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Texture.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="WinMain.cpp" />
+    <ClCompile Include="Scene.cpp">
+      <Filter>GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>GameControler</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>GameControler</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldMap.cpp">
+      <Filter>GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRunningState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerJumpingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerIdleState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Charleston.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="CharlestonMap.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerShieldUpState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDashingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="DataCollect.cpp">
+      <Filter>GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDuckingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerThrowingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDuckingPunchingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CharlestonBoss.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="CharlestonBossMap.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRollingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerJumpingDownState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerKickingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerPunchingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyWeapon.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="RedRocket.cpp">
+      <Filter>Enemy\RedRocketRobot</Filter>
+    </ClCompile>
+    <ClCompile Include="RedRocketRobot.cpp">
+      <Filter>Enemy\RedRocketRobot</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerFlowingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDivingState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerShieldDownState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Shield.cpp">
+      <Filter>Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="ShieldKickState.cpp">
+      <Filter>Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="ShieldNomalState.cpp">
+      <Filter>Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="ShieldOnAirState.cpp">
+      <Filter>Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="ShieldState.cpp">
+      <Filter>Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="ShieldUpState.cpp">
+      <Filter>Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="ShieldDownState.cpp">
+      <Filter>Player\Shield</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Framework\Animation.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\d3d.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Debug.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\DirectInput.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\GameSetting.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\GameTimer.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Sprite.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Texture.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>GameControler</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>GameControler</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldMap.h">
+      <Filter>GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRunningState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerJumpingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerIdleState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Charleston.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="BoxCollider.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CharlestonMap.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerShieldUpState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDashingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="DataCollect.h">
+      <Filter>GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDuckingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerThrowingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDuckingPunchingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CharlestonBoss.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="CharlestonBossMap.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRollingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerJumpingDownState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerKickingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerPunchingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyWeapon.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="RedRocketRobot.h">
+      <Filter>Enemy\RedRocketRobot</Filter>
+    </ClInclude>
+    <ClInclude Include="RedRocket.h">
+      <Filter>Enemy\RedRocketRobot</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerFlowingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDivingState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerShieldDownState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Shield.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldDashState.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldKickState.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldNomalState.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldOnAirState.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldState.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldUpState.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="ShieldDownState.h">
+      <Filter>Player\Shield</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Map.rc" />
+  </ItemGroup>
+</Project>
