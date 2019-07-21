@@ -20,12 +20,13 @@ ShieldAttackState::ShieldAttackState()
 
 void ShieldAttackState::Update(float dt)
 {
+
 	delta += dt;
 
 	Player *player = Player::GetInstance();
 	Shield *shield = Shield::GetInstance();
 
-	if (FrameLock < 2)
+	if (this->FrameLock < 2)
 	{
 		FrameLock = player->GetCurrentAnimation()->GetNumberCurrentFrame();
 		if (FrameLock == 2)
@@ -33,6 +34,7 @@ void ShieldAttackState::Update(float dt)
 			VirtualPoint = player->GetPosition();
 			VirtualPoint.x += SHIELD_BEFORE_ATTACK_FRAME_2_DELTA_X * direction;
 			VirtualPoint.y += SHIELD_BEFORE_ATTACK_FRAME_2_DELTA_Y;
+			this->FrameLock++;
 		}
 		return;
 	}
@@ -89,4 +91,6 @@ void ShieldAttackState::Draw()
 {
 	Shield::GetInstance()->GetAnimation()->SetFrame(3);
 	Shield::GetInstance()->GetAnimation()->Draw(VirtualPoint);
+	
 }
+

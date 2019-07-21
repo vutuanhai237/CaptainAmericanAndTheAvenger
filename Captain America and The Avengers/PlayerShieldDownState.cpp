@@ -119,6 +119,10 @@ void PlayerShieldDownState::HandleInput(float dt)
 			player->ChangeState(new PlayerJumpingDownState());
 			return;
 		}
+		if (keyboard->KeyDown(JUMP_KEY)) {
+			player->ChangeState(new PlayerJumpingState());
+			return;
+		}
 	}
 	// Xét đang lót đít ở trên không
 	if (keyboard->KeyUp(DOWN_KEY)) {

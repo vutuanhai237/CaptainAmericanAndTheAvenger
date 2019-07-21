@@ -27,6 +27,9 @@ protected:
 	Animation* explode_ani;
 	Animation* current_animation;
 	bool IsExplode;
+	D3DXVECTOR2 position_spawn;
+	D3DXVECTOR2 position_goto;
+	D3DXVECTOR2 position_loop;
 	BoxCollider spawn_box; // box spawn cố định còn box va chạm khác
 	BoxCollider box;
 };

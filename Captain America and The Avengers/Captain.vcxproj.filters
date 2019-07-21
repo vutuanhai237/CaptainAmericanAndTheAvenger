@@ -31,6 +31,9 @@
     <Filter Include="Player\Shield">
       <UniqueIdentifier>{8fa90513-e92e-44d8-9174-17e061a5f19d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player\PlayerState">
+      <UniqueIdentifier>{6afa3bf9-9598-49a9-a529-7e3693b762c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Animation.cpp">
@@ -73,18 +76,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>Player</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerState.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerRunningState.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerJumpingState.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerIdleState.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
     <ClCompile Include="Charleston.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -94,23 +85,8 @@
     <ClCompile Include="CharlestonMap.cpp">
       <Filter>Map</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerShieldUpState.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerDashingState.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
     <ClCompile Include="DataCollect.cpp">
       <Filter>GameComponents</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerDuckingState.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerThrowingState.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerDuckingPunchingState.cpp">
-      <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="CharlestonBoss.cpp">
       <Filter>Scenes</Filter>
@@ -118,20 +94,8 @@
     <ClCompile Include="CharlestonBossMap.cpp">
       <Filter>Map</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerRollingState.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>GameComponents</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerJumpingDownState.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerKickingState.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerPunchingState.cpp">
-      <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Enemy</Filter>
@@ -144,15 +108,6 @@
     </ClCompile>
     <ClCompile Include="RedRocketRobot.cpp">
       <Filter>Enemy\RedRocketRobot</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerFlowingState.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerDivingState.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerShieldDownState.cpp">
-      <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="Shield.cpp">
       <Filter>Player\Shield</Filter>
@@ -177,6 +132,60 @@
     </ClCompile>
     <ClCompile Include="ShieldAttackState.cpp">
       <Filter>Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerThrowingState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerShieldUpState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerShieldDownState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRunningState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerRollingState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerPunchingState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerKickingState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerJumpingState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerJumpingDownState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerIdleState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerFlowingState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDuckingState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDuckingPunchingState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDivingState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDashingState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="Equation.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>GameComponents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,18 +231,6 @@
     <ClInclude Include="Player.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerState.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerRunningState.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerJumpingState.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerIdleState.h">
-      <Filter>Player</Filter>
-    </ClInclude>
     <ClInclude Include="Charleston.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -247,23 +244,8 @@
     <ClInclude Include="CharlestonMap.h">
       <Filter>Map</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerShieldUpState.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerDashingState.h">
-      <Filter>Player</Filter>
-    </ClInclude>
     <ClInclude Include="DataCollect.h">
       <Filter>GameComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerDuckingState.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerThrowingState.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerDuckingPunchingState.h">
-      <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="CharlestonBoss.h">
       <Filter>Scenes</Filter>
@@ -271,20 +253,8 @@
     <ClInclude Include="CharlestonBossMap.h">
       <Filter>Map</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerRollingState.h">
-      <Filter>Player</Filter>
-    </ClInclude>
     <ClInclude Include="Collision.h">
       <Filter>GameComponents</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerJumpingDownState.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerKickingState.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerPunchingState.h">
-      <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Enemy</Filter>
@@ -297,15 +267,6 @@
     </ClInclude>
     <ClInclude Include="RedRocket.h">
       <Filter>Enemy\RedRocketRobot</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerFlowingState.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerDivingState.h">
-      <Filter>Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerShieldDownState.h">
-      <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="Shield.h">
       <Filter>Player\Shield</Filter>
@@ -333,6 +294,60 @@
     </ClInclude>
     <ClInclude Include="ShieldAttackState.h">
       <Filter>Player\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerThrowingState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerShieldUpState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerShieldDownState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRunningState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerRollingState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerPunchingState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerKickingState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerJumpingState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerJumpingDownState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerIdleState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerFlowingState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDuckingState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDuckingPunchingState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDivingState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDashingState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="Equation.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>GameComponents</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -10,7 +10,7 @@ PlayerDuckingPunchingState::PlayerDuckingPunchingState()
 	player->SetTimeBuffer(0);
 	player->SetVelocity(0, 0);
 	this->time_punch = 0;
-
+	this->IsGong = false;
 	Shield::GetInstance()->SetShieldState(new ShieldOnAirState());
 
 }
@@ -39,8 +39,13 @@ void PlayerDuckingPunchingState::HandleInput(float dt)
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
 	time_punch += dt;
-	if (player->GetCurrentAnimation()->GetNumberCurrentFrame() == 1)
+	if (player->GetCurrentAnimation()->GetNumberCurrentFrame() == 1 && IsGong == false)
 	{
+		player->GetCurrentAnimation()->Pause(TIME_WAITING_DUCKING_PUNCHING);
+		this->IsGong = true;
+	}
+	if (this->time_punch >= TIME_WAITING_DUCKING_PUNCHING) {
+		player->GetCurrentAnimation()->SetFrame(2);
 		player->GetCurrentAnimation()->Pause(TIME_WAITING_DUCKING_PUNCHING);
 	}
 	if (this->time_punch >= TIME_DUCKING_PUNCHING)
@@ -51,10 +56,7 @@ void PlayerDuckingPunchingState::HandleInput(float dt)
 		player->ChangeState(new PlayerDuckingState());
 		return;
 	}
-	
-	// Chuyển về duck
-	//player->ChangeState(new PlayerIdleState());
-	
+
 	if (keyboard->KeyUp(ATTACK_KEY)) {
 		return;
 	}

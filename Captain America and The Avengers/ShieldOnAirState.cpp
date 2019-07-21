@@ -27,7 +27,7 @@ void ShieldOnAirState::Update(float dt)
 
 	VirtualPoint.y = player->GetPosition().y + SHIELD_ON_AIR_DELTA_Y;
 	if (player->GetJumpDirection() == Entity::Entity_Jump_Direction::BotToTop)
-		VirtualPoint.y += 3;
+		VirtualPoint.y += 5;
 	if (player->GetMoveDirection() == Entity::Entity_Direction::LeftToRight)
 		VirtualPoint.x = player->GetPosition().x + SHIELD_ON_AIR_DELTA_X;
 	else
