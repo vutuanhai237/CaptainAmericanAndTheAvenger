@@ -8,6 +8,7 @@
 class Enemy: public Entity
 {
 public:
+	virtual Animation* GetCurrentAnimation();
 	virtual void Update(float dt); // update animation và loại animation, gọi vũ khí
 	virtual void Render() {}; // render loại animation tương ứng, gọi render của vũ khí
 	virtual void OnCollision() {}; // xử lý va chạm của enemy và gọi xử lý va chạm vũ khí
@@ -16,7 +17,7 @@ public:
 	virtual void Spawn(); // sinh ra quái từ vị trí đc đọc từ file
 	virtual void SetSpawnBox(float top, float left, float width, float height, Entity::Entity_Direction direction);
 	virtual void SetBoxCollider(BoxCollider box);
-	bool IsCollisionWithGround(float dt, int delta_y = 12);
+	virtual bool IsCollisionWithGround(float dt, int delta_y = 12);
 
 	virtual void Draw() {};
 	Enemy();

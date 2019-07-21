@@ -4,7 +4,7 @@
 #include "Framework//Debug.h"
 #include "Shield.h"
 #include "ShieldKickState.h"
-
+#include "PlayerJumpingDownState.h"
 PlayerKickingState::PlayerKickingState()
 {
 	Player* player = Player::GetInstance();
@@ -74,6 +74,12 @@ void PlayerKickingState::HandleInput(float dt)
 	if (player->IsCollisionWithGround(dt, 6))
 	{
 		player->ChangeState(new PlayerIdleState());
+		return;
+	}
+	if (player->IsCollisionWithWater(dt, 0))
+	{
+		player->ChangeState(new PlayerJumpingDownState());
+		player->SetPositionY(player->GetPosition().y + 10);
 		return;
 	}
 	// Đang ở trên không, nếu ấn left thì dịch qua trái

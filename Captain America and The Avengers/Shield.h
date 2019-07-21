@@ -4,7 +4,7 @@
 #include "Framework/Animation.h"
 
 
-class Shield : public Entity
+class Shield : private Entity
 {
 public:
 	static Shield *GetInstance();
@@ -14,13 +14,10 @@ public:
 	void Draw();
 
 	void SetShieldState(ShieldState *state);
-	ShieldState *GetShieldState();
-	ShieldState *GetBufferState();
 	Animation *GetAnimation();
-
 protected:
 	Animation *shield;
-	ShieldState *state, *buffer;
+	ShieldState *state;
 private:
 	Shield();
 	~Shield();
