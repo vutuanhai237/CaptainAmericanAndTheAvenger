@@ -39,6 +39,13 @@ void PlayerDuckingState::HandleInput(float dt)
 	auto keyboard = DirectInput::GetInstance();
 	this->IsDucking = true;
 	player->time_ducking_before_idle += dt;
+	if (player->IsCollisionWithWall(dt))
+	{
+		if (keyboard->KeyDown(JUMP_KEY)) {
+			player->ChangeState(new PlayerJumpingState());
+			return;
+		}
+	}
 	if (player->GetPreviousState() == PlayerState::NameState::jumping_down) {
 		if (player->time_ducking_before_idle >= TIME_DUCKING_BEFORE_IDLE) {
 			player->ChangeState(new PlayerIdleState());

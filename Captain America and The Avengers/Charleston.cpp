@@ -72,7 +72,7 @@ void Charleston::Init()
 {
 	Player* player = Player::GetInstance();
 	player->Init();
-	player->SetPosition(48.0f, 100.0f); //48:69
+	player->SetPosition(1848.0f, 100.0f); //48:69
 
 	bot1 = new RedRocketRobot();
 	bot1->SetPosition(50.0f, 150.0f);

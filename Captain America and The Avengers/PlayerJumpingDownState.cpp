@@ -17,10 +17,12 @@ PlayerJumpingDownState::PlayerJumpingDownState()
 	this->IsDuocChuyenState = false;
 	this->IsDuocChuyenAnimation = false;
 	this->time_animation_before_flowing = 0;
+	
 	player->SetVelocityX(0);
 	player->IsJumpingDown == false;
 	player->IsRolling = false;
 	player->IsOnAir = true;
+	player->time_don_tho = 0;
 	// Khi từ đá chuyển về nhảy thì mới có quyền đá tiếp
 	player->time_kicking = 0;
 	Shield::GetInstance()->SetShieldState(new ShieldOnAirState());
@@ -53,12 +55,27 @@ void PlayerJumpingDownState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
+	if (player->IsCollisionWithWall(dt))
+	{
+		player->ChangeState(new PlayerIdleState());
+		return;
+	}
 
-	if (player->IsCollisionWithGround(dt, 8))
+	if (!player->IsDonTho && player->IsCollisionWithGround(dt, 8))
 	{	
 		player->ChangeState(new PlayerDuckingState());
 		return;
 	}
+
+	if (player->IsDonTho) {
+		player->time_don_tho += dt;
+		if (player->time_don_tho >= TIME_DON_THO) {
+			player->IsDonTho = false;
+		}
+	}
+
+
+
 	if (IsDuocChuyenState) {
 		player->ChangeState(new PlayerFlowingState());
 		return;

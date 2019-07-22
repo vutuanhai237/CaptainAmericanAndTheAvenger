@@ -16,7 +16,7 @@ PlayerFlowingState::PlayerFlowingState()
 	player->time_air_rolling = 0;
 	player->time_ducking_before_idle = 0;
 	player->time_jumping_before_flowing = 0;
-
+	player->time_don_tho = 0;
 	player->IsJumpingDown = false;
 	player->IsJumping = false;
 	player->OnTheWater = true;

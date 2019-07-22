@@ -15,6 +15,31 @@ Collision* Collision::getInstance()
 CollisionOut Collision::SweptAABB(BoundingBox recta, BoundingBox rectb)
 {
 	CollisionOut out;
+	if (IsCollide(recta, rectb))
+	{
+		out.CollisionTime = 0.0f;
+		if (recta.left <= rectb.left)
+		{
+			out.side = CollisionSide::right;
+			return out;
+		}
+		if (recta.right >= rectb.right)
+		{
+			out.side = CollisionSide::left;
+			return out;
+		}
+		if (recta.top >= rectb.top)
+		{
+			out.side = CollisionSide::bottom;
+			return out;
+		}
+		if (recta.bottom <= rectb.bottom)
+		{
+			out.side = CollisionSide::top;
+			return out;
+		}
+	}
+
 	out.CollisionTime = 2;
 	out.side = CollisionSide::none;
 	recta.vx = recta.vx - rectb.vx;

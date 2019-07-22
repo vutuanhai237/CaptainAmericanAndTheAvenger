@@ -34,10 +34,15 @@ void PlayerDashingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
-	if (!player->IsCollisionWithGround(dt)) {
-		player->SetVelocityX(VELOCITY_X);
-		player->ChangeState(new PlayerJumpingDownState());
-		return;
+	if (!player->IsCollisionWithWall(dt))
+	{
+		if (!player->IsCollisionWithGround(dt))
+		{
+			player->SetVelocityX(VELOCITY_X);
+			player->ChangeState(new PlayerJumpingDownState());
+			return;
+		}
+
 	}
 	// Hiển thị sprite đầu trong time_duck_before dashing, sau đó xét đến sprite 2
 	if (player->GetCurrentAnimation()->GetNumberCurrentFrame() == 1 && IsDucking == false)
@@ -63,20 +68,20 @@ void PlayerDashingState::HandleInput(float dt)
 	{
 		player->GetCurrentAnimation()->SetAnimationTime(0.0f);
 		player->GetCurrentAnimation()->ResetAnimation();
-		player->ChangeState(new PlayerRunningState());
+		player->ChangeState(new PlayerIdleState());
 		return;
 	}
 	else {
 		if (player->GetMoveDirection() == Entity::Entity_Direction::LeftToRight && keyboard->KeyUp(RIGHT_KEY)) {
 			player->GetCurrentAnimation()->SetAnimationTime(0.0f);
 			player->GetCurrentAnimation()->ResetAnimation();
-			player->ChangeState(new PlayerRunningState());
+			player->ChangeState(new PlayerIdleState());
 			return;
 		}
 		if (player->GetMoveDirection() == Entity::Entity_Direction::RightToLeft && keyboard->KeyUp(LEFT_KEY)) {
 			player->GetCurrentAnimation()->SetAnimationTime(0.0f);
 			player->GetCurrentAnimation()->ResetAnimation();
-			player->ChangeState(new PlayerRunningState());
+			player->ChangeState(new PlayerIdleState());
 			return;
 		}
 	}

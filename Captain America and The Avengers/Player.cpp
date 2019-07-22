@@ -99,7 +99,7 @@ Player::Player() :Entity()
 	this->time_kicking = 0;
 	this->time_air_rolling = 0;
 	this->time_jumping_before_flowing = 0;
-
+	this->time_don_tho = 0;
 
 }
 
@@ -132,6 +132,7 @@ void Player::Draw()
 void Player::HandleInput(float dt)
 {
 	this->player_state->HandleInput(dt);
+	IsCollisionWithWall(dt);
 }
 
 void Player::Init()
@@ -183,12 +184,6 @@ Animation * Player::GetAnimation(PlayerState::NameState state)
 int Player::GetPreviousState()
 {
 	return this->previous_state;
-}
-
-void Player::SetPosition(float x, float y)
-{
-	Entity::SetPosition(x, y);
-	this->animation->SetPosition(x, y);
 }
 
 void Player::AddTimeBuffer(float dt)
@@ -285,6 +280,7 @@ bool Player::IsCollisionWithWater(float dt, int delta_y)
 	FootSize.cx = PLAYER_SIZE_WIDTH;
 	FootSize.cy = PLAYER_FOOT_HEIGHT;
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
+	
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
 	CollisionOut tmp;
@@ -300,6 +296,63 @@ bool Player::IsCollisionWithWater(float dt, int delta_y)
 			{
 				//position.y = item->GetPosition().y + PLAYER_SIZE_HEIGHT / 2;
 				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool Player::IsCollisionWithWall(float dt, int delta_y)
+{
+	Entity::IsLocking = false;
+	Entity::Update(dt);
+	Entity::IsLocking = true;
+
+	SIZE PlayerSize;
+	PlayerSize.cx = PLAYER_SIZE_WIDTH;
+	PlayerSize.cy = PLAYER_SIZE_HEIGHT;
+	BoundingBox player(D3DXVECTOR2(position.x, position.y - delta_y), PlayerSize, velocity.x*dt, velocity.y*dt);
+	Collision *Checker = Collision::getInstance();
+
+	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
+	CollisionOut tmp;
+	BoundingBox box2;
+
+	for (auto item : obj)
+	{
+		if (item->GetTag() == Entity::Entity_Tag::wall)
+		{
+			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
+			tmp = Checker->SweptAABB(player, box2);
+			switch (tmp.side)
+			{
+			case CollisionSide::left:
+				position.x = item->GetPosition().x + (item->GetSize().cx + PLAYER_SIZE_WIDTH) / 2 + 1;
+				velocity.x = 0.0f;
+				return true;
+			case CollisionSide::right:
+				position.x = item->GetPosition().x - (item->GetSize().cx + PLAYER_SIZE_WIDTH) / 2 - 1;
+				velocity.x = 0.0f;
+				return true;
+			case CollisionSide::top:
+				position.y = item->GetPosition().y - (item->GetSize().cy + PLAYER_SIZE_HEIGHT) / 2;
+				velocity.y = 0.0f;
+				return true;
+			case CollisionSide::bottom:
+				if (this->GetCurrentState() == PlayerState::NameState::jumping)
+					return false;				
+				position.y = item->GetPosition().y + (item->GetSize().cy + PLAYER_SIZE_HEIGHT) / 2 - delta_y;				
+				velocity.y = 0.0f;
+				return true;
+			default:
+				//if (Checker->IsCollide(player, box2))
+				//{
+				//	if (player->)
+				//	position.x = item->GetPosition().x + (item->GetSize().cx + PLAYER_SIZE_WIDTH) / 2 + 1;
+				//	velocity.x = 0.0f;
+				//	return true;
+				//}
+				break;
 			}
 		}
 	}
