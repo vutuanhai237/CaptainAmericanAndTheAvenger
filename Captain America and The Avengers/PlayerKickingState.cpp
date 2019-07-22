@@ -23,15 +23,6 @@ void PlayerKickingState::Update(float dt)
 	player->GetCurrentAnimation()->Update(dt);
 	player->time_kicking += dt;
 	player->time_air_jumping += dt;
-
-
-	//if (player->GetPreviousState() == PlayerState::NameState::jumping && player->time_air_jumping >= TIME_JUMPING)
-	//{
-	//	player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
-	//	player->SetVelocityY(-VELOCITY_Y);
-	//	Debug::PrintOut(L"a\n");
-	//}
-
 	if (player->time_kicking >= TIME_KICKING) {
 		if (player->GetPreviousState() == PlayerState::NameState::jumping)
 		{
@@ -50,10 +41,11 @@ void PlayerKickingState::Update(float dt)
 		}
 		
 	}
-	if (player->GetPreviousState() == PlayerState::NameState::rolling && player->time_air_jumping >= TIME_AIR )
+	Debug::PrintOut(L"time_ar: %f\n", player->time_air_jumping);
+	if (player->GetPreviousState() == PlayerState::NameState::rolling || player->time_air_jumping >= TIME_AIR )
 	{
 		player->SetVelocityY(player->GetVelocityY() - ROLLING_ACCELERATION);
-		player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
+	
 	}
 
 }
@@ -94,8 +86,4 @@ void PlayerKickingState::HandleInput(float dt)
 		player->SetPositionX(player->GetPosition().x + DELTA_JUMP * dt);
 		return;
 	}
-	
-	// Code xong va chạm thì xóa hàm này với bỏ comment return chỗ left & right
-	// SWEPT AABB sẽ giải quyết được bug chỗ này
-
 }

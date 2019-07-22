@@ -2,6 +2,7 @@
 #include "Framework//Debug.h"
 #include "Shield.h"
 #include "ShieldNomalState.h"
+#include "PlayerPunchingState.h"
 PlayerIdleState::PlayerIdleState()
 {
 	Player* player = Player::GetInstance();
@@ -71,8 +72,16 @@ void PlayerIdleState::HandleInput(float dt)
 		return;
 	}
 	if (keyboard->KeyDown(ATTACK_KEY)) {
-		player->ChangeState(new PlayerThrowingState());
-		return;
+		if (Shield::GetInstance()->GetShieldState()->GetFrameLock() >= 2) {
+			player->ChangeState(new PlayerPunchingState());
+			return;
+		}
+		else {
+			
+			player->ChangeState(new PlayerThrowingState());
+			return;
+		}
+	
 	}
 	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyPress(LEFT_KEY)) {
 		return;

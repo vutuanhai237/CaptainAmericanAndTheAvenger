@@ -33,6 +33,8 @@ void Enemy::SetBoxCollider(BoxCollider box)
 Enemy::Enemy()
 {
 	this->explode_ani = new Animation(1, L"Resources//Enemy//Explode.png", D3DCOLOR_XRGB(255, 0, 255), 3);
+	this->IsLocking = true;
+	this->jump_direction= Entity::Entity_Jump_Direction::TopToBot;
 }
 
 

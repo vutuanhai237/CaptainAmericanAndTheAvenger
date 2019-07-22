@@ -139,6 +139,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyWeapon.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Equation.cpp" />
     <ClCompile Include="Framework\Animation.cpp" />
     <ClCompile Include="Framework\d3d.cpp" />
     <ClCompile Include="Framework\Debug.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="Framework\Sprite.cpp" />
     <ClCompile Include="Framework\Texture.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerDashingState.cpp" />
     <ClCompile Include="PlayerDivingState.cpp" />
@@ -191,6 +193,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyWeapon.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Equation.h" />
     <ClInclude Include="Framework\Animation.h" />
     <ClInclude Include="Framework\d3d.h" />
     <ClInclude Include="Framework\Debug.h" />
@@ -200,6 +203,7 @@
     <ClInclude Include="Framework\Sprite.h" />
     <ClInclude Include="Framework\Texture.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerDashingState.h" />
     <ClInclude Include="PlayerDivingState.h" />

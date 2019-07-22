@@ -5,15 +5,13 @@
 class EnemyWeapon : public Entity
 {
 public:
-	virtual void Update(float dt) {};
+	virtual void Update(float dt);
 	virtual void Render() {};
 	virtual void OnCollision() {};
-	virtual void SetActive(bool IsActive) {};
 	EnemyWeapon();
-	~EnemyWeapon();
+	virtual ~EnemyWeapon();
 protected:
-	Animation* beaten;
-	Animation* explode;
+	Animation* explode_ani;
 
 };
 

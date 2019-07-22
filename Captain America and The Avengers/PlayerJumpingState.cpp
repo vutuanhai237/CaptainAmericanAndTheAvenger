@@ -21,8 +21,6 @@ PlayerJumpingState::PlayerJumpingState()
 	this->current_state = PlayerState::NameState::jumping;
 	// Khi từ đá chuyển về nhảy thì mới có quyền đá tiếp
 	player->time_kicking = 0;
-	player->time_air_jumping = 0;
-	player->time_kicking = 0;
 	player->time_air_rolling = 0;
 	player->time_ducking_before_idle = 0;
 	player->time_jumping_before_flowing = 0;
@@ -80,8 +78,6 @@ void PlayerJumpingState::HandleInput(float dt)
 		{
 			if (player->GetPreviousState() == PlayerState::NameState::flowing || player->GetPreviousState() == PlayerState::NameState::diving) {
 				player->ChangeState(new PlayerJumpingDownState());
-				Debug::PrintOut(L"time_air%f\n", player->time_air_jumping);
-
 				return;
 			}
 			player->ChangeState(new PlayerRollingState());
@@ -99,7 +95,6 @@ void PlayerJumpingState::HandleInput(float dt)
 		if (player->time_air_jumping >= TIME_JUMPING)
 		{
 			player->ChangeState(new PlayerJumpingDownState());
-			Debug::PrintOut(L"time_air%f\n", player->time_air_jumping);
 
 			return;
 		}

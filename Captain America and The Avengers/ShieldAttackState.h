@@ -18,7 +18,6 @@ public:
 	void Update(float dt) override;
 	void Draw() override;
 private:
-	int FrameLock;
 	int direction;
 	float delta;
 	bool IsComeBack;

@@ -18,12 +18,13 @@ public:
 
 	virtual void Update(float dt) {};
 	virtual void Draw() {};
+	int GetFrameLock();
 
 	void SetCurrentState(NameState State);
 	NameState GetCurrentState();
 protected:
 	NameState CurrentState;
-
+	int FrameLock;
 	D3DXVECTOR2 VirtualPoint;
 	D3DXVECTOR2 WorldPoint;
 };

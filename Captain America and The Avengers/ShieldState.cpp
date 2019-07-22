@@ -19,3 +19,8 @@ ShieldState::NameState ShieldState::GetCurrentState()
 {
 	return CurrentState;
 }
+
+int ShieldState::GetFrameLock()
+{
+	return this->FrameLock;
+}

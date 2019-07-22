@@ -21,6 +21,7 @@ public:
 protected:
 	Animation *shield;
 	ShieldState *state, *buffer;
+
 private:
 	Shield();
 	~Shield();

@@ -18,15 +18,19 @@ public:
 	virtual void SetSpawnBox(float top, float left, float width, float height, Entity::Entity_Direction direction);
 	virtual void SetBoxCollider(BoxCollider box);
 	virtual bool IsCollisionWithGround(float dt, int delta_y = 12);
-
 	virtual void Draw() {};
 	Enemy();
 	~Enemy();
+	// bool variable
+	bool IsJumping;
 protected:
 	Animation* beaten_ani; 
 	Animation* explode_ani;
 	Animation* current_animation;
 	bool IsExplode;
+	D3DXVECTOR2 position_spawn;
+	D3DXVECTOR2 position_goto;
+	D3DXVECTOR2 position_loop;
 	BoxCollider spawn_box; // box spawn cố định còn box va chạm khác
 	BoxCollider box;
 };

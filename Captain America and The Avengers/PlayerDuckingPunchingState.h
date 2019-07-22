@@ -13,5 +13,6 @@ public:
 	virtual void Render();
 	virtual void HandleInput(float dt);
 	float time_punch;
+	bool IsGong;
 };
 
