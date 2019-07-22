@@ -25,6 +25,7 @@ struct BoundingBox // top > bottom
 {
 	float top, left, right, bottom;
 	float vx, vy;
+	D3DXVECTOR2 position;
 	BoundingBox(float top, float left, float bottom, float right, float vx, float vy) 
 	{
 		this->top = top;
@@ -36,6 +37,7 @@ struct BoundingBox // top > bottom
 	}
 	BoundingBox(D3DXVECTOR2 position, SIZE size, float vx, float vy)
 	{
+		this->position = position;
 		this->top = position.y + size.cy / 2.0f;
 		this->bottom = top - size.cy;
 		this->left = position.x - size.cx / 2.0f;

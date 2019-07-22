@@ -56,12 +56,12 @@ void PlayerJumpingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
-	if (player->IsCollisionWithGround(dt, 8) && player->IsLockCollision == false && player->GetPreviousState() == PlayerState::NameState::flowing)
-	{
-		player->ChangeState(new PlayerDuckingState());
-		player->IsLockCollision == true;
-		return;
-	}
+	//if (player->IsCollisionWithGround(dt, 8) && player->IsLockCollision == false && player->GetPreviousState() == PlayerState::NameState::flowing)
+	//{
+	//	//player->ChangeState(new PlayerDuckingState());
+	//	player->IsLockCollision == true;
+	//	return;
+	//}
 	if (keyboard->KeyDown(ATTACK_KEY)) {
 		player->ChangeState(new PlayerKickingState());
 		return;
@@ -70,8 +70,11 @@ void PlayerJumpingState::HandleInput(float dt)
 	if (keyboard->KeyPress(JUMP_KEY))
 	{
 		player->time_air_jumping += dt;
-		
-		if (player->time_air_jumping >= TIME_AIR )
+		if (player->GetVelocityY() <= 0) {
+			player->ChangeState(new PlayerJumpingDownState());
+			return;
+		}
+		if (player->time_air_jumping >= TIME_AIR)
 		{
 			if (player->GetPreviousState() == PlayerState::NameState::flowing || player->GetPreviousState() == PlayerState::NameState::diving) {
 				player->ChangeState(new PlayerJumpingDownState());
@@ -84,6 +87,10 @@ void PlayerJumpingState::HandleInput(float dt)
 	else
 	{
 		player->time_air_jumping += dt;
+		if (player->GetVelocityY() <= 0) {
+			player->ChangeState(new PlayerJumpingDownState());
+			return;
+		}
 		player->SetVelocityY(player->GetVelocityY() - JUMPING_ACCELERATION);
 		if (player->time_air_jumping >= TIME_JUMPING)
 		{
@@ -91,6 +98,7 @@ void PlayerJumpingState::HandleInput(float dt)
 
 			return;
 		}
+		
 	}
 	if (!keyboard->KeyPress(RIGHT_KEY) && !keyboard->KeyPress(LEFT_KEY)) {
 		player->SetVelocityX(0);
