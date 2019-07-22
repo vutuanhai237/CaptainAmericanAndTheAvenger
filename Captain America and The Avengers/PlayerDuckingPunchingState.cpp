@@ -30,10 +30,6 @@ void PlayerDuckingPunchingState::Draw()
 
 }
 
-void PlayerDuckingPunchingState::Render()
-{
-}
-
 void PlayerDuckingPunchingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

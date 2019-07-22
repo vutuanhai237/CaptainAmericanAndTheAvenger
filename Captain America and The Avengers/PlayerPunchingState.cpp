@@ -26,10 +26,6 @@ void PlayerPunchingState::Draw()
 
 }
 
-void PlayerPunchingState::Render()
-{
-}
-
 void PlayerPunchingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

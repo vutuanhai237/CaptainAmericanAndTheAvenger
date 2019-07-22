@@ -13,7 +13,6 @@ public:
 	~PlayerThrowingState();
 	virtual void Update(float dt);
 	virtual void Draw();
-	virtual void Render();
 	virtual void HandleInput(float dt);
 };
 

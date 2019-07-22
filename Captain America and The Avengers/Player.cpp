@@ -119,11 +119,6 @@ void Player::Update(float dt)
 	this->player_state->Update(dt);
 }
 
-void Player::Render()
-{
-	this->player_state->Render();
-}
-
 void Player::Draw()
 {
 	this->animation->Draw(this->position);

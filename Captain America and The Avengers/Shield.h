@@ -11,7 +11,7 @@ public:
 	void Release();
 
 	void Update(float dt);
-	void Draw();
+	void Draw() override;
 
 	void SetShieldState(ShieldState *state);
 	ShieldState *GetShieldState();

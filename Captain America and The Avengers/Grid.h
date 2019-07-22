@@ -2,16 +2,19 @@
 #include <list>
 #include "Entity.h"
 #include "Camera.h"
-class Cell {
+
+class Cell
+{
 public:
 	bool IsActive;
 	D3DXVECTOR2 position;
-	
+	std::list<Entity*> object;
 };
+
 class Grid
 {
 private:
-	std::list<Entity*>** cells;
+	std::list<Entity*> **cells;
 	int row;
 	int col;
 	float width;

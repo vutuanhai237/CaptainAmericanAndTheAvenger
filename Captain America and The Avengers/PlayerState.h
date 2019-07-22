@@ -40,10 +40,9 @@ public:
 	PlayerState();
 	PlayerState(PlayerState::NameState current_state);
 	~PlayerState();
-	virtual void Update(float dt);
-	virtual void Draw();
-	virtual void Render();
-	virtual void HandleInput(float dt);
+	virtual void Update(float dt) = 0;
+	virtual void Draw() = 0;
+	virtual void HandleInput(float dt) = 0;
 	PlayerState::NameState GetCurrentState();
 	void SetCurrentState(PlayerState::NameState current_state);
 

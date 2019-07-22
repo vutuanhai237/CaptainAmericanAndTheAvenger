@@ -50,10 +50,6 @@ void PlayerShieldDownState::Draw()
 
 }
 
-void PlayerShieldDownState::Render()
-{
-}
-
 void PlayerShieldDownState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

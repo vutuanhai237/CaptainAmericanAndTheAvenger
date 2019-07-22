@@ -28,10 +28,6 @@ void PlayerThrowingState::Draw()
 
 }
 
-void PlayerThrowingState::Render()
-{
-}
-
 void PlayerThrowingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

@@ -48,10 +48,6 @@ void PlayerJumpingState::Draw()
 
 }
 
-void PlayerJumpingState::Render()
-{
-}
-
 void PlayerJumpingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

@@ -55,10 +55,6 @@ void PlayerKickingState::Draw()
 
 }
 
-void PlayerKickingState::Render()
-{
-}
-
 void PlayerKickingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

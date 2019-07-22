@@ -77,7 +77,7 @@ public:
 		AvailableItem,
 		UnavailableItem
 	};
-	
+
 	// function zone
 	Entity();
 	virtual ~Entity();
@@ -114,6 +114,8 @@ public:
 	virtual SIZE GetSize();
 	virtual void SetIsLocking(bool Islocking);
 	virtual bool GetIsLocking();
+
+	virtual void Draw() {};
 protected:
 	BoundingBox box;
 	bool IsLocking;
