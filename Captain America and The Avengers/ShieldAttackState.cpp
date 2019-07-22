@@ -26,18 +26,25 @@ void ShieldAttackState::Update(float dt)
 	Player *player = Player::GetInstance();
 	Shield *shield = Shield::GetInstance();
 
-	if (this->FrameLock < 2)
-	{
-		FrameLock = player->GetCurrentAnimation()->GetNumberCurrentFrame();
-		if (FrameLock == 2)
+	if (player->GetCurrentAnimation()->GetName() == PlayerState::NameState::throwing) {
+		if (this->FrameLock < 2)
 		{
-			VirtualPoint = player->GetPosition();
-			VirtualPoint.x += SHIELD_BEFORE_ATTACK_FRAME_2_DELTA_X * direction;
-			VirtualPoint.y += SHIELD_BEFORE_ATTACK_FRAME_2_DELTA_Y;
-			this->FrameLock++;
+
+			FrameLock = player->GetCurrentAnimation()->GetNumberCurrentFrame();
+			if (FrameLock == 2)
+			{
+				VirtualPoint = player->GetPosition();
+				VirtualPoint.x += SHIELD_BEFORE_ATTACK_FRAME_2_DELTA_X * direction;
+				VirtualPoint.y += SHIELD_BEFORE_ATTACK_FRAME_2_DELTA_Y;
+				this->FrameLock++;
+			}
+			return;
 		}
-		return;
 	}
+	else {
+		this->FrameLock = 2;
+	}
+	
 	
 	if (delta >= SHIELD_ATTACK_TIME_OUT && !IsComeBack)
 	{
