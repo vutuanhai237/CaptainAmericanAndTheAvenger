@@ -56,16 +56,16 @@ void PlayerIdleState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
-	if (!player->IsCollisionWithGround(dt))
-	{
-		player->ChangeState(new PlayerJumpingDownState());
-		return;
+	if (!player->IsCollisionWithWall(dt))
+	{ 
+		if (!player->IsCollisionWithGround(dt))
+		{
+			player->ChangeState(new PlayerJumpingDownState());
+			return;
+		}
+
 	}
-		
-
-
-
-
+	
 	// Nếu ấn X thì nhảy
 	if (keyboard->KeyDown(JUMP_KEY)) {
 		player->ChangeState(new PlayerJumpingState());

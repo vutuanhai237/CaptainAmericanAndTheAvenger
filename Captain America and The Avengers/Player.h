@@ -41,6 +41,8 @@
 #define TIME_JUMPING_DOWN_BEFORE_FLOWING 0.016f*23
 #define TIME_ANIMATION_BEFORE_FLOWING 0.5
 // diving
+// don tho
+#define TIME_DON_THO 0.016f*10
 using namespace std;
 class Player : public Entity
 {
@@ -63,7 +65,6 @@ public:
 	Animation* GetAnimation(PlayerState::NameState state);
 	int GetPreviousState();
 
-	void SetPosition(float x, float y) override;
 	void AddTimeBuffer(float dt);
 	float GetTimeBuffer();
 	void SetTimeBuffer(float dt);
@@ -77,6 +78,7 @@ public:
 	bool GetIsDuckingPunching();
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
 	bool IsCollisionWithWater(float dt, int delta_y = 12);
+	bool IsCollisionWithWall(float dt, int delta_y = 3);
 
 	// Các biến này đáng lẽ phải ở riêng mỗi state, nhưng ở kicking, khi chuyển từ
 	// kicking về jumping, jumpingdown hay rolling thì lại phải tạo mới state,
@@ -86,6 +88,7 @@ public:
 	float time_kicking;
 	float time_ducking_before_idle;
 	float time_jumping_before_flowing;
+	float time_don_tho;
 	// Code đi rời để biết tại sao phải tạo những biến này, có một vấn đề là các trạng thái
 	// khi new sẽ khởi tạo vận tốc khác nhau, nên khi jumping -> kicking -> jumping thì vận tốc
 	// bị khởi động lại 1 lần nữa, những biến này sẽ do idle có quyền định đoạt
