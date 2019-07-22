@@ -22,6 +22,7 @@ float Equation::GetYFromX(float x)
 
 Equation::Equation()
 {
+	a = b = c = 0;
 }
 
 

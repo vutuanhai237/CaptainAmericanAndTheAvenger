@@ -1,5 +1,21 @@
 #include "Grid.h"
 
+void Grid::MoveLeft(Entity * entity)
+{
+}
+
+void Grid::MoveRight(Entity * entity)
+{
+}
+
+void Grid::MoveTop(Entity * entity)
+{
+}
+
+void Grid::MoveBot(Entity * entity)
+{
+}
+
 void Grid::Add(Entity *entity)
 {
 	int col = entity->GetPosition().x / width_cell;
@@ -20,6 +36,13 @@ void Grid::UpdateActiveCells(float dt)
 void Grid::Remove(Entity *, float x, float y)
 {
 
+}
+
+void Grid::Remove(Entity *entity)
+{
+	int col = entity->GetPosition().x / width_cell;
+	int row = entity->GetPosition().y / height_cell;
+	this->cells[col][row].remove(entity);
 }
 
 void Grid::UpdateActivedCells(float dt)
@@ -48,7 +71,6 @@ void Grid::ClearOut(float dt)
 				}	
 			}
 		}
-	
 	}
 }
 
@@ -78,11 +100,6 @@ int Grid::GetCol()
 
 Grid::Grid()
 {
-	for (int i = 1; i <= this->col; i++) {
-		for (int j = 1; j <= this->row; j++) {
-
-		}
-	}
 }
 
 Grid::Grid(float width, float height)
@@ -105,10 +122,6 @@ Grid::Grid(float width, float height)
 Grid::~Grid()
 {
 	for (int i = 1; i <= this->col; i++) {
-		this->cells = new std::list<Entity*>*[i];
-		for (int j = 1; j <= this->row; j++)
-		{
-			cells[i] = new std::list<Entity*>[j];
-		}
+		delete cells[i];
 	}
 }

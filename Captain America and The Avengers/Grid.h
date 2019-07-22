@@ -22,9 +22,15 @@ private:
 	D3DXVECTOR2 position_active_bot_left;
 	D3DXVECTOR2 position_active_top_right;
 public:
+	void MoveLeft(Entity* entity);
+	void MoveRight(Entity* entity);
+	void MoveTop(Entity* entity);
+	void MoveBot(Entity* entity);
+
 	void Add(Entity*entity);
 	void UpdateActiveCells(float dt);
-	void Remove(Entity*, float x, float y);
+	void Remove(Entity*entity, float x, float y);
+	void Remove(Entity*entity);
 	void UpdateActivedCells(float dt);
 	void ClearOut(float dt);
 	void Draw();

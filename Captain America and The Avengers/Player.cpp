@@ -3,6 +3,7 @@
 #include "PlayerRunningState.h"
 #include "SceneManager.h"
 #include "Framework/Debug.h"
+#include "Shield.h"
 Player*Player::instance = NULL;
 
 Player * Player::GetInstance()
@@ -126,7 +127,22 @@ void Player::Render()
 void Player::Draw()
 {
 	this->animation->Draw(this->position);
-	//Debug::PrintOut(L"x = %f, y = %f\n", this->position.x, this->position.y);
+	Player *player = Player::GetInstance();
+	Shield *shield = Shield::GetInstance();
+
+	if (player->GetMoveDirection()) {
+		player->GetCurrentAnimation()->SetScale(1, 1);
+		shield->GetAnimation()->SetScale(1, 1);
+	}
+	else {
+
+		player->GetCurrentAnimation()->SetScale(-1, 1);
+		shield->GetAnimation()->SetScale(-1, 1);
+	}
+
+	shield->Draw();
+
+
 }
 
 void Player::HandleInput(float dt)
