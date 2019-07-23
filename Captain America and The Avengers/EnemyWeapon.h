@@ -6,7 +6,6 @@ class EnemyWeapon : public Entity
 {
 public:
 	virtual void Update(float dt);
-	virtual void Render() {};
 	virtual void OnCollision() {};
 	EnemyWeapon();
 	virtual ~EnemyWeapon();

@@ -28,6 +28,7 @@
     <Filter Include="Enemy\RedRocketRobot">
       <UniqueIdentifier>{be33280e-667a-41db-9367-323c53cf0f99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Player\Shield">
       <UniqueIdentifier>{8fa90513-e92e-44d8-9174-17e061a5f19d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Player\PlayerState">
@@ -112,25 +113,25 @@
       <Filter>Player\Shield</Filter>
     </ClCompile>
     <ClCompile Include="ShieldKickState.cpp">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClCompile>
     <ClCompile Include="ShieldNomalState.cpp">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClCompile>
     <ClCompile Include="ShieldOnAirState.cpp">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClCompile>
     <ClCompile Include="ShieldState.cpp">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClCompile>
     <ClCompile Include="ShieldUpState.cpp">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClCompile>
     <ClCompile Include="ShieldDownState.cpp">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClCompile>
     <ClCompile Include="ShieldAttackState.cpp">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClCompile>
     <ClCompile Include="PlayerThrowingState.cpp">
       <Filter>Player\PlayerState</Filter>
@@ -271,28 +272,28 @@
       <Filter>Player\Shield</Filter>
     </ClInclude>
     <ClInclude Include="ShieldDashState.h">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClInclude>
     <ClInclude Include="ShieldKickState.h">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClInclude>
     <ClInclude Include="ShieldNomalState.h">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClInclude>
     <ClInclude Include="ShieldOnAirState.h">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClInclude>
     <ClInclude Include="ShieldState.h">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClInclude>
     <ClInclude Include="ShieldUpState.h">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClInclude>
     <ClInclude Include="ShieldDownState.h">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClInclude>
     <ClInclude Include="ShieldAttackState.h">
-      <Filter>Player\ShieldState</Filter>
+      <Filter>Player\Shield</Filter>
     </ClInclude>
     <ClInclude Include="PlayerThrowingState.h">
       <Filter>Player\PlayerState</Filter>

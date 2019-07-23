@@ -4,14 +4,17 @@
 
 Equation::Equation(D3DXVECTOR2 point1, D3DXVECTOR2 point2)
 {
-	float A = point1.x;
-	float B = point1.y;
-	float C = point2.x;
-	float D = point2.y;
+
+	float xA = point1.x;
+	float yA = point1.y;
+	float xB = point2.x;
+	float yB = point2.y;
+	float xC = (xA + xB) / 2;
+	float yC = (2 * yB - yA); if (yC == yB) yC += 60;
 	// Giải phương trình
-	this->a = (4 * B) / (9 * A*A - 6 * A*C + C * C - 16 * (B - 2 * D)*(B - 2 * D));
-	this->b = this->a*(A - C);
-	this->c = B - this->a*A*A - this->a*A*(A - C);
+	this->a = ((yA - yB) / (xA - xB) - (yA - yC) / (xA - xC)) / (xB - xC);
+	this->b = (yA - yB) / (xA - xB) - this->a*(xA + xB);
+	this->c = yA - a * xA * xA - b * xA;
 
 }
 
