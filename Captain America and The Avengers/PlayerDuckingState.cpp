@@ -26,11 +26,6 @@ void PlayerDuckingState::Update(float dt)
 
 void PlayerDuckingState::Draw()
 {
-
-}
-
-void PlayerDuckingState::Render()
-{
 }
 
 void PlayerDuckingState::HandleInput(float dt)

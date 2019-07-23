@@ -51,7 +51,6 @@ public:
 	static Player* GetInstance();
 	void Release();
 	void Update(float dt);
-	void Render();
 	void Draw();
 	void HandleInput(float dt);
 	void Init();

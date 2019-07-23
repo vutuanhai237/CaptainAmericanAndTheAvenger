@@ -11,7 +11,6 @@ public:
 	~PlayerJumpingDownState();
 	virtual void Update(float dt);
 	virtual void Draw();
-	virtual void Render();
 	virtual void HandleInput(float dt);
 	Animation*animation_before_flowing;
 };

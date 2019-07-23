@@ -45,11 +45,6 @@ void PlayerIdleState::Update(float dt)
 
 void PlayerIdleState::Draw()
 {
-
-}
-
-void PlayerIdleState::Render()
-{
 }
 
 void PlayerIdleState::HandleInput(float dt)

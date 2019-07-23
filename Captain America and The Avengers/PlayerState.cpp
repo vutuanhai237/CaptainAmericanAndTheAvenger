@@ -1,5 +1,6 @@
 #include "PlayerState.h"
 #include "Player.h"
+
 PlayerState::PlayerState()
 {
 	this->current_state = PlayerState::idle;
@@ -12,24 +13,6 @@ PlayerState::PlayerState(PlayerState::NameState current_state)
 
 PlayerState::~PlayerState()
 {
-}
-
-void PlayerState::Update(float dt)
-{
-	
-}
-
-void PlayerState::Draw()
-{
-}
-
-void PlayerState::Render()
-{
-}
-
-void PlayerState::HandleInput(float dt)
-{
-	
 }
 
 PlayerState::NameState PlayerState::GetCurrentState()

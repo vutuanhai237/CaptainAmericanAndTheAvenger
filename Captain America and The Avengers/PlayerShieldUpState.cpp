@@ -24,11 +24,6 @@ void PlayerShieldUpState::Update(float dt)
 
 void PlayerShieldUpState::Draw()
 {
-
-}
-
-void PlayerShieldUpState::Render()
-{
 }
 
 void PlayerShieldUpState::HandleInput(float dt)

@@ -50,10 +50,6 @@ void PlayerShieldDownState::Draw()
 
 }
 
-void PlayerShieldDownState::Render()
-{
-}
-
 void PlayerShieldDownState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
@@ -61,7 +57,7 @@ void PlayerShieldDownState::HandleInput(float dt)
 	player->time_air_jumping += dt;
 	player->time_air_rolling += dt;
 	// Xét trường khi đang lót đít trên mật đất
-	if (player->IsCollisionWithGround(dt, 18))
+	if (player->IsCollisionWithGround(dt, 18) || player->IsCollisionWithWall(dt))
 	{
 		player->SetVelocityY(0);
 		// Điều kiện tiên quyết là phải ấn giữ down key, nếu không thì về idle

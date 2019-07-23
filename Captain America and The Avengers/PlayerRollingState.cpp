@@ -41,10 +41,6 @@ void PlayerRollingState::Draw()
 
 }
 
-void PlayerRollingState::Render()
-{
-}
-
 void PlayerRollingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

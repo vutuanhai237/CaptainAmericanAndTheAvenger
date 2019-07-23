@@ -26,9 +26,6 @@ void PlayerDashingState::Draw()
 {
 }
 
-void PlayerDashingState::Render()
-{
-}
 //Perfect, không được sửa nữa
 void PlayerDashingState::HandleInput(float dt)
 {

@@ -43,10 +43,6 @@ void PlayerRunningState::Draw()
 {
 }
 
-void PlayerRunningState::Render()
-{
-}
-
 void PlayerRunningState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

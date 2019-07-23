@@ -31,10 +31,6 @@ void PlayerDivingState::Draw()
 
 }
 
-void PlayerDivingState::Render()
-{
-}
-
 void PlayerDivingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

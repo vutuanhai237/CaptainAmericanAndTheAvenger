@@ -1,45 +1,48 @@
 #pragma once
 #include <list>
+#include <vector>
 #include "Entity.h"
 #include "Camera.h"
-class Cell {
-public:
+
+#define GRID_CELL_SIZE 80
+
+struct Cell
+{
 	bool IsActive;
-	D3DXVECTOR2 position;
-	
+	std::list<Entity*> *Object;
+	std::vector<Entity*> *InitObject;
+	Cell()
+	{
+		Object = new std::list<Entity*>();
+		InitObject = new std::vector<Entity*>();
+		IsActive = false;
+	}
+	~Cell()
+	{
+		Object->clear();
+		InitObject->clear();
+		delete Object;
+		delete InitObject;
+	}
 };
+
 class Grid
 {
-private:
-	std::list<Entity*>** cells;
-	int row;
-	int col;
-	float width;
-	float height;
-	float width_cell;
-	float height_cell;
-	
-	D3DXVECTOR2 position_active_bot_left;
-	D3DXVECTOR2 position_active_top_right;
 public:
-	void MoveLeft(Entity* entity);
-	void MoveRight(Entity* entity);
-	void MoveTop(Entity* entity);
-	void MoveBot(Entity* entity);
-
-	void Add(Entity*entity);
-	void UpdateActiveCells(float dt);
-	void Remove(Entity*entity, float x, float y);
-	void Remove(Entity*entity);
-	void UpdateActivedCells(float dt);
-	void ClearOut(float dt);
-	void Draw();
-	float GetWidth();
-	float GetHeight();
-	int GetRow();
-	int GetCol();
-	Grid();
-	Grid(float width, float height);
+	Grid(int MapSizeWidth, int MapSizeHeight);
 	~Grid();
-};
 
+	void AddObject2Cell(int column, int row, Entity* object);
+
+	void UpdateActivatedZone();
+	void UpdateGrid();
+	void CheckCollision(float dt);
+	void UpdateEntity(float dt);
+	void DrawActivatedObject();
+private:
+	int CellX, CellY;
+	Cell ***grid;
+
+	int Xfrom, Xto, Yfrom, Yto;
+	void CollisionCall(std::list<Entity*> *ListObject1, std::list<Entity*> *ListObject2, float dt);
+};

@@ -28,10 +28,6 @@ void PlayerThrowingState::Draw()
 
 }
 
-void PlayerThrowingState::Render()
-{
-}
-
 void PlayerThrowingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
@@ -41,17 +37,7 @@ void PlayerThrowingState::HandleInput(float dt)
 		player->GetCurrentAnimation()->Pause(TIME_WAIT_THROWING);
 	}
 
-	// Dừng throwing khi time out, chuyển về idle
-	if (player->GetCurrentAnimation()->GetAnimationTime() >= TIME_THROWING)
-	{
-		player->GetCurrentAnimation()->SetAnimationTime(0.0f);
-		player->GetCurrentAnimation()->SetFrame(1);
-		player->ChangeState(new PlayerIdleState());
-		return;
-	}
-	else {
-		return;
-	}
+	
 	// Ưu tiên các trạng thái khái
 	if (keyboard->KeyDown(RIGHT_KEY)) {
 		player->ChangeState(new PlayerRunningState());
@@ -77,6 +63,17 @@ void PlayerThrowingState::HandleInput(float dt)
 	
 	if (keyboard->KeyDown(DOWN_KEY)) {
 		player->ChangeState(new PlayerDuckingState());
+		return;
+	}
+	// Dừng throwing khi time out, chuyển về idle
+	if (player->GetCurrentAnimation()->GetAnimationTime() >= TIME_THROWING)
+	{
+		player->GetCurrentAnimation()->SetAnimationTime(0.0f);
+		player->GetCurrentAnimation()->SetFrame(1);
+		player->ChangeState(new PlayerIdleState());
+		return;
+	}
+	else {
 		return;
 	}
 	player->ChangeState(new PlayerIdleState());

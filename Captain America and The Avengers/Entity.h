@@ -77,11 +77,11 @@ public:
 		AvailableItem,
 		UnavailableItem
 	};
-	
+
 	// function zone
 	Entity();
 	virtual ~Entity();
-	virtual void OnCollision() {};
+	virtual void OnCollision(Entity *, float dt) {};
 	virtual void SetActive(bool _IsActive);
 	virtual bool GetActive();
 	virtual void SetTag(Entity_Tag _tag);
@@ -114,6 +114,8 @@ public:
 	virtual SIZE GetSize();
 	virtual void SetIsLocking(bool Islocking);
 	virtual bool GetIsLocking();
+
+	virtual void Draw() {};
 protected:
 	BoundingBox box;
 	bool IsLocking;
