@@ -13,21 +13,25 @@ void RedRocketRobot::Update(float dt)
 		if (this->rocket->distance > DISTANCE_OUT) {
 			this->rocket->Release(this->position);
 		}
-	
+
 	}
 
-	
-	
+
+
 	// Khi không còn va chạm với mặt đất, cho phép một lần nhảy
-	if (this->IsCollisionWithGround(dt) && IsChamDatLanDau == false)
+	if (IsChamDatLanDau == false)
 	{
+		if (this->IsCollisionWithGround(dt)) {
+			this->SetVelocityY(0);
+
+		}
+		else {
+			this->SetVelocityY(RED_ROCKET_ROBOT_VELOCITY);
+
+		}
 		IsChamDatLanDau = true;
 		return;
 	}
-	else {
-		this->SetVelocityY(RED_ROCKET_ROBOT_VELOCITY);
-	}
-
 	// Quay mặt về player
 	if ((player->GetPosition().x - this->GetPosition().x > 0) && this->level != Level::clever) {
 		this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
@@ -85,16 +89,12 @@ void RedRocketRobot::Update(float dt)
 		}
 
 	}
-	
-
-
-
 
 	// ngu thì đứng yên một chỗ
 	if (this->level == Level::stupid) {
 		this->UpdateStupidLevel(dt);
 	}
-	
+
 	// bình thường thì sẽ đi tới đi lui
 	if (this->level == Level::normal) {
 		this->UpdateNormalLevel(dt);
@@ -147,7 +147,7 @@ void RedRocketRobot::UpdateNormalLevel(float dt)
 		return;
 	}
 	// Bắt việc shield có được ném hay không, thì nhảy để né
-	
+
 	if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::ShieldAttack
 		&& this->IsJumping == false && this->current_state == RedRocketRobotState::running) {
 		this->IsJumping = true;
@@ -156,13 +156,13 @@ void RedRocketRobot::UpdateNormalLevel(float dt)
 		e = new Equation(
 			this->position,
 			D3DXVECTOR2(this->position.x + (this->GetMoveDirection() == 0 ? 1 : -1) * 100, this->position.y));
-		
+
 		return;
 	}
-	
+
 	// Đi tới position togo, nếu đã nhảy rồi thì không đi nữa, hoặc đã đi tới điểm cần tới
-	
-	if (abs(position.x - position_goto.x) >= 10.0f && this->IsCollisionWithGround(dt) == true) {
+
+	if (abs(position.x - position_goto.x) >= 10.0f && this->IsJumpingFirst == 0 && this->IsCollisionWithGround(dt) == true) {
 		this->SetVelocityX(RED_ROCKET_ROBOT_VELOCITY_X);
 		this->current_state = RedRocketRobotState::running;
 		this->current_animation = this->running_ani;
@@ -173,13 +173,18 @@ void RedRocketRobot::UpdateNormalLevel(float dt)
 		//}
 	}
 	else {
-		if (IsLoop == false && this->current_state == RedRocketRobotState::running) {
+		
+		if ((IsLoop == false && this->current_state == RedRocketRobotState::running) || this->IsJumpingFirst > 0) {
 			this->SetVelocityX(0);
-			this->current_state = RedRocketRobotState::idle;
-			this->current_animation = this->idle_ani;
+			this->SetVelocityY(0);
+		
 			this->IsLoop = true;
 		}
-	
+		if (this->current_state == RedRocketRobotState::running) {
+			this->current_state = RedRocketRobotState::idle;
+			this->current_animation = idle_ani;
+
+		}
 	}
 }
 
@@ -215,7 +220,7 @@ void RedRocketRobot::UpdateCleverLevel(float dt)
 	if (abs(this->position.x - this->position_loop.x) >= 5.0f && IsLoop && IsLocking) {
 		this->SetVelocityX(RED_ROCKET_ROBOT_VELOCITY_X);
 		this->current_state = RedRocketRobotState::running;
-		
+
 	}
 	else {
 		IsLoop == false;
@@ -234,6 +239,11 @@ void RedRocketRobot::UpdateCleverLevel(float dt)
 
 	}
 
+}
+
+CollisionOut RedRocketRobot::SweptAABBPrivate(BoundingBox recta, BoundingBox rectb)
+{
+	return CollisionOut();
 }
 
 
@@ -265,7 +275,7 @@ bool RedRocketRobot::IsCollisionWithGround(float dt, int delta_y)
 {
 	SIZE FootSize;
 	FootSize.cx = RED_ROCKET_ROBOT_SIZE_WIDTH;
-	FootSize.cy = RED_ROCKET_ROBOT_SIZE_HEIGHT;
+	FootSize.cy = RED_ROCKET_ROBOT_FOOT_HEIGHT;
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
@@ -375,7 +385,7 @@ RedRocketRobot::RedRocketRobot(Level level, D3DXVECTOR2 position_spawn, D3DXVECT
 		this->goto_direction = Entity::Entity_Direction::LeftToRight;
 
 	}
-	
+
 	this->level = level;
 	this->position_spawn = position_spawn;
 	this->position_goto = position_goto;
