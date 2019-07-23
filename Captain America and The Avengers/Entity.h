@@ -81,7 +81,7 @@ public:
 	// function zone
 	Entity();
 	virtual ~Entity();
-	virtual void OnCollision() {};
+	virtual void OnCollision(Entity *, float dt) {};
 	virtual void SetActive(bool _IsActive);
 	virtual bool GetActive();
 	virtual void SetTag(Entity_Tag _tag);
