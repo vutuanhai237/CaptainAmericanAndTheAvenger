@@ -26,6 +26,18 @@ void PlayerPunchingState::Draw()
 
 }
 
+BoundingBox PlayerPunchingState::GetBoundingBox()
+{
+	Player * player = Player::GetInstance();
+	return BoundingBox(
+		player->GetPosition(),
+		player->GetSize(),
+		player->GetVelocityX(),
+		player->GetVelocityY()
+	);
+
+}
+
 void PlayerPunchingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

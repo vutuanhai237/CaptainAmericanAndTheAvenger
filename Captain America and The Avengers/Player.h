@@ -78,7 +78,7 @@ public:
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
 	bool IsCollisionWithWater(float dt, int delta_y = 12);
 	bool IsCollisionWithWall(float dt, int delta_y = 3);
-
+	BoundingBox GetBoundingBox();
 	// Các biến này đáng lẽ phải ở riêng mỗi state, nhưng ở kicking, khi chuyển từ
 	// kicking về jumping, jumpingdown hay rolling thì lại phải tạo mới state,
 	// như vậy thì time_on_air sẽ được reset lại

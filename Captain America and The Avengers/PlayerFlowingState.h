@@ -12,6 +12,7 @@ public:
 	PlayerFlowingState();
 	~PlayerFlowingState();
 	virtual void Update(float dt);
+	BoundingBox GetBoundingBox() override;
 	virtual void Draw();
 	virtual void HandleInput(float dt);
 };

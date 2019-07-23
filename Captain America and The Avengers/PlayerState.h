@@ -41,6 +41,7 @@ public:
 	PlayerState(PlayerState::NameState current_state);
 	~PlayerState();
 	virtual void Update(float dt) = 0;
+	virtual BoundingBox GetBoundingBox() = 0;
 	virtual void Draw() = 0;
 	virtual void HandleInput(float dt) = 0;
 	PlayerState::NameState GetCurrentState();

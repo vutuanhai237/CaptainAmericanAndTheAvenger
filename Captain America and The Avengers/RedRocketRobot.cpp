@@ -7,7 +7,6 @@ void RedRocketRobot::Update(float dt)
 	Player *player = Player::GetInstance();
 	this->current_animation->Update(dt);
 	auto keyboard = DirectInput::GetInstance();
-
 	if (this->rocket != NULL) {
 		this->rocket->Update(dt);
 		if (this->rocket->distance > DISTANCE_OUT) {
@@ -15,9 +14,6 @@ void RedRocketRobot::Update(float dt)
 		}
 
 	}
-
-
-
 	// Khi không còn va chạm với mặt đất, cho phép một lần nhảy
 	if (IsChamDatLanDau == false)
 	{
@@ -114,18 +110,6 @@ void RedRocketRobot::UpdateStupidLevel(float dt)
 
 void RedRocketRobot::UpdateNormalLevel(float dt)
 {
-	/*
-	// Xét va chạm trẻn mặt đất
-	if (this->IsCollisionWithGround(dt)) {
-		// Vừa va chạm vừa đang nhảy thì chuyển về ngồi
-		if (this->current_state == RedRocketRobotState::jumping) {
-			this->current_state = RedRocketRobotState::ducking;
-		}
-		// Nếu không thì ...
-
-
-	}
-	*/
 	// Cập nhật tọa độ khi đang nhảy
 	if (this->current_state == RedRocketRobotState::jumping) {
 		if (this->IsCollisionWithGround(dt) && this->IsJumpingFirst > 5) {
@@ -167,10 +151,6 @@ void RedRocketRobot::UpdateNormalLevel(float dt)
 		this->current_state = RedRocketRobotState::running;
 		this->current_animation = this->running_ani;
 		this->SetMoveDirection(this->goto_direction);
-		//if (this->IsJumping == true && this->current_state != RedRocketRobotState::jumping) {
-		//	this->SetVelocityX(0);
-		//	this->current_state = RedRocketRobotState::idle;
-		//}
 	}
 	else {
 		
@@ -192,58 +172,65 @@ void RedRocketRobot::UpdateCleverLevel(float dt)
 {
 	// thông minh nhưng thực ra cũng ngu, luôn hướng về trái
 	this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-	// Xét va chạm trẻn mặt đất
-	if (this->IsCollisionWithGround(dt)) {
-		if (this->current_state == RedRocketRobotState::jumping) {
-			this->current_state = RedRocketRobotState::ducking;
+	if (this->current_state == RedRocketRobotState::running && this->IsJumpingFirst == 0) {
 
-		}
 	}
-	// Nếu bị hụt chân thì nhảy
-	else {
-		if (IsJumping == false) {
-			this->current_state = RedRocketRobotState::jumping;
-			this->IsJumping = true;
-		}
-	}
-
 	// Cập nhật tọa độ khi đang nhảy
 	if (this->current_state == RedRocketRobotState::jumping) {
-		Equation *e = new Equation(
-			this->position_spawn,
-			this->position_goto);
-		this->SetPositionX(RED_ROCKET_ROBOT_VELOCITY_X*dt);
+		if (this->IsCollisionWithGround(dt) && this->IsJumpingFirst > 5) {
+			this->current_state = RedRocketRobotState::idle;
+			this->current_animation = idle_ani;
+			return;
+		}
+		this->IsJumpingFirst++;
+		this->SetMoveDirection(this->goto_direction);
+		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+			this->SetPositionX(this->position.x + RED_ROCKET_ROBOT_VELOCITY_X * dt);
+
+		}
+		else {
+			this->SetPositionX(this->position.x - RED_ROCKET_ROBOT_VELOCITY_X * dt);
+
+		}
 		this->SetPositionY(e->GetYFromX(this->GetPosition().x));
 		return;
 	}
+	// Bắt việc shield có được ném hay không, thì nhảy để né
 
-	if (abs(this->position.x - this->position_loop.x) >= 5.0f && IsLoop && IsLocking) {
+	if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::ShieldAttack
+		&& this->IsJumping == false && this->current_state == RedRocketRobotState::running) {
+		this->IsJumping = true;
+		this->current_state = RedRocketRobotState::jumping;
+		this->current_animation = ducking_ani;
+		e = new Equation(
+			this->position,
+			D3DXVECTOR2(this->position.x + (this->GetMoveDirection() == 0 ? 1 : -1) * 100, this->position.y));
+
+		return;
+	}
+
+	// Đi tới position togo, nếu đã nhảy rồi thì không đi nữa, hoặc đã đi tới điểm cần tới
+
+	if (abs(position.x - position_goto.x) >= 10.0f && this->IsJumpingFirst == 0 && this->IsCollisionWithGround(dt) == true) {
 		this->SetVelocityX(RED_ROCKET_ROBOT_VELOCITY_X);
 		this->current_state = RedRocketRobotState::running;
-
+		this->current_animation = this->running_ani;
+		this->SetMoveDirection(this->goto_direction);
 	}
 	else {
-		IsLoop == false;
-		IsLocking = true;
-		this->current_state = RedRocketRobotState::idle;
+
+		if ((IsLoop == false && this->current_state == RedRocketRobotState::running) || this->IsJumpingFirst > 0) {
+			this->SetVelocityX(0);
+			this->SetVelocityY(0);
+
+			this->IsLoop = true;
+		}
+		if (this->current_state == RedRocketRobotState::running) {
+			this->current_state = RedRocketRobotState::idle;
+			this->current_animation = idle_ani;
+
+		}
 	}
-
-	if (abs(this->position.x - this->position_goto.x) >= 5.0f && IsLoop == false && IsLocking) {
-		this->SetVelocityX(RED_ROCKET_ROBOT_VELOCITY_X);
-		this->current_state = RedRocketRobotState::running;
-	}
-	else {
-		IsLoop == true;
-		IsLocking = true;
-		this->current_state = RedRocketRobotState::idle;
-
-	}
-
-}
-
-CollisionOut RedRocketRobot::SweptAABBPrivate(BoundingBox recta, BoundingBox rectb)
-{
-	return CollisionOut();
 }
 
 

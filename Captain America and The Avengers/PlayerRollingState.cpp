@@ -41,6 +41,11 @@ void PlayerRollingState::Draw()
 
 }
 
+BoundingBox PlayerRollingState::GetBoundingBox()
+{
+	return BoundingBox();
+}
+
 void PlayerRollingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

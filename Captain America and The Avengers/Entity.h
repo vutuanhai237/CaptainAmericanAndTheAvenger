@@ -114,7 +114,7 @@ public:
 	virtual SIZE GetSize();
 	virtual void SetIsLocking(bool Islocking);
 	virtual bool GetIsLocking();
-
+	virtual BoundingBox GetBoundingBox();
 	virtual void Draw() {};
 protected:
 	BoundingBox box;

@@ -51,13 +51,13 @@ void Charleston::Init()
 {
 	Player* player = Player::GetInstance();
 	player->Init();
-	player->SetPosition(300.0f, 100.0f);
+	player->SetPosition(550.0f, 100.0f);
 
 	bot1 = new RedRocketRobot(
-		RedRocketRobot::Level::normal,
-		D3DXVECTOR2(400.0f, 150.0f),
-		D3DXVECTOR2(300.0f, 150.0f),
-		D3DXVECTOR2(200.0f, 150.0f)
+		RedRocketRobot::Level::clever,
+		D3DXVECTOR2(600.0f, 150.0f),
+		D3DXVECTOR2(500.0f, 150.0f),
+		D3DXVECTOR2(300.0f, 150.0f)
 	);
 }
 

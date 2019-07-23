@@ -1,5 +1,5 @@
 #include "Entity.h"
-
+#include "Collision.h"
 
 
 Entity::Entity()
@@ -191,5 +191,10 @@ void Entity::SetIsLocking(bool Islocking)
 bool Entity::GetIsLocking()
 {
 	return this->IsLocking;
+}
+
+BoundingBox Entity::GetBoundingBox()
+{
+	return BoundingBox(this->position, this->size, this->velocity.x, this->velocity.y);
 }
 

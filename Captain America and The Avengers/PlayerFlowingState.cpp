@@ -35,6 +35,14 @@ void PlayerFlowingState::Update(float dt)
 
 }
 
+BoundingBox PlayerFlowingState::GetBoundingBox()
+{
+	Player *player = Player::GetInstance();
+	SIZE size; size.cx = -0.0f; size.cy = -0.0f;
+	D3DXVECTOR2 pos = player->GetPosition();
+	return BoundingBox(pos, size, player->GetVelocityX(), player->GetVelocityY());
+}
+
 void PlayerFlowingState::Draw()
 {
 

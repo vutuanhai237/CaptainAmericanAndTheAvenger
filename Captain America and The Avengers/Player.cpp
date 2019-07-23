@@ -370,5 +370,10 @@ bool Player::IsCollisionWithWall(float dt, int delta_y)
 	return false;
 }
 
+BoundingBox Player::GetBoundingBox()
+{
+	return this->player_state->GetBoundingBox();
+}
+
 
 

@@ -31,6 +31,14 @@ void PlayerDivingState::Draw()
 
 }
 
+BoundingBox PlayerDivingState::GetBoundingBox()
+{
+	Player *player = Player::GetInstance();
+	SIZE size; size.cx = -0.0f; size.cy = -0.0f;
+	D3DXVECTOR2 pos = player->GetPosition();
+	return BoundingBox(pos, size, player->GetVelocityX(), player->GetVelocityY());
+}
+
 void PlayerDivingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

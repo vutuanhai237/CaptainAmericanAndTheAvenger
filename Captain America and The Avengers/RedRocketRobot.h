@@ -34,7 +34,6 @@ public:
 	virtual void UpdateStupidLevel(float dt);
 	virtual void UpdateNormalLevel(float dt);
 	virtual void UpdateCleverLevel(float dt);
-	CollisionOut SweptAABBPrivate(BoundingBox recta, BoundingBox rectb);
 	virtual void OnCollision();
 	virtual void SetActive(bool IsActive);
 	virtual void Draw();

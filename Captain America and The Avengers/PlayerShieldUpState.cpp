@@ -5,6 +5,8 @@
 PlayerShieldUpState::PlayerShieldUpState()
 {
 	Player* player = Player::GetInstance();
+	player->SetSize(24, 43);
+
 	player->SetCurrentState(PlayerState::NameState::shield_up);
 	player->SetTimeBuffer(0);
 	this->current_state = PlayerState::NameState::shield_up;
@@ -24,6 +26,18 @@ void PlayerShieldUpState::Update(float dt)
 
 void PlayerShieldUpState::Draw()
 {
+}
+
+BoundingBox PlayerShieldUpState::GetBoundingBox()
+{
+	Player * player = Player::GetInstance();
+	return BoundingBox(
+		player->GetPosition(),
+		player->GetSize(),
+		player->GetVelocityX(),
+		player->GetVelocityY()
+	);
+
 }
 
 void PlayerShieldUpState::HandleInput(float dt)

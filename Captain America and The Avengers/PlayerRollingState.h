@@ -8,6 +8,7 @@ public:
 	~PlayerRollingState();
 	virtual void Update(float dt);
 	virtual void Draw();
+	BoundingBox GetBoundingBox() override;
 	virtual void HandleInput(float dt);
 };
 
