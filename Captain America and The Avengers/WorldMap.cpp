@@ -61,7 +61,7 @@ void WorldMap::SetRect(int ID)
 
 WorldMap::~WorldMap()
 {
-	for (int i = 0; i < Width; i++)
+	for (int i = 0; i < Height; i++)
 		delete Map[i];
 	delete Map;
 

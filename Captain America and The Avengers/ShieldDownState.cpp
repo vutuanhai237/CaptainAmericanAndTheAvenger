@@ -19,3 +19,11 @@ void ShieldDownState::Draw()
 {
 	Shield::GetInstance()->GetAnimation()->Draw(VirtualPoint);
 }
+
+BoundingBox ShieldDownState::GetBoundingBox()
+{
+	SIZE size;
+	size.cx = -0;
+	size.cy = -0;
+	return BoundingBox(VirtualPoint, size, 0, 0);
+}

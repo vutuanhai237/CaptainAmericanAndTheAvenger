@@ -12,7 +12,7 @@ public:
 	void Draw() override;
 	WorldMap *GetCurrentMap() override;
 	CharlestonBoss();
-	~CharlestonBoss();
+	~CharlestonBoss() override;
 protected:
 	CharlestonBossMap *map;
 	Camera *cam;

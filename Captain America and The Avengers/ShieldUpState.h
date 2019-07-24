@@ -9,5 +9,6 @@ class ShieldUpState : public ShieldState
 public:
 	ShieldUpState();
 	void Update(float dt) override;
+	BoundingBox GetBoundingBox() override;
 	void Draw() override;
 };

@@ -17,6 +17,7 @@ public:
 	ShieldAttackState();
 	void Update(float dt) override;
 	void Draw() override;
+	BoundingBox GetBoundingBox() override;
 private:
 	int direction;
 	float delta;

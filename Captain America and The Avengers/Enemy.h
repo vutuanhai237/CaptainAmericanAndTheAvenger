@@ -19,7 +19,7 @@ public:
 	virtual bool IsCollisionWithGround(float dt, int delta_y = 12);
 	virtual void Draw() {};
 	Enemy();
-	~Enemy();
+	virtual ~Enemy();
 	// bool variable
 	bool IsJumping;
 protected:

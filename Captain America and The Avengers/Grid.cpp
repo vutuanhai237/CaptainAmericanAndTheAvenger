@@ -1,17 +1,17 @@
 #include "Grid.h"
 #include <math.h>
+#include "RedRocketRobot.h"
+#include "Player.h"
+#include "Shield.h"
+
+Grid::Grid(SIZE MapSize)
+{
+	Init(MapSize.cx, MapSize.cy);
+}
 
 Grid::Grid(int MapSizeWidth, int MapSizeHeight)
 {
-	CellX = (int)floor((float)MapSizeWidth / GRID_CELL_SIZE);
-	CellY = (int)floor((float)MapSizeHeight / GRID_CELL_SIZE);
-	grid = new Cell**[CellX];
-	for (int i = 0; i < CellX; i++)
-	{
-		grid[i] = new Cell*[CellY];
-		for (int j = 0; j < CellY; j++)
-			grid[i][j] = new Cell;
-	}
+	Init(MapSizeWidth, MapSizeHeight);
 }
 
 Grid::~Grid()
@@ -25,9 +25,35 @@ Grid::~Grid()
 	delete grid;
 }
 
-void Grid::AddObject2Cell(int column, int row, Entity* object)
+void Grid::AddObject2Cell(int WorldX, int WorldY, int* object)
 {
-	grid[column][row]->InitObject->push_back(object);
+	grid[WorldX / GRID_CELL_SIZE][WorldY / GRID_CELL_SIZE]->InitObject->push_back(object);
+}
+
+void Grid::Update(float dt)
+{
+	UpdateActivatedZone();
+	RemoveAndReswampObject();
+	UpdateGrid();
+	CheckCollision(dt);
+	UpdateEntity(dt);
+}
+
+void Grid::Init(int MapSizeWidth, int MapSizeHeight)
+{
+	CellX = (int)floor((float)MapSizeWidth / GRID_CELL_SIZE);
+	CellY = (int)floor((float)MapSizeHeight / GRID_CELL_SIZE);
+	grid = new Cell**[CellX];
+	for (int i = 0; i < CellX; i++)
+	{
+		grid[i] = new Cell*[CellY];
+		for (int j = 0; j < CellY; j++)
+			grid[i][j] = new Cell;
+	}
+	Player *player = Player::GetInstance();
+	grid[int(player->GetPosition().x / GRID_CELL_SIZE)][int(player->GetPosition().y / GRID_CELL_SIZE)]->Object->push_back(player);
+	Shield *shield = Shield::GetInstance();
+	grid[int(shield->GetPosition().x / GRID_CELL_SIZE)][int(shield->GetPosition().y) / GRID_CELL_SIZE]->Object->push_back(shield);
 }
 
 void Grid::UpdateActivatedZone()
@@ -41,6 +67,40 @@ void Grid::UpdateActivatedZone()
 		Xfrom = 0;
 	if (Xto >= CellX)
 		Xto = CellX - 1;
+}
+
+void Grid::RemoveAndReswampObject()
+{
+	for (int i = 0; i < CellX; i++)
+		for (int j = 0; j < CellY; j++)
+			if (IsActivated(i, j))
+			{
+				if (!grid[i][j]->IsActive)
+				{
+					for (auto item : *grid[i][j]->InitObject)
+						switch (item[0])
+						{
+						case Entity::Entity_Tag::redrobotrocket:
+							grid[i][j]->Object->push_back(new RedRocketRobot(RedRocketRobot::Level::clever, D3DXVECTOR2(500.0f, 150.0f), D3DXVECTOR2(400.0f, 150.0f), D3DXVECTOR2(300.0f, 150.0f)));
+							break;
+						default:
+							break;
+						}
+				}
+				grid[i][j]->IsActive = true;
+			}
+			else
+			{
+				grid[i][j]->IsActive = false;
+				auto it = grid[i][j]->Object->begin();
+				while (it != grid[i][j]->Object->end())
+					if ((*it)->GetType() != Entity::Entity_Type::item_type)
+					{
+						auto del = it;
+						it++;
+						grid[i][j]->Object->erase(del);
+					}
+			}
 }
 
 void Grid::UpdateGrid()
@@ -59,9 +119,9 @@ void Grid::UpdateGrid()
 					pos = (*it)->GetPosition();
 					LocX = pos.x / GRID_CELL_SIZE;
 					LocY = pos.y / GRID_CELL_SIZE;
-					if (LocX != i || LocY != j)
+					if ((LocX != i || LocY != j) && 0 < LocX && LocX < CellX)
 					{
-						AddObject2Cell(LocX, LocY, *it);
+						grid[LocX][LocY]->Object->push_back(*it);
 						auto del = it;
 						it++;
 						grid[i][j]->Object->erase(del);
@@ -83,7 +143,8 @@ void Grid::CheckCollision(float dt)
 				auto it_i = grid[i][j]->Object->begin();
 				while (it_i != grid[i][j]->Object->end())
 				{
-					auto it_j = it_i++;
+					auto it_j = it_i;
+					it_j++;
 					while (it_j != grid[i][j]->Object->end())
 					{
 						(*it_i)->OnCollision(*it_j, dt);
@@ -112,7 +173,8 @@ void Grid::UpdateEntity(float dt)
 	for (int i = Xfrom; i <= Xto; i++)
 		for (int j = Yfrom; j <= Yto; j++)
 			for (auto obj : *grid[i][j]->Object)
-				obj->Update(dt);
+				if (obj->GetTag() != Entity::Entity_Tag::player && obj->GetTag() != Entity::Entity_Tag::shield)
+					obj->Update(dt);
 }
 
 void Grid::DrawActivatedObject()
@@ -120,7 +182,13 @@ void Grid::DrawActivatedObject()
 	for (int i = Xfrom; i <= Xto; i++)
 		for (int j = Yfrom; j <= Yto; j++)
 			for (auto obj : *grid[i][j]->Object)
-				obj->Draw();
+				if (obj->GetTag() != Entity::Entity_Tag::player && obj->GetTag() != Entity::Entity_Tag::shield)
+					obj->Draw();
+}
+
+bool Grid::IsActivated(int column, int row)
+{
+	return Xfrom <= column && column <= Xto && Yfrom <= row && row <= Yto;
 }
 
 void Grid::CollisionCall(std::list<Entity*>* ListObject1, std::list<Entity*>* ListObject2, float dt)

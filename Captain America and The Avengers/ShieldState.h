@@ -1,5 +1,6 @@
 #pragma once
 #include <d3dx9.h>
+#include "Collision.h"
 
 class ShieldState
 {
@@ -18,7 +19,10 @@ public:
 
 	virtual void Update(float dt) {};
 	virtual void Draw() {};
+	virtual BoundingBox GetBoundingBox(); // Nomal
 	int GetFrameLock();
+
+	D3DXVECTOR2 GetVirtualPoint();
 
 	void SetCurrentState(NameState State);
 	NameState GetCurrentState();
@@ -26,5 +30,4 @@ protected:
 	NameState CurrentState;
 	int FrameLock;
 	D3DXVECTOR2 VirtualPoint;
-	D3DXVECTOR2 WorldPoint;
 };

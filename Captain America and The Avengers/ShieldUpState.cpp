@@ -17,6 +17,14 @@ void ShieldUpState::Update(float dt)
 	VirtualPoint.y += SHIELD_UP_DELTA_Y;
 }
 
+BoundingBox ShieldUpState::GetBoundingBox()
+{
+	SIZE size;
+	size.cx = 16;
+	size.cy = 9;
+	return BoundingBox(VirtualPoint, size, 0, 0);
+}
+
 void ShieldUpState::Draw()
 {
 	Shield::GetInstance()->GetAnimation()->Draw(VirtualPoint);
