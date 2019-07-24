@@ -50,13 +50,6 @@ void Charleston::Init()
 {
 	Player* player = Player::GetInstance();
 	player->Init();
-<<<<<<< Updated upstream
-	player->SetPosition(48.0f, 100.0f);
-
-	bot1 = new RedRocketRobot();
-	bot1->SetPosition(80.0f, 150.0f);
-
-=======
 	player->SetPosition(50.0f, 100.0f);
 
 	int n, m;
@@ -81,7 +74,6 @@ void Charleston::Init()
 			data >> obj[j];
 		grid->AddObject2Cell(obj[1], obj[2], obj);
 	}
->>>>>>> Stashed changes
 }
 
 Charleston::Charleston()

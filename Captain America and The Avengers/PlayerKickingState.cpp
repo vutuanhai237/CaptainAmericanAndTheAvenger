@@ -54,6 +54,18 @@ void PlayerKickingState::Draw()
 
 }
 
+BoundingBox PlayerKickingState::GetBoundingBox()
+{
+	Player * player = Player::GetInstance();
+	return BoundingBox(
+		player->GetPosition(),
+		player->GetSize(),
+		player->GetVelocityX(),
+		player->GetVelocityY()
+	);
+
+}
+
 void PlayerKickingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

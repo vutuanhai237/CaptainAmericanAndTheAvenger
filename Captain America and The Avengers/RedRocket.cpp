@@ -6,31 +6,53 @@ void RedRocket::Update(float dt)
 {
 	EnemyWeapon::Update(dt);
 	this->current_ani->Update(dt);
-	this->distance += this->GetVelocityX()*dt;
-}
 
-void RedRocket::Render()
-{
+	if (IsCrossed) {
+		if (IsStraight) {
+			this->current_ani = this->horizontal_ani;
+			this->time_out_straight += dt;
+			if (this->time_out_straight >= TIME_OUT_STRAIGHT) {
+				IsStraight = false;
+			}
+		}
+		else {
+			this->position.y += abs(this->GetVelocityX()*dt);
+			this->current_ani = this->crossed_ani;
+		}
+	}
+	else {
+	
+	}
+	this->distance += abs(this->GetVelocityX()*dt);
+
 }
 
 void RedRocket::OnCollision()
 {
 }
 
-void RedRocket::Release() 
+void RedRocket::Release(D3DXVECTOR2 position_respawn) 
 {
-	delete this;
+	this->SetVelocityX(0);
+	this->SetPosition(position_respawn);
+	this->distance = 0;
+	this->IsFire = false;
+	this->IsStraight = true;
+	this->time_out_straight = 0;
 }
 
 void RedRocket::Draw()
 {
-	this->current_ani->Draw(this->GetPosition());
-	if (this->GetMoveDirection()) {
-		this->current_ani->SetScale(1, 1);
+	if (this->GetVelocityX() != 0) {
+		this->current_ani->Draw(this->GetPosition());
+		if (this->GetMoveDirection()) {
+			this->current_ani->SetScale(1, 1);
+		}
+		else {
+			this->current_ani->SetScale(-1, 1);
+		}
 	}
-	else {
-		this->current_ani->SetScale(-1, 1);
-	}
+	
 }
 
 RedRocket::RedRocket()
@@ -42,9 +64,11 @@ RedRocket::RedRocket()
 	this->SetPosition(0,0);
 	this->IsLocking = true;
 	this->distance = 0;
+	this->IsStraight = true;
+	this->time_out_straight = 0;
 }
 
-RedRocket::RedRocket(D3DXVECTOR2 position)
+RedRocket::RedRocket(D3DXVECTOR2 position, bool IsCrossed)
 {
 
 	this->crossed_ani = new Animation(RedRocket::RedRocketState::crossed, 2);
@@ -54,7 +78,9 @@ RedRocket::RedRocket(D3DXVECTOR2 position)
 	this->SetPosition(position);
 	this->IsLocking = true;
 	this->distance = 0;
-
+	this->IsStraight = true;
+	this->time_out_straight = 0;
+	this->IsCrossed = IsCrossed;
 }
 
 

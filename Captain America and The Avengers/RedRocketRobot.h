@@ -1,11 +1,12 @@
 #pragma once
 #include "Enemy.h"
 #include "RedRocket.h"
+#include "Equation.h"
 #include <vector>
 #define TIME_DUCKING 2.0f
 #define TIME_IDLE 2.0f
 #define RED_ROCKET_ROBOT_SIZE_WIDTH 8
-#define RED_ROCKET_ROBOT_SIZE_HEIGHT 50
+#define RED_ROCKET_ROBOT_SIZE_HEIGHT 44
 #define RED_ROCKET_ROBOT_FOOT_HEIGHT 8
 #define RED_ROCKET_ROBOT_VELOCITY 80
 #define RED_ROCKET_ROBOT_VELOCITY_X 80
@@ -29,12 +30,10 @@ public:
 		normal,
 		clever
 	};
-	virtual void Update(float dt); 
+	virtual void Update(float dt);
 	virtual void UpdateStupidLevel(float dt);
 	virtual void UpdateNormalLevel(float dt);
 	virtual void UpdateCleverLevel(float dt);
-
-	virtual void Render();
 	virtual void OnCollision();
 	virtual void SetActive(bool IsActive);
 	virtual void Draw();
@@ -48,12 +47,17 @@ public:
 	bool IsLoop;
 	bool IsCrossed;
 	bool IsLock;
+	bool IsLockChangeRocket;
 	bool IsChamDatLanDau;
+	int IsJumpingFirst;
 	float time_ducking;
 	float time_idle;
+	int rocket_active;
+	Entity::Entity_Direction goto_direction;
 	Level level;
 	RedRocketRobotState current_state;
-	//std::vector<RedRocket*> rocket;
+	RedRocket* rocket;
+	Equation *e;
 	int NumberRocket;
 	RedRocketRobot();
 	RedRocketRobot(Level level, D3DXVECTOR2 position_spawn, D3DXVECTOR2 position_goto, D3DXVECTOR2 position_loop);

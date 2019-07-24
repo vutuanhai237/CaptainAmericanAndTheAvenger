@@ -47,6 +47,18 @@ void PlayerJumpingDownState::Draw()
 
 }
 
+BoundingBox PlayerJumpingDownState::GetBoundingBox()
+{
+	Player * player = Player::GetInstance();
+	return BoundingBox(
+		player->GetPosition(),
+		player->GetSize(),
+		player->GetVelocityX(),
+		player->GetVelocityY()
+	);
+
+}
+
 void PlayerJumpingDownState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();

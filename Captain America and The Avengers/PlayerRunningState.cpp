@@ -7,6 +7,8 @@
 PlayerRunningState::PlayerRunningState()
 {
 	Player* player = Player::GetInstance();
+	player->SetSize(25, 45);
+
 	player->SetCurrentState(PlayerState::NameState::running);
 	this->current_state = PlayerState::NameState::running;
 	player->SetVelocityX(VELOCITY_X);
@@ -41,6 +43,18 @@ void PlayerRunningState::Update(float dt)
 
 void PlayerRunningState::Draw()
 {
+}
+
+BoundingBox PlayerRunningState::GetBoundingBox()
+{
+	Player * player = Player::GetInstance();
+	return BoundingBox(
+		player->GetPosition(),
+		player->GetSize(),
+		player->GetVelocityX(),
+		player->GetVelocityY()
+	);
+
 }
 
 void PlayerRunningState::HandleInput(float dt)

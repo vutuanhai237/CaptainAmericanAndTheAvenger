@@ -5,12 +5,11 @@
 #include "PlayerPunchingState.h"
 PlayerIdleState::PlayerIdleState()
 {
+	
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::idle);
 	this->current_state = PlayerState::NameState::idle;
 	player->SetVelocity(0, 0);
-
-
 	// Đảm bảo trạng thái nhảy chỉ được tiếp tục lần tới sau khi chạm đất
 	player->time_air_jumping = 0;
 	player->time_kicking = 0;
@@ -45,6 +44,18 @@ void PlayerIdleState::Update(float dt)
 
 void PlayerIdleState::Draw()
 {
+}
+
+BoundingBox PlayerIdleState::GetBoundingBox()
+{
+	Player * player = Player::GetInstance();
+	return BoundingBox(
+		player->GetPosition(), 
+		player->GetSize(), 
+		player->GetVelocityX(), 
+		player->GetVelocityY()
+	);
+
 }
 
 void PlayerIdleState::HandleInput(float dt)

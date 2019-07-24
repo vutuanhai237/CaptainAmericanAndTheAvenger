@@ -11,6 +11,7 @@ public:
 	~PlayerJumpingDownState();
 	virtual void Update(float dt);
 	virtual void Draw();
+	BoundingBox GetBoundingBox() override;
 	virtual void HandleInput(float dt);
 	Animation*animation_before_flowing;
 };

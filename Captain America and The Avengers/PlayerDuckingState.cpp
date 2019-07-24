@@ -5,6 +5,8 @@
 PlayerDuckingState::PlayerDuckingState()
 {
 	Player* player = Player::GetInstance();
+	player->SetSize(24, 12);
+
 	player->SetCurrentState(PlayerState::NameState::ducking);
 	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
 	this->current_state = PlayerState::NameState::ducking;
@@ -26,6 +28,14 @@ void PlayerDuckingState::Update(float dt)
 
 void PlayerDuckingState::Draw()
 {
+}
+
+BoundingBox PlayerDuckingState::GetBoundingBox()
+{
+	Player *player = Player::GetInstance();
+	SIZE size; size.cx = 24; size.cy = 28;
+	D3DXVECTOR2 pos = player->GetPosition(); pos.y -= 7;
+	return BoundingBox(pos, size, player->GetVelocityX(), player->GetVelocityY());
 }
 
 void PlayerDuckingState::HandleInput(float dt)
