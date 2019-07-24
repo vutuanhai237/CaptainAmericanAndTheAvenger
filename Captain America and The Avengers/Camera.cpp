@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include "Framework/GameSetting.h"
 
 Camera* Camera::Instance = NULL;
 

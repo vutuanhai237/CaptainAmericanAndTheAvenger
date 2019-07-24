@@ -22,6 +22,7 @@ CharlestonBoss::CharlestonBoss()
 {
 	map = new CharlestonBossMap();
 	cam = Camera::GetInstance();
+	cam->SetCameraPosition(0, 0);
 }
 
 CharlestonBoss::~CharlestonBoss()

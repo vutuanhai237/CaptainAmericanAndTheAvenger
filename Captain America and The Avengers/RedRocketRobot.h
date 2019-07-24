@@ -38,6 +38,7 @@ public:
 	virtual void OnCollision();
 	virtual void SetActive(bool IsActive);
 	virtual void Draw();
+	BoundingBox GetBoundingBox() override;
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
 	bool IsRunning;
 	bool IsDucking;

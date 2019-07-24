@@ -41,7 +41,6 @@ void PlayerKickingState::Update(float dt)
 		}
 		
 	}
-	Debug::PrintOut(L"time_ar: %f\n", player->time_air_jumping);
 	if (player->GetPreviousState() == PlayerState::NameState::rolling || player->time_air_jumping >= TIME_AIR )
 	{
 		player->SetVelocityY(player->GetVelocityY() - ROLLING_ACCELERATION);

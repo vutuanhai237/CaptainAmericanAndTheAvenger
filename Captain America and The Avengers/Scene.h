@@ -10,7 +10,7 @@ public:
 	virtual WorldMap *GetCurrentMap() = 0;
 	D3DCOLOR GetBackcolor();
 
-	~Scene() {};
+	virtual ~Scene() {};
 protected:
 	Scene() {};
 	D3DCOLOR BackColor;
