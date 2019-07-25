@@ -3,6 +3,7 @@
 #include "Shield.h"
 #include "ShieldNomalState.h"
 #include "PlayerPunchingState.h"
+#include "PlayerBeatenState.h"
 PlayerIdleState::PlayerIdleState()
 {
 	
@@ -119,6 +120,10 @@ void PlayerIdleState::HandleInput(float dt)
 	if (keyboard->KeyDown(LEFT_KEY) || keyboard->KeyPress(LEFT_KEY)) {
 		player->ChangeState(new PlayerRunningState());
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
+		return;
+	}
+	if (keyboard->KeyDown(DIK_A)) {
+		player->ChangeState(new PlayerBeatenState());
 		return;
 	}
 

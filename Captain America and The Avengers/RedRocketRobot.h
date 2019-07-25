@@ -23,7 +23,8 @@ public:
 		running,
 		ducking,
 		beaten,
-		jumping
+		jumping,
+		walking_throwing
 	};
 	enum Level {
 		stupid,
@@ -48,7 +49,13 @@ public:
 	bool IsCrossed;
 	bool IsLock;
 	bool IsLockChangeRocket;
+	bool IsLockDuckingClever;
 	bool IsChamDatLanDau;
+	bool IsLoopClever;
+	bool IsCapNhatVanToc;
+	bool IsLockClever;
+
+	int IsLui;
 	int IsJumpingFirst;
 	float time_ducking;
 	float time_idle;
@@ -56,12 +63,27 @@ public:
 	Entity::Entity_Direction goto_direction;
 	Level level;
 	RedRocketRobotState current_state;
+	RedRocketRobotState previous_state;
+
 	RedRocket* rocket;
 	Equation *e;
 	int NumberRocket;
+	// clever zone
+	float distance;
+	float distance_goto;
+	bool Update_position_one_time;
+	Entity::Entity_Direction clever_direction;
 	RedRocketRobot();
-	RedRocketRobot(Level level, D3DXVECTOR2 position_spawn, D3DXVECTOR2 position_goto, D3DXVECTOR2 position_loop);
-	void UpdateFromFile();
+	RedRocketRobot(Level level, D3DXVECTOR2 position_spawn,D3DXVECTOR2 position_goto);
+	void UpdateRunningCleverState(float dt);
+	void UpdateJumpingCleverState(float dt);
+	void UpdateUPDOWNNormalState(float dt);
+	// clever zone
+	void UpdateUPDOWNCleverState(float dt);
+	void UpdateRunningState(float dt);
+	void UpdateJumpingState(float dt);
+	void UpdateIdleState(float dt);
+	void UpdateWalkingThrowState(float dt);
 	~RedRocketRobot();
 };
 

@@ -84,6 +84,7 @@ void Charleston::Init()
 			continue;
 		}
 	}
+
 }
 
 Charleston::Charleston()

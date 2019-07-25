@@ -53,6 +53,7 @@ public:
 		cannon_bullet,
 		flyer,
 		redrobotrocket,
+		red_rocket,
 		soldier,
 		soldier_bullet,
 		// none

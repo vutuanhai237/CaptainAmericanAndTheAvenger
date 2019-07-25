@@ -8,6 +8,7 @@ void RedRocket::Update(float dt)
 	this->current_ani->Update(dt);
 
 	if (IsCrossed) {
+		
 		if (IsStraight) {
 			this->current_ani = this->horizontal_ani;
 			this->time_out_straight += dt;
@@ -31,18 +32,39 @@ void RedRocket::OnCollision()
 {
 }
 
-void RedRocket::Release(D3DXVECTOR2 position_respawn) 
+void RedRocket::Exploding(float dt, D3DXVECTOR2 position_respawn, int level_robot)
 {
-	this->SetVelocityX(0);
-	this->SetPosition(position_respawn);
+	this->Update(dt);
+	if (this->time_out_explode == 0) {
+		this->current_ani = this->explode_ani;
+	}
+	this->time_out_explode += dt;
+	if (this->time_out_explode > TIME_EXPLODE) {
+		this->IsExploding = false;
+		this->current_ani = this->horizontal_ani;
+		if (level_robot != 2) {
+			this->SetPosition(position_respawn);
+
+		}
+	}
+	this->current_ani->Update(dt);
+
+}
+
+void RedRocket::Release() 
+{
+	this->SetVelocityX(1);
 	this->distance = 0;
 	this->IsFire = false;
 	this->IsStraight = true;
 	this->time_out_straight = 0;
+	this->current_ani = this->horizontal_ani;
+	this->time_out_explode = 0;
 }
 
 void RedRocket::Draw()
 {
+	
 	if (this->GetVelocityX() != 0) {
 		this->current_ani->Draw(this->GetPosition());
 		if (this->GetMoveDirection()) {
@@ -57,8 +79,12 @@ void RedRocket::Draw()
 
 RedRocket::RedRocket()
 {
+	this->SetTag(Entity::Entity_Tag::red_rocket);
+	this->SetType(Entity::Entity_Type::enemy_weapon_type);
 	this->crossed_ani = new Animation(RedRocket::RedRocketState::crossed, 2);
 	this->horizontal_ani = new Animation(RedRocket::RedRocketState::horizontal, 2);
+	this->explode_ani = new Animation(RedRocket::RedRocketState::explode, 3); this->explode_ani->SetTime(0.1);
+
 	this->current_ani = this->horizontal_ani;
 	this->SetVelocityX(5);
 	this->SetPosition(0,0);
@@ -66,13 +92,17 @@ RedRocket::RedRocket()
 	this->distance = 0;
 	this->IsStraight = true;
 	this->time_out_straight = 0;
+	this->IsExploding = false;
+
 }
 
 RedRocket::RedRocket(D3DXVECTOR2 position, bool IsCrossed)
 {
-
+	this->SetTag(Entity::Entity_Tag::red_rocket);
+	this->SetType(Entity::Entity_Type::enemy_weapon_type);
 	this->crossed_ani = new Animation(RedRocket::RedRocketState::crossed, 2);
 	this->horizontal_ani = new Animation(RedRocket::RedRocketState::horizontal, 2);
+	this->explode_ani = new Animation(RedRocket::RedRocketState::explode, 3); this->explode_ani->SetTime(0.1);
 	this->current_ani = this->horizontal_ani;
 	this->SetVelocityX(5);
 	this->SetPosition(position);
@@ -81,6 +111,7 @@ RedRocket::RedRocket(D3DXVECTOR2 position, bool IsCrossed)
 	this->IsStraight = true;
 	this->time_out_straight = 0;
 	this->IsCrossed = IsCrossed;
+	this->IsExploding = false;
 }
 
 

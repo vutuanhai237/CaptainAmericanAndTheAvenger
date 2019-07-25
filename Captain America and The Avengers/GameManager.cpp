@@ -39,9 +39,10 @@ void GameManager::Init(int fps)
 	texture->Add(ID, L"Resources/Enemy/RedRocketRobot/RedRobotRocketDucking.png", D3DCOLOR_XRGB(255, 0, 255));
 	// Enemy beaten 4
 	texture->Add(ID, L"Resources/Enemy/Explode.png", D3DCOLOR_XRGB(255, 0, 255));
-	// Red rocket 5 6
+	// Red rocket 5 6, explode 7
 	texture->Add(ID, L"Resources//Enemy//RedRocketRobot//RedRocketCrossed.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources//Enemy//RedRocketRobot//RedRocketHorizontal.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//Explode.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	texture->Add(ItemsHolder::AnimationID, L"Resources/Items/ItemHolder.png", D3DCOLOR_ARGB(0, 0, 0, 0));
 	texture->Add(ItemsHolder::ID_ExitOrb, L"Resources/Items/ExitOrb.png", D3DCOLOR_XRGB(255, 0, 255));

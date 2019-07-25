@@ -43,6 +43,8 @@
 // diving
 // don tho
 #define TIME_DON_THO 0.016f*10
+// beaten
+#define TIME_BEATEN_MIN 0.016f*8
 using namespace std;
 class Player : public Entity
 {
@@ -63,7 +65,7 @@ public:
 	Animation* GetCurrentAnimation();
 	Animation* GetAnimation(PlayerState::NameState state);
 	int GetPreviousState();
-
+	virtual void OnCollision(Entity *, float dt);
 	void AddTimeBuffer(float dt);
 	float GetTimeBuffer();
 	void SetTimeBuffer(float dt);

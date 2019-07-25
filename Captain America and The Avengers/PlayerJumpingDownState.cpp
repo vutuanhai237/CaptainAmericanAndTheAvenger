@@ -5,7 +5,7 @@
 #include "Framework//Debug.h"
 #include "Shield.h"
 #include "ShieldOnAirState.h"
-
+#include "PlayerBeatenState.h"
 PlayerJumpingDownState::PlayerJumpingDownState()
 {
 	Player* player = Player::GetInstance();

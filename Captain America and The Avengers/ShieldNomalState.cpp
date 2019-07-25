@@ -51,5 +51,8 @@ void ShieldNomalState::Update(float dt)
 
 void ShieldNomalState::Draw()
 {
+	if (Player::GetInstance()->OnTheWater) {
+		return;
+	}
 	Shield::GetInstance()->GetAnimation()->Draw(VirtualPoint);
 }
