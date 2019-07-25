@@ -89,7 +89,7 @@ void Grid::RemoveAndReswampObject()
 						switch (item[0])
 						{
 						case Entity::Entity_Tag::redrobotrocket:
-							grid[i][j]->Object->push_back(new RedRocketRobot(RedRocketRobot::Level::clever, D3DXVECTOR2(500.0f, 150.0f), D3DXVECTOR2(400.0f, 150.0f), D3DXVECTOR2(300.0f, 150.0f)));
+							grid[i][j]->Object->push_back(new RedRocketRobot(RedRocketRobot::Level::clever, D3DXVECTOR2(500.0f, 150.0f), D3DXVECTOR2(400.0f, 150.0f)));
 							break;
 						default:
 							break;

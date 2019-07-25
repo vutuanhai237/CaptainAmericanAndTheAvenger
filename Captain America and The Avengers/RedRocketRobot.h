@@ -36,9 +36,10 @@ public:
 	virtual void UpdateNormalLevel(float dt);
 	virtual void UpdateCleverLevel(float dt);
 	virtual void OnCollision();
-	virtual void SetActive(bool IsActive);
 	virtual void Draw();
+	virtual void SetActive(bool IsActive);
 	BoundingBox GetBoundingBox() override;
+
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
 	bool IsRunning;
 	bool IsDucking;

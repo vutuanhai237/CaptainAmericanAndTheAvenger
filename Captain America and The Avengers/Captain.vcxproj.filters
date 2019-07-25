@@ -196,6 +196,7 @@
     <ClCompile Include="Item.cpp">
       <Filter>Items</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerBeatenState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Animation.h">
@@ -364,6 +365,7 @@
     <ClInclude Include="Item.h">
       <Filter>Items</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerBeatenState.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Map.rc" />

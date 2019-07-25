@@ -65,7 +65,7 @@ public:
 	Animation* GetCurrentAnimation();
 	Animation* GetAnimation(PlayerState::NameState state);
 	int GetPreviousState();
-	virtual void OnCollision(Entity *, float dt);
+	virtual int OnCollision(Entity *, float dt);
 	void AddTimeBuffer(float dt);
 	float GetTimeBuffer();
 	void SetTimeBuffer(float dt);

@@ -200,13 +200,13 @@ int Player::GetPreviousState()
 	return this->previous_state;
 }
 
-void Player::OnCollision(Entity *obj, float dt)
+int Player::OnCollision(Entity *obj, float dt)
 {
 
 	Collision *Checker = Collision::getInstance();
 	auto out = Checker->SweptAABB(this->GetBoundingBox(), obj->GetBoundingBox());
 	if (out.CollisionTime > 1) {
-		return;
+		return 0;
 	}
 	if (obj->GetType() == Entity::Entity_Type::enemy_type)
 	{

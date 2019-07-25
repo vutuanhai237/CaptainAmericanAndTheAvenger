@@ -244,6 +244,7 @@ void RedRocketRobot::Draw()
 		}
 		this->rocket->Draw();
 	}
+}
 
 BoundingBox RedRocketRobot::GetBoundingBox()
 {
@@ -730,4 +731,5 @@ void RedRocketRobot::UpdateWalkingThrowState(float dt)
 
 RedRocketRobot::~RedRocketRobot()
 {
+
 }
