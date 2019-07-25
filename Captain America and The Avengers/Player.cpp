@@ -46,6 +46,7 @@ Player::Player() :Entity()
 	Animation* kicking = new Animation(PlayerState::NameState::kicking, L"Resources//CaptainState//CaptainKickingState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	Animation* punching = new Animation(PlayerState::NameState::punching, L"Resources//CaptainState//CaptainPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 	Animation* shield_down = new Animation(PlayerState::NameState::shield_up, L"Resources//CaptainState//CaptainShielDownState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
+	Animation* beaten = new Animation(PlayerState::NameState::beaten, L"Resources//CaptainState//CaptainBeatenState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	// Chỉ những animation nào có số sprite > 1 thì mới set time
 	running->SetTime(0.1);
 	dashing->SetTime(0.1);
@@ -83,6 +84,8 @@ Player::Player() :Entity()
 	this->animations[PlayerState::kicking] = kicking;
 	this->animations[PlayerState::punching] = punching;
 	this->animations[PlayerState::shield_down] = shield_down;
+	this->animations[PlayerState::beaten] = beaten;
+
 	///End load resources
 	this->animation = this->animations[current_state];
 	this->previous_state = 0;
@@ -195,6 +198,35 @@ Animation * Player::GetAnimation(PlayerState::NameState state)
 int Player::GetPreviousState()
 {
 	return this->previous_state;
+}
+
+void Player::OnCollision(Entity *obj, float dt)
+{
+
+	Collision *Checker = Collision::getInstance();
+	auto out = Checker->SweptAABB(this->GetBoundingBox(), obj->GetBoundingBox());
+	if (out.CollisionTime > 1) {
+		return;
+	}
+	if (obj->GetType() == Entity::Entity_Type::enemy_type)
+	{
+		switch (obj->GetTag()) {
+		case Entity::Entity_Tag::redrobotrocket:
+			break;
+		default:
+			break;
+		}
+	}
+
+	if (obj->GetType() == Entity::Entity_Type::enemy_weapon_type)
+	{
+		switch (obj->GetTag()) {
+		case Entity::Entity_Tag::red_rocket:
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void Player::AddTimeBuffer(float dt)

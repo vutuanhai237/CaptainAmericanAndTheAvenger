@@ -10,7 +10,7 @@ Equation::Equation(D3DXVECTOR2 point1, D3DXVECTOR2 point2)
 	float xB = point2.x;
 	float yB = point2.y;
 	float xC = (xA + xB) / 2;
-	float yC = (2 * yB - yA); if (yC == yB) yC += 60;
+	float yC = (2 * yB - yA); if (yC == yB) yC += 50;
 	// Giải phương trình
 	this->a = ((yA - yB) / (xA - xB) - (yA - yC) / (xA - xC)) / (xB - xC);
 	this->b = (yA - yB) / (xA - xB) - this->a*(xA + xB);

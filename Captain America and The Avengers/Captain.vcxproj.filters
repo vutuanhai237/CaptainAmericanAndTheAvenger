@@ -187,6 +187,9 @@
     <ClCompile Include="Shield.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerBeatenState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Animation.h">
@@ -348,6 +351,9 @@
     </ClInclude>
     <ClInclude Include="Shield.h">
       <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerBeatenState.h">
+      <Filter>Player\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

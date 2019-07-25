@@ -150,6 +150,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerBeatenState.cpp" />
     <ClCompile Include="PlayerDashingState.cpp" />
     <ClCompile Include="PlayerDivingState.cpp" />
     <ClCompile Include="PlayerDuckingPunchingState.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerBeatenState.h" />
     <ClInclude Include="PlayerDashingState.h" />
     <ClInclude Include="PlayerDivingState.h" />
     <ClInclude Include="PlayerDuckingPunchingState.h" />
