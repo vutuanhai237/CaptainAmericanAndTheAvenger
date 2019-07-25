@@ -1,5 +1,5 @@
 #include "Enemy.h"
-
+#include "PlayerBeatenState.h"
 Animation * Enemy::GetCurrentAnimation()
 {
 	return this->current_animation;
@@ -11,23 +11,24 @@ void Enemy::Update(float dt)
 
 }
 
+int Enemy::OnCollision(Entity* obj, float dt)
+{
+	Player *player = Player::GetInstance();
+	if (obj->GetType() == Entity::Entity_Type::player_type 
+		&& player->time_invisible < 0
+		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox())) 
+	{
+		player->ChangeState(new PlayerBeatenState());
+	}
+
+	return 0;
+}
+
 void Enemy::Spawn()
 {
 }
 
-void Enemy::SetSpawnBox(float top, float left, float width, float height, Entity::Entity_Direction direction)
-{
-	this->spawn_box.top = top;
-	this->spawn_box.left = left;
-	this->spawn_box.bot = top-height;
-	this->spawn_box.right = left + width;
-	this->direction = direction;
-}
 
-void Enemy::SetBoxCollider(BoxCollider box)
-{
-	this->box = box;
-}
 
 Enemy::Enemy()
 {

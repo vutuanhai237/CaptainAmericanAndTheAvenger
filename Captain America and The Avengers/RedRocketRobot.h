@@ -35,7 +35,7 @@ public:
 	virtual void UpdateStupidLevel(float dt);
 	virtual void UpdateNormalLevel(float dt);
 	virtual void UpdateCleverLevel(float dt);
-	virtual void OnCollision();
+	virtual int OnCollision(Entity*, float dt);
 	virtual void Draw();
 	virtual void SetActive(bool IsActive);
 	BoundingBox GetBoundingBox() override;
@@ -75,7 +75,7 @@ public:
 	bool Update_position_one_time;
 	Entity::Entity_Direction clever_direction;
 	RedRocketRobot();
-	RedRocketRobot(Level level, D3DXVECTOR2 position_spawn,D3DXVECTOR2 position_goto);
+	RedRocketRobot(int level, D3DXVECTOR2 position_spawn,D3DXVECTOR2 position_goto);
 	void UpdateRunningCleverState(float dt);
 	void UpdateJumpingCleverState(float dt);
 	void UpdateUPDOWNNormalState(float dt);

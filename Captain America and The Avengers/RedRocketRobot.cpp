@@ -219,8 +219,10 @@ void RedRocketRobot::UpdateCleverLevel(float dt)
 	}
 }
 
-void RedRocketRobot::OnCollision()
+int RedRocketRobot::OnCollision(Entity* obj, float dt)
 {
+	return Enemy::OnCollision(obj, dt);
+	
 }
 
 void RedRocketRobot::SetActive(bool IsActive)
@@ -359,7 +361,7 @@ RedRocketRobot::RedRocketRobot() : Enemy()
 
 }
 
-RedRocketRobot::RedRocketRobot(Level level, D3DXVECTOR2 position_spawn, D3DXVECTOR2 position_goto)
+RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR2 position_goto)
 {
 	this->SetTag(Entity::Entity_Tag::redrobotrocket);
 	this->SetType(Entity::Entity_Type::enemy_type);
@@ -395,7 +397,17 @@ RedRocketRobot::RedRocketRobot(Level level, D3DXVECTOR2 position_spawn, D3DXVECT
 	this->distance = 0;
 	this->Update_position_one_time = false;
 	this->IsCapNhatVanToc = true;
-	this->level = level;
+	switch (level) {
+	case 0:
+		this->level = Level::stupid;
+		break;
+	case 1:
+		this->level = Level::normal;
+		break;
+	case 2:
+		this->level = Level::clever;
+		break;
+	}
 	this->position_spawn = position_spawn;
 	this->position_goto = position_goto;
 	this->distance = 0;

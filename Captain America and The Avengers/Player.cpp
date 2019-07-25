@@ -104,7 +104,7 @@ Player::Player() :Entity()
 	this->time_air_rolling = 0;
 	this->time_jumping_before_flowing = 0;
 	this->time_don_tho = 0;
-
+	this->time_invisible = 0;
 }
 
 
@@ -118,8 +118,8 @@ Player::~Player()
 void Player::Update(float dt)
 {
 	Entity::Update(dt);
-
 	this->player_state->Update(dt);
+	this->time_invisible -= dt;
 }
 
 void Player::Draw()

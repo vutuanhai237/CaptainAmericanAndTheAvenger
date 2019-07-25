@@ -45,6 +45,7 @@
 #define TIME_DON_THO 0.016f*10
 // beaten
 #define TIME_BEATEN_MIN 0.016f*8
+#define TIME_INVISIBLE 3.0f
 using namespace std;
 class Player : public Entity
 {
@@ -90,6 +91,7 @@ public:
 	float time_ducking_before_idle;
 	float time_jumping_before_flowing;
 	float time_don_tho;
+	float time_invisible;
 	// Code đi rời để biết tại sao phải tạo những biến này, có một vấn đề là các trạng thái
 	// khi new sẽ khởi tạo vận tốc khác nhau, nên khi jumping -> kicking -> jumping thì vận tốc
 	// bị khởi động lại 1 lần nữa, những biến này sẽ do idle có quyền định đoạt

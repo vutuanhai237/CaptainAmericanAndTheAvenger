@@ -185,7 +185,6 @@
     <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Charleston.h" />
     <ClInclude Include="CharlestonBoss.h" />

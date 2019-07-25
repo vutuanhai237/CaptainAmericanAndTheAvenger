@@ -196,7 +196,9 @@
     <ClCompile Include="Item.cpp">
       <Filter>Items</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerBeatenState.cpp" />
+    <ClCompile Include="PlayerBeatenState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Animation.h">
@@ -248,9 +250,6 @@
       <Filter>GameComponents</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="BoxCollider.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="CharlestonMap.h">
       <Filter>Map</Filter>
     </ClInclude>
@@ -365,7 +364,9 @@
     <ClInclude Include="Item.h">
       <Filter>Items</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerBeatenState.h" />
+    <ClInclude Include="PlayerBeatenState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Map.rc" />
