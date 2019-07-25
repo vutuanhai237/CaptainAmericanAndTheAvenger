@@ -12,6 +12,7 @@ public:
 	void Update(float dt) override;
 	void Draw() override; 
 	WorldMap *GetCurrentMap() override;
+	Grid *GetCurrentGrid() override;
 	Charleston();
 	~Charleston() override;
 protected:

@@ -11,6 +11,7 @@
 #include "SceneManager.h"
 #include "CharlestonBoss.h"
 #include "RedRocketRobot.h"
+#include "ItemsHolder.h"
 
 void Charleston::Update(float dt)
 {
@@ -37,13 +38,18 @@ void Charleston::Update(float dt)
 void Charleston::Draw()
 {
 	map->Draw();
-	Player::GetInstance()->Draw();
 	grid->DrawActivatedObject();
+	Player::GetInstance()->Draw();
 }
 
 WorldMap * Charleston::GetCurrentMap()
 {
 	return this->map;
+}
+
+Grid *Charleston::GetCurrentGrid()
+{
+	return grid;
 }
 
 void Charleston::Init()
@@ -53,26 +59,30 @@ void Charleston::Init()
 	player->SetPosition(50.0f, 100.0f);
 
 	int n, m;
-	int tag;
+	int tag, posX, posY, tmp;
 	fstream data(L"Resources/Map/charleston_map_items_enemy.txt", ios_base::in);
 	int *obj;
+	Entity *item;
+	ItemsHolder *holder;
 	data >> n;
 	for (int i = 0; i < n; i++)
 	{
-		data >> tag;
+		data >> tag >> posX >> posY;
 		switch (tag)
 		{
-		case Entity::Entity_Tag::redrobotrocket:
-			m = 8;
-			break;
+		case Entity::Entity_Tag::item_container:
+			holder = new ItemsHolder(posX, posY);
+			data >> m;
+			for (int i = 0; i < m; i++)
+			{
+				data >> tmp;
+				holder->PutOnItem(tmp);
+			}
+			grid->AddObject2Cell(posX, posY, holder);
+			continue;
 		default:
 			continue;
 		}
-		obj = new int[m];
-		obj[0] = tag;
-		for (int j = 1; j < m; j++)
-			data >> obj[j];
-		grid->AddObject2Cell(obj[1], obj[2], obj);
 	}
 
 }

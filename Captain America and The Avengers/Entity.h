@@ -3,6 +3,15 @@
 #include <d3dx9.h>
 #include "Collision.h"
 #include <math.h>
+#include <vector>
+
+
+/// Onllision return:
+///	0 : doing nothing
+/// 1 : delete this (delete object call function OnCollision)
+/// -1 : delete obj2 (delete object parameter)
+
+
 class Entity
 {
 public:
@@ -82,7 +91,7 @@ public:
 	// function zone
 	Entity();
 	virtual ~Entity();
-	virtual void OnCollision(Entity *, float dt) {};
+	virtual int OnCollision(Entity *, float dt) { return 0; }; // Return after collide code
 	virtual void SetActive(bool _IsActive);
 	virtual bool GetActive();
 	virtual void SetTag(Entity_Tag _tag);
@@ -116,6 +125,7 @@ public:
 	virtual void SetIsLocking(bool Islocking);
 	virtual bool GetIsLocking();
 	virtual BoundingBox GetBoundingBox();
+	virtual std::vector<Entity*> *GetMoreObject();
 	virtual void Draw() {};
 protected:
 	BoundingBox box;
@@ -132,5 +142,6 @@ protected:
 	D3DXVECTOR2 velocity;
 	//size of entity
 	SIZE size;
+	std::vector<Entity*> *MoreObject;
 };
 

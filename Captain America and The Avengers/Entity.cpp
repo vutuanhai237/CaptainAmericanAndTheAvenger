@@ -6,6 +6,7 @@ Entity::Entity()
 {
 	tag = none;
 	type = none_type;
+	MoreObject = new std::vector<Entity*>();
 }
 
 
@@ -197,5 +198,10 @@ bool Entity::GetIsLocking()
 BoundingBox Entity::GetBoundingBox()
 {
 	return BoundingBox(this->position, this->size, this->velocity.x, this->velocity.y);
+}
+
+std::vector<Entity*>* Entity::GetMoreObject()
+{
+	return MoreObject;
 }
 

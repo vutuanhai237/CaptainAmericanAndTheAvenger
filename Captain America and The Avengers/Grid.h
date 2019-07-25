@@ -4,7 +4,10 @@
 #include "Entity.h"
 #include "Camera.h"
 
-#define GRID_CELL_SIZE 80
+#define GRID_CELL_SIZE_WIDTH 40
+#define GRID_CELL_SIZE_HEIGHT 80
+#define CAPACITY_ITEM 3
+#define CAPACITY_ENEMY 2
 
 struct Cell
 {
@@ -34,9 +37,11 @@ public:
 	~Grid();
 
 	void AddObject2Cell(int WorldX, int WorldY, int *object);
+	void AddObject2Cell(int WorldX, int WorldY, Entity *object);
 	void Update(float dt);
 	void DrawActivatedObject();
 
+	int ItemCounter, EnemyCounter;
 private:
 	int CellX, CellY;
 	Cell ***grid;

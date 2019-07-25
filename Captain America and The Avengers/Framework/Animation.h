@@ -19,6 +19,8 @@ public:
 	void SetFrameReset(int frame);
 	void ResetAnimation();
 	int GetName();
+
+	void SetAutoPlayBack(bool);
 private:
 	int frame_reset;
 	void SetFrame();
@@ -29,4 +31,5 @@ private:
 	float AnimationTime;
 	int name;
 	bool IsStop = false;
+	bool AutoPlayBack = true;
 };

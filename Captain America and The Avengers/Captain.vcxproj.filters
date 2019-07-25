@@ -34,6 +34,9 @@
     <Filter Include="Player\PlayerState">
       <UniqueIdentifier>{6afa3bf9-9598-49a9-a529-7e3693b762c9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Items">
+      <UniqueIdentifier>{16bc8034-aba7-4cda-b1d8-5b309f630178}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Animation.cpp">
@@ -187,8 +190,11 @@
     <ClCompile Include="Shield.cpp">
       <Filter>Player</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerBeatenState.cpp">
-      <Filter>Player\PlayerState</Filter>
+    <ClCompile Include="ItemsHolder.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Items</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -352,8 +358,11 @@
     <ClInclude Include="Shield.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerBeatenState.h">
-      <Filter>Player\PlayerState</Filter>
+    <ClInclude Include="ItemsHolder.h">
+      <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -50,6 +50,8 @@ void Animation::Update(float dt)
 		{
 			CurrentFrame = frame_reset;
 			AnimationTime = 0;
+			if (!AutoPlayBack)
+				IsStop = true;
 		}
 		SetFrame();
 	}
@@ -107,6 +109,11 @@ void Animation::ResetAnimation()
 int Animation::GetName()
 {
 	return this->name;
+}
+
+void Animation::SetAutoPlayBack(bool value)
+{
+	AutoPlayBack = value;
 }
 
 void Animation::SetFrame()
