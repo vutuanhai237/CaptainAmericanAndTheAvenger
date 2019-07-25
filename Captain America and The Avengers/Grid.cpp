@@ -27,12 +27,12 @@ Grid::~Grid()
 
 void Grid::AddObject2Cell(int WorldX, int WorldY, int* object)
 {
-	grid[WorldX / GRID_CELL_SIZE][WorldY / GRID_CELL_SIZE]->InitObject->push_back(object);
+	grid[WorldX / GRID_CELL_SIZE_WIDTH][WorldY / GRID_CELL_SIZE_HEIGHT]->InitObject->push_back(object);
 }
 
 void Grid::AddObject2Cell(int WorldX, int WorldY, Entity *object)
 {
-	grid[WorldX / GRID_CELL_SIZE][WorldY / GRID_CELL_SIZE]->Object->push_back(object);
+	grid[WorldX / GRID_CELL_SIZE_WIDTH][WorldY / GRID_CELL_SIZE_HEIGHT]->Object->push_back(object);
 }
 
 void Grid::Update(float dt)
@@ -46,8 +46,8 @@ void Grid::Update(float dt)
 
 void Grid::Init(int MapSizeWidth, int MapSizeHeight)
 {
-	CellX = (int)ceilf(float(MapSizeWidth+1) / GRID_CELL_SIZE);
-	CellY = (int)ceilf(float(MapSizeHeight+1) / GRID_CELL_SIZE);
+	CellX = (int)ceilf(float(MapSizeWidth + 1) / GRID_CELL_SIZE_WIDTH);
+	CellY = (int)ceilf(float(MapSizeHeight + 1) / GRID_CELL_SIZE_HEIGHT);
 	grid = new Cell**[CellX];
 	for (int i = 0; i < CellX; i++)
 	{
@@ -56,9 +56,9 @@ void Grid::Init(int MapSizeWidth, int MapSizeHeight)
 			grid[i][j] = new Cell;
 	}
 	Player *player = Player::GetInstance();
-	grid[int(player->GetPosition().x / GRID_CELL_SIZE)][int(player->GetPosition().y / GRID_CELL_SIZE)]->Object->push_back(player);
+	grid[int(player->GetPosition().x / GRID_CELL_SIZE_WIDTH)][int(player->GetPosition().y / GRID_CELL_SIZE_HEIGHT)]->Object->push_back(player);
 	Shield *shield = Shield::GetInstance();
-	grid[int(shield->GetPosition().x / GRID_CELL_SIZE)][int(shield->GetPosition().y) / GRID_CELL_SIZE]->Object->push_back(shield);
+	grid[int(shield->GetPosition().x / GRID_CELL_SIZE_WIDTH)][int(shield->GetPosition().y) / GRID_CELL_SIZE_HEIGHT]->Object->push_back(shield);
 
 	ItemCounter = 0;
 	EnemyCounter = 0;
@@ -67,10 +67,10 @@ void Grid::Init(int MapSizeWidth, int MapSizeHeight)
 void Grid::UpdateActivatedZone()
 {
 	RECT ActivatedBox = Camera::GetInstance()->GetCameraViewRect();
-	Xfrom = (ActivatedBox.left - 1) / GRID_CELL_SIZE;
-	Xto = (ActivatedBox.right + 1) / GRID_CELL_SIZE;
-	Yfrom = ActivatedBox.bottom / GRID_CELL_SIZE;
-	Yto = ActivatedBox.top / GRID_CELL_SIZE;
+	Xfrom = (ActivatedBox.left - 1) / GRID_CELL_SIZE_WIDTH;
+	Xto = (ActivatedBox.right + 1) / GRID_CELL_SIZE_WIDTH;
+	Yfrom = ActivatedBox.bottom / GRID_CELL_SIZE_HEIGHT;
+	Yto = ActivatedBox.top / GRID_CELL_SIZE_HEIGHT;
 	if (Xfrom < 0)
 		Xfrom = 0;
 	if (Xto >= CellX)
@@ -130,8 +130,8 @@ void Grid::UpdateGrid()
 				while (it != grid[i][j]->Object->end())
 				{
 					pos = (*it)->GetPosition();
-					LocX = pos.x / GRID_CELL_SIZE;
-					LocY = pos.y / GRID_CELL_SIZE;
+					LocX = pos.x / GRID_CELL_SIZE_WIDTH;
+					LocY = pos.y / GRID_CELL_SIZE_HEIGHT;
 					if ((LocX != i || LocY != j) && 0 < LocX && LocX < CellX)
 					{
 						grid[LocX][LocY]->Object->push_back(*it);
