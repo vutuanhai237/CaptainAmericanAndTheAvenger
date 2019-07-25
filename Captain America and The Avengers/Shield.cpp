@@ -20,7 +20,7 @@ D3DXVECTOR2 Shield::GetPosition()
 	return state->GetVirtualPoint();
 }
 
-void Shield::OnCollision(Entity *obj, float dt)
+int Shield::OnCollision(Entity *obj, float dt)
 {
 	Collision *Checker = Collision::getInstance();
 	CollisionOut out;
@@ -32,6 +32,7 @@ void Shield::OnCollision(Entity *obj, float dt)
 			Debug::PrintOut(L"Enemy beaten\n");
 		}
 	}
+	return 0;
 }
 
 BoundingBox Shield::GetBoundingBox()

@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Framework/Debug.h"
 #include "RedRocketRobot.h"
+#include "ItemsHolder.h"
 
 DWORD GameManager::StTime = GetTickCount();
 
@@ -42,7 +43,15 @@ void GameManager::Init(int fps)
 	texture->Add(ID, L"Resources//Enemy//RedRocketRobot//RedRocketCrossed.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources//Enemy//RedRocketRobot//RedRocketHorizontal.png", D3DCOLOR_XRGB(255, 0, 255));
 
-
+	texture->Add(ItemsHolder::AnimationID, L"Resources/Items/ItemHolder.png", D3DCOLOR_ARGB(0, 0, 0, 0));
+	texture->Add(ItemsHolder::ID_ExitOrb, L"Resources/Items/ExitOrb.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ItemsHolder::ID_1up, L"Resources/Items/1up.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ItemsHolder::ID_5Point, L"Resources/Items/5Point.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ItemsHolder::ID_FullHeal, L"Resources/Items/FullHeal.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ItemsHolder::ID_HalfHeal, L"Resources/Items/HalfHeal.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ItemsHolder::ID_HighPoint, L"Resources/Items/HighPoint.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ItemsHolder::ID_LargeGem, L"Resources/Items/LargeGem.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ItemsHolder::ID_SmallGem, L"Resources/Items/SmallGem.png", D3DCOLOR_XRGB(255, 0, 255));
 	SceneManager::GetInstance()->ReplaceScene(new Charleston());
 }
 

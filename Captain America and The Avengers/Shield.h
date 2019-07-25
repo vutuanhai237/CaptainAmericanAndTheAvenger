@@ -11,7 +11,7 @@ public:
 	void Release();
 
 	D3DXVECTOR2 GetPosition() override;
-	void OnCollision(Entity *, float dt) override;
+	int OnCollision(Entity *, float dt) override;
 	BoundingBox GetBoundingBox() override;
 
 	void Update(float dt);

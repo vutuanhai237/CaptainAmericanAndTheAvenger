@@ -18,6 +18,11 @@ WorldMap *CharlestonBoss::GetCurrentMap()
 	return map->GetCurrentMap();
 }
 
+Grid * CharlestonBoss::GetCurrentGrid()
+{
+	return nullptr;
+}
+
 CharlestonBoss::CharlestonBoss()
 {
 	map = new CharlestonBossMap();
