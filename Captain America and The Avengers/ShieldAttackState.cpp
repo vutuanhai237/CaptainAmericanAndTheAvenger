@@ -97,7 +97,14 @@ void ShieldAttackState::Update(float dt)
 void ShieldAttackState::Draw()
 {
 	Shield::GetInstance()->GetAnimation()->SetFrame(3);
-	Shield::GetInstance()->GetAnimation()->Draw(VirtualPoint);
-	
+	Shield::GetInstance()->GetAnimation()->Draw(VirtualPoint);	
+}
+
+BoundingBox ShieldAttackState::GetBoundingBox()
+{
+	SIZE size;
+	size.cx = 16;
+	size.cy = 9;
+	return BoundingBox(VirtualPoint, size, 0, 0);
 }
 

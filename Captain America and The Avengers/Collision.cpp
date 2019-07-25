@@ -15,6 +15,9 @@ Collision* Collision::getInstance()
 CollisionOut Collision::SweptAABB(BoundingBox recta, BoundingBox rectb)
 {
 	CollisionOut out;
+	if (recta.GetArea() == 0 || rectb.GetArea() == 0)
+		return out;
+
 	if (IsCollide(recta, rectb))
 	{
 		out.CollisionTime = 0.0f;

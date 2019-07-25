@@ -10,6 +10,10 @@ public:
 	static Shield *GetInstance();
 	void Release();
 
+	D3DXVECTOR2 GetPosition() override;
+	void OnCollision(Entity *, float dt) override;
+	BoundingBox GetBoundingBox() override;
+
 	void Update(float dt);
 	void Draw() override;
 

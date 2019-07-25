@@ -10,11 +10,11 @@ struct Cell
 {
 	bool IsActive;
 	std::list<Entity*> *Object;
-	std::vector<Entity*> *InitObject;
+	std::vector<int*> *InitObject;
 	Cell()
 	{
 		Object = new std::list<Entity*>();
-		InitObject = new std::vector<Entity*>();
+		InitObject = new std::vector<int*>();
 		IsActive = false;
 	}
 	~Cell()
@@ -29,20 +29,27 @@ struct Cell
 class Grid
 {
 public:
+	Grid(SIZE MapSize);
 	Grid(int MapSizeWidth, int MapSizeHeight);
 	~Grid();
 
-	void AddObject2Cell(int column, int row, Entity* object);
-
-	void UpdateActivatedZone();
-	void UpdateGrid();
-	void CheckCollision(float dt);
-	void UpdateEntity(float dt);
+	void AddObject2Cell(int WorldX, int WorldY, int *object);
+	void Update(float dt);
 	void DrawActivatedObject();
+
 private:
 	int CellX, CellY;
 	Cell ***grid;
 
 	int Xfrom, Xto, Yfrom, Yto;
+	void Init(int MapSizeWidth, int MapSizeHeight);
+
+	void UpdateActivatedZone();
+	void RemoveAndReswampObject();
+	void UpdateGrid();
+	void CheckCollision(float dt);
+	void UpdateEntity(float dt);
+
+	bool IsActivated(int column, int row);
 	void CollisionCall(std::list<Entity*> *ListObject1, std::list<Entity*> *ListObject2, float dt);
 };

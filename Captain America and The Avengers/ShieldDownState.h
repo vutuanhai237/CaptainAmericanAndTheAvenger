@@ -10,4 +10,5 @@ public:
 	ShieldDownState();
 	void Update(float dt) override;
 	void Draw() override;
+	BoundingBox GetBoundingBox() override;
 };

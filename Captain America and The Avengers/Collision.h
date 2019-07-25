@@ -15,7 +15,8 @@ struct CollisionOut
 {
 	float CollisionTime;
 	CollisionSide side;
-	CollisionOut() {
+	CollisionOut()
+	{
 		CollisionTime = 2.0f;
 		side = CollisionSide::none;
 	}
@@ -46,6 +47,10 @@ struct BoundingBox // top > bottom
 		this->vy = vy;
 	}
 	BoundingBox() {};
+	float GetArea()
+	{
+		return (top - bottom)*(right - left);
+	}
 	~BoundingBox() {};
 };
 

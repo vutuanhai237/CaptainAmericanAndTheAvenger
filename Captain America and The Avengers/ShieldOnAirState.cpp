@@ -45,3 +45,11 @@ void ShieldOnAirState::Draw()
 	if (!Player::GetInstance()->IsRolling)
 		Shield::GetInstance()->GetAnimation()->Draw(VirtualPoint);
 }
+
+BoundingBox ShieldOnAirState::GetBoundingBox()
+{
+	SIZE size;
+	size.cx = -0;
+	size.cy = -0;
+	return BoundingBox(VirtualPoint, size, 0, 0);
+}

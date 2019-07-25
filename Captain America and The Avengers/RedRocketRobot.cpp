@@ -245,6 +245,16 @@ void RedRocketRobot::Draw()
 		this->rocket->Draw();
 	}
 
+<<<<<<< Updated upstream
+=======
+BoundingBox RedRocketRobot::GetBoundingBox()
+{
+	SIZE size;
+	size.cx = 24;
+	size.cy = 46;
+	return BoundingBox(Entity::position, size, Entity::velocity.x, Entity::velocity.y);
+}
+>>>>>>> Stashed changes
 
 
 }

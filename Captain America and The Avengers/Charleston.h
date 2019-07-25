@@ -3,6 +3,7 @@
 #include "CharlestonMap.h"
 #include "Camera.h"
 #include "Framework/Animation.h"
+#include "Grid.h"
 #include <vector>
 
 class Charleston : public Scene
@@ -12,11 +13,12 @@ public:
 	void Draw() override; 
 	WorldMap *GetCurrentMap() override;
 	Charleston();
-	~Charleston();
+	~Charleston() override;
 protected:
 	void Init();
 	CharlestonMap *map;
 	Camera *cam;
 	Animation* exit;
+	Grid *grid;
 	int i;
 };

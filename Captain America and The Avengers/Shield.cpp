@@ -1,4 +1,5 @@
 #include "Shield.h"
+#include "Framework/Debug.h"
 
 Shield *Shield::Instance = NULL;
 
@@ -12,6 +13,30 @@ Shield *Shield::GetInstance()
 void Shield::Release()
 {
 	delete Instance;
+}
+
+D3DXVECTOR2 Shield::GetPosition()
+{
+	return state->GetVirtualPoint();
+}
+
+void Shield::OnCollision(Entity *obj, float dt)
+{
+	Collision *Checker = Collision::getInstance();
+	CollisionOut out;
+	if (obj->GetType() == Entity::Entity_Type::enemy_type)
+	{
+		out = Checker->SweptAABB(this->GetBoundingBox(), obj->GetBoundingBox());
+		if (out.CollisionTime <= 1)
+		{
+			Debug::PrintOut(L"Enemy beaten\n");
+		}
+	}
+}
+
+BoundingBox Shield::GetBoundingBox()
+{
+	return state->GetBoundingBox();
 }
 
 void Shield::Update(float dt)
@@ -54,6 +79,7 @@ Animation *Shield::GetAnimation()
 
 Shield::Shield()
 {
+	Entity::tag = Entity_Tag::shield;
 	shield = new Animation(0, L"Resources/Shield.png", D3DCOLOR_XRGB(255, 0, 255), 4);
 	shield->Stop();
 	state = new ShieldState();
