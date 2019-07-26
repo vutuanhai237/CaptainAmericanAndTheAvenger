@@ -105,7 +105,7 @@ void Grid::RemoveAndReswampObject()
 			{
 				auto it = grid[i][j]->Object->begin();
 				while (it != grid[i][j]->Object->end())
-					if ((*it)->GetType() != Entity::Entity_Type::item_type)
+					if ((*it)->GetType() != Entity::Entity_Type::item_type && (*it)->GetTag() != Entity::Entity_Tag::shield)
 					{
 						auto del = it;
 						it++;
