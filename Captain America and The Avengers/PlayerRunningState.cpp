@@ -7,7 +7,7 @@
 PlayerRunningState::PlayerRunningState()
 {
 	Player* player = Player::GetInstance();
-	player->SetSize(25, 45);
+	player->SetSize(20, 45);
 
 	player->SetCurrentState(PlayerState::NameState::running);
 	this->current_state = PlayerState::NameState::running;

@@ -18,9 +18,25 @@ int Enemy::OnCollision(Entity* obj, float dt)
 		&& player->time_invisible < 0
 		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox())) 
 	{
-		player->ChangeState(new PlayerBeatenState());
-	}
+		if (this->time_beaten == 0) {
+			this->time_beaten = ENEMY_TIME_BEATEN;
 
+		}
+		if (player->GetCurrentState() != PlayerState::jumping_down) {
+			player->ChangeState(new PlayerBeatenState());
+
+		}
+
+	}
+	if (obj->GetType() == Entity::Entity_Type::player_weapon_type
+		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
+	{
+		if (this->time_beaten == 0) {
+			this->time_beaten = ENEMY_TIME_BEATEN;
+
+		}
+
+	}
 	return 0;
 }
 
@@ -46,4 +62,29 @@ Enemy::~Enemy()
 bool Enemy::IsCollisionWithGround(float dt, int delta_y)
 {
 	return false;
+}
+
+void Enemy::Draw()
+{
+	if (this->time_beaten == 0) {
+		this->current_animation->Draw(this->position);
+
+	}
+	else {
+		this->time_beaten -= 0.016;
+		if (this->time_beaten <= 0) {
+			this->time_beaten = 0;
+		}
+		if ((i++) % 3 == 1) {
+			this->current_animation->Draw(this->position);
+
+		}
+
+	}
+	if (this->GetMoveDirection()) {
+		this->GetCurrentAnimation()->SetScale(1, 1);
+	}
+	else {
+		this->GetCurrentAnimation()->SetScale(-1, 1);
+	}
 }

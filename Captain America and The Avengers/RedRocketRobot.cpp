@@ -6,6 +6,7 @@ void RedRocketRobot::Update(float dt)
 	Enemy::Update(dt);
 	Player *player = Player::GetInstance();
 	this->current_animation->Update(dt);
+
 	// noob
 	if (this->level == Level::stupid) {
 		this->UpdateStupidLevel(dt);
@@ -181,14 +182,8 @@ int RedRocketRobot::OnCollision(Entity* obj, float dt)
 
 void RedRocketRobot::Draw()
 {
-	this->current_animation->Draw(this->position);
 
-	if (this->GetMoveDirection()) {
-		this->GetCurrentAnimation()->SetScale(1, 1);
-	}
-	else {
-		this->GetCurrentAnimation()->SetScale(-1, 1);
-	}
+	Enemy::Draw();
 }
 
 BoundingBox RedRocketRobot::GetBoundingBox()

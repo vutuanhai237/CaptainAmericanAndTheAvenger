@@ -18,7 +18,7 @@ PlayerJumpingDownState::PlayerJumpingDownState()
 	this->IsDuocChuyenState = false;
 	this->IsDuocChuyenAnimation = false;
 	this->time_animation_before_flowing = 0;
-	
+	player->SetSize(20, 45);
 	player->SetVelocityX(0);
 	player->IsJumpingDown == false;
 	player->IsRolling = false;

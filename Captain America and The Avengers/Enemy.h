@@ -4,6 +4,7 @@
 #include "Framework/Animation.h"
 #include <math.h>
 #include "SceneManager.h"
+#define ENEMY_TIME_BEATEN 0.5f
 class Enemy: public Entity
 {
 public:
@@ -14,11 +15,13 @@ public:
 	virtual void Delete() {}; // gọi khi enemy ra khỏi camera hoặc bị chết
 	virtual void Spawn(); // sinh ra quái từ vị trí đc đọc từ file
 	virtual bool IsCollisionWithGround(float dt, int delta_y = 12);
-	virtual void Draw() {};
+	virtual void Draw();
 	Enemy();
 	virtual ~Enemy() override;
 	// bool variable
 	bool IsJumping;
+	float time_beaten;
+	int i = 0;
 protected:
 	Animation* beaten_ani; 
 	Animation* explode_ani;

@@ -124,7 +124,21 @@ void Player::Update(float dt)
 
 void Player::Draw()
 {
-	this->animation->Draw(this->position);
+	
+	if (this->time_invisible <= 0) {
+		this->animation->Draw(this->position);
+	}
+	else {
+	
+		if (this->time_invisible <= 0) {
+			this->time_invisible = 0;
+		}
+		if ((i++) % 3 == 1) {
+			this->animation->Draw(this->position);
+
+		}
+
+	}
 	Player *player = Player::GetInstance();
 	Shield *shield = Shield::GetInstance();
 

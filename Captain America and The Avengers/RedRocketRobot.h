@@ -67,7 +67,7 @@ public:
 	Level level;
 	RedRocketRobotState current_state;
 	RedRocketRobotState previous_state;
-
+	int i = 0;
 	Equation *e;
 	int NumberRocket;
 	// clever zone
