@@ -89,7 +89,7 @@ void Grid::RemoveAndReswampObject()
 						switch (item[0])
 						{
 						case Entity::Entity_Tag::redrobotrocket:
-							if (this->EnemyCounter <= CAPACITY_ENEMY) 
+							if (this->EnemyCounter < CAPACITY_ENEMY) 
 							{
 								grid[i][j]->Object->push_back(new RedRocketRobot(item[3], D3DXVECTOR2(item[1], item[2]), D3DXVECTOR2(item[4], item[5]), item[6]));
 								this->EnemyCounter++;
