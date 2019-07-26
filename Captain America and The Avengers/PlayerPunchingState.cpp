@@ -1,5 +1,7 @@
 ﻿#include "PlayerPunchingState.h"
-#include "Framework//Debug.h"
+#include "PlayerArm.h"
+#include "SceneManager.h"
+
 PlayerPunchingState::PlayerPunchingState()
 {
 	Player* player = Player::GetInstance();
@@ -7,7 +9,7 @@ PlayerPunchingState::PlayerPunchingState()
 	player->SetTimeBuffer(0);
 	this->current_state = PlayerState::NameState::punching;
 
-
+	SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(new PlayerArm());
 }
 PlayerPunchingState::~PlayerPunchingState()
 {

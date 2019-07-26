@@ -31,8 +31,8 @@ void Grid::AddObject2Cell(int WorldX, int WorldY, int* object)
 }
 
 void Grid::AddObject2Cell(Entity *object)
-{
-	grid[int(object->GetPosition().x) / GRID_CELL_SIZE_WIDTH][int(object->GetPosition().y) / GRID_CELL_SIZE_HEIGHT]->Object->push_back(object);
+{ 
+	grid[int(object->GetPosition().x / GRID_CELL_SIZE_WIDTH)][int(object->GetPosition().y / GRID_CELL_SIZE_HEIGHT)]->Object->push_back(object);
 }
 
 void Grid::Update(float dt)
@@ -89,7 +89,8 @@ void Grid::RemoveAndReswampObject()
 						switch (item[0])
 						{
 						case Entity::Entity_Tag::redrobotrocket:
-							if (this->EnemyCounter <= CAPACITY_ENEMY) {
+							if (this->EnemyCounter <= CAPACITY_ENEMY) 
+              {
 								grid[i][j]->Object->push_back(new RedRocketRobot(item[3], D3DXVECTOR2(item[1], item[2]), D3DXVECTOR2(item[4], item[5]), item[6]));
 								this->EnemyCounter++;
 							}			
@@ -108,9 +109,8 @@ void Grid::RemoveAndReswampObject()
 					{
 						auto del = it;
 						it++;
-						if ((*del)->GetType() == Entity::Entity_Type::enemy_type) {
+						if ((*del)->GetType() == Entity::Entity_Type::enemy_type) 
 							this->EnemyCounter--;
-						}
 						delete (*del);
 						grid[i][j]->Object->erase(del);
 					}

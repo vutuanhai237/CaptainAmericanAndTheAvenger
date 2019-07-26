@@ -81,6 +81,7 @@ Animation *Shield::GetAnimation()
 Shield::Shield()
 {
 	Entity::tag = Entity_Tag::shield;
+	Entity::type = Entity_Type::player_weapon_type;
 	shield = new Animation(0, L"Resources/Shield.png", D3DCOLOR_XRGB(255, 0, 255), 4);
 	shield->Stop();
 	state = new ShieldState();

@@ -202,6 +202,11 @@
     <ClCompile Include="PlayerBeatenState.cpp">
       <Filter>Player\PlayerState</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerLeg.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerArm.cpp">
+      <Filter>Player</Filter>
     <ClCompile Include="PlayerHangOnState.cpp">
       <Filter>Player\PlayerState</Filter>
     </ClCompile>
@@ -373,6 +378,11 @@
     <ClInclude Include="PlayerBeatenState.h">
       <Filter>Player\PlayerState</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerLeg.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerArm.h">
+      <Filter>Player</Filter>
     <ClInclude Include="PlayerHangOnState.h">
       <Filter>Player\PlayerState</Filter>
     </ClInclude>

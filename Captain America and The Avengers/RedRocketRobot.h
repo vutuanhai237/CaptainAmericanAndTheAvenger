@@ -37,6 +37,7 @@ public:
 	virtual void UpdateCleverLevel(float dt);
 	virtual int OnCollision(Entity*, float dt);
 	virtual void Draw();
+	virtual void SetActive(bool IsActive);
 	BoundingBox GetBoundingBox() override;
 
 	bool IsCollisionWithGround(float dt, int delta_y = 12);

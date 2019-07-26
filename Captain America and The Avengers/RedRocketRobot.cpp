@@ -175,7 +175,6 @@ void RedRocketRobot::UpdateCleverLevel(float dt)
 int RedRocketRobot::OnCollision(Entity* obj, float dt)
 {
 	return Enemy::OnCollision(obj, dt);
-	
 }
 
 void RedRocketRobot::Draw()
@@ -234,6 +233,7 @@ bool RedRocketRobot::IsCollisionWithGround(float dt, int delta_y)
 	}
 	return false;
 }
+
 
 RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR2 position_goto, bool IsCrossed)
 {
