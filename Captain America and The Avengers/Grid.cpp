@@ -30,9 +30,9 @@ void Grid::AddObject2Cell(int WorldX, int WorldY, int* object)
 	grid[WorldX / GRID_CELL_SIZE_WIDTH][WorldY / GRID_CELL_SIZE_HEIGHT]->InitObject->push_back(object);
 }
 
-void Grid::AddObject2Cell(int WorldX, int WorldY, Entity *object)
-{
-	grid[WorldX / GRID_CELL_SIZE_WIDTH][WorldY / GRID_CELL_SIZE_HEIGHT]->Object->push_back(object);
+void Grid::AddObject2Cell(Entity *object)
+{ 
+	grid[int(object->GetPosition().x / GRID_CELL_SIZE_WIDTH)][int(object->GetPosition().y / GRID_CELL_SIZE_HEIGHT)]->Object->push_back(object);
 }
 
 void Grid::Update(float dt)
@@ -99,6 +99,7 @@ void Grid::RemoveAndReswampObject()
 			}
 			else
 			{
+<<<<<<< Updated upstream
 				if (grid[i][j]->IsActive)
 				{
 					auto it = grid[i][j]->Object->begin();
@@ -108,10 +109,21 @@ void Grid::RemoveAndReswampObject()
 							auto del = it;
 							it++;
 							grid[i][j]->Object->erase(del);
+=======
+				auto it = grid[i][j]->Object->begin();
+				while (it != grid[i][j]->Object->end())
+					if ((*it)->GetType() != Entity::Entity_Type::item_type)
+					{
+						auto del = it;
+						it++;
+						if ((*del)->GetType() == Entity::Entity_Type::enemy_type) {
+							this->EnemyCounter--;
+>>>>>>> Stashed changes
 						}
-						else
-							it++;
-				}
+						grid[i][j]->Object->erase(del);
+					}
+					else
+						it++;
 				grid[i][j]->IsActive = false;
 			}
 }
@@ -271,6 +283,7 @@ void Grid::CollisionCall(std::list<Entity*>* ListObject1, std::list<Entity*>* Li
 				if (it_j == ListObject2->end())
 					break;
 			}
+			else break;
 
 			ret = (*it_j)->OnCollision(*it_i, dt);
 			if (ret == -1) // remove it_i;

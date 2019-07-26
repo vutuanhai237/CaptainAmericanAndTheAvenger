@@ -5,12 +5,18 @@
 #include "Shield.h"
 #include "ShieldKickState.h"
 #include "PlayerJumpingDownState.h"
+
+#include "SceneManager.h"
+#include "PlayerLeg.h"
+
 PlayerKickingState::PlayerKickingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::kicking);
 	this->current_state = PlayerState::NameState::kicking;
 	Shield::GetInstance()->SetShieldState(new ShieldKickState());
+
+	SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(new PlayerLeg());
 }
 PlayerKickingState::~PlayerKickingState()
 {

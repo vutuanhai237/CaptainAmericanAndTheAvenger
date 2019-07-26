@@ -103,8 +103,16 @@ void ShieldAttackState::Draw()
 BoundingBox ShieldAttackState::GetBoundingBox()
 {
 	SIZE size;
-	size.cx = 16;
-	size.cy = 9;
+	if (FrameLock < 2)
+	{
+		size.cx = -0;
+		size.cy = -0;
+	}
+	else
+	{
+		size.cx = 16;
+		size.cy = 9;
+	}
 	return BoundingBox(VirtualPoint, size, 0, 0);
 }
 

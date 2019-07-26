@@ -1,7 +1,9 @@
 ﻿#include "PlayerDuckingPunchingState.h"
 #include "Shield.h"
 #include "ShieldOnAirState.h"
-#include "Framework//Debug.h"
+#include "PlayerArm.h"
+#include "SceneManager.h"
+
 PlayerDuckingPunchingState::PlayerDuckingPunchingState()
 {
 	Player* player = Player::GetInstance();
@@ -13,6 +15,7 @@ PlayerDuckingPunchingState::PlayerDuckingPunchingState()
 	this->IsGong = false;
 	Shield::GetInstance()->SetShieldState(new ShieldOnAirState());
 
+	SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(new PlayerArm());
 }
 PlayerDuckingPunchingState::~PlayerDuckingPunchingState()
 {

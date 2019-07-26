@@ -78,7 +78,7 @@ void Charleston::Init()
 				data >> tmp;
 				holder->PutOnItem(tmp);
 			}
-			grid->AddObject2Cell(posX, posY, holder);
+			grid->AddObject2Cell(holder);
 			continue;
 		default:
 			continue;
