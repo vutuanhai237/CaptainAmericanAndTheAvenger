@@ -37,6 +37,9 @@
     <Filter Include="Items">
       <UniqueIdentifier>{16bc8034-aba7-4cda-b1d8-5b309f630178}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\BlueSoldier">
+      <UniqueIdentifier>{97f93f5e-eb41-476b-a68c-be99748cf3b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Animation.cpp">
@@ -207,6 +210,12 @@
     </ClCompile>
     <ClCompile Include="PlayerHangOnState.cpp">
       <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="BlueSoldier.cpp">
+      <Filter>Enemy\BlueSoldier</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Enemy\BlueSoldier</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -384,6 +393,12 @@
     </ClInclude>
     <ClInclude Include="PlayerHangOnState.h">
       <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="BlueSoldier.h">
+      <Filter>Enemy\BlueSoldier</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Enemy\BlueSoldier</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

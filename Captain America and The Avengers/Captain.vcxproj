@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{3C8F973D-7C46-4F0A-B98D-578BDDF7D1E5}</ProjectGuid>
     <RootNamespace>Map</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
     <ProjectName>Captain America and The Avengers</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -129,6 +129,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlueSoldier.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Charleston.cpp" />
     <ClCompile Include="CharlestonBoss.cpp" />
@@ -188,6 +190,8 @@
     <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlueSoldier.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Charleston.h" />
     <ClInclude Include="CharlestonBoss.h" />

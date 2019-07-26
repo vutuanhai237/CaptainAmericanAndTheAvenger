@@ -218,7 +218,7 @@ void Grid::CheckCollision(float dt)
 				if (j > 0)
 					CollisionCall(objs, grid[i - 1][j - 1]->Object, dt);
 			}
-			else if (j > 0)
+			if (j > 0)
 				CollisionCall(objs, grid[i][j - 1]->Object, dt);
 		}
 }
@@ -288,7 +288,7 @@ void Grid::CollisionCall(std::list<Entity*>* ListObject1, std::list<Entity*>* Li
 					break;
 				
 			}
-			else break;
+			if (ret != 0) break;
 
 			ret = (*it_j)->OnCollision(*it_i, dt);
 			if (ret == -1) // remove it_i;
