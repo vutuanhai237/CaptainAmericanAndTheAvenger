@@ -40,6 +40,25 @@ void Sprite::Draw(FLOAT X, FLOAT Y)
 	Draw(D3DXVECTOR2(X, Y));
 }
 
+void Sprite::DrawInt()
+{
+	Position.x = ceilf(Position.x);
+	Position.y = ceilf(Position.y);
+	UpdateMatrix();
+	Draw();
+}
+
+void Sprite::DrawInt(D3DXVECTOR2 WorldPosition)
+{
+	Position = Camera::GetInstance()->World2Render(WorldPosition);
+	DrawInt();
+}
+
+void Sprite::DrawInt(INT X, INT Y)
+{
+	DrawInt(D3DXVECTOR2(X, Y));
+}
+
 void Sprite::ImperiouslyDraw() // Only call inside other draw function
 {
 	LPD3DXSPRITE Hander = d3d::GetInstance()->GetSpriteHander();

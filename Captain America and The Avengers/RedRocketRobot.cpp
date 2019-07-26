@@ -102,8 +102,10 @@ void RedRocketRobot::UpdateNormalLevel(float dt)
 		return;
 	}
 	// Bắt việc shield có được ném hay không, thì nhảy để né
-
-	if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::ShieldAttack 
+	//if (Player::GetInstance()->GetCurrentState() == PlayerState::throwing
+		
+	// 
+	if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::ShieldAttack
 		&& this->IsJumping == false 
 		&& this->current_state == RedRocketRobotState::running
 		&& (this->GetMoveDirection() != Player::GetInstance()->GetMoveDirection())) {

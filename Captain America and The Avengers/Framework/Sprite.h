@@ -10,6 +10,9 @@ public:
 	virtual void Draw();
 	virtual void Draw(D3DXVECTOR2 WorldPosition);
 	virtual void Draw(FLOAT WorldPositionX, FLOAT WorldPositionY);
+	virtual void DrawInt();
+	virtual void DrawInt(D3DXVECTOR2 WorldPosition);
+	virtual void DrawInt(INT WorldPositionX, INT WorldPositionY);
 	void ImperiouslyDraw(); // Only call inside other draw function
 
 	void SetPosition(D3DXVECTOR2 Position); // Set tam render
