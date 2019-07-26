@@ -66,11 +66,11 @@ void Grid::Init(int MapSizeWidth, int MapSizeHeight)
 
 void Grid::UpdateActivatedZone()
 {
-	RECT ActivatedBox = Camera::GetInstance()->GetCameraViewRect();
-	Xfrom = (ActivatedBox.left - 1) / GRID_CELL_SIZE_WIDTH;
-	Xto = (ActivatedBox.right + 1) / GRID_CELL_SIZE_WIDTH;
-	Yfrom = ActivatedBox.bottom / GRID_CELL_SIZE_HEIGHT;
-	Yto = ActivatedBox.top / GRID_CELL_SIZE_HEIGHT;
+	D3DXVECTOR2 pos = Camera::GetInstance()->GetCameraPosition();
+	Xfrom = floor((pos.x - 1) / GRID_CELL_SIZE_WIDTH);
+	Xto = ceil((pos.x + 1 + GAME_SCREEN_WIDTH) / GRID_CELL_SIZE_WIDTH);
+	Yfrom = floor(pos.y / GRID_CELL_SIZE_HEIGHT);
+	Yto = ceil((pos.y + GAME_SCREEN_HEIGHT) / GRID_CELL_SIZE_HEIGHT);
 	if (Xfrom < 0)
 		Xfrom = 0;
 	if (Xto >= CellX)
@@ -89,8 +89,8 @@ void Grid::RemoveAndReswampObject()
 						switch (item[0])
 						{
 						case Entity::Entity_Tag::redrobotrocket:
-							if (this->EnemyCounter <= CAPACITY_ENEMY) 
-              {
+							if (this->EnemyCounter < CAPACITY_ENEMY) 
+							{
 								grid[i][j]->Object->push_back(new RedRocketRobot(item[3], D3DXVECTOR2(item[1], item[2]), D3DXVECTOR2(item[4], item[5]), item[6]));
 								this->EnemyCounter++;
 							}			
@@ -237,9 +237,20 @@ void Grid::DrawActivatedObject()
 	for (int i = Xfrom; i <= Xto; i++)
 		for (int j = Yfrom; j <= Yto; j++)
 			for (auto obj : *grid[i][j]->Object)
-				if (obj->GetTag() != Entity::Entity_Tag::player && obj->GetTag() != Entity::Entity_Tag::shield)
+				if (obj->GetType() == Entity::Entity_Type::item_type)
 					obj->Draw();
-		
+
+	for (int i = Xfrom; i <= Xto; i++)
+		for (int j = Yfrom; j <= Yto; j++)
+			for (auto obj : *grid[i][j]->Object)
+				if (obj->GetType() == Entity::Entity_Type::enemy_type)
+					obj->Draw();
+
+	for (int i = Xfrom; i <= Xto; i++)
+		for (int j = Yfrom; j <= Yto; j++)
+			for (auto obj : *grid[i][j]->Object)
+				if (obj->GetType() != Entity::Entity_Type::item_type && obj->GetType() != Entity::Entity_Type::enemy_type)
+					obj->Draw();
 }
 
 bool Grid::IsActivated(int column, int row)

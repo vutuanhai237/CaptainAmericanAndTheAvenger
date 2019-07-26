@@ -76,7 +76,7 @@ void ItemsHolder::Update(float dt)
 
 void ItemsHolder::Draw()
 {
-	animation->Draw(position);
+	animation->DrawInt(position);
 }
 
 void ItemsHolder::PutOnItem(int Item_Tag)

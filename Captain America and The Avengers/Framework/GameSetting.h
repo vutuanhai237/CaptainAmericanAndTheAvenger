@@ -2,8 +2,8 @@
 
 #define GAME_CLASS L"CaptainAmerica"
 #define GAME_NAME L"Captain America and The Avengers"
-#define GAME_SCREEN_WIDTH 256
-#define GAME_SCREEN_HEIGHT 224
+#define GAME_SCREEN_WIDTH 256.0f
+#define GAME_SCREEN_HEIGHT 224.0f
 
 
 #define PIXEL_PER_TITLE 16

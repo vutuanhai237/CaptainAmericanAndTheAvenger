@@ -21,5 +21,4 @@ protected:
 	Camera *cam;
 	Animation* exit;
 	Grid *grid;
-	int i;
 };
