@@ -89,8 +89,9 @@ void Grid::RemoveAndReswampObject()
 						switch (item[0])
 						{
 						case Entity::Entity_Tag::redrobotrocket:
-							if (this->EnemyCounter <= CAPACITY_ENEMY) {
-								grid[i][j]->Object->push_back(new RedRocketRobot(item[3], D3DXVECTOR2(item[1], item[2]), D3DXVECTOR2(item[4], item[5])));
+							if (this->EnemyCounter <= CAPACITY_ENEMY) 
+              {
+								grid[i][j]->Object->push_back(new RedRocketRobot(item[3], D3DXVECTOR2(item[1], item[2]), D3DXVECTOR2(item[4], item[5]), item[6]));
 								this->EnemyCounter++;
 							}			
 							break;
@@ -108,13 +109,13 @@ void Grid::RemoveAndReswampObject()
 					{
 						auto del = it;
 						it++;
-						if ((*del)->GetType() == Entity::Entity_Type::enemy_type) {
+						if ((*del)->GetType() == Entity::Entity_Type::enemy_type) 
 							this->EnemyCounter--;
-						}
+						delete (*del);
 						grid[i][j]->Object->erase(del);
 					}
 					else
-						it++;
+						it++;	
 				grid[i][j]->IsActive = false;
 			}
 }
@@ -238,6 +239,7 @@ void Grid::DrawActivatedObject()
 			for (auto obj : *grid[i][j]->Object)
 				if (obj->GetTag() != Entity::Entity_Tag::player && obj->GetTag() != Entity::Entity_Tag::shield)
 					obj->Draw();
+		
 }
 
 bool Grid::IsActivated(int column, int row)
@@ -273,6 +275,7 @@ void Grid::CollisionCall(std::list<Entity*>* ListObject1, std::list<Entity*>* Li
 				ListObject1->erase(del);
 				if (it_j == ListObject2->end())
 					break;
+				
 			}
 			else break;
 

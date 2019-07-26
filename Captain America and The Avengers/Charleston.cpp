@@ -81,11 +81,11 @@ void Charleston::Init()
 			grid->AddObject2Cell(holder);
 			continue;
 		case Entity::Entity_Tag::redrobotrocket:
-			obj = new int[6];
+			obj = new int[7];
 			obj[0] = tag;
 			obj[1] = posX;
 			obj[2] = posY;
-			data >> obj[3] >> obj[4] >> obj[5];
+			data >> obj[3] >> obj[4] >> obj[5] >> obj[6];
 			grid->AddObject2Cell(posX, posY, obj);
 			continue;
 		default:

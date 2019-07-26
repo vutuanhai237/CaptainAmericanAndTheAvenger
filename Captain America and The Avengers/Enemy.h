@@ -16,7 +16,7 @@ public:
 	virtual bool IsCollisionWithGround(float dt, int delta_y = 12);
 	virtual void Draw() {};
 	Enemy();
-	virtual ~Enemy();
+	virtual ~Enemy() override;
 	// bool variable
 	bool IsJumping;
 protected:

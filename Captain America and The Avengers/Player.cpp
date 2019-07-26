@@ -58,10 +58,10 @@ Player::Player() :Entity()
 	// diving
 	diving->SetTime(0.2);
 	diving->SetFrameReset(4);
-
 	flowing->SetTime(0.1);
-	hang_on->SetTime(0.1);
-	jump_from_rope->SetTime(0.1);
+	// hang on
+	hang_on->SetTime(0.15);
+	jump_from_rope->SetTime(0.2);
 	punching->SetTime(0.1);
 
 	// Cập nhật vào cơ sở dữ liệu
@@ -396,6 +396,34 @@ bool Player::IsCollisionWithWall(float dt, int delta_y)
 				//	return true;
 				//}
 				break;
+			}
+		}
+	}
+	return false;
+}
+
+bool Player::IsCollisionWithRope(float dt, int delta_y)
+{
+	SIZE ArmSize;
+	ArmSize.cx = PLAYER_SIZE_WIDTH ;
+	ArmSize.cy = PLAYER_ARM_HEIGHT;
+	BoundingBox foot(D3DXVECTOR2(position.x, position.y + delta_y), ArmSize, velocity.x*dt, velocity.y*dt);
+
+	auto Checker = Collision::getInstance();
+	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
+	CollisionOut tmp;
+	BoundingBox box2;
+	for (auto item : obj)
+	{
+
+		if (item->GetTag() == Entity::Entity_Tag::rope)
+		{
+			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
+			tmp = Checker->SweptAABB(foot, box2);
+			if (tmp.side == CollisionSide::bottom)
+			{
+				position.y = item->GetPosition().y - PLAYER_SIZE_HEIGHT / 2 + item->GetSize().cy/2;
+				return true;
 			}
 		}
 	}

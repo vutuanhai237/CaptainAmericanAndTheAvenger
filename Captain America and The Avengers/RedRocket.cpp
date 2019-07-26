@@ -1,12 +1,22 @@
 #include "RedRocket.h"
 #include "FrameWork//Debug.h"
-
+#include "SceneManager.h"
 
 void RedRocket::Update(float dt)
 {
 	EnemyWeapon::Update(dt);
 	this->current_ani->Update(dt);
 
+	if (this->IsExploding) {
+		this->Exploding(dt);
+		return;
+	}
+	
+	if (this->distance > DISTANCE_OUT) {
+		this->Release();
+		this->IsExploding = true;
+	}
+	
 	if (IsCrossed) {
 		
 		if (IsStraight) {
@@ -28,37 +38,36 @@ void RedRocket::Update(float dt)
 
 }
 
-void RedRocket::OnCollision()
+int RedRocket::OnCollision(Entity* obj, float dt)
 {
+	if (this->IsDead == true) {
+		return 1;
+	}
+	return 0;
+	// ddajn va cham voi nhan vat
+
 }
 
-void RedRocket::Exploding(float dt, D3DXVECTOR2 position_respawn, int level_robot)
+void RedRocket::Exploding(float dt)
 {
-	this->Update(dt);
+	
 	if (this->time_out_explode == 0) {
 		this->current_ani = this->explode_ani;
 	}
 	this->time_out_explode += dt;
 	if (this->time_out_explode > TIME_EXPLODE) {
 		this->IsExploding = false;
-		this->current_ani = this->horizontal_ani;
-		if (level_robot != 2) {
-			this->SetPosition(position_respawn);
-
-		}
+		//this->current_ani = this->horizontal_ani;
+		this->IsDead = true;
 	}
-	this->current_ani->Update(dt);
 
 }
 
 void RedRocket::Release() 
 {
-	this->SetVelocityX(1);
 	this->distance = 0;
-	this->IsFire = false;
 	this->IsStraight = true;
 	this->time_out_straight = 0;
-	this->current_ani = this->horizontal_ani;
 	this->time_out_explode = 0;
 }
 
@@ -77,26 +86,7 @@ void RedRocket::Draw()
 	
 }
 
-RedRocket::RedRocket()
-{
-	this->SetTag(Entity::Entity_Tag::red_rocket);
-	this->SetType(Entity::Entity_Type::enemy_weapon_type);
-	this->crossed_ani = new Animation(RedRocket::RedRocketState::crossed, 2);
-	this->horizontal_ani = new Animation(RedRocket::RedRocketState::horizontal, 2);
-	this->explode_ani = new Animation(RedRocket::RedRocketState::explode, 3); this->explode_ani->SetTime(0.1);
-
-	this->current_ani = this->horizontal_ani;
-	this->SetVelocityX(5);
-	this->SetPosition(0,0);
-	this->IsLocking = true;
-	this->distance = 0;
-	this->IsStraight = true;
-	this->time_out_straight = 0;
-	this->IsExploding = false;
-
-}
-
-RedRocket::RedRocket(D3DXVECTOR2 position, bool IsCrossed)
+RedRocket::RedRocket(D3DXVECTOR2 position, bool IsCrossed, Entity::Entity_Direction direction)
 {
 	this->SetTag(Entity::Entity_Tag::red_rocket);
 	this->SetType(Entity::Entity_Type::enemy_weapon_type);
@@ -109,9 +99,13 @@ RedRocket::RedRocket(D3DXVECTOR2 position, bool IsCrossed)
 	this->IsLocking = true;
 	this->distance = 0;
 	this->IsStraight = true;
+	this->IsDead = false;
 	this->time_out_straight = 0;
 	this->IsCrossed = IsCrossed;
 	this->IsExploding = false;
+	this->SetVelocityX(RED_ROCKET_VELOCITY_X);
+	this->SetMoveDirection(direction);
+
 }
 
 

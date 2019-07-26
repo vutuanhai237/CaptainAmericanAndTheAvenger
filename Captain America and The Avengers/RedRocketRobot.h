@@ -52,8 +52,11 @@ public:
 	bool IsLockChangeRocket;
 	bool IsLockDuckingClever;
 	bool IsChamDatLanDau;
+	bool IsChamLanHai;
+
 	bool IsLoopClever;
 	bool IsCapNhatVanToc;
+	bool IsCapNhatPositionMotLan;
 	bool IsLockClever;
 
 	int IsLui;
@@ -66,7 +69,6 @@ public:
 	RedRocketRobotState current_state;
 	RedRocketRobotState previous_state;
 
-	RedRocket* rocket;
 	Equation *e;
 	int NumberRocket;
 	// clever zone
@@ -74,17 +76,15 @@ public:
 	float distance_goto;
 	bool Update_position_one_time;
 	Entity::Entity_Direction clever_direction;
-	RedRocketRobot();
-	RedRocketRobot(int level, D3DXVECTOR2 position_spawn,D3DXVECTOR2 position_goto);
+	RedRocketRobot(int level, D3DXVECTOR2 position_spawn,D3DXVECTOR2 position_goto, bool IsCrossed);
 	void UpdateRunningCleverState(float dt);
 	void UpdateJumpingCleverState(float dt);
 	void UpdateUPDOWNNormalState(float dt);
 	// clever zone
-	void UpdateUPDOWNCleverState(float dt);
 	void UpdateRunningState(float dt);
 	void UpdateJumpingState(float dt);
 	void UpdateIdleState(float dt);
 	void UpdateWalkingThrowState(float dt);
-	~RedRocketRobot();
+	~RedRocketRobot() override;
 };
 

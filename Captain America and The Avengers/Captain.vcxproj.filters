@@ -37,6 +37,9 @@
     <Filter Include="Items">
       <UniqueIdentifier>{16bc8034-aba7-4cda-b1d8-5b309f630178}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\NewFilter1">
+      <UniqueIdentifier>{73060c07-7e01-4fc2-b096-df6b83ffe3b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Animation.cpp">
@@ -204,6 +207,8 @@
     </ClCompile>
     <ClCompile Include="PlayerArm.cpp">
       <Filter>Player</Filter>
+    <ClCompile Include="PlayerHangOnState.cpp">
+      <Filter>Player\PlayerState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,9 +261,6 @@
       <Filter>GameComponents</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
-    <ClInclude Include="BoxCollider.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="CharlestonMap.h">
       <Filter>Map</Filter>
     </ClInclude>
@@ -381,6 +383,8 @@
     </ClInclude>
     <ClInclude Include="PlayerArm.h">
       <Filter>Player</Filter>
+    <ClInclude Include="PlayerHangOnState.h">
+      <Filter>Player\PlayerState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

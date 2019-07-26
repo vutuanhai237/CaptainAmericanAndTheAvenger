@@ -37,7 +37,7 @@ public:
 		water,
 		ground,
 		wall,
-		climb_wall,
+		rope,
 		spike,
 		// item
 		item_container,
