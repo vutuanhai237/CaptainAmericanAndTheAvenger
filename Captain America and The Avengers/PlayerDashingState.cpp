@@ -49,6 +49,10 @@ void PlayerDashingState::HandleInput(float dt)
 		}
 
 	}
+	if (keyboard->KeyDown(JUMP_KEY)) {
+		player->ChangeState(new PlayerJumpingState());
+		return;
+	}
 	// Hiển thị sprite đầu trong time_duck_before dashing, sau đó xét đến sprite 2
 	if (player->GetCurrentAnimation()->GetNumberCurrentFrame() == 1 && IsDucking == false)
 	{
@@ -89,6 +93,7 @@ void PlayerDashingState::HandleInput(float dt)
 			player->ChangeState(new PlayerIdleState());
 			return;
 		}
+		
 	}
 		
 

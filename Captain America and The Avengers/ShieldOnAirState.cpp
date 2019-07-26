@@ -12,6 +12,7 @@ void ShieldOnAirState::Update(float dt)
 {
 	Player *player = Player::GetInstance();
 
+
 	if (player->GetCurrentState() == PlayerState::NameState::ducking_punching) {
 		if (player->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
 			VirtualPoint.x = player->GetPosition().x + SHIELD_ON_AIR_DUCKING_PUNCHING_DELTA_X;
@@ -32,7 +33,10 @@ void ShieldOnAirState::Update(float dt)
 		VirtualPoint.x = player->GetPosition().x + SHIELD_ON_AIR_DELTA_X;
 	else
 		VirtualPoint.x = player->GetPosition().x - SHIELD_ON_AIR_DELTA_X;
-	
+	if (player->GetCurrentState() == PlayerState::NameState::hang_on) {
+		VirtualPoint.y -= 5;
+
+	}
 }
 
 void ShieldOnAirState::Draw()

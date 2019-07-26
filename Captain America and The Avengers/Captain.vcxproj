@@ -158,6 +158,7 @@
     <ClCompile Include="PlayerDuckingPunchingState.cpp" />
     <ClCompile Include="PlayerDuckingState.cpp" />
     <ClCompile Include="PlayerFlowingState.cpp" />
+    <ClCompile Include="PlayerHangOnState.cpp" />
     <ClCompile Include="PlayerIdleState.cpp" />
     <ClCompile Include="PlayerJumpingDownState.cpp" />
     <ClCompile Include="PlayerJumpingState.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="PlayerDuckingPunchingState.h" />
     <ClInclude Include="PlayerDuckingState.h" />
     <ClInclude Include="PlayerFlowingState.h" />
+    <ClInclude Include="PlayerHangOnState.h" />
     <ClInclude Include="PlayerIdleState.h" />
     <ClInclude Include="PlayerJumpingDownState.h" />
     <ClInclude Include="PlayerJumpingState.h" />

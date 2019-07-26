@@ -64,7 +64,7 @@ int ItemsHolder::OnCollision(Entity *obj, float dt)
 		// drop item
 		grid->ItemCounter++;
 		item = (*Items)[0];
-		grid->AddObject2Cell(item->GetPosition().x, item->GetPosition().y, item);
+		grid->AddObject2Cell(item);
 		Items->erase(Items->begin());
 		break;
 	default:

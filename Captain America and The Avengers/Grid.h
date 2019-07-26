@@ -37,7 +37,7 @@ public:
 	~Grid();
 
 	void AddObject2Cell(int WorldX, int WorldY, int *object);
-	void AddObject2Cell(int WorldX, int WorldY, Entity *object);
+	void AddObject2Cell(Entity *object);
 	void Update(float dt);
 	void DrawActivatedObject();
 

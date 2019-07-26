@@ -5,6 +5,7 @@
 #include "Framework//Debug.h"
 #include "Shield.h"
 #include "ShieldOnAirState.h"
+#include "PlayerHangOnState.h"
 #include "PlayerBeatenState.h"
 PlayerJumpingDownState::PlayerJumpingDownState()
 {
@@ -68,7 +69,11 @@ void PlayerJumpingDownState::HandleInput(float dt)
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
-
+	if (player->IsCollisionWithRope(dt))
+	{
+		player->ChangeState(new PlayerHangOnState());
+		return;
+	}
 	if (!player->IsDonTho && player->IsCollisionWithGround(dt, 8))
 	{	
 		player->ChangeState(new PlayerDuckingState());

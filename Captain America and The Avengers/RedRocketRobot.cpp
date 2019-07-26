@@ -6,15 +6,7 @@ void RedRocketRobot::Update(float dt)
 	Enemy::Update(dt);
 	Player *player = Player::GetInstance();
 	this->current_animation->Update(dt);
-
-	// Quay mặt về player
-	if (this->level != Level::clever) {
-		
-	}
-
-
-
-	// thằng gà
+	// noob
 	if (this->level == Level::stupid) {
 		this->UpdateStupidLevel(dt);
 	}
@@ -44,19 +36,6 @@ void RedRocketRobot::Update(float dt)
 
 void RedRocketRobot::UpdateStupidLevel(float dt)
 {
-	if (this->rocket != NULL && this->rocket->IsExploding) {
-
-		this->rocket->Exploding(dt, this->position, this->level);
-		return;
-	}
-	if (this->rocket != NULL) {
-		this->rocket->Update(dt);
-		if (this->rocket->distance > DISTANCE_OUT) {
-			this->rocket->Release();
-			this->rocket->IsExploding = true;
-		}
-	}
-	
 	if (IsChamDatLanDau == false)
 	{
 		if (this->IsCollisionWithGround(dt)) {
@@ -77,19 +56,6 @@ void RedRocketRobot::UpdateStupidLevel(float dt)
 
 void RedRocketRobot::UpdateNormalLevel(float dt)
 {
-	if (this->rocket != NULL && this->rocket->IsExploding) {
-
-		this->rocket->Exploding(dt, this->position, this->level);
-		return;
-	}
-	if (this->rocket != NULL) {
-		this->rocket->Update(dt);
-		if (this->rocket->distance > DISTANCE_OUT) {
-			this->rocket->Release();
-			this->rocket->IsExploding = true;
-		}
-
-	}
 
 	this->UpdateUPDOWNNormalState(dt);
 	if ((Player::GetInstance()->GetPosition().x - this->GetPosition().x > 0)) {
@@ -185,19 +151,6 @@ void RedRocketRobot::UpdateNormalLevel(float dt)
 
 void RedRocketRobot::UpdateCleverLevel(float dt)
 {
-	if (this->rocket != NULL && this->rocket->IsExploding) {
-
-		this->rocket->Exploding(dt, this->position, this->level);
-		return;
-	}
-	if (this->rocket != NULL) {
-		this->rocket->Update(dt);
-		if (this->rocket->distance > DISTANCE_OUT) {
-			this->rocket->Release();
-			this->rocket->IsExploding = true;
-		}
-
-	}
 
 	if (this->current_state == RedRocketRobotState::walking_throwing) {
 		this->UpdateWalkingThrowState(dt);
@@ -225,10 +178,6 @@ int RedRocketRobot::OnCollision(Entity* obj, float dt)
 	
 }
 
-void RedRocketRobot::SetActive(bool IsActive)
-{
-}
-
 void RedRocketRobot::Draw()
 {
 	this->current_animation->Draw(this->position);
@@ -238,13 +187,6 @@ void RedRocketRobot::Draw()
 	}
 	else {
 		this->GetCurrentAnimation()->SetScale(-1, 1);
-	}
-
-	if (this->rocket != NULL) {
-		if (this->level == Level::clever && this->IsDucking == false) {
-			return;
-		}
-		this->rocket->Draw();
 	}
 }
 
@@ -293,7 +235,7 @@ bool RedRocketRobot::IsCollisionWithGround(float dt, int delta_y)
 	return false;
 }
 
-RedRocketRobot::RedRocketRobot() : Enemy()
+RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR2 position_goto, bool IsCrossed)
 {
 	this->SetTag(Entity::Entity_Tag::redrobotrocket);
 	this->SetType(Entity::Entity_Type::enemy_type);
@@ -307,74 +249,7 @@ RedRocketRobot::RedRocketRobot() : Enemy()
 	this->ducking_ani->SetTime(0.5);
 	//
 	this->IsChamDatLanDau = false;
-	this->NumberRocket = 0;
-	this->IsLoop = false;
-	this->IsJumping = false;
-	this->position = position_spawn;
-	this->time_ducking = 0.0f;
-	this->IsDucking = false;
-	this->IsIdle = true;
-	this->current_state = RedRocketRobotState::idle;
-	this->current_animation = idle_ani;
-	this->level = Level::stupid;
-	this->SetVelocityY(-5.0f);
-	this->SetVelocityX(0.0f);
-	this->rocket = NULL;
-	this->rocket_active = 0;
-	this->IsLockChangeRocket;
-	this->IsJumpingFirst = 0;
-	this->IsCapNhatVanToc = true;
-	this->IsLoopClever = false;
-	this->distance = 0;
-	this->Update_position_one_time = false;
-	this->IsLockClever = false;
-	this->IsLockDuckingClever = false;
-
-
-	this->position_spawn = D3DXVECTOR2(0, 0);
-	
-	//
-	if (position_spawn.x > position_goto.x) {
-		this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-		this->goto_direction = Entity::Entity_Direction::RightToLeft;
-		this->clever_direction = Entity::Entity_Direction::LeftToRight;
-		this->position_loop = D3DXVECTOR2(this->position_goto.x - this->distance_goto, this->position_goto.y);
-
-	}
-	else {
-		this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-		this->goto_direction = Entity::Entity_Direction::LeftToRight;
-		this->clever_direction = Entity::Entity_Direction::RightToLeft;
-		this->position_loop = D3DXVECTOR2(this->position_goto.x + this->distance_goto, this->position_goto.y);
-
-	}
-
-	if (this->position_spawn.x > Player::GetInstance()->GetPosition().x) {
-		this->clever_direction = Entity::Entity_Direction::RightToLeft;
-
-	}
-	else {
-		this->clever_direction = Entity::Entity_Direction::LeftToRight;
-
-	}
-	this->SetMoveDirection(this->clever_direction);
-
-}
-
-RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR2 position_goto)
-{
-	this->SetTag(Entity::Entity_Tag::redrobotrocket);
-	this->SetType(Entity::Entity_Type::enemy_type);
-	this->idle_ani = new Animation(RedRocketRobot::RedRocketRobotState::idle, 2);
-	this->running_ani = new Animation(RedRocketRobot::RedRocketRobotState::running, 3);
-	this->ducking_ani = new Animation(RedRocketRobot::RedRocketRobotState::ducking, 2);
-	this->beaten_ani = new Animation(RedRocketRobot::RedRocketRobotState::beaten, 1);
-	//
-	this->idle_ani->SetTime(0.5);
-	this->running_ani->SetTime(0.1);
-	this->ducking_ani->SetTime(0.5);
-	//
-	this->IsChamDatLanDau = false;
+	this->IsChamLanHai = false;
 	this->NumberRocket = 0;
 	this->IsLoop = false;
 	this->IsJumping = false;
@@ -389,14 +264,15 @@ RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR
 	this->level = Level::stupid;
 	this->SetVelocityY(-5.0f);
 	this->SetVelocityX(0.0f);
-	this->rocket = NULL;
 	this->rocket_active = 0;
 	this->IsLockChangeRocket;
 	this->IsJumpingFirst = 0;
 	this->IsLoopClever = false;
+	this->IsCrossed = IsCrossed;
 	this->distance = 0;
 	this->Update_position_one_time = false;
 	this->IsCapNhatVanToc = true;
+	this->IsCapNhatPositionMotLan = false;
 	switch (level) {
 	case 0:
 		this->level = Level::stupid;
@@ -413,7 +289,7 @@ RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR
 	this->distance = 0;
 	this->IsLockClever = false;
 	this->IsLockDuckingClever = false;
-	this->IsLui = 1;
+	this->IsLui = -1;
 	//
 	if (position_spawn.x > position_goto.x) {
 		this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
@@ -512,18 +388,23 @@ void RedRocketRobot::UpdateUPDOWNNormalState(float dt)
 		this->current_state = RedRocketRobot::RedRocketRobotState::ducking;
 		this->time_idle = 0.0f;
 		// rocket zone
-		if (this->rocket == NULL) {
-			this->rocket = new RedRocket(this->position, false);
-		}
-		this->rocket->SetVelocityX(RED_ROCKET_VELOCITY_X);
-		this->rocket->SetMoveDirection(this->GetMoveDirection());
-		this->IsExplode = false;
 		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
-			this->rocket->SetPosition(this->GetPosition().x + 1.5, this->rocket->GetPosition().y + 1.5);
+			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+				new RedRocket(
+					D3DXVECTOR2(this->position.x + 1.5, this->position.y + 1.5),
+					this->IsCrossed,
+					this->GetMoveDirection()
+				)
+			);
 		}
 		else {
-			this->rocket->SetPosition(this->GetPosition().x - 1.5, this->rocket->GetPosition().y + 1.5);
-
+			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+				new RedRocket(
+					D3DXVECTOR2(this->position.x - 1.5, this->position.y + 1.5),
+					this->IsCrossed,
+					this->GetMoveDirection()
+				)
+			);
 		}
 	}
 	if (this->time_ducking >= 2.0f && this->current_state == RedRocketRobotState::ducking) {
@@ -533,27 +414,27 @@ void RedRocketRobot::UpdateUPDOWNNormalState(float dt)
 		this->current_state = RedRocketRobot::RedRocketRobotState::idle;
 		this->time_ducking = 0.0f;
 		// rocket zone
-		if (this->rocket == NULL) {
-			this->rocket = new RedRocket(this->position, false);
-		}
-		this->IsExplode = false;
-		this->rocket->SetVelocityX(RED_ROCKET_VELOCITY_X);
-		this->rocket->SetMoveDirection(this->GetMoveDirection());
 		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
-			this->rocket->SetPosition(this->GetPosition().x + 11.5, this->rocket->GetPosition().y + 17.5);
+			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+				new RedRocket(
+					D3DXVECTOR2(this->position.x + 11.5, this->position.y + 17.5),
+					this->IsCrossed,
+					this->GetMoveDirection()
+				)
+			);
 		}
 		else {
-			this->rocket->SetPosition(this->GetPosition().x - 11.5, this->rocket->GetPosition().y + 17.5);
-
+			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+				new RedRocket(
+					D3DXVECTOR2(this->position.x - 11.5, this->position.y + 17.5),
+					this->IsCrossed,
+					this->GetMoveDirection()
+				)
+			);
 		}
 	}
-
 }
 
-void RedRocketRobot::UpdateUPDOWNCleverState(float dt)
-{
-
-}
 
 void RedRocketRobot::UpdateRunningState(float dt)
 {
@@ -568,19 +449,20 @@ void RedRocketRobot::UpdateRunningState(float dt)
 		return;
 	}
 
-	CHECK:
+CHECK:
+	if (abs(this->position.x - this->position_loop.x) < 2.0f && IsChamLanHai) {
+		IsLui = -1;
+		this->current_state = RedRocketRobotState::idle;
+		this->current_animation = idle_ani;
+		this->previous_state = RedRocketRobotState::running;
+	}
 	if (abs(this->position.x - this->position_goto.x) < 2.0f) {
 		IsLui = 1;
 		this->current_state = RedRocketRobotState::idle;
 		this->current_animation = idle_ani;
 		this->previous_state = RedRocketRobotState::running;
 	}
-	if (abs(this->position.x - this->position_loop.x) < 2.0f) {
-		IsLui = -1;
-		this->current_state = RedRocketRobotState::idle;
-		this->current_animation = idle_ani;
-		this->previous_state = RedRocketRobotState::running;
-	}
+	
 
 	if (IsLui == 0) {
 		if (this->clever_direction == Entity::Entity_Direction::RightToLeft) {
@@ -617,25 +499,29 @@ void RedRocketRobot::UpdateJumpingState(float dt)
 {
 	if (IsChamDatLanDau == false)
 	{
-		if (this->IsCollisionWithGround(dt)) {
+		if (this->IsCollisionWithGround(dt, 18)) {
 			this->position_spawn = this->position;
+			
 			IsChamDatLanDau = true;
 			this->current_state = RedRocketRobotState::running;
 			this->current_animation = running_ani;
 		}
 		else {
 			this->SetVelocityY(RED_ROCKET_ROBOT_VELOCITY);
-
 		}
 		return;
 	}
+	else {
+		if (this->IsChamLanHai == false) {
+			this->IsChamLanHai = true;
+		}
+	}
 	this->UpdateJumpingCleverState(dt);
 	if (this->Update_position_one_time == false 
-		&& this->IsCollisionWithGround(dt,18)	
+		&& this->IsCollisionWithGround(dt, 18)	
 		&& this->position.y != this->position_spawn.y) {
 		this->Update_position_one_time = true;
 		this->distance = abs(position.x - position_spawn.x);
-		//this->position_goto = D3DXVECTOR2(this->position.x - 6, this->position.y);
 		if (this->clever_direction == Entity::Entity_Direction::RightToLeft) {
 			this->position_loop = D3DXVECTOR2(this->position.x + this->distance, this->position_goto.y);
 		}
@@ -667,39 +553,47 @@ void RedRocketRobot::UpdateIdleState(float dt)
 		this->time_idle = 0.0f;
 		this->IsDucking = true;
 		// rocket zone
-		
-		if (this->rocket == NULL) {
-			this->rocket = new RedRocket(this->position, false);
-		}
-		
-		this->rocket->SetVelocityX(RED_ROCKET_VELOCITY_X);
-		this->rocket->SetMoveDirection(this->clever_direction);
-		this->IsExplode = false;
-		if (this->rocket->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
-			this->rocket->SetPosition(this->GetPosition().x + 1.5, this->GetPosition().y + 1.5);
+		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+				new RedRocket(
+					D3DXVECTOR2(this->position.x + 1.5, this->position.y + 1.5),
+					this->IsCrossed,
+					this->GetMoveDirection()
+				)
+			);
 		}
 		else {
-			this->rocket->SetPosition(this->GetPosition().x - 1.5, this->GetPosition().y + 1.5);
-
+			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+				new RedRocket(
+					D3DXVECTOR2(this->position.x - 1.5, this->position.y + 1.5),
+					this->IsCrossed,
+					this->GetMoveDirection()
+				)
+			);
 		}
+
 	}
 	if (this->time_ducking >= 2.0f && this->current_state == RedRocketRobotState::ducking) {
 		this->current_animation = this->running_ani;
 		this->current_state = RedRocketRobot::RedRocketRobotState::running;
 		this->time_ducking = 0.0f;
 		this->previous_state = RedRocketRobotState::idle;
+		if (IsCapNhatPositionMotLan == false) {
+			if (this->IsLui == 1) {
+				this->position.x -= 2;
+				this->position_loop = this->position;
+
+			}
+			if (this->IsLui == -1) {
+				this->position.x += 2;
+
+				this->position_goto = this->position;
+
+			}
+			this->IsCapNhatPositionMotLan = true;
+			this->IsLui = 1;
+		}
 		
-		if (this->IsLui == 1) {
-			this->position.x -= 2;
-			this->position_goto = this->position;
-
-		}
-		if (this->IsLui == -1) {
-			this->position.x += 2;
-
-			this->position_loop = this->position;
-
-		}
 		this->IsDucking = false;
 	
 		if (this->clever_direction == Entity::Entity_Direction::RightToLeft) {
@@ -726,7 +620,7 @@ void RedRocketRobot::UpdateIdleState(float dt)
 
 void RedRocketRobot::UpdateWalkingThrowState(float dt)
 {
-	if (this->IsCollisionWithGround(dt, 18) == false
+	if (this->IsCollisionWithGround(dt) == false
 		&& previous_state == RedRocketRobotState::idle) {
 		this->current_state = RedRocketRobotState::jumping;
 		this->current_animation = ducking_ani;
@@ -743,5 +637,5 @@ void RedRocketRobot::UpdateWalkingThrowState(float dt)
 
 RedRocketRobot::~RedRocketRobot()
 {
-
+	//if (this->rocket != NULL) delete this->rocket;
 }

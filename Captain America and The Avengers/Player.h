@@ -8,6 +8,7 @@
 #define PLAYER_SIZE_WIDTH 8
 #define PLAYER_SIZE_HEIGHT 40
 #define PLAYER_FOOT_HEIGHT 8
+#define PLAYER_ARM_HEIGHT 8
 //
 #define VELOCITY_X 80.0f
 #define VELOCITY_Y 150.0f
@@ -46,6 +47,8 @@
 // beaten
 #define TIME_BEATEN_MIN 0.016f*8
 #define TIME_INVISIBLE 3.0f
+// hang on
+#define TIME_JUMP_FROM_ROPE 0.016f * 8
 using namespace std;
 class Player : public Entity
 {
@@ -81,6 +84,8 @@ public:
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
 	bool IsCollisionWithWater(float dt, int delta_y = 12);
 	bool IsCollisionWithWall(float dt, int delta_y = 3);
+	bool IsCollisionWithRope(float dt, int delta_y = 22);
+
 	BoundingBox GetBoundingBox();
 	// Các biến này đáng lẽ phải ở riêng mỗi state, nhưng ở kicking, khi chuyển từ
 	// kicking về jumping, jumpingdown hay rolling thì lại phải tạo mới state,
@@ -112,7 +117,6 @@ protected:
 	std::map<int, Animation*> animations;
 	PlayerState::NameState current_state;
 	int previous_state;
-
 	PlayerState* player_state;
 	Animation* animation;
 	D3DXVECTOR2 position_idle;

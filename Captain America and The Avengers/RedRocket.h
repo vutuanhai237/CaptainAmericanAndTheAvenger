@@ -1,7 +1,7 @@
 #pragma once
 #include "EnemyWeapon.h"
 #define RED_ROCKET_VELOCITY_X 120.0f
-#define DISTANCE_OUT 235.0f
+#define DISTANCE_OUT 400.0f
 #define TIME_OUT_STRAIGHT 0.016*15
 #define TIME_EXPLODE 0.016*10
 class RedRocket : public EnemyWeapon
@@ -13,16 +13,15 @@ public:
 		horizontal = 6,
 		explode = 7
 	};
-	virtual void Update(float dt);
-	virtual void OnCollision();
-	virtual void Exploding(float dt, D3DXVECTOR2 position_respawn, int level_robot);
+	virtual void Update(float dt) override;
+	virtual int OnCollision(Entity*, float dt) override;
+	virtual void Exploding(float dt);
 	virtual void Release();
 	virtual void Draw();
-	RedRocket();
-	RedRocket(D3DXVECTOR2, bool IsCrossed);
+	RedRocket(D3DXVECTOR2, bool IsCrossed, Entity::Entity_Direction direction);
 
-	~RedRocket();
-	bool IsFire;
+	~RedRocket() override;
+	bool IsDead;
 	float distance;
 	bool IsStraight;
 	bool IsExploding;

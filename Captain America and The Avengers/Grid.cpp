@@ -30,9 +30,9 @@ void Grid::AddObject2Cell(int WorldX, int WorldY, int* object)
 	grid[WorldX / GRID_CELL_SIZE_WIDTH][WorldY / GRID_CELL_SIZE_HEIGHT]->InitObject->push_back(object);
 }
 
-void Grid::AddObject2Cell(int WorldX, int WorldY, Entity *object)
+void Grid::AddObject2Cell(Entity *object)
 {
-	grid[WorldX / GRID_CELL_SIZE_WIDTH][WorldY / GRID_CELL_SIZE_HEIGHT]->Object->push_back(object);
+	grid[int(object->GetPosition().x) / GRID_CELL_SIZE_WIDTH][int(object->GetPosition().y) / GRID_CELL_SIZE_HEIGHT]->Object->push_back(object);
 }
 
 void Grid::Update(float dt)
@@ -90,7 +90,7 @@ void Grid::RemoveAndReswampObject()
 						{
 						case Entity::Entity_Tag::redrobotrocket:
 							if (this->EnemyCounter <= CAPACITY_ENEMY) {
-								grid[i][j]->Object->push_back(new RedRocketRobot(item[3], D3DXVECTOR2(item[1], item[2]), D3DXVECTOR2(item[4], item[5])));
+								grid[i][j]->Object->push_back(new RedRocketRobot(item[3], D3DXVECTOR2(item[1], item[2]), D3DXVECTOR2(item[4], item[5]), item[6]));
 								this->EnemyCounter++;
 							}			
 							break;
@@ -102,22 +102,20 @@ void Grid::RemoveAndReswampObject()
 			}
 			else
 			{
-				if (grid[i][j]->IsActive)
-				{
-					auto it = grid[i][j]->Object->begin();
-					while (it != grid[i][j]->Object->end())
-						if ((*it)->GetType() != Entity::Entity_Type::item_type)
-						{
-							auto del = it;
-							it++;
-							if ((*del)->GetType() == Entity::Entity_Type::enemy_type) {
-								this->EnemyCounter--;
-							}
-							grid[i][j]->Object->erase(del);
+				auto it = grid[i][j]->Object->begin();
+				while (it != grid[i][j]->Object->end())
+					if ((*it)->GetType() != Entity::Entity_Type::item_type)
+					{
+						auto del = it;
+						it++;
+						if ((*del)->GetType() == Entity::Entity_Type::enemy_type) {
+							this->EnemyCounter--;
 						}
-						else
-							it++;
-				}
+						delete (*del);
+						grid[i][j]->Object->erase(del);
+					}
+					else
+						it++;	
 				grid[i][j]->IsActive = false;
 			}
 }
@@ -241,6 +239,7 @@ void Grid::DrawActivatedObject()
 			for (auto obj : *grid[i][j]->Object)
 				if (obj->GetTag() != Entity::Entity_Tag::player && obj->GetTag() != Entity::Entity_Tag::shield)
 					obj->Draw();
+		
 }
 
 bool Grid::IsActivated(int column, int row)
@@ -276,7 +275,9 @@ void Grid::CollisionCall(std::list<Entity*>* ListObject1, std::list<Entity*>* Li
 				ListObject1->erase(del);
 				if (it_j == ListObject2->end())
 					break;
+				
 			}
+			else break;
 
 			ret = (*it_j)->OnCollision(*it_i, dt);
 			if (ret == -1) // remove it_i;
