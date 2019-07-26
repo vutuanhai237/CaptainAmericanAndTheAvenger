@@ -196,8 +196,6 @@
     <ClCompile Include="Item.cpp">
       <Filter>Items</Filter>
     </ClCompile>
-<<<<<<< Updated upstream
-=======
     <ClCompile Include="PlayerBeatenState.cpp">
       <Filter>Player\PlayerState</Filter>
     </ClCompile>
@@ -207,7 +205,6 @@
     <ClCompile Include="PlayerArm.cpp">
       <Filter>Player</Filter>
     </ClCompile>
->>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Animation.h">
@@ -376,8 +373,6 @@
     <ClInclude Include="Item.h">
       <Filter>Items</Filter>
     </ClInclude>
-<<<<<<< Updated upstream
-=======
     <ClInclude Include="PlayerBeatenState.h">
       <Filter>Player\PlayerState</Filter>
     </ClInclude>
@@ -387,7 +382,6 @@
     <ClInclude Include="PlayerArm.h">
       <Filter>Player</Filter>
     </ClInclude>
->>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Map.rc" />

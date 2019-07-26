@@ -89,7 +89,10 @@ void Grid::RemoveAndReswampObject()
 						switch (item[0])
 						{
 						case Entity::Entity_Tag::redrobotrocket:
-							grid[i][j]->Object->push_back(new RedRocketRobot(RedRocketRobot::Level::clever, D3DXVECTOR2(500.0f, 150.0f), D3DXVECTOR2(400.0f, 150.0f), D3DXVECTOR2(300.0f, 150.0f)));
+							if (this->EnemyCounter <= CAPACITY_ENEMY) {
+								grid[i][j]->Object->push_back(new RedRocketRobot(item[3], D3DXVECTOR2(item[1], item[2]), D3DXVECTOR2(item[4], item[5])));
+								this->EnemyCounter++;
+							}			
 							break;
 						default:
 							break;
@@ -99,17 +102,6 @@ void Grid::RemoveAndReswampObject()
 			}
 			else
 			{
-<<<<<<< Updated upstream
-				if (grid[i][j]->IsActive)
-				{
-					auto it = grid[i][j]->Object->begin();
-					while (it != grid[i][j]->Object->end())
-						if ((*it)->GetType() != Entity::Entity_Type::item_type)
-						{
-							auto del = it;
-							it++;
-							grid[i][j]->Object->erase(del);
-=======
 				auto it = grid[i][j]->Object->begin();
 				while (it != grid[i][j]->Object->end())
 					if ((*it)->GetType() != Entity::Entity_Type::item_type)
@@ -118,7 +110,6 @@ void Grid::RemoveAndReswampObject()
 						it++;
 						if ((*del)->GetType() == Entity::Entity_Type::enemy_type) {
 							this->EnemyCounter--;
->>>>>>> Stashed changes
 						}
 						grid[i][j]->Object->erase(del);
 					}

@@ -104,7 +104,7 @@ Player::Player() :Entity()
 	this->time_air_rolling = 0;
 	this->time_jumping_before_flowing = 0;
 	this->time_don_tho = 0;
-
+	this->time_invisible = 0;
 }
 
 
@@ -118,8 +118,8 @@ Player::~Player()
 void Player::Update(float dt)
 {
 	Entity::Update(dt);
-
 	this->player_state->Update(dt);
+	this->time_invisible -= dt;
 }
 
 void Player::Draw()
@@ -200,13 +200,13 @@ int Player::GetPreviousState()
 	return this->previous_state;
 }
 
-void Player::OnCollision(Entity *obj, float dt)
+int Player::OnCollision(Entity *obj, float dt)
 {
 
 	Collision *Checker = Collision::getInstance();
 	auto out = Checker->SweptAABB(this->GetBoundingBox(), obj->GetBoundingBox());
 	if (out.CollisionTime > 1) {
-		return;
+		return 0;
 	}
 	if (obj->GetType() == Entity::Entity_Type::enemy_type)
 	{

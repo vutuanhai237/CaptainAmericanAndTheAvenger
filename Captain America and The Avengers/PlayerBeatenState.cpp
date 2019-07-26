@@ -11,6 +11,7 @@ PlayerBeatenState::PlayerBeatenState()
 	player->SetVelocity(0, 0);
 	this->time_beaten = 0;
 	player->OnTheWater = true;
+	player->time_invisible = TIME_INVISIBLE;
 }
 PlayerBeatenState::~PlayerBeatenState()
 {
@@ -60,5 +61,21 @@ BoundingBox PlayerBeatenState::GetBoundingBox()
 
 void PlayerBeatenState::HandleInput(float dt)
 {
-	
+	Player *player = Player::GetInstance();
+	if (player->IsCollisionWithWall(dt))
+	{
+		player->ChangeState(new PlayerJumpingDownState());
+		return;
+	}
+
+	if (player->IsCollisionWithGround(dt, 8))
+	{
+		player->ChangeState(new PlayerJumpingDownState());
+		return;
+	}
+	if (player->IsCollisionWithWater(dt, 8))
+	{
+		player->ChangeState(new PlayerJumpingDownState());
+		return;
+	}
 }
