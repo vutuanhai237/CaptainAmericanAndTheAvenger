@@ -52,7 +52,7 @@ public:
 	bool IsLockDuckingClever;
 	bool IsChamDatLanDau;
 	bool IsChamLanHai;
-
+	bool IsFire;
 	bool IsLoopClever;
 	bool IsCapNhatVanToc;
 	bool IsCapNhatPositionMotLan;

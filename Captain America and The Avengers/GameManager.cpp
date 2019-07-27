@@ -43,6 +43,14 @@ void GameManager::Init(int fps)
 	texture->Add(ID, L"Resources//Enemy//RedRocketRobot//RedRocketCrossed.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources//Enemy//RedRocketRobot//RedRocketHorizontal.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources//Enemy//Explode.png", D3DCOLOR_XRGB(255, 0, 255));
+	// blue soldier 8 9 10 11
+	texture->Add(ID, L"Resources//Enemy//BlueSoldier//BlueSoldierIdleState.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//BlueSoldier//BlueSoldierRunningState.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//BlueSoldier//BlueSoldierDuckingState.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//BlueSoldier//BlueSoldierBeatenState.png", D3DCOLOR_XRGB(255, 0, 255));
+	// bullet 12
+	texture->Add(ID, L"Resources//Enemy//BlueSoldier//SoldierBullet.png", D3DCOLOR_XRGB(255, 0, 255));
+
 
 	texture->Add(ItemsHolder::AnimationID, L"Resources/Items/ItemHolder.png", D3DCOLOR_ARGB(0, 0, 0, 0));
 	texture->Add(ItemsHolder::ID_ExitOrb, L"Resources/Items/ExitOrb.png", D3DCOLOR_XRGB(255, 0, 255));
