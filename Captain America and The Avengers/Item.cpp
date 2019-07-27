@@ -83,7 +83,6 @@ int Item::OnCollision(Entity *obj, float dt)
 		if (Collision::getInstance()->IsCollide(obj->GetBoundingBox(), GetBoundingBox()))
 		{
 			// Increase 5 point
-			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->ItemCounter--;
 			return 1;
 		}
 	if (delta >= ITEM_LOOT_VANISHING)

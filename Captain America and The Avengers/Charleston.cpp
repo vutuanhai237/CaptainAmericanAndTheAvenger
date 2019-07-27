@@ -39,7 +39,7 @@ void Charleston::Draw()
 {
 	map->Draw();
 	grid->DrawActivatedObject();
-	Player::GetInstance()->Draw();
+	//Player::GetInstance()->Draw();
 }
 
 WorldMap * Charleston::GetCurrentMap()
