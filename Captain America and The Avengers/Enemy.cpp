@@ -22,11 +22,10 @@ int Enemy::OnCollision(Entity* obj, float dt)
 			this->time_beaten = ENEMY_TIME_BEATEN;
 
 		}
-		if (player->GetCurrentState() != PlayerState::jumping_down) {
+		if (player->GetCurrentState() != PlayerState::shield_down) {
 			player->ChangeState(new PlayerBeatenState());
 
 		}
-
 	}
 	if (obj->GetType() == Entity::Entity_Type::player_weapon_type
 		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))

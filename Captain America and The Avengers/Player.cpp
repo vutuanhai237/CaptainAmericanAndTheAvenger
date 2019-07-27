@@ -49,7 +49,7 @@ Player::Player() :Entity()
 	Animation* beaten = new Animation(PlayerState::NameState::beaten, L"Resources//CaptainState//CaptainBeatenState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	// Chỉ những animation nào có số sprite > 1 thì mới set time
 	running->SetTime(0.1);
-	dashing->SetTime(0.1);
+	dashing->SetTime(0.05f);
 	throwing->SetTime(0.1);
 	ducking_punching->SetTime(0.1);
 	rolling->SetTime(0.05);
@@ -361,6 +361,8 @@ bool Player::IsCollisionWithWater(float dt, int delta_y)
 
 bool Player::IsCollisionWithWall(float dt, int delta_y)
 {
+	bool ret = false;
+
 	Entity::IsLocking = false;
 	Entity::Update(dt);
 	Entity::IsLocking = true;
@@ -385,12 +387,16 @@ bool Player::IsCollisionWithWall(float dt, int delta_y)
 			{
 			case CollisionSide::left:
 				position.x = item->GetPosition().x + (item->GetSize().cx + PLAYER_SIZE_WIDTH) / 2 + 1;
-				velocity.x = 0.0f;
-				return true;
+				if (this->GetCurrentState() != PlayerState::NameState::jumping)
+					return true;
+				ret = true;
+				break;
 			case CollisionSide::right:
 				position.x = item->GetPosition().x - (item->GetSize().cx + PLAYER_SIZE_WIDTH) / 2 - 1;
-				velocity.x = 0.0f;
-				return true;
+				if (this->GetCurrentState() != PlayerState::NameState::jumping)
+					return true;
+				ret = true;
+				break;
 			case CollisionSide::top:
 				position.y = item->GetPosition().y - (item->GetSize().cy + PLAYER_SIZE_HEIGHT) / 2;
 				velocity.y = 0.0f;
@@ -402,18 +408,11 @@ bool Player::IsCollisionWithWall(float dt, int delta_y)
 				velocity.y = 0.0f;
 				return true;
 			default:
-				//if (Checker->IsCollide(player, box2))
-				//{
-				//	if (player->)
-				//	position.x = item->GetPosition().x + (item->GetSize().cx + PLAYER_SIZE_WIDTH) / 2 + 1;
-				//	velocity.x = 0.0f;
-				//	return true;
-				//}
 				break;
 			}
 		}
 	}
-	return false;
+	return ret;
 }
 
 bool Player::IsCollisionWithRope(float dt, int delta_y)
@@ -448,6 +447,3 @@ BoundingBox Player::GetBoundingBox()
 {
 	return this->player_state->GetBoundingBox();
 }
-
-
-

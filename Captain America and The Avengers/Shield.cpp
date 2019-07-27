@@ -22,16 +22,6 @@ D3DXVECTOR2 Shield::GetPosition()
 
 int Shield::OnCollision(Entity *obj, float dt)
 {
-	Collision *Checker = Collision::getInstance();
-	CollisionOut out;
-	if (obj->GetType() == Entity::Entity_Type::enemy_type)
-	{
-		out = Checker->SweptAABB(this->GetBoundingBox(), obj->GetBoundingBox());
-		if (out.CollisionTime <= 1)
-		{
-			Debug::PrintOut(L"Enemy beaten\n");
-		}
-	}
 	return 0;
 }
 

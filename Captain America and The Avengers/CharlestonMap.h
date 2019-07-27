@@ -14,5 +14,5 @@ public:
 	void Draw() override;
 	~CharlestonMap();
 private:
-	Animation *warter1, *warter2, *sewer;
+	Animation *warter1, *warter2, *sewer, *exit;
 };

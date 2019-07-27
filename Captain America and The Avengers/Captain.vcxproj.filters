@@ -295,9 +295,6 @@
     <ClInclude Include="RedRocket.h">
       <Filter>Enemy\RedRocketRobot</Filter>
     </ClInclude>
-    <ClInclude Include="ShieldDashState.h">
-      <Filter>Player\Shield</Filter>
-    </ClInclude>
     <ClInclude Include="ShieldKickState.h">
       <Filter>Player\Shield</Filter>
     </ClInclude>
