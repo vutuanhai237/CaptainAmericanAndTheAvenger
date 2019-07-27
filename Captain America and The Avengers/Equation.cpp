@@ -32,3 +32,4 @@ Equation::Equation()
 Equation::~Equation()
 {
 }
+

@@ -14,6 +14,13 @@ int Bullet::OnCollision(Entity* obj, float dt)
 	if (this->IsDead == true) {
 		return 1;
 	}
+	if (obj->GetType() == Entity::Entity_Type::player_weapon_type
+		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
+	{
+		this->SetVelocityX(0.0f);
+		this->SetVelocityY(BULLET_VELOCITY_X);
+		return 0;
+	}
 	Player *player = Player::GetInstance();
 	if (obj->GetType() == Entity::Entity_Type::player_type 
 		&& player->time_invisible <= 0
@@ -22,12 +29,7 @@ int Bullet::OnCollision(Entity* obj, float dt)
 			player->ChangeState(new PlayerBeatenState());
 			return 1;
 	}
-	if (obj->GetType() == Entity::Entity_Type::player_weapon_type
-		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
-	{
-		
-		return 0;
-	}
+	
 
 
 

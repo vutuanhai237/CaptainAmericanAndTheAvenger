@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Player.h"
 #include "Framework/Animation.h"
+#define TIME_EXPLODE 0.25
 class EnemyWeapon : public Entity
 {
 public:

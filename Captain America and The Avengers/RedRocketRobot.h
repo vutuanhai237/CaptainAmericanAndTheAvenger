@@ -3,6 +3,7 @@
 #include "RedRocket.h"
 #include "Equation.h"
 #include <vector>
+
 #define TIME_DUCKING 2.0f
 #define TIME_IDLE 2.0f
 #define RED_ROCKET_ROBOT_SIZE_WIDTH 8
@@ -42,8 +43,8 @@ public:
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
 	bool IsRunning;
 	bool IsDucking;
-	bool Isbeaten;
 	bool IsIdle;
+	bool IsExplode;
 	bool IsHaveJump;
 	bool IsLoop;
 	bool IsCrossed;
@@ -62,6 +63,7 @@ public:
 	int IsJumpingFirst;
 	float time_ducking;
 	float time_idle;
+
 	int rocket_active;
 	Entity::Entity_Direction goto_direction;
 	Level level;
