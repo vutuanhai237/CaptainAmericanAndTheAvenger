@@ -46,8 +46,8 @@ void Grid::Update(float dt)
 
 void Grid::Init(int MapSizeWidth, int MapSizeHeight)
 {
-	CellX = (int)ceilf(float(MapSizeWidth + 1) / GRID_CELL_SIZE_WIDTH);
-	CellY = (int)ceilf(float(MapSizeHeight + 1) / GRID_CELL_SIZE_HEIGHT);
+	CellX = (int)ceilf(float(MapSizeWidth + 1) / GRID_CELL_SIZE_WIDTH) + 1;
+	CellY = (int)ceilf(float(MapSizeHeight + 1) / GRID_CELL_SIZE_HEIGHT) + 1;
 	grid = new Cell**[CellX];
 	for (int i = 0; i < CellX; i++)
 	{
@@ -68,7 +68,7 @@ void Grid::UpdateActivatedZone()
 {
 	D3DXVECTOR2 pos = Camera::GetInstance()->GetCameraPosition();
 	Xfrom = floor((pos.x - 1) / GRID_CELL_SIZE_WIDTH);
-	Xto = ceil((pos.x + 1 + GAME_SCREEN_WIDTH) / GRID_CELL_SIZE_WIDTH);
+	Xto = ceil((pos.x + 1 + GAME_SCREEN_WIDTH) / GRID_CELL_SIZE_WIDTH) + 1;
 	Yfrom = floor(pos.y / GRID_CELL_SIZE_HEIGHT);
 	Yto = ceil((pos.y + GAME_SCREEN_HEIGHT) / GRID_CELL_SIZE_HEIGHT);
 	if (Xfrom < 0)
@@ -172,6 +172,7 @@ void Grid::CheckCollision(float dt)
 						{
 							auto del = it_i;
 							it_i++;
+							delete (*del);
 							objs->erase(del);
 							if (it_i == objs->end())
 								goto CHECK_OTHER;
@@ -182,15 +183,18 @@ void Grid::CheckCollision(float dt)
 						{
 							auto del = it_j;
 							it_j++;
+							delete (*del);
 							objs->erase(del);
 							if (it_j == objs->end())
 								break;
 						}
+
 						ret = (*it_j)->OnCollision(*it_i, dt);
 						if (ret == -1)
 						{
 							auto del = it_i;
 							it_i++;
+							delete (*del);
 							objs->erase(del);
 							if (it_i == objs->end())
 								goto CHECK_OTHER;
@@ -199,6 +203,7 @@ void Grid::CheckCollision(float dt)
 						{
 							auto del = it_j;
 							it_j++;
+							delete (*del);
 							objs->erase(del);
 							if (it_j == objs->end())
 								break;
@@ -260,7 +265,7 @@ bool Grid::IsActivated(int column, int row)
 
 void Grid::CollisionCall(std::list<Entity*>* ListObject1, std::list<Entity*>* ListObject2, float dt)
 {
-	int ret;
+	int ret = 0;
 	
 	auto it_i = ListObject1->begin();
 	while (it_i != ListObject1->end())
@@ -273,45 +278,54 @@ void Grid::CollisionCall(std::list<Entity*>* ListObject1, std::list<Entity*>* Li
 			{
 				auto del = it_i;
 				it_i++;
+				delete (*del);
 				ListObject1->erase(del);
 				if (it_i == ListObject1->end())
 					return;
 				else
-					break;
+					goto ENDLOOP;
 			}
 			else if (ret == -1) // remove it_j
 			{
 				auto del = it_j;
 				it_j++;
-				ListObject1->erase(del);
+				delete (*del);
+				ListObject2->erase(del);
 				if (it_j == ListObject2->end())
 					break;
-				
-			}
-			else break;
-
-			ret = (*it_j)->OnCollision(*it_i, dt);
-			if (ret == -1) // remove it_i;
-			{
-				auto del = it_i;
-				it_i++;
-				ListObject1->erase(del);
-				if (it_i == ListObject1->end())
-					return;
 				else
-					break;
+					continue;
 			}
-			else if (ret == 1) // remove it_j
+			else
 			{
-				auto del = it_j;
-				it_j++;
-				ListObject1->erase(del);
-				if (it_j == ListObject2->end())
-					break;
+				ret = (*it_j)->OnCollision(*it_i, dt);
+				if (ret == -1) // remove it_i;
+				{
+					auto del = it_i;
+					it_i++;
+					delete (*del);
+					ListObject1->erase(del);
+					if (it_i == ListObject1->end())
+						return;
+					else
+						goto ENDLOOP;
+				}
+				else if (ret == 1) // remove it_j
+				{
+					auto del = it_j;
+					it_j++;
+					delete (*del);
+					ListObject2->erase(del);
+					if (it_j == ListObject2->end())
+						break;
+					else
+						continue;
+				}
 			}
-
 			it_j++;
 		}
 		it_i++;
+	ENDLOOP:
+		{}
 	}
 }

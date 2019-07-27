@@ -18,7 +18,14 @@ int Enemy::OnCollision(Entity* obj, float dt)
 		&& player->time_invisible < 0
 		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox())) 
 	{
-		player->ChangeState(new PlayerBeatenState());
+		if (this->time_beaten == 0) {
+			this->time_beaten = ENEMY_TIME_BEATEN;
+
+		}
+		if (player->GetCurrentState() != PlayerState::shield_down) {
+			player->ChangeState(new PlayerBeatenState());
+
+		}
 	}
 
 	return 0;

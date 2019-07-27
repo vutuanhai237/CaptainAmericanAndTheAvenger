@@ -4,7 +4,6 @@
 
 PlayerBeatenState::PlayerBeatenState()
 {
-
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::beaten);
 	this->current_state = PlayerState::NameState::beaten;
@@ -12,6 +11,8 @@ PlayerBeatenState::PlayerBeatenState()
 	this->time_beaten = 0;
 	player->OnTheWater = true;
 	player->time_invisible = TIME_INVISIBLE;
+
+	player->OnTheWater = true;
 }
 PlayerBeatenState::~PlayerBeatenState()
 {

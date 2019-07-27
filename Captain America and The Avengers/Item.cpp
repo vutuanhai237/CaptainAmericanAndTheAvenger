@@ -39,6 +39,9 @@ Item::Item(float x, float y, int tag)
 	case Item_Tag::FivePoint:
 		animation = new Animation(ItemsHolder::ID_5Point, 1);
 		break;
+	case Item_Tag::HighPoint:
+		animation = new Animation(ItemsHolder::ID_HighPoint, 1);
+		break;
 	default:
 		throw L"Sai tag!";
 		break;
@@ -54,7 +57,7 @@ Item::~Item()
 
 BoundingBox Item::GetBoundingBox()
 {
-	return BoundingBox(position, size, 0, ITEM_VELOCITY_Y*direction);
+	return BoundingBox(D3DXVECTOR2(position.x, position.y + 4), size, 0, ITEM_VELOCITY_Y*direction);
 }
 
 void Item::Update(float dt)
@@ -105,7 +108,7 @@ void Item::CheckFalling()
 	for (Entity *item : obj)
 		if (Collision::getInstance()->SweptAABB(item->GetBoundingBox(), GetBoundingBox()).CollisionTime <= 1.0)
 		{
-			Entity::position.y = item->GetPosition().y + (item->GetSize().cy + size.cy) / 2;
+			Entity::position.y = item->GetPosition().y + (item->GetSize().cy + size.cy) / 2 - 4;
 			CanFalling = false;
 		}
 }

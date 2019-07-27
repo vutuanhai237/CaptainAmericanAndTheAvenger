@@ -10,6 +10,8 @@ CharlestonMap::CharlestonMap() : WorldMap(L"Resources/Map/charleston_map.txt", 0
 	warter1->SetTime(4.0f / 60);
 	warter2 = new Animation(1, L"Resources/Map/water_2.png", D3DCOLOR_ARGB(0, 0, 0, 0), 3, 1);
 	warter2->SetTime(4.0f / 60);
+	exit = new Animation(1, L"Resources/Map/exit.png", D3DCOLOR_XRGB(255, 0, 255), 2, 1);
+	exit->SetTime(5.0f / 60);
 	Camera::GetInstance()->Init(this->GetMapSize());
 }
 
@@ -18,6 +20,7 @@ void CharlestonMap::Update(float dt)
 	sewer->Update(dt);
 	warter1->Update(dt);
 	warter2->Update(dt);
+	exit->Update(dt);
 }
 
 void CharlestonMap::Draw()
@@ -74,6 +77,8 @@ void CharlestonMap::Draw()
 	Hander->End();
 
 	Hander->SetTransform(&OldMatrix);
+
+	exit->DrawInt(1840, 24);
 }
 
 CharlestonMap::~CharlestonMap()

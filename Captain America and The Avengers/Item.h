@@ -18,7 +18,8 @@ public:
 		LargeGem,
 		HalfHeal,
 		FullHeal,
-		FivePoint
+		FivePoint,
+		HighPoint
 	};
 
 	Item(float x, float y, int tag);
