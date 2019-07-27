@@ -6,6 +6,7 @@ void RedRocketRobot::Update(float dt)
 	Enemy::Update(dt);
 	Player *player = Player::GetInstance();
 	this->current_animation->Update(dt);
+
 	// noob
 	if (this->level == Level::stupid) {
 		this->UpdateStupidLevel(dt);
@@ -36,6 +37,7 @@ void RedRocketRobot::Update(float dt)
 
 void RedRocketRobot::UpdateStupidLevel(float dt)
 {
+
 	if (IsChamDatLanDau == false)
 	{
 		if (this->IsCollisionWithGround(dt)) {
@@ -181,14 +183,8 @@ int RedRocketRobot::OnCollision(Entity* obj, float dt)
 
 void RedRocketRobot::Draw()
 {
-	this->current_animation->Draw(this->position);
 
-	if (this->GetMoveDirection()) {
-		this->GetCurrentAnimation()->SetScale(1, 1);
-	}
-	else {
-		this->GetCurrentAnimation()->SetScale(-1, 1);
-	}
+	Enemy::Draw();
 }
 
 BoundingBox RedRocketRobot::GetBoundingBox()
@@ -271,6 +267,7 @@ RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR
 	this->IsJumpingFirst = 0;
 	this->IsLoopClever = false;
 	this->IsCrossed = IsCrossed;
+	this->IsFire = true;
 	this->distance = 0;
 	this->Update_position_one_time = false;
 	this->IsCapNhatVanToc = true;
@@ -372,6 +369,12 @@ void RedRocketRobot::UpdateJumpingCleverState(float dt)
 
 void RedRocketRobot::UpdateUPDOWNNormalState(float dt)
 {
+	if ((Player::GetInstance()->GetPosition().x - this->GetPosition().x > 0)) {
+		this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
+	}
+	else {
+		this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
+	}
 	if (this->current_state == RedRocketRobotState::running) {
 		this->time_idle = 0.0f;
 		this->time_ducking = 0.0f;
@@ -379,9 +382,55 @@ void RedRocketRobot::UpdateUPDOWNNormalState(float dt)
 	// Thực hiện động tác 2s ngồi một lần 
 	if (this->IsIdle && this->current_state == RedRocketRobotState::idle) {
 		this->time_idle += dt;
+		if (this->IsFire && this->time_idle > 0.016f * 5) {
+			// rocket zone
+			if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new RedRocket(
+						D3DXVECTOR2(this->position.x + 11.5, this->position.y + 17.5),
+						this->IsCrossed,
+						this->GetMoveDirection()
+					)
+				);
+			}
+			else {
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new RedRocket(
+						D3DXVECTOR2(this->position.x - 11.5, this->position.y + 17.5),
+						this->IsCrossed,
+						this->GetMoveDirection()
+					)
+				);
+			}
+			this->IsFire = false;
+		}
 	}
 	if (this->IsDucking && this->current_state == RedRocketRobotState::ducking) {
 		this->time_ducking += dt;
+		// rocket zone
+		if (this->IsFire && this->time_ducking > 0.016f * 5) {
+			if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new RedRocket(
+						D3DXVECTOR2(this->position.x + 1.5, this->position.y + 1.5),
+						this->IsCrossed,
+						this->GetMoveDirection()
+					)
+				);
+			}
+			else {
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new RedRocket(
+						D3DXVECTOR2(this->position.x - 1.5, this->position.y + 1.5),
+						this->IsCrossed,
+						this->GetMoveDirection()
+					)
+				);
+			}
+			this->IsFire = false;
+
+		}
+		
 	}
 	if (this->time_idle >= 2.0f && this->current_state == RedRocketRobotState::idle) {
 		this->IsIdle = false;
@@ -389,25 +438,8 @@ void RedRocketRobot::UpdateUPDOWNNormalState(float dt)
 		this->current_animation = this->ducking_ani;
 		this->current_state = RedRocketRobot::RedRocketRobotState::ducking;
 		this->time_idle = 0.0f;
-		// rocket zone
-		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
-			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
-				new RedRocket(
-					D3DXVECTOR2(this->position.x + 1.5, this->position.y + 1.5),
-					this->IsCrossed,
-					this->GetMoveDirection()
-				)
-			);
-		}
-		else {
-			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
-				new RedRocket(
-					D3DXVECTOR2(this->position.x - 1.5, this->position.y + 1.5),
-					this->IsCrossed,
-					this->GetMoveDirection()
-				)
-			);
-		}
+		this->IsFire = true;
+
 	}
 	if (this->time_ducking >= 2.0f && this->current_state == RedRocketRobotState::ducking) {
 		this->IsDucking = false;
@@ -415,25 +447,7 @@ void RedRocketRobot::UpdateUPDOWNNormalState(float dt)
 		this->current_animation = this->idle_ani;
 		this->current_state = RedRocketRobot::RedRocketRobotState::idle;
 		this->time_ducking = 0.0f;
-		// rocket zone
-		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
-			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
-				new RedRocket(
-					D3DXVECTOR2(this->position.x + 11.5, this->position.y + 17.5),
-					this->IsCrossed,
-					this->GetMoveDirection()
-				)
-			);
-		}
-		else {
-			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
-				new RedRocket(
-					D3DXVECTOR2(this->position.x - 11.5, this->position.y + 17.5),
-					this->IsCrossed,
-					this->GetMoveDirection()
-				)
-			);
-		}
+		this->IsFire = true;
 	}
 }
 
@@ -548,32 +562,37 @@ void RedRocketRobot::UpdateIdleState(float dt)
 	}
 	if (this->current_state == RedRocketRobotState::ducking) {
 		this->time_ducking += dt;
+		if (this->IsFire && this->time_ducking > 0.016f * 5) {
+			// rocket zone
+			if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new RedRocket(
+						D3DXVECTOR2(this->position.x + 1.5, this->position.y + 1.5),
+						this->IsCrossed,
+						this->GetMoveDirection()
+					)
+				);
+			}
+			else {
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new RedRocket(
+						D3DXVECTOR2(this->position.x - 1.5, this->position.y + 1.5),
+						this->IsCrossed,
+						this->GetMoveDirection()
+					)
+				);
+			}
+			this->IsFire = false;
+
+		}
 	}
 	if (this->time_idle >= 2.0f && this->current_state == RedRocketRobotState::idle) {
 		this->current_animation = this->ducking_ani;
 		this->current_state = RedRocketRobot::RedRocketRobotState::ducking;
 		this->time_idle = 0.0f;
 		this->IsDucking = true;
-		// rocket zone
-		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
-			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
-				new RedRocket(
-					D3DXVECTOR2(this->position.x + 1.5, this->position.y + 1.5),
-					this->IsCrossed,
-					this->GetMoveDirection()
-				)
-			);
-		}
-		else {
-			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
-				new RedRocket(
-					D3DXVECTOR2(this->position.x - 1.5, this->position.y + 1.5),
-					this->IsCrossed,
-					this->GetMoveDirection()
-				)
-			);
-		}
-
+	
+		this->IsFire = true;
 	}
 	if (this->time_ducking >= 2.0f && this->current_state == RedRocketRobotState::ducking) {
 		this->current_animation = this->running_ani;

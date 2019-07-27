@@ -1,7 +1,7 @@
 #include "RedRocket.h"
 #include "FrameWork//Debug.h"
 #include "SceneManager.h"
-
+#include "PlayerBeatenState.h"
 void RedRocket::Update(float dt)
 {
 	EnemyWeapon::Update(dt);
@@ -43,21 +43,37 @@ int RedRocket::OnCollision(Entity* obj, float dt)
 	if (this->IsDead == true) {
 		return 1;
 	}
+	Player *player = Player::GetInstance();
+	if (obj->GetType() != Entity::Entity_Type::player_type)
+		return 0;
+	int tmp = 0;
+		if (player->time_invisible <= 0
+		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
+	{
+		//if (player->GetCurrentState() != PlayerState::shield_down)
+		{
+			player->ChangeState(new PlayerBeatenState());
+			//Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox());
+		}
+		if (this->IsExploding == false) {
+			this->Release();
+			this->IsExploding = true;
+		}
+	
+	}
 	return 0;
-	// ddajn va cham voi nhan vat
 
 }
 
 void RedRocket::Exploding(float dt)
 {
-	
+	this->SetVelocityX(1);
 	if (this->time_out_explode == 0) {
 		this->current_ani = this->explode_ani;
 	}
 	this->time_out_explode += dt;
+	Debug::PrintOut(L"%f\n", this->time_out_explode);
 	if (this->time_out_explode > TIME_EXPLODE) {
-		this->IsExploding = false;
-		//this->current_ani = this->horizontal_ani;
 		this->IsDead = true;
 	}
 
@@ -92,9 +108,11 @@ RedRocket::RedRocket(D3DXVECTOR2 position, bool IsCrossed, Entity::Entity_Direct
 	this->SetType(Entity::Entity_Type::enemy_weapon_type);
 	this->crossed_ani = new Animation(RedRocket::RedRocketState::crossed, 2);
 	this->horizontal_ani = new Animation(RedRocket::RedRocketState::horizontal, 2);
-	this->explode_ani = new Animation(RedRocket::RedRocketState::explode, 3); this->explode_ani->SetTime(0.1);
+	this->explode_ani = new Animation(RedRocket::RedRocketState::explode, 3); 
+	this->explode_ani->SetTime(0.083, 10000);
 	this->current_ani = this->horizontal_ani;
 	this->SetVelocityX(5);
+	this->size.cx = 13; this->size.cy = 5;
 	this->SetPosition(position);
 	this->IsLocking = true;
 	this->distance = 0;

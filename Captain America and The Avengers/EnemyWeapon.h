@@ -6,7 +6,7 @@ class EnemyWeapon : public Entity
 {
 public:
 	virtual void Update(float dt);
-	virtual void OnCollision() {};
+	virtual int OnCollision(Entity*, float dt) override;
 	EnemyWeapon();
 	virtual ~EnemyWeapon();
 protected:

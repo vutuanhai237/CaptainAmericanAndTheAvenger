@@ -54,7 +54,7 @@ public:
 		flyer,
 		redrobotrocket,
 		red_rocket,
-		soldier,
+		blue_soldier,
 		soldier_bullet,
 		// none
 		none

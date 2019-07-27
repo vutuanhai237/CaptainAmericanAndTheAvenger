@@ -121,7 +121,7 @@ protected:
 	Animation* animation;
 	D3DXVECTOR2 position_idle;
 	float time_buffer;
-
+	int i = 0;
 private:
 	Player();
 	~Player();

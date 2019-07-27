@@ -1,6 +1,7 @@
 #include "Grid.h"
 #include <math.h>
 #include "RedRocketRobot.h"
+#include "BlueSoldier.h"
 #include "Player.h"
 #include "Shield.h"
 
@@ -94,6 +95,13 @@ void Grid::RemoveAndReswampObject()
 								grid[i][j]->Object->push_back(new RedRocketRobot(item[3], D3DXVECTOR2(item[1], item[2]), D3DXVECTOR2(item[4], item[5]), item[6]));
 								this->EnemyCounter++;
 							}			
+							break;
+						case Entity::Entity_Tag::blue_soldier:
+							if (this->EnemyCounter < CAPACITY_ENEMY)
+							{
+								grid[i][j]->Object->push_back(new BlueSoldier(item[3], D3DXVECTOR2(item[1], item[2]), item[4]));
+								this->EnemyCounter++;
+							}
 							break;
 						default:
 							break;
@@ -223,7 +231,7 @@ void Grid::CheckCollision(float dt)
 				if (j > 0)
 					CollisionCall(objs, grid[i - 1][j - 1]->Object, dt);
 			}
-			else if (j > 0)
+			if (j > 0)
 				CollisionCall(objs, grid[i][j - 1]->Object, dt);
 		}
 }

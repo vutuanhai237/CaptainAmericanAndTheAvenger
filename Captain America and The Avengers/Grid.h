@@ -7,7 +7,7 @@
 #define GRID_CELL_SIZE_WIDTH 40
 #define GRID_CELL_SIZE_HEIGHT 80
 #define CAPACITY_ITEM 3
-#define CAPACITY_ENEMY 2
+#define CAPACITY_ENEMY 20
 
 struct Cell
 {

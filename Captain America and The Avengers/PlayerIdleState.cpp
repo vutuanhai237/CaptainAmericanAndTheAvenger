@@ -11,6 +11,7 @@ PlayerIdleState::PlayerIdleState()
 	player->SetCurrentState(PlayerState::NameState::idle);
 	this->current_state = PlayerState::NameState::idle;
 	player->SetVelocity(0, 0);
+	player->SetSize(20, 45);
 	// Đảm bảo trạng thái nhảy chỉ được tiếp tục lần tới sau khi chạm đất
 	player->time_air_jumping = 0;
 	player->time_kicking = 0;

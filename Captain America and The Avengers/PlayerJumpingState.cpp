@@ -13,6 +13,7 @@ PlayerJumpingState::PlayerJumpingState()
 		player->SetVelocityY(JUMPING_VELOCITY_BEGIN);
 		player->IsJumping = true;
 	}
+	player->SetSize(20, 45);
 	player->SetVelocityX(0);
 	player->IsOnAir = true;
 	player->SetTimeBuffer(0);
