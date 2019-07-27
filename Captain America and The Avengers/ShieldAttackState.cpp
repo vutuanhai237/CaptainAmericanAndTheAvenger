@@ -103,7 +103,7 @@ void ShieldAttackState::Draw()
 BoundingBox ShieldAttackState::GetBoundingBox()
 {
 	SIZE size;
-	if (Player::GetInstance()->GetCurrentState() == PlayerState::NameState::throwing)
+	if (FrameLock < 2)
 	{
 		size.cx = -0;
 		size.cy = -0;

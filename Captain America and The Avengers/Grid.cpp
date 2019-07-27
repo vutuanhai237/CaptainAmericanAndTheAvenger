@@ -33,7 +33,10 @@ void Grid::AddObject2Cell(int WorldX, int WorldY, int* object)
 
 void Grid::AddObject2Cell(Entity *object)
 { 
-	grid[int(object->GetPosition().x / GRID_CELL_SIZE_WIDTH)][int(object->GetPosition().y / GRID_CELL_SIZE_HEIGHT)]->Object->push_back(object);
+	int col = int(object->GetPosition().x / GRID_CELL_SIZE_WIDTH);
+	int row = int(object->GetPosition().y / GRID_CELL_SIZE_HEIGHT);
+	if (IsActivated(col, row))
+		grid[col][row]->Object->push_back(object);
 }
 
 void Grid::Update(float dt)
@@ -63,6 +66,10 @@ void Grid::Init(int MapSizeWidth, int MapSizeHeight)
 
 	ItemCounter = 0;
 	EnemyCounter = 0;
+
+	Xfrom = Yfrom = 0;
+	Xto = CellX - 1;
+	Yto = CellY - 1;
 }
 
 void Grid::UpdateActivatedZone()
@@ -113,17 +120,7 @@ void Grid::RemoveAndReswampObject()
 			{
 				auto it = grid[i][j]->Object->begin();
 				while (it != grid[i][j]->Object->end())
-					if ((*it)->GetType() != Entity::Entity_Type::item_type && (*it)->GetTag() != Entity::Entity_Tag::shield)
-					{
-						auto del = it;
-						it++;
-						if ((*del)->GetType() == Entity::Entity_Type::enemy_type) 
-							this->EnemyCounter--;
-						delete (*del);
-						grid[i][j]->Object->erase(del);
-					}
-					else
-						it++;	
+					RemoveObjectInList(grid[i][j]->Object, it);
 				grid[i][j]->IsActive = false;
 			}
 }
@@ -135,26 +132,24 @@ void Grid::UpdateGrid()
 
 	for (int i = Xfrom; i <= Xto; i++)
 		for (int j = Yfrom; j <= Yto; j++)
-			if (!grid[i][j]->Object->empty())
+		{
+			auto it = grid[i][j]->Object->begin();
+			while (it != grid[i][j]->Object->end())
 			{
-				auto it = grid[i][j]->Object->begin();
-
-				while (it != grid[i][j]->Object->end())
+				pos = (*it)->GetPosition();
+				LocX = pos.x / GRID_CELL_SIZE_WIDTH;
+				LocY = pos.y / GRID_CELL_SIZE_HEIGHT;
+				if ((LocX != i || LocY != j) && 0 < LocX && LocX < CellX)
 				{
-					pos = (*it)->GetPosition();
-					LocX = pos.x / GRID_CELL_SIZE_WIDTH;
-					LocY = pos.y / GRID_CELL_SIZE_HEIGHT;
-					if ((LocX != i || LocY != j) && 0 < LocX && LocX < CellX)
-					{
-						grid[LocX][LocY]->Object->push_back(*it);
-						auto del = it;
-						it++;
-						grid[i][j]->Object->erase(del);
-					}
-					else
-						it++;
+					grid[LocX][LocY]->Object->push_back(*it);
+					auto del = it;
+					it++;
+					grid[i][j]->Object->erase(del);
 				}
+				else
+					it++;
 			}
+		}
 }
 
 void Grid::CheckCollision(float dt)
@@ -166,7 +161,7 @@ void Grid::CheckCollision(float dt)
 		{
 			auto objs = grid[i][j]->Object;
 			// Check self cell
-			if (!objs->empty())
+			if (objs->size() >= 2)
 			{
 				auto it_i = objs->begin();
 				while (it_i != objs->end())
@@ -178,43 +173,27 @@ void Grid::CheckCollision(float dt)
 						ret = (*it_i)->OnCollision(*it_j, dt);
 						if (ret == 1)
 						{
-							auto del = it_i;
-							it_i++;
-							delete (*del);
-							objs->erase(del);
-							if (it_i == objs->end())
+							if (RemoveObjectInList(objs, it_i))
 								goto CHECK_OTHER;
-							else
-								break;
 						}
 						else if (ret == -1)
 						{
-							auto del = it_j;
-							it_j++;
-							delete (*del);
-							objs->erase(del);
-							if (it_j == objs->end())
+							if (RemoveObjectInList(objs, it_j))
 								break;
 						}
-
-						ret = (*it_j)->OnCollision(*it_i, dt);
-						if (ret == -1)
+						else
 						{
-							auto del = it_i;
-							it_i++;
-							delete (*del);
-							objs->erase(del);
-							if (it_i == objs->end())
-								goto CHECK_OTHER;
-						}
-						else if (ret == 1)
-						{
-							auto del = it_j;
-							it_j++;
-							delete (*del);
-							objs->erase(del);
-							if (it_j == objs->end())
-								break;
+							ret = (*it_j)->OnCollision(*it_i, dt);
+							if (ret == -1)
+							{
+								if (RemoveObjectInList(objs, it_i))
+									goto CHECK_OTHER;
+							}
+							else if (ret == 1)
+							{
+								if (RemoveObjectInList(objs, it_j))
+									break;
+							}
 						}
 						it_j++;
 					}
@@ -222,17 +201,20 @@ void Grid::CheckCollision(float dt)
 				}
 			}
 			// Check another cell
-			CHECK_OTHER:
-			if (i > 0)
+		CHECK_OTHER:
+			if (!objs->empty())
 			{
-				CollisionCall(objs, grid[i - 1][j]->Object, dt);
-				if (j < CellY - 1)
-					CollisionCall(objs, grid[i - 1][j + 1]->Object, dt);
+				if (i > 0)
+				{
+					CollisionCall(objs, grid[i - 1][j]->Object, dt);
+					if (j < CellY - 1)
+						CollisionCall(objs, grid[i - 1][j + 1]->Object, dt);
+					if (j > 0)
+						CollisionCall(objs, grid[i - 1][j - 1]->Object, dt);
+				}
 				if (j > 0)
-					CollisionCall(objs, grid[i - 1][j - 1]->Object, dt);
+					CollisionCall(objs, grid[i][j - 1]->Object, dt);
 			}
-			if (j > 0)
-				CollisionCall(objs, grid[i][j - 1]->Object, dt);
 		}
 }
 
@@ -271,7 +253,7 @@ bool Grid::IsActivated(int column, int row)
 	return Xfrom <= column && column <= Xto && Yfrom <= row && row <= Yto;
 }
 
-void Grid::CollisionCall(std::list<Entity*>* ListObject1, std::list<Entity*>* ListObject2, float dt)
+void Grid::CollisionCall(std::list<Entity*> *ListObject1, std::list<Entity*> *ListObject2, float dt)
 {
 	int ret = 0;
 	
@@ -284,22 +266,14 @@ void Grid::CollisionCall(std::list<Entity*>* ListObject1, std::list<Entity*>* Li
 			ret = (*it_i)->OnCollision(*it_j, dt);
 			if (ret == 1) // remove it_i;
 			{
-				auto del = it_i;
-				it_i++;
-				delete (*del);
-				ListObject1->erase(del);
-				if (it_i == ListObject1->end())
+				if (RemoveObjectInList(ListObject1, it_i))
 					return;
 				else
 					goto ENDLOOP;
 			}
 			else if (ret == -1) // remove it_j
 			{
-				auto del = it_j;
-				it_j++;
-				delete (*del);
-				ListObject2->erase(del);
-				if (it_j == ListObject2->end())
+				if (RemoveObjectInList(ListObject2, it_j))
 					break;
 				else
 					continue;
@@ -309,22 +283,14 @@ void Grid::CollisionCall(std::list<Entity*>* ListObject1, std::list<Entity*>* Li
 				ret = (*it_j)->OnCollision(*it_i, dt);
 				if (ret == -1) // remove it_i;
 				{
-					auto del = it_i;
-					it_i++;
-					delete (*del);
-					ListObject1->erase(del);
-					if (it_i == ListObject1->end())
+					if (RemoveObjectInList(ListObject1, it_i))
 						return;
 					else
 						goto ENDLOOP;
 				}
 				else if (ret == 1) // remove it_j
 				{
-					auto del = it_j;
-					it_j++;
-					delete (*del);
-					ListObject2->erase(del);
-					if (it_j == ListObject2->end())
+					if (RemoveObjectInList(ListObject2, it_j))
 						break;
 					else
 						continue;
@@ -336,4 +302,37 @@ void Grid::CollisionCall(std::list<Entity*>* ListObject1, std::list<Entity*>* Li
 	ENDLOOP:
 		{}
 	}
+}
+
+bool Grid::RemoveObjectInList(std::list<Entity*>* list, std::list<Entity*>::iterator &it)
+{
+	std::list<Entity*>::iterator del = it;
+	it++;
+	switch ((*del)->GetType())
+	{
+	case Entity::Entity_Type::player_type:
+		goto UN_DELETE;
+	case Entity::Entity_Type::player_weapon_type:
+		if ((*del)->GetTag() == Entity::Entity_Tag::shield)
+			goto UN_DELETE;
+	case Entity::Entity_Type::item_type:
+		if ((*del)->GetTag() == Entity::Entity_Tag::item_container)
+			goto UN_DELETE;
+		this->ItemCounter--;
+		break;
+	case Entity::Entity_Type::enemy_type:
+		this->EnemyCounter--;
+		break;
+	default:
+		break;
+	}
+	delete (*del);
+	list->erase(del);
+
+UN_DELETE:
+
+	if (it == list->end())
+		return true;
+	else
+		return false;
 }

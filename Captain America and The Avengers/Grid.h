@@ -22,6 +22,11 @@ struct Cell
 	}
 	~Cell()
 	{
+		for (Entity *item : *Object)
+			if (item->GetTag() != Entity::Entity_Tag::player && item->GetTag() != Entity::Entity_Tag::shield)
+				delete item;
+		for (int *item : *InitObject)
+			delete item;
 		Object->clear();
 		InitObject->clear();
 		delete Object;
@@ -57,4 +62,6 @@ private:
 
 	bool IsActivated(int column, int row);
 	void CollisionCall(std::list<Entity*> *ListObject1, std::list<Entity*> *ListObject2, float dt);
+
+	bool RemoveObjectInList(std::list<Entity*> *list, std::list<Entity*>::iterator &it); // return true if list end
 };

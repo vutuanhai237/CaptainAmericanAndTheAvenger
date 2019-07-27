@@ -4,7 +4,7 @@
 
 #define ITEM_TIME_REVERT 1/6.0f // frame
 #define ITEM_LOOT_WARNING 3.0f
-#define ITEM_LOOT_VANISHING 50.0f
+#define ITEM_LOOT_VANISHING 5.0f
 #define ITEM_VELOCITY_Y 3.0f
 
 class Item : public Entity
