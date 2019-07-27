@@ -238,13 +238,13 @@ void Grid::DrawActivatedObject()
 	for (int i = Xfrom; i <= Xto; i++)
 		for (int j = Yfrom; j <= Yto; j++)
 			for (auto obj : *grid[i][j]->Object)
-				if (obj->GetType() == Entity::Entity_Type::enemy_type)
+				if (obj->GetType() == Entity::Entity_Type::enemy_type &&  obj->GetActive())
 					obj->Draw();
 
 	for (int i = Xfrom; i <= Xto; i++)
 		for (int j = Yfrom; j <= Yto; j++)
 			for (auto obj : *grid[i][j]->Object)
-				if (obj->GetType() != Entity::Entity_Type::item_type && obj->GetType() != Entity::Entity_Type::enemy_type)
+				if (obj->GetType() == Entity::Entity_Type::enemy_weapon_type && obj->GetActive())
 					obj->Draw();
 }
 

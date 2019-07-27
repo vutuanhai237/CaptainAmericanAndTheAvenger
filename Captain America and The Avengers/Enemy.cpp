@@ -44,6 +44,7 @@ int Enemy::OnCollision(Entity* obj, float dt)
 	}
 	
 	if (this->IsDead) {
+		
 		return 1;
 	}
 	return 0;
@@ -55,7 +56,7 @@ void Enemy::Spawn()
 
 
 
-Enemy::Enemy()
+Enemy::Enemy(): Entity()
 {
 	Entity::type = Entity_Type::enemy_type;
 	this->explode_ani = new Animation(7, 3); 
