@@ -120,7 +120,22 @@ void Grid::RemoveAndReswampObject()
 			{
 				auto it = grid[i][j]->Object->begin();
 				while (it != grid[i][j]->Object->end())
-					RemoveObjectInList(grid[i][j]->Object, it);
+					if ((*it)->GetTag() == Entity::Entity_Tag::shield)
+					{
+						// shield exception
+						D3DXVECTOR2 pos = (*it)->GetPosition(); 
+						int LocX = pos.x / GRID_CELL_SIZE_WIDTH;
+						int LocY = pos.y / GRID_CELL_SIZE_HEIGHT;
+						if ((LocX != i || LocY != j) && 0 < LocX && LocX < CellX)
+						{
+							grid[LocX][LocY]->Object->push_back(*it);
+							auto del = it;
+							it++;
+							grid[i][j]->Object->erase(del);
+						}
+					}
+					else
+						RemoveObjectInList(grid[i][j]->Object, it);
 				grid[i][j]->IsActive = false;
 			}
 }
@@ -246,6 +261,7 @@ void Grid::DrawActivatedObject()
 			for (auto obj : *grid[i][j]->Object)
 				if (obj->GetType() == Entity::Entity_Type::enemy_weapon_type && obj->GetActive())
 					obj->Draw();
+			
 }
 
 bool Grid::IsActivated(int column, int row)
@@ -312,13 +328,11 @@ bool Grid::RemoveObjectInList(std::list<Entity*>* list, std::list<Entity*>::iter
 	{
 	case Entity::Entity_Type::player_type:
 		goto UN_DELETE;
-	case Entity::Entity_Type::player_weapon_type:
-		if ((*del)->GetTag() == Entity::Entity_Tag::shield)
-			goto UN_DELETE;
 	case Entity::Entity_Type::item_type:
 		if ((*del)->GetTag() == Entity::Entity_Tag::item_container)
 			goto UN_DELETE;
-		this->ItemCounter--;
+		else
+			this->ItemCounter--;
 		break;
 	case Entity::Entity_Type::enemy_type:
 		this->EnemyCounter--;
