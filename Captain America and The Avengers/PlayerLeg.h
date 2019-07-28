@@ -9,7 +9,7 @@ class PlayerLeg : public Entity
 public:
 	PlayerLeg();
 	int OnCollision(Entity *, float dt) override;
-	void Draw() override;
+	void Update(float dt) override;
 	~PlayerLeg();
 private:
 	bool IsKickComplete;

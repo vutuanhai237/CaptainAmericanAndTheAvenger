@@ -12,18 +12,23 @@
 #include "CharlestonBoss.h"
 #include "RedRocketRobot.h"
 #include "ItemsHolder.h"
-
+#include "BossWizard.h"
 void Charleston::Update(float dt)
 {
 	
 	Player *player = Player::GetInstance();
 	// Update zone
 	map->Update(dt);
-
 	grid->Update(dt);
 
 	player->HandleInput(dt);
 	player->Update(dt);
+
+	BossWizard *boss_wizard = BossWizard::GetInstance();
+	boss_wizard->Update(dt);
+	boss_wizard->HandleInput(dt);
+
+
 	Shield::GetInstance()->Update(dt);
 	cam->SetCameraPosition(player->GetPosition());
 
@@ -39,7 +44,8 @@ void Charleston::Draw()
 {
 	map->Draw();
 	grid->DrawActivatedObject();
-	//Player::GetInstance()->Draw();
+	Player::GetInstance()->Draw();
+	BossWizard::GetInstance()->Draw();
 }
 
 WorldMap * Charleston::GetCurrentMap()
@@ -57,6 +63,9 @@ void Charleston::Init()
 	Player* player = Player::GetInstance();
 	player->Init();
 	player->SetPosition(50.0f, 100.0f);
+	BossWizard *boss_wizard = BossWizard::GetInstance();
+	boss_wizard->Init();
+	boss_wizard->SetPosition(50.0f, 100.0f);
 
 	int n, m;
 	int tag, posX, posY, tmp;

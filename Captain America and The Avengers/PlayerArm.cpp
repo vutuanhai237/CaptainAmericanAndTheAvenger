@@ -30,7 +30,7 @@ int PlayerArm::OnCollision(Entity *obj, float dt)
 		return 1;
 }
 
-void PlayerArm::Draw()
+void PlayerArm::Update(float dt)
 {
 	IsPunchComplete = true;
 }

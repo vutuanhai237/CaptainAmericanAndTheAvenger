@@ -5,6 +5,8 @@
 #include <math.h>
 #include "SceneManager.h"
 #define ENEMY_TIME_BEATEN 0.5f
+#define TIME_EXPLODE 0.25f
+#define TIME_BEATEN 0.75f
 class Enemy: public Entity
 {
 public:
@@ -20,8 +22,12 @@ public:
 	virtual ~Enemy() override;
 	// bool variable
 	bool IsJumping;
-	float time_beaten;
 	int i = 0;
+	int hp;
+	bool IsDead;
+	bool IsBeaten;
+	float time_beaten;
+	float time_explode;
 protected:
 	Animation* beaten_ani; 
 	Animation* explode_ani;

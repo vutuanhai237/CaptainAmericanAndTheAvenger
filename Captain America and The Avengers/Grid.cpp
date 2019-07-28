@@ -154,7 +154,7 @@ void Grid::UpdateGrid()
 				pos = (*it)->GetPosition();
 				LocX = pos.x / GRID_CELL_SIZE_WIDTH;
 				LocY = pos.y / GRID_CELL_SIZE_HEIGHT;
-				if ((LocX != i || LocY != j) && 0 < LocX && LocX < CellX)
+				if ((LocX != i || LocY != j) && 0 <= LocX && LocX < CellX && 0 <= LocY && LocY < CellY)
 				{
 					grid[LocX][LocY]->Object->push_back(*it);
 					auto del = it;

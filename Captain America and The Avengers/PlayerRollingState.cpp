@@ -11,6 +11,8 @@ PlayerRollingState::PlayerRollingState()
 	player->IsRolling = true;
 	player->IsOnAir = true;
 	player->SetTimeBuffer(0);
+	player->IsShieldDown = true;
+
 	//player->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
 	// Khi từ đá chuyển về nhảy thì mới có quyền đá tiếp
 	player->time_kicking = 0;
@@ -66,7 +68,6 @@ void PlayerRollingState::HandleInput(float dt)
 		return;
 	}
 	if (keyboard->KeyPress(DOWN_KEY) && player->time_air_rolling > 0.1f) {
-		player->IsShieldDown = true;
 		player->ChangeState(new PlayerShieldDownState());
 		return;
 	}

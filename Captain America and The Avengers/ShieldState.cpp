@@ -25,7 +25,7 @@ BoundingBox ShieldState::GetBoundingBox()
 {
 	SIZE size;
 	size.cx = 7;
-	size.cy = 16;
+	size.cy = 25;
 	return BoundingBox(VirtualPoint, size, 0, 0);
 }
 
