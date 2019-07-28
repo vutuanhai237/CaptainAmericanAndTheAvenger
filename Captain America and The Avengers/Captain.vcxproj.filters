@@ -40,6 +40,18 @@
     <Filter Include="Enemy\BlueSoldier">
       <UniqueIdentifier>{97f93f5e-eb41-476b-a68c-be99748cf3b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\BossWizard">
+      <UniqueIdentifier>{6092de28-68e9-4532-8309-c7a542f6850e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\BossWizard\BossWizardState">
+      <UniqueIdentifier>{c47ba564-3cd6-4010-b033-a462c107ec2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\BossWizard\LaserBullet">
+      <UniqueIdentifier>{b29dd863-5fff-4b15-8f82-49e2f1c1d58c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\BossWizard\EnergyBullet">
+      <UniqueIdentifier>{35a4ce6d-a93a-436b-ac3b-4f6554bdecf8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Animation.cpp">
@@ -216,6 +228,39 @@
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
       <Filter>Enemy\BlueSoldier</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizard.cpp">
+      <Filter>Enemy\BossWizard</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardFireState.cpp">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardFlyingState.cpp">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardIdleState.cpp">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardRunningState.cpp">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardState.cpp">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardPunchingState.cpp">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardFlyingFireState.cpp">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClCompile>
+    <ClCompile Include="LaserBullet.cpp">
+      <Filter>Enemy\BossWizard\LaserBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="EnergyBullet.cpp">
+      <Filter>Enemy\BossWizard\EnergyBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardPunchingFireState.cpp">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -396,6 +441,39 @@
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>Enemy\BlueSoldier</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizard.h">
+      <Filter>Enemy\BossWizard</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardFireState.h">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardFlyingState.h">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardIdleState.h">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardRunningState.h">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardState.h">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardPunchingState.h">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardFlyingFireState.h">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClInclude>
+    <ClInclude Include="LaserBullet.h">
+      <Filter>Enemy\BossWizard\LaserBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="EnergyBullet.h">
+      <Filter>Enemy\BossWizard\EnergyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardPunchingFireState.h">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

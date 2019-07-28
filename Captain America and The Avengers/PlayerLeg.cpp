@@ -27,7 +27,7 @@ int PlayerLeg::OnCollision(Entity *obj, float dt)
 		return 1;
 }
 
-void PlayerLeg::Draw()
+void PlayerLeg::Update(float dt)
 {
 	IsKickComplete = true;
 }

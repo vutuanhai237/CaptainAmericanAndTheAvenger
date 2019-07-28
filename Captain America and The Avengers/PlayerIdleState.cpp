@@ -123,9 +123,4 @@ void PlayerIdleState::HandleInput(float dt)
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		return;
 	}
-	if (keyboard->KeyDown(DIK_A)) {
-		player->ChangeState(new PlayerBeatenState());
-		return;
-	}
-
 }

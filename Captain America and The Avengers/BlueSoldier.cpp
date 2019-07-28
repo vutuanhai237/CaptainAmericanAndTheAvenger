@@ -14,6 +14,8 @@ void BlueSoldier::Update(float dt)
 
 		if (this->time_explode >= TIME_EXPLODE) {
 			this->IsDead = true;
+			this->IsActive = false;
+
 		}
 		return;
 	}
@@ -294,7 +296,7 @@ bool BlueSoldier::IsCollisionWithGround(float dt, int delta_y)
 	return false;
 }
 
-BlueSoldier::BlueSoldier(int level, D3DXVECTOR2 position_spawn, int direction)
+BlueSoldier::BlueSoldier(int level, D3DXVECTOR2 position_spawn, int direction): Enemy()
 {
 	// init animation zone
 	this->SetTag(Entity::Entity_Tag::blue_soldier);

@@ -50,6 +50,12 @@ void GameManager::Init(int fps)
 	texture->Add(ID, L"Resources//Enemy//BlueSoldier//BlueSoldierBeatenState.png", D3DCOLOR_XRGB(255, 0, 255));
 	// bullet 12
 	texture->Add(ID, L"Resources//Enemy//BlueSoldier//SoldierBullet.png", D3DCOLOR_XRGB(255, 0, 255));
+	// laser bullet 13
+	texture->Add(ID, L"Resources//Enemy//BossWizard//LaserBullet.png", D3DCOLOR_XRGB(255, 0, 255));
+	// energy bullet 14 15 16
+	texture->Add(ID, L"Resources//Enemy//BossWizard//EnergyBulletHorizontal.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//BossWizard//EnergyBulletVertical.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//BossWizard//EnergyBulletCrossed.png", D3DCOLOR_XRGB(255, 0, 255));
 
 
 	texture->Add(ItemsHolder::AnimationID, L"Resources/Items/ItemHolder.png", D3DCOLOR_ARGB(0, 0, 0, 0));

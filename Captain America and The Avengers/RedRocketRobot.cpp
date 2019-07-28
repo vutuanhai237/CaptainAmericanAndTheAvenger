@@ -14,6 +14,7 @@ void RedRocketRobot::Update(float dt)
 
 		if (this->time_explode >= TIME_EXPLODE) {
 			this->IsDead = true;
+			this->IsActive = false;
 		}
 		return;
 	}
@@ -262,7 +263,7 @@ bool RedRocketRobot::IsCollisionWithGround(float dt, int delta_y)
 }
 
 
-RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR2 position_goto, bool IsCrossed)
+RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR2 position_goto, bool IsCrossed) : Enemy()
 {
 	this->SetTag(Entity::Entity_Tag::redrobotrocket);
 	this->SetType(Entity::Entity_Type::enemy_type);

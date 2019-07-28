@@ -9,7 +9,7 @@ class PlayerArm : public Entity
 public:
 	PlayerArm();
 	int OnCollision(Entity *, float dt) override;
-	void Draw() override;
+	void Update(float dt) override;
 	~PlayerArm(); 
 private:
 	bool IsPunchComplete;
