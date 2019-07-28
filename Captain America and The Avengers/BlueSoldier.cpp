@@ -15,7 +15,6 @@ void BlueSoldier::Update(float dt)
 		if (this->time_explode >= TIME_EXPLODE) {
 			this->IsDead = true;
 			this->IsActive = false;
-
 		}
 		return;
 	}
