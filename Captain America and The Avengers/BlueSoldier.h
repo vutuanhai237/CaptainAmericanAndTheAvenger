@@ -3,7 +3,7 @@
 #include "Bullet.h"
 #include "Equation.h"
 #define BLUE_SOLDIER_TIME_IDLE_TO_SHOT 0.3f
-#define BLUE_SOLDIER_TIME_RUNNING_TO_SHOT 1.0f
+#define BLUE_SOLDIER_TIME_RUNNING_TO_SHOT 0.7f
 #define BLUE_SOLDIER_TIME_DUCKING 2.0f
 #define BLUE_SOLDIER_TIME_IDLE 2.0f
 #define BLUE_SOLDIER_SIZE_WIDTH 8
@@ -20,6 +20,7 @@ private:
 public:
 	// Share zone
 	enum BlueSoldierState {
+		none,
 		idle = 8,
 		running = 9,
 		ducking = 10,

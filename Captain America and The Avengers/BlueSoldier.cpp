@@ -1,10 +1,41 @@
 ﻿#include "BlueSoldier.h"
 #include "Shield.h"
 #include "FrameWork//Debug.h"
+
 void BlueSoldier::Update(float dt)
 {
 	Enemy::Update(dt);
 	this->current_animation->Update(dt);
+	if (this->IsExplode) {
+		this->time_explode += dt;
+		this->current_state = BlueSoldierState::none;
+		this->current_animation = explode_ani;
+		this->SetVelocityX(0.0f);
+
+		if (this->time_explode >= TIME_EXPLODE) {
+			this->IsDead = true;
+		}
+		return;
+	}
+	if (this->IsBeaten) {
+		this->current_state = BlueSoldierState::beaten;
+		this->current_animation = beaten_ani;
+		this->SetVelocityX(0.0f);
+		this->time_beaten += dt;
+		if (this->time_beaten >= TIME_BEATEN) {
+			this->IsExplode = true;
+
+		}
+		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+			this->position.x -= 1;
+
+		}
+		else {
+			this->position.x += 1;
+		}
+		return;
+	}
+
 	switch (this->level) {
 	case Level::stupid:
 		this->UpdateStupidLevel(dt);
@@ -114,6 +145,10 @@ void BlueSoldier::UpdateNormalLevel(float dt)
 void BlueSoldier::UpdateCleverLevel(float dt)
 {
 	// Đang ở trên không
+	if (this->position.x <= 10) {
+		this->SetVelocityX(0.0f);
+		return;
+	}
 	if (IsChamDatLanDau == false)
 	{
 		if (this->IsCollisionWithGround(dt)) {
@@ -129,8 +164,8 @@ void BlueSoldier::UpdateCleverLevel(float dt)
 	// Cập nhật tọa độ khi đang nhảy
 	if (this->current_state == BlueSoldierState::jumping) {
 		if (this->IsCollisionWithGround(dt) && this->IsJumpingFirst > 5) {
-			this->current_state = BlueSoldierState::idle;
-			this->current_animation = idle_ani;
+			this->current_state = BlueSoldierState::running;
+			this->current_animation = running_ani;
 			return;
 		}
 		this->IsJumpingFirst++;
@@ -275,6 +310,7 @@ BlueSoldier::BlueSoldier(int level, D3DXVECTOR2 position_spawn, int direction)
 	// set properties zone
 	this->position = position_spawn;
 	this->current_animation = idle_ani;
+	this->hp = 1;
 	if (direction == 0) {
 		this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 	}

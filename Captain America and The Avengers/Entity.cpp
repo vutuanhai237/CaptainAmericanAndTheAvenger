@@ -6,6 +6,7 @@ Entity::Entity()
 {
 	tag = none;
 	type = none_type;
+	this->IsActive = true;
 	MoreObject = new std::vector<Entity*>();
 }
 

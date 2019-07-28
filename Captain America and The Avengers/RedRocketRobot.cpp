@@ -6,7 +6,36 @@ void RedRocketRobot::Update(float dt)
 	Enemy::Update(dt);
 	Player *player = Player::GetInstance();
 	this->current_animation->Update(dt);
+	if (this->IsExplode) {
+		this->time_explode += dt;
+		this->current_state = RedRocketRobotState::none;
+		this->current_animation = explode_ani;
+		this->SetVelocityX(0.0f);
 
+		if (this->time_explode >= TIME_EXPLODE) {
+			this->IsDead = true;
+		}
+		return;
+	}
+	if (this->IsBeaten) {
+		this->current_state = RedRocketRobotState::beaten;
+		this->current_animation = beaten_ani;
+		this->SetVelocityX(0.0f);
+		this->time_beaten += dt;
+		if (this->time_beaten >= TIME_BEATEN) {
+			this->IsExplode = true;
+			
+		}
+		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+			this->position.x -= 1;
+
+		}
+		else {
+			this->position.x += 1;
+		}
+		return;
+	}
+	
 	// noob
 	if (this->level == Level::stupid) {
 		this->UpdateStupidLevel(dt);
@@ -246,6 +275,7 @@ RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR
 	this->running_ani->SetTime(0.1);
 	this->ducking_ani->SetTime(0.5);
 	//
+	this->hp = 3;
 	this->IsChamDatLanDau = false;
 	this->IsChamLanHai = false;
 	this->NumberRocket = 0;
@@ -272,6 +302,9 @@ RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR
 	this->Update_position_one_time = false;
 	this->IsCapNhatVanToc = true;
 	this->IsCapNhatPositionMotLan = false;
+	this->time_beaten = 0;
+	this->time_explode = 0;
+	this->IsExplode = false;
 	switch (level) {
 	case 0:
 		this->level = Level::stupid;
