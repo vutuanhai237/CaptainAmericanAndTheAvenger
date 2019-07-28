@@ -6,6 +6,7 @@ Item::Item(float x, float y, int tag)
 {
 	Entity::SetTag(Entity::Entity_Tag::item);
 	Entity::SetType(Entity::Entity_Type::item_type);
+	PriTag = tag;
 	delta = 0;
 	FrameCounter = 0;
 	CanFalling = true;
@@ -20,6 +21,7 @@ Item::Item(float x, float y, int tag)
 	{
 	case Item_Tag::ExitOrb:
 		animation = new Animation(ItemsHolder::ID_ExitOrb, 2);
+		Entity::SetTag(Entity::Entity_Tag::item_exit_orb);
 		break;
 	case Item_Tag::OneUp:
 		animation = new Animation(ItemsHolder::ID_1up, 1);
@@ -82,7 +84,9 @@ int Item::OnCollision(Entity *obj, float dt)
 	if (obj->GetTag() == Entity::Entity_Tag::player)
 		if (Collision::getInstance()->IsCollide(obj->GetBoundingBox(), GetBoundingBox()))
 		{
-			// Increase 5 point
+			// loot item
+			if (PriTag == Item_Tag::ExitOrb)
+				SceneManager::GetInstance()->GetCurrentScene()->IsExitAble = true;
 			return 1;
 		}
 	if (delta >= ITEM_LOOT_VANISHING)

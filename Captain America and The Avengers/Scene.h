@@ -14,7 +14,12 @@ public:
 	D3DCOLOR GetBackcolor();
 
 	virtual ~Scene() {};
+
+	bool IsExitAble;
 protected:
-	Scene() {};
+	Scene();
 	D3DCOLOR BackColor;
+	RECT ExitZone;
+
+	bool IsInsideExitZone();
 };

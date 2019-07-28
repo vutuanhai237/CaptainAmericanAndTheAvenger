@@ -32,18 +32,20 @@ void Charleston::Update(float dt)
 	Shield::GetInstance()->Update(dt);
 	cam->SetCameraPosition(player->GetPosition());
 
-	auto tmp = DirectInput::GetInstance();
-	if (tmp->KeyDown(DIK_N))
-	{
-		CharlestonBoss *boss = new CharlestonBoss();
-		SceneManager::GetInstance()->ReplaceScene(boss);
-	}
+	if (IsExitAble && IsInsideExitZone())
+		SceneManager::GetInstance()->ReplaceScene(new CharlestonBoss());
+	// Cheat Fast next map
+	if (DirectInput::GetInstance()->KeyDown(DIK_N))
+		SceneManager::GetInstance()->ReplaceScene(new CharlestonBoss());
+
 }
 
 void Charleston::Draw()
 {
 	map->Draw();
 	grid->DrawActivatedObject();
+	if (Scene::IsExitAble)
+		DrawExit();
 	Player::GetInstance()->Draw();
 	BossWizard::GetInstance()->Draw();
 }
@@ -112,11 +114,41 @@ void Charleston::Init()
 
 }
 
-Charleston::Charleston()
+void Charleston::DrawExit()
+{
+	if (FrameExitCounter == 0)
+	{
+		FirstExitPosition = Player::GetInstance()->GetPosition();
+		FirstExitPosition.y += PLAYER_SIZE_HEIGHT;
+	}
+	if (FrameExitCounter < 50)
+		exit->DrawInt(FirstExitPosition);
+	else
+	{
+		if (FrameExitCounter == 50)
+		{
+			exit->SetPosition(64, 24);
+		}
+
+		if (FrameExitCounter >> 4 & 1)
+			exit->Draw();
+	}
+	FrameExitCounter++;
+}
+
+Charleston::Charleston() : Scene()
 {
 	map = new CharlestonMap();
 	cam = Camera::GetInstance();
+	cam->Init(map->GetMapSize());
 	grid = new Grid(map->GetMapSize());
+	exit = new Sprite(L"Resources/exit.png", D3DCOLOR_XRGB(255, 0, 255));
+	FrameExitCounter = 0;
+	ExitZone.top = 128;
+	ExitZone.bottom = 48;
+	ExitZone.left = 1968;
+	ExitZone.right = 2016;
+
 	Charleston::Init();
 }
 

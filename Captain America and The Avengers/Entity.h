@@ -57,7 +57,8 @@ public:
 		blue_soldier,
 		soldier_bullet,
 		// none
-		none
+		none,
+		item_exit_orb
 	};
 	enum Entity_Type {
 		static_type,

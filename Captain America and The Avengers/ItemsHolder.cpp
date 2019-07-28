@@ -63,7 +63,22 @@ int ItemsHolder::OnCollision(Entity *obj, float dt)
 
 		// drop item
 		grid->ItemCounter++;
-		grid->AddObject2Cell((*Items)[0]);
+		Entity *item = (*Items)[0];
+		if (item->GetTag() == Entity::Entity_Tag::item_exit_orb)
+		{
+			if (SceneManager::GetInstance()->GetCurrentScene()->IsExitAble)
+			{
+				delete (*Items)[0];
+				Items->erase(Items->begin());
+				item = (*Items)[0];
+			}
+			else
+			{
+				grid->AddObject2Cell(new Item(position.x, position.y, Item::Item_Tag::ExitOrb));
+				return 0;
+			}
+		}
+		grid->AddObject2Cell(item);
 		Items->erase(Items->begin());
 	}
 	return 0;

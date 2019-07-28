@@ -4,7 +4,7 @@
 #include "Camera.h"
 #include "Framework/Animation.h"
 #include <vector>
-#include "Grid.h"
+
 class CharlestonBoss : public Scene
 {
 public:
@@ -15,8 +15,9 @@ public:
 	CharlestonBoss();
 	~CharlestonBoss() override;
 protected:
-	void Init();
 	CharlestonBossMap *map;
 	Camera *cam;
 	Grid *grid;
+private:
+	void Init();
 };

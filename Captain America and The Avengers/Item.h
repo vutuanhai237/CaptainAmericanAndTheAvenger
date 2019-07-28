@@ -29,13 +29,13 @@ public:
 	void Update(float dt) override;
 	int OnCollision(Entity*, float dt) override;
 	void Draw() override;
+
 private:
 	Animation *animation;
-
 	float delta;
 	int FrameCounter;
 	bool CanFalling;
-	int direction;
+	int direction, PriTag;
 
 	void CheckFalling();
 };
