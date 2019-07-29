@@ -4,6 +4,7 @@
 #include "Framework/Animation.h"
 #include <math.h>
 #include "SceneManager.h"
+#define ENEMY_DAMAGE 1
 #define ENEMY_TIME_BEATEN 0.5f
 #define TIME_EXPLODE 0.25f
 #define TIME_BEATEN 0.75f

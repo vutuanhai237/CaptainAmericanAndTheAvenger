@@ -130,5 +130,6 @@ CollisionOut Collision::SweptAABB(BoundingBox recta, BoundingBox rectb)
 
 bool Collision::IsCollide(BoundingBox box1, BoundingBox box2)
 {
+	if (box1.GetArea() == 0 || box2.GetArea() == 0)	return false;
 	return !(box1.left > box2.right || box1.right < box2.left || box1.top < box2.bottom || box1.bottom > box2.top);
 }

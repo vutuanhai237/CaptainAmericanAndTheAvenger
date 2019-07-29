@@ -12,6 +12,6 @@ public:
 	virtual ~EnemyWeapon();
 protected:
 	Animation* explode_ani;
-
+	int damage;
 };
 

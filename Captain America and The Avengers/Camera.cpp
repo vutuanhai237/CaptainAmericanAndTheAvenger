@@ -112,3 +112,5 @@ Camera::Camera()
 	PointBL = FollowPoint = D3DXVECTOR2(0, 0);
 	IsFreze = 0;
 }
+
+

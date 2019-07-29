@@ -54,7 +54,7 @@ BossWizard::BossWizard() :Enemy()
 	this->animation = this->animations[current_state];
 	this->previous_state = 0;
 	this->time_invisible = 0;
-	this->SetVelocityY(-BOSS_WIZARD_VELOCITY_Y);
+	this->SetVelocityY(BOSS_WIZARD_VELOCITY_Y);
 }
 
 
@@ -137,6 +137,65 @@ bool BossWizard::IsCollisionWithGround(float dt, int delta_y)
 		}
 	}
 	return false;
+}
+
+bool BossWizard::IsCollisionWithWall(float dt, int delta_y)
+{
+	
+	bool ret = false;
+
+	Entity::IsLocking = false;
+	Entity::Update(dt);
+	Entity::IsLocking = true;
+
+	SIZE PlayerSize;
+	PlayerSize.cx = BOSS_WIZARD_SIZE_WIDTH;
+	PlayerSize.cy = BOSS_WIZARD_SIZE_HEIGHT;
+	BoundingBox player(D3DXVECTOR2(position.x, position.y - delta_y), PlayerSize, velocity.x*dt, velocity.y*dt);
+	Collision *Checker = Collision::getInstance();
+
+	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
+	CollisionOut tmp;
+	BoundingBox box2;
+
+	for (auto item : obj)
+	{
+		if (item->GetTag() == Entity::Entity_Tag::wall)
+		{
+			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
+			tmp = Checker->SweptAABB(player, box2);
+			switch (tmp.side)
+			{
+			case CollisionSide::left:
+				position.x = item->GetPosition().x + (item->GetSize().cx + BOSS_WIZARD_SIZE_WIDTH) / 2 + 1;
+				if (this->GetCurrentState() != PlayerState::NameState::jumping)
+					return true;
+				ret = true;
+				break;
+			case CollisionSide::right:
+				position.x = item->GetPosition().x - (item->GetSize().cx + BOSS_WIZARD_SIZE_WIDTH) / 2 - 1;
+				if (this->GetCurrentState() != PlayerState::NameState::jumping)
+					return true;
+				ret = true;
+				break;
+			case CollisionSide::top:
+				position.y = item->GetPosition().y - (item->GetSize().cy + BOSS_WIZARD_SIZE_HEIGHT) / 2;
+				velocity.y = 0.0f;
+				return true;
+			case CollisionSide::bottom:
+				if (this->GetCurrentState() == PlayerState::NameState::jumping)
+					return false;
+				position.y = item->GetPosition().y + (item->GetSize().cy + BOSS_WIZARD_SIZE_HEIGHT) / 2 - delta_y;
+				velocity.y = 0.0f;
+				return true;
+			default:
+				break;
+			}
+		}
+	}
+	return ret;
+
+
 }
 
 void BossWizard::Init()

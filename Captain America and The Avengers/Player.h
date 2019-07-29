@@ -4,14 +4,15 @@
 #include <map>
 #include "Collision.h"
 
-// Player
+// Player HP = 8
+#define PLAYER_HP 2000
 #define PLAYER_SIZE_WIDTH 8
 #define PLAYER_SIZE_HEIGHT 40
 #define PLAYER_FOOT_HEIGHT 8
 #define PLAYER_ARM_HEIGHT 8
 //
 #define VELOCITY_X 80.0f
-#define VELOCITY_Y 150.0f
+#define VELOCITY_Y 160.0f
 // jumping
 #define DELTA_JUMP VELOCITY_X
 #define DISTANCE_JUMPING 90.0f
@@ -20,9 +21,8 @@
 #define TIME_ROLLING 0.3f
 #define TIME_KICKING 0.2f
 #define JUMPING_ACCELERATION 20.0F
-#define ROLLING_ACCELERATION 20.0f
 #define JUMPING_VELOCITY_BEGIN 300.0f
-#define ROLLING_ACCELERATION 11.0f
+#define ROLLING_ACCELERATION 11.4f
 // Dashing
 #define TIME_DASHING 0.016 * 30
 #define TIME_DUCK_BEFORE_DASHING  0.016* 1
@@ -49,6 +49,9 @@
 #define TIME_INVISIBLE 3.0f
 // hang on
 #define TIME_JUMP_FROM_ROPE 0.016f * 8
+// die
+#define TIME_GUC_BEFORE_NAM 0.016f * 10
+#define TIME_DIE 2.0f
 using namespace std;
 class Player : public Entity
 {
@@ -97,6 +100,7 @@ public:
 	float time_jumping_before_flowing;
 	float time_don_tho;
 	float time_invisible;
+	float time_guc;
 	// Code đi rời để biết tại sao phải tạo những biến này, có một vấn đề là các trạng thái
 	// khi new sẽ khởi tạo vận tốc khác nhau, nên khi jumping -> kicking -> jumping thì vận tốc
 	// bị khởi động lại 1 lần nữa, những biến này sẽ do idle có quyền định đoạt
@@ -111,7 +115,7 @@ public:
 	bool IsLockCollision;
 	bool IsShieldDown;
 	bool OnTheWater;
-	//bool IsShiledDownOnTheWater;
+	int hp;
 protected:
 	static Player *instance;
 	std::map<int, Animation*> animations;
@@ -122,6 +126,7 @@ protected:
 	D3DXVECTOR2 position_idle;
 	float time_buffer;
 	int i = 0;
+
 private:
 	Player();
 	~Player();

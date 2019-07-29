@@ -14,6 +14,7 @@ class ShieldNomalState : public ShieldState
 {
 public:
 	ShieldNomalState();
+	virtual int GetDamage() override;
 	void Update(float dt) override;
 	void Draw() override;
 };

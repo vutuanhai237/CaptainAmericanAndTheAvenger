@@ -58,7 +58,8 @@ public:
 		soldier_bullet,
 		// none
 		none,
-		item_exit_orb
+		item_exit_orb,
+		on_off_switch
 	};
 	enum Entity_Type {
 		static_type,

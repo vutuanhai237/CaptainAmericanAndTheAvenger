@@ -73,7 +73,6 @@ void PlayerIdleState::HandleInput(float dt)
 		}
 
 	}
-	
 	// Nếu ấn X thì nhảy
 	if (keyboard->KeyDown(JUMP_KEY)) {
 		player->ChangeState(new PlayerJumpingState());

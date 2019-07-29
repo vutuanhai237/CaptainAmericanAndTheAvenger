@@ -1,8 +1,8 @@
 #include "PlayerBeatenState.h"
 #include "Framework//Debug.h"
 #include "Shield.h"
-
-PlayerBeatenState::PlayerBeatenState()
+#include "PlayerDieState.h"
+PlayerBeatenState::PlayerBeatenState(int damage)
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::beaten);
@@ -11,8 +11,10 @@ PlayerBeatenState::PlayerBeatenState()
 	this->time_beaten = 0;
 	player->OnTheWater = true;
 	player->time_invisible = TIME_INVISIBLE;
-
+	player->hp -= damage;
 	player->OnTheWater = true;
+	Debug::PrintOut(L"%d\n", player->hp);
+
 }
 PlayerBeatenState::~PlayerBeatenState()
 {
@@ -32,7 +34,7 @@ void PlayerBeatenState::Update(float dt)
 		player->SetPositionX(player->GetPosition().x + VELOCITY_X * dt*2/3);
 
 	}
-	if (time_beaten > TIME_BEATEN_MIN && player->IsCollisionWithGround(dt)) {
+	if (time_beaten > TIME_BEATEN_MIN && player->IsCollisionWithGround(dt) && player->hp > 0) {
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
@@ -63,6 +65,20 @@ BoundingBox PlayerBeatenState::GetBoundingBox()
 void PlayerBeatenState::HandleInput(float dt)
 {
 	Player *player = Player::GetInstance();
+	if (player->hp <= 0) {
+		if (player->IsCollisionWithGround(dt, 8))
+		{
+			player->ChangeState(new PlayerDieState());
+			return;
+		}
+		else {
+			player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
+			player->SetVelocityY(VELOCITY_Y*1.5);
+			return;
+		}
+		return;
+		
+	}
 	if (player->IsCollisionWithWall(dt))
 	{
 		player->ChangeState(new PlayerJumpingDownState());
@@ -73,6 +89,9 @@ void PlayerBeatenState::HandleInput(float dt)
 	{
 		player->ChangeState(new PlayerJumpingDownState());
 		return;
+	}
+	else {
+	
 	}
 	if (player->IsCollisionWithWater(dt, 8))
 	{

@@ -8,6 +8,7 @@ class ShieldKickState : public ShieldState
 {
 public:
 	ShieldKickState();
+	virtual int GetDamage() override;
 	void Update(float dt) override;
 	void Draw() override;
 };

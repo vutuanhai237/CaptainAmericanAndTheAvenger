@@ -52,7 +52,7 @@ Player::Player() :Entity()
 	dashing->SetTime(0.05f);
 	throwing->SetTime(0.1);
 	ducking_punching->SetTime(0.1);
-	rolling->SetTime(0.05);
+	rolling->SetTime(0.03);
 	die->SetTime(0.1);
 	die_on_air->SetTime(0.1);
 	// diving
@@ -105,6 +105,8 @@ Player::Player() :Entity()
 	this->time_jumping_before_flowing = 0;
 	this->time_don_tho = 0;
 	this->time_invisible = 0;
+	this->time_guc = 0;
+	this->hp = PLAYER_HP;
 }
 
 
@@ -226,6 +228,7 @@ int Player::OnCollision(Entity *obj, float dt)
 	{
 		switch (obj->GetTag()) {
 		case Entity::Entity_Tag::redrobotrocket:
+			//Debug::PrintOut(L"%f", 1.0f);
 			break;
 		default:
 			break;

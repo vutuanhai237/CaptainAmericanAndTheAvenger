@@ -164,10 +164,12 @@
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemsHolder.cpp" />
+    <ClCompile Include="OnOffSwitch.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerArm.cpp" />
     <ClCompile Include="PlayerBeatenState.cpp" />
     <ClCompile Include="PlayerDashingState.cpp" />
+    <ClCompile Include="PlayerDieState.cpp" />
     <ClCompile Include="PlayerDivingState.cpp" />
     <ClCompile Include="PlayerDuckingPunchingState.cpp" />
     <ClCompile Include="PlayerDuckingState.cpp" />
@@ -237,10 +239,12 @@
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemsHolder.h" />
+    <ClInclude Include="OnOffSwitch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerArm.h" />
     <ClInclude Include="PlayerBeatenState.h" />
     <ClInclude Include="PlayerDashingState.h" />
+    <ClInclude Include="PlayerDieState.h" />
     <ClInclude Include="PlayerDivingState.h" />
     <ClInclude Include="PlayerDuckingPunchingState.h" />
     <ClInclude Include="PlayerDuckingState.h" />

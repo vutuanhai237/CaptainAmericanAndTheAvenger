@@ -18,6 +18,11 @@ ShieldAttackState::ShieldAttackState()
 	DeltaSlow = SHIELD_ATTACK_VELOCITY;
 }
 
+int ShieldAttackState::GetDamage()
+{
+	return SHIELD_ATTACK_DAMAGE;
+}
+
 void ShieldAttackState::Update(float dt)
 {
 
@@ -72,6 +77,7 @@ void ShieldAttackState::Update(float dt)
 	{
 		this->SetCurrentState(NameState::Nomal);
 		ShieldState *buffer = shield->GetBufferState();
+		buffer->Update(dt);
 		shield->SetShieldState(buffer);
 		switch (buffer->GetCurrentState())
 		{

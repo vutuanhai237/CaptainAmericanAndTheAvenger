@@ -1,6 +1,6 @@
 #pragma once
 #include "ShieldState.h"
-
+#define SHIELD_ATTACK_DAMAGE 2
 #define SHIELD_ATTACK_VELOCITY 6.0f
 #define SHIELD_FOLLOW_VELOCITY_Y 4.0f
 #define SHIELD_ATTACK_ACCELERATION 0.8f
@@ -15,6 +15,7 @@ class ShieldAttackState : public ShieldState
 {
 public:
 	ShieldAttackState();
+	virtual int GetDamage() override;
 	void Update(float dt) override;
 	void Draw() override;
 	BoundingBox GetBoundingBox() override;

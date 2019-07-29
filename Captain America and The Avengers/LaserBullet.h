@@ -1,6 +1,7 @@
 #pragma once
 #include "EnemyWeapon.h"
 #include "Equation.h"
+#define LASER_BULLET_DAMAGE 2
 #define LASER_BULLET_VELOCITY_X 150.0f
 class LaserBullet : public EnemyWeapon
 {

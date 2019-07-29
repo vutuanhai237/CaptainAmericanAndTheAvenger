@@ -16,7 +16,7 @@ public:
 	};
 	ShieldState();
 	ShieldState(NameState State);
-
+	virtual int GetDamage() { return 0; };
 	virtual void Update(float dt) {};
 	virtual void Draw() {};
 	virtual BoundingBox GetBoundingBox(); // Nomal

@@ -12,6 +12,8 @@ public:
 	virtual Grid *GetCurrentGrid() = 0;
 
 	D3DCOLOR GetBackcolor();
+	virtual void SwapMap() {};
+	virtual void SwapMap(int code) {};
 
 	virtual ~Scene() {};
 

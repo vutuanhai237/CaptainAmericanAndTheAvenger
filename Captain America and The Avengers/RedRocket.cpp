@@ -46,20 +46,14 @@ int RedRocket::OnCollision(Entity* obj, float dt)
 	Player *player = Player::GetInstance();
 	if (obj->GetType() != Entity::Entity_Type::player_type)
 		return 0;
-	int tmp = 0;
-		if (player->time_invisible <= 0
+	if (player->time_invisible <= 0
 		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 	{
-		//if (player->GetCurrentState() != PlayerState::shield_down)
-		{
-			player->ChangeState(new PlayerBeatenState());
-			//Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox());
-		}
+		player->ChangeState(new PlayerBeatenState(RED_ROCKET_DAMAGE));
 		if (this->IsExploding == false) {
 			this->Release();
 			this->IsExploding = true;
 		}
-	
 	}
 	return 0;
 
@@ -72,7 +66,6 @@ void RedRocket::Exploding(float dt)
 		this->current_ani = this->explode_ani;
 	}
 	this->time_out_explode += dt;
-	Debug::PrintOut(L"%f\n", this->time_out_explode);
 	if (this->time_out_explode > TIME_EXPLODE) {
 		this->IsDead = true;
 	}
@@ -123,7 +116,7 @@ RedRocket::RedRocket(D3DXVECTOR2 position, bool IsCrossed, Entity::Entity_Direct
 	this->IsExploding = false;
 	this->SetVelocityX(RED_ROCKET_VELOCITY_X);
 	this->SetMoveDirection(direction);
-
+	this->damage = RED_ROCKET_DAMAGE;
 }
 
 

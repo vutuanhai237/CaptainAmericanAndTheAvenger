@@ -14,11 +14,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	MSG msg;
 	bool done = false;
+	GameTimer::GetInstance()->StartCounter();
 
 	while (!done)
 	{
-		GameTimer::GetInstance()->StartCounter();
-
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
 			if (msg.message == WM_QUIT)
@@ -27,7 +26,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DispatchMessage(&msg);
 		}
 		else
+		{
 			GameManager::GetInstance()->Running();
+			GameTimer::GetInstance()->StartCounter();
+		}
 	}
 
 	GameManager::GetInstance()->Release();

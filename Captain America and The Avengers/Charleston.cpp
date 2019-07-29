@@ -19,17 +19,12 @@ void Charleston::Update(float dt)
 	Player *player = Player::GetInstance();
 	// Update zone
 	map->Update(dt);
-	grid->Update(dt);
 
 	player->HandleInput(dt);
 	player->Update(dt);
 
-	BossWizard *boss_wizard = BossWizard::GetInstance();
-	boss_wizard->Update(dt);
-	boss_wizard->HandleInput(dt);
-
-
 	Shield::GetInstance()->Update(dt);
+	grid->Update(dt);
 	cam->SetCameraPosition(player->GetPosition());
 
 	if (IsExitAble && IsInsideExitZone())
@@ -37,7 +32,7 @@ void Charleston::Update(float dt)
 	// Cheat Fast next map
 	if (DirectInput::GetInstance()->KeyDown(DIK_N))
 		SceneManager::GetInstance()->ReplaceScene(new CharlestonBoss());
-
+	
 }
 
 void Charleston::Draw()
@@ -47,7 +42,11 @@ void Charleston::Draw()
 	if (Scene::IsExitAble)
 		DrawExit();
 	Player::GetInstance()->Draw();
-	BossWizard::GetInstance()->Draw();
+	if (Player::GetInstance()->time_guc >= TIME_DIE) {
+		Player::GetInstance()->time_guc = 0;
+		SceneManager::GetInstance()->ReplaceScene(new Charleston());
+		return;
+	}
 }
 
 WorldMap * Charleston::GetCurrentMap()
@@ -65,10 +64,7 @@ void Charleston::Init()
 	Player* player = Player::GetInstance();
 	player->Init();
 	player->SetPosition(50.0f, 100.0f);
-	BossWizard *boss_wizard = BossWizard::GetInstance();
-	boss_wizard->Init();
-	boss_wizard->SetPosition(50.0f, 100.0f);
-
+	cam->SetCameraPosition(player->GetPosition());
 	int n, m;
 	int tag, posX, posY, tmp;
 	fstream data(L"Resources/Map/charleston_map_items_enemy.txt", ios_base::in);

@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include "Equation.h"
+#define BLUE_SOLDIER_HP 2
 #define BLUE_SOLDIER_TIME_IDLE_TO_SHOT 0.3f
 #define BLUE_SOLDIER_TIME_RUNNING_TO_SHOT 0.7f
 #define BLUE_SOLDIER_TIME_DUCKING 2.0f

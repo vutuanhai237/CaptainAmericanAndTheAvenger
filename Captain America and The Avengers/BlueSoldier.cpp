@@ -126,6 +126,7 @@ void BlueSoldier::UpdateStupidLevel(float dt)
 
 void BlueSoldier::UpdateNormalLevel(float dt)
 {
+	this->SetVelocityX(BLUE_SOLDIER_VELOCITY_X * 2);
 	// Đang ở trên không
 	if (IsChamDatLanDau == false)
 	{
@@ -140,6 +141,40 @@ void BlueSoldier::UpdateNormalLevel(float dt)
 		}
 		return;
 	}
+	// Cập nhật tọa độ khi đang nhảy
+	if (this->current_state == BlueSoldierState::jumping) {
+		if (this->IsCollisionWithGround(dt) && this->IsJumpingFirst > 5) {
+			this->current_state = BlueSoldierState::running;
+			this->current_animation = running_ani;
+			return;
+		}
+		this->IsJumpingFirst++;
+		this->SetVelocityX(BLUE_SOLDIER_VELOCITY_X);
+		this->SetPositionY(e->GetYFromX(this->GetPosition().x));
+		return;
+	}
+	// Bắt việc shield có được ném hay không, thì nhảy để né 
+	if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::ShieldAttack
+		&& this->IsJumping == false
+		&& this->current_state == BlueSoldierState::running
+		&& (this->GetMoveDirection() != Player::GetInstance()->GetMoveDirection())) {
+		this->IsJumping = true;
+		this->current_state = BlueSoldierState::jumping;
+		this->current_animation = ducking_ani;
+		int move = 0;
+		if (this->position.x - this->position_goto.x > 0) {
+			move = -1;
+		}
+		else {
+			move = 1;
+
+		}
+		e = new Equation(
+			this->position,
+			D3DXVECTOR2(this->position.x + move * 50, this->position.y));
+		return;
+	}
+
 	return;
 }
 
@@ -182,17 +217,9 @@ void BlueSoldier::UpdateCleverLevel(float dt)
 		this->IsJumping = true;
 		this->current_state = BlueSoldierState::jumping;
 		this->current_animation = ducking_ani;
-		int move = 0;
-		if (this->position.x - this->position_goto.x > 0) {
-			move = -1;
-		}
-		else {
-			move = 1;
-
-		}
 		e = new Equation(
 			this->position,
-			D3DXVECTOR2(this->position.x + move * 50, this->position.y));
+			D3DXVECTOR2(this->position.x + (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight ? 1 : -1) * 50, this->position.y));
 		return;
 	}
 	// Thực hiện động tác 1s đứng một lần 
@@ -311,7 +338,7 @@ BlueSoldier::BlueSoldier(int level, D3DXVECTOR2 position_spawn, int direction): 
 	// set properties zone
 	this->position = position_spawn;
 	this->current_animation = idle_ani;
-	this->hp = 1;
+	this->hp = BLUE_SOLDIER_HP;
 	if (direction == 0) {
 		this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 	}

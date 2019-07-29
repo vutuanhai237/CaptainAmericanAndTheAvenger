@@ -8,6 +8,14 @@ ShieldDownState::ShieldDownState()
 	Shield::GetInstance()->GetAnimation()->SetFrame(4);
 }
 
+int ShieldDownState::GetDamage()
+{
+	if (Player::GetInstance()->time_invisible > 0) {
+		return 0;
+	}
+	return SHIELD_DOWN_DAMAGE;
+}
+
 void ShieldDownState::Update(float dt)
 {
 	VirtualPoint = Player::GetInstance()->GetPosition();
@@ -23,7 +31,7 @@ void ShieldDownState::Draw()
 BoundingBox ShieldDownState::GetBoundingBox()
 {
 	SIZE size;
-	size.cx = -0;
-	size.cy = -0;
+	size.cx = 30;
+	size.cy = 6;
 	return BoundingBox(VirtualPoint, size, 0, 0);
 }

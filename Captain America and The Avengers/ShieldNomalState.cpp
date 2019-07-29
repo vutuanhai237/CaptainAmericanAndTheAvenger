@@ -9,6 +9,15 @@ ShieldNomalState::ShieldNomalState()
 	Shield::GetInstance()->GetAnimation()->SetFrame(1);
 }
 
+int ShieldNomalState::GetDamage()
+{
+	if (Player::GetInstance()->time_invisible <= 0 
+		&& Player::GetInstance()->GetCurrentState() == PlayerState::NameState::dashing) {
+		return 6;
+	}
+	return 0;
+}
+
 void ShieldNomalState::Update(float dt)
 {
 	Player *player = Player::GetInstance();

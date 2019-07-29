@@ -262,6 +262,12 @@
     <ClCompile Include="BossWizardPunchingFireState.cpp">
       <Filter>Enemy\BossWizard\BossWizardState</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerDieState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="OnOffSwitch.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Animation.h">
@@ -474,6 +480,12 @@
     </ClInclude>
     <ClInclude Include="BossWizardPunchingFireState.h">
       <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDieState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="OnOffSwitch.h">
+      <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -45,7 +45,7 @@ int LaserBullet::OnCollision(Entity* obj, float dt)
 		&& player->time_invisible <= 0
 		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 	{
-		player->ChangeState(new PlayerBeatenState());
+		player->ChangeState(new PlayerBeatenState(LASER_BULLET_DAMAGE));
 		return 1;
 	}
 

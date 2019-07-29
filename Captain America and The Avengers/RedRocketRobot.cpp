@@ -276,7 +276,7 @@ RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR
 	this->running_ani->SetTime(0.1);
 	this->ducking_ani->SetTime(0.5);
 	//
-	this->hp = 3;
+	this->hp = RED_ROCKET_ROBOT_HP;
 	this->IsChamDatLanDau = false;
 	this->IsChamLanHai = false;
 	this->NumberRocket = 0;
@@ -303,7 +303,7 @@ RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR
 	this->Update_position_one_time = false;
 	this->IsCapNhatVanToc = true;
 	this->IsCapNhatPositionMotLan = false;
-	this->time_beaten = 0;
+	//this->time_beaten = 0;
 	this->time_explode = 0;
 	this->IsExplode = false;
 	switch (level) {
@@ -492,7 +492,35 @@ void RedRocketRobot::UpdateRunningState(float dt)
 		goto CHECK;
 	}
 	if (this->IsCollisionWithGround(dt, 18) == false
-		&& previous_state == RedRocketRobotState::idle) {
+		&& previous_state == RedRocketRobotState::idle) 
+	{
+		if ((Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::ShieldAttack
+			&& IsLui == -1))
+		{
+			if ((this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight 
+			&& this->position.x > Player::GetInstance()->GetPosition().x)
+				|| (this->GetMoveDirection() == Entity::Entity_Direction::RightToLeft
+					&& this->position.x < Player::GetInstance()->GetPosition().x))
+			{
+				this->current_state = RedRocketRobotState::jumping;
+				this->current_animation = ducking_ani;
+				this->previous_state = RedRocketRobotState::running;
+				this->distance = abs(position.x - position_spawn.x);
+				if (this->clever_direction == Entity::Entity_Direction::RightToLeft) {
+					this->position_loop = D3DXVECTOR2(this->position.x + this->distance, this->position_goto.y);
+				}
+				else {
+					this->position_loop = D3DXVECTOR2(this->position.x - this->distance, this->position_goto.y);
+
+				}
+				return;
+			}
+		}
+
+
+
+
+
 		this->current_state = RedRocketRobotState::jumping;
 		this->current_animation = ducking_ani;
 		this->previous_state = RedRocketRobotState::running;

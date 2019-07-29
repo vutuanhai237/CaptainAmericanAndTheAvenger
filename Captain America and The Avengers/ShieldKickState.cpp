@@ -8,6 +8,11 @@ ShieldKickState::ShieldKickState()
 	Shield::GetInstance()->GetAnimation()->SetFrame(1);
 }
 
+int ShieldKickState::GetDamage()
+{
+	return 0;
+}
+
 void ShieldKickState::Update(float dt)
 {
 	VirtualPoint = Player::GetInstance()->GetPosition();

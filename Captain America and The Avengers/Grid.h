@@ -7,7 +7,7 @@
 #define GRID_CELL_SIZE_WIDTH 40
 #define GRID_CELL_SIZE_HEIGHT 80
 #define CAPACITY_ITEM 3
-#define CAPACITY_ENEMY 0
+#define CAPACITY_ENEMY 2
 
 struct Cell
 {
@@ -18,7 +18,7 @@ struct Cell
 	{
 		Object = new std::list<Entity*>();
 		InitObject = new std::vector<int*>();
-		IsActive = false;
+		IsActive = true;
 	}
 	~Cell()
 	{

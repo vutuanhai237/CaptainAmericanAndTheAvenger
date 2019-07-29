@@ -3,7 +3,7 @@
 #include "RedRocket.h"
 #include "Equation.h"
 #include <vector>
-
+#define RED_ROCKET_ROBOT_HP 5
 #define TIME_DUCKING 2.0f
 #define TIME_IDLE 2.0f
 #define RED_ROCKET_ROBOT_SIZE_WIDTH 8

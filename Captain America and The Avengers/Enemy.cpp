@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "PlayerBeatenState.h"
+#include "Shield.h"
 Animation * Enemy::GetCurrentAnimation()
 {
 	return this->current_animation;
@@ -14,35 +15,44 @@ void Enemy::Update(float dt)
 int Enemy::OnCollision(Entity* obj, float dt)
 {
 	if (this->IsBeaten == false) {
-		Player *player = Player::GetInstance();
-		if (obj->GetType() == Entity::Entity_Type::player_type
-			&& player->time_invisible < 0
-			&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
-		{
-			if (this->time_beaten == 0) {
-				this->time_beaten = ENEMY_TIME_BEATEN;
-				this->hp--;
-
-			}
-			if (player->GetCurrentState() != PlayerState::shield_down) {
-				player->ChangeState(new PlayerBeatenState());
-
-			}
-		}
 		if (obj->GetType() == Entity::Entity_Type::player_weapon_type
 			&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 		{
-			if (this->time_beaten == 0) {
+			if (this->time_beaten <= 0) {
 				this->time_beaten = ENEMY_TIME_BEATEN;
-				this->hp--;
+				if (obj->GetTag() == Entity::Entity_Tag::shield) {
+					this->hp -= Shield::GetInstance()->GetShieldState()->GetDamage();
+
+				}
+				else {
+					this->hp -= 2;
+
+				}
 			}
 
 		}
-		if (this->hp == 0) {
+		if (this->hp <= 0) {
+			this->IsBeaten = true;
+			goto CHECK;
+		}
+		Player *player = Player::GetInstance();
+		if (obj->GetType() == Entity::Entity_Type::player_type
+			&& player->time_invisible <= 0
+			&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
+		{
+			if (this->time_beaten == 0) {
+				this->time_beaten = ENEMY_TIME_BEATEN;
+				this->hp--;
+
+			}
+			player->ChangeState(new PlayerBeatenState(ENEMY_DAMAGE));
+		}
+	
+		if (this->hp <= 0) {
 			this->IsBeaten = true;
 		}
 	}
-	
+	CHECK:
 	if (this->IsDead) {
 		
 		return 1;

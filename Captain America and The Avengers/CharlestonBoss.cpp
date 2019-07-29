@@ -1,7 +1,10 @@
 #include "CharlestonBoss.h"
 #include "Player.h"
 #include "Shield.h"
+#include "OnOffSwitch.h"
+#include "SceneManager.h"
 #include "Framework/DirectInput.h"
+#include <fstream>
 
 void CharlestonBoss::Update(float dt)
 {
@@ -10,11 +13,10 @@ void CharlestonBoss::Update(float dt)
 	player->HandleInput(dt);
 	player->Update(dt);
 	Shield::GetInstance()->Update(dt);
-	//cam->SetCameraPosition(player->GetPosition());
 
-	auto key = DirectInput::GetInstance();
-	if (key->KeyDown(DIK_Q))
-		map->SwapMode();
+	// Cheat Fast next map
+	if (DirectInput::GetInstance()->KeyDown(DIK_N))
+		SceneManager::GetInstance()->ReplaceScene(new CharlestonBoss());
 }
 
 void CharlestonBoss::Draw()
@@ -32,6 +34,19 @@ WorldMap *CharlestonBoss::GetCurrentMap()
 Grid *CharlestonBoss::GetCurrentGrid()
 {
 	return grid;
+}
+
+void CharlestonBoss::SwapMap()
+{
+	map->SwapMode();
+}
+
+void CharlestonBoss::SwapMap(int code)
+{
+	if (code == CharlestonBossMap::MapMode::Dark)
+		map->SwapMode(CharlestonBossMap::MapMode::Dark);
+	else if (code == CharlestonBossMap::MapMode::Light)
+		map->SwapMode(CharlestonBossMap::MapMode::Light);
 }
 
 CharlestonBoss::CharlestonBoss() : Scene()
@@ -56,8 +71,28 @@ CharlestonBoss::CharlestonBoss() : Scene()
 CharlestonBoss::~CharlestonBoss()
 {
 	delete map;
+	delete grid;
 }
 
 void CharlestonBoss::Init()
 {
+	int n;
+	int tag, posX, posY, tmp;
+	Entity *item;
+
+	fstream data(L"Resources/Map/charleston_boss_item_enemy.txt", ios_base::in);
+	data >> n;
+	for (int i = 0; i < n; i++)
+	{
+		data >> tag >> posX >> posY;
+		switch (tag)
+		{
+		case Entity::Entity_Tag::on_off_switch:
+			item = new OnOffSwitch(posX, posY);
+			grid->AddObject2Cell(item);
+			break;
+		default:
+			break;
+		}
+	}
 }

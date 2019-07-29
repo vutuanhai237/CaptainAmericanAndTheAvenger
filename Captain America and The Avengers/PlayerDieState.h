@@ -3,12 +3,13 @@
 #include "Player.h"
 #include "PlayerIdleState.h"
 
-class PlayerBeatenState : public PlayerState
+class PlayerDieState : public PlayerState
 {
 public:
 	float time_beaten;
-	PlayerBeatenState(int damage);
-	~PlayerBeatenState();
+	bool IsGuc;
+	PlayerDieState();
+	~PlayerDieState();
 	virtual void Update(float dt);
 	virtual void Draw();
 	BoundingBox GetBoundingBox() override;

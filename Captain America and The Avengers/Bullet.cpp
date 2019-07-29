@@ -1,12 +1,10 @@
-#include "Bullet.h"
+﻿#include "Bullet.h"
 #include "FrameWork//Debug.h"
 #include "SceneManager.h"
 #include "PlayerBeatenState.h"
 void Bullet::Update(float dt)
 {
 	EnemyWeapon::Update(dt);
-	this->distance += abs(this->GetVelocityX()*dt);
-
 }
 
 int Bullet::OnCollision(Entity* obj, float dt)
@@ -17,6 +15,7 @@ int Bullet::OnCollision(Entity* obj, float dt)
 	if (obj->GetType() == Entity::Entity_Type::player_weapon_type
 		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 	{
+		// Sửa lại hướng đi cho viên đạn
 		this->SetVelocityX(0.0f);
 		this->SetVelocityY(BULLET_VELOCITY_X);
 		return 0;
@@ -26,7 +25,7 @@ int Bullet::OnCollision(Entity* obj, float dt)
 		&& player->time_invisible <= 0
 		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 	{
-			player->ChangeState(new PlayerBeatenState());
+			player->ChangeState(new PlayerBeatenState(BULLET_DAMAGE));
 			return 1;
 	}
 	
@@ -57,6 +56,7 @@ Bullet::Bullet(D3DXVECTOR2 position, Entity::Entity_Direction direction)
 	this->distance = 0;
 	this->IsDead = false;
 	this->SetMoveDirection(direction);
+	this->damage = BULLET_DAMAGE;
 }
 
 
