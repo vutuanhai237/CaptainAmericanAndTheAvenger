@@ -16,7 +16,7 @@ WorldMap::WorldMap(LPCWSTR Path, LPCWSTR PathTitleMap) : Sprite(PathTitleMap, D3
 	Init(Path);
 }
 
-void WorldMap::Draw()
+void WorldMap::Draw(D3DCOLOR ColorMode)
 {
 	LPD3DXSPRITE Hander = d3d::GetInstance()->GetSpriteHander();
 	D3DXMATRIX OldMatrix;
@@ -42,7 +42,7 @@ void WorldMap::Draw()
 			SetRect(Map[j][i]);
 			Sprite::SetPosition(x, y);
 			Hander->SetTransform(&Matrix);
-			Hander->Draw(texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
+			Hander->Draw(texture, &rect, NULL, NULL, ColorMode);
 			y += PIXEL_PER_TITLE;
 		}
 		x += PIXEL_PER_TITLE;

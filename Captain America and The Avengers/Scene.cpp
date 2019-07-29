@@ -6,6 +6,16 @@ D3DCOLOR Scene::GetBackcolor()
 	return BackColor;
 }
 
+void Scene::SwapMap(int code)
+{
+	Mode = code;
+}
+
+int Scene::GetMode()
+{
+	return Mode;
+}
+
 Scene::Scene()
 {
 	IsExitAble = false;
