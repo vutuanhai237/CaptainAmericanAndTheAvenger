@@ -42,14 +42,21 @@ Grid *CharlestonBoss::GetCurrentGrid()
 void CharlestonBoss::SwapMap()
 {
 	map->SwapMode();
+	Mode = Mode ^ 1;
 }
 
 void CharlestonBoss::SwapMap(int code)
 {
 	if (code == CharlestonBossMap::MapMode::Dark)
+	{
 		map->SwapMode(CharlestonBossMap::MapMode::Dark);
+		Mode = 0;
+	}
 	else if (code == CharlestonBossMap::MapMode::Light)
+	{
+		Mode = 1;
 		map->SwapMode(CharlestonBossMap::MapMode::Light);
+	}
 }
 
 CharlestonBoss::CharlestonBoss() : Scene()

@@ -13,7 +13,8 @@ public:
 
 	D3DCOLOR GetBackcolor();
 	virtual void SwapMap() {};
-	virtual void SwapMap(int code) {};
+	virtual void SwapMap(int code);
+	virtual int GetMode();
 
 	virtual ~Scene() {};
 
@@ -24,4 +25,5 @@ protected:
 	RECT ExitZone;
 
 	bool IsInsideExitZone();
+	int Mode;
 };

@@ -3,19 +3,21 @@
 #include "d3d.h"
 #include "../Camera.h"
 
+D3DCOLOR Sprite::DefaultColorMode = D3DCOLOR_XRGB(255, 255, 255);
+
 Sprite::Sprite(int ID)
 {
 	Init(ID);
 }
 
-Sprite::Sprite(LPCWSTR Path, D3DXCOLOR TransparentColor)
+Sprite::Sprite(LPCWSTR Path, D3DCOLOR TransparentColor)
 {
 	int ID;
 	Texture::GetInstance()->Add(ID, Path, TransparentColor);
 	Init(ID);
 }
 
-void Sprite::Draw()
+void Sprite::Draw(D3DCOLOR ColorMode)
 {
 	LPD3DXSPRITE Hander = d3d::GetInstance()->GetSpriteHander();
 	D3DXMATRIX OldMatrix;
@@ -23,47 +25,47 @@ void Sprite::Draw()
 	Hander->SetTransform(&Matrix);
 
 	Hander->Begin(D3DXSPRITE_ALPHABLEND);
-	Hander->Draw(texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
+	Hander->Draw(texture, &rect, NULL, NULL, ColorMode);
 	Hander->End();
 
 	Hander->SetTransform(&OldMatrix);
 }
 
-void Sprite::Draw(D3DXVECTOR2 WorldPosition)
+void Sprite::Draw(D3DXVECTOR2 WorldPosition, D3DCOLOR ColorMode)
 {
 	SetPosition(Camera::GetInstance()->World2Render(WorldPosition));
-	Draw();
+	Draw(ColorMode);
 }
 
-void Sprite::Draw(FLOAT X, FLOAT Y)
+void Sprite::Draw(FLOAT X, FLOAT Y, D3DCOLOR ColorMode)
 {
-	Draw(D3DXVECTOR2(X, Y));
+	Draw(D3DXVECTOR2(X, Y), ColorMode);
 }
 
-void Sprite::DrawInt()
+void Sprite::DrawInt(D3DCOLOR ColorMode)
 {
 	Position.x = ceilf(Position.x);
 	Position.y = ceilf(Position.y);
 	UpdateMatrix();
-	Draw();
+	Draw(ColorMode);
 }
 
-void Sprite::DrawInt(D3DXVECTOR2 WorldPosition)
+void Sprite::DrawInt(D3DXVECTOR2 WorldPosition, D3DCOLOR ColorMode)
 {
 	Position = Camera::GetInstance()->World2Render(WorldPosition);
-	DrawInt();
+	DrawInt(ColorMode);
 }
 
-void Sprite::DrawInt(INT X, INT Y)
+void Sprite::DrawInt(INT X, INT Y, D3DCOLOR ColorMode)
 {
-	DrawInt(D3DXVECTOR2(X, Y));
+	DrawInt(D3DXVECTOR2(X, Y), ColorMode);
 }
 
-void Sprite::ImperiouslyDraw() // Only call inside other draw function
+void Sprite::ImperiouslyDraw(D3DCOLOR ColorMode) // Only call inside other draw function
 {
 	LPD3DXSPRITE Hander = d3d::GetInstance()->GetSpriteHander();
 	Hander->SetTransform(&Matrix);
-	Hander->Draw(texture, &rect, NULL, NULL, D3DCOLOR_XRGB(255, 255, 255));
+	Hander->Draw(texture, &rect, NULL, NULL, ColorMode);
 }
 
 void Sprite::SetRect(RECT Rect)

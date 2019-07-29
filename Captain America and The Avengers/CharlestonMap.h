@@ -11,7 +11,7 @@ class CharlestonMap : public WorldMap
 public:
 	CharlestonMap();
 	void Update(float dt);
-	void Draw() override;
+	void Draw(D3DCOLOR ColorMode = Sprite::DefaultColorMode) override;
 	~CharlestonMap();
 private:
 	Animation *warter1, *warter2, *sewer, *exit;
