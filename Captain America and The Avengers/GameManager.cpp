@@ -93,7 +93,7 @@ void GameManager::Running()
 	}
 	else
 	{
-		Sleep((TPF - delta)*1000);
+		Sleep((TPF - delta)*900);
 		delta = TPF;
 	}
 

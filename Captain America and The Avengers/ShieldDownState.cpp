@@ -31,7 +31,7 @@ void ShieldDownState::Draw()
 BoundingBox ShieldDownState::GetBoundingBox()
 {
 	SIZE size;
-	size.cx = 30;
+	size.cx = 24;
 	size.cy = 6;
 	return BoundingBox(VirtualPoint, size, 0, 0);
 }

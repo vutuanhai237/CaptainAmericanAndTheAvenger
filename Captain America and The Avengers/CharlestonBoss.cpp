@@ -5,7 +5,7 @@
 #include "SceneManager.h"
 #include "Framework/DirectInput.h"
 #include <fstream>
-
+#include "BossWizard.h"
 void CharlestonBoss::Update(float dt)
 {
 	Player *player = Player::GetInstance();
@@ -14,6 +14,8 @@ void CharlestonBoss::Update(float dt)
 	player->Update(dt);
 	Shield::GetInstance()->Update(dt);
 
+	BossWizard *boss = BossWizard::GetInstance();
+	boss->Update(dt);
 	// Cheat Fast next map
 	if (DirectInput::GetInstance()->KeyDown(DIK_N))
 		SceneManager::GetInstance()->ReplaceScene(new CharlestonBoss());
@@ -24,6 +26,7 @@ void CharlestonBoss::Draw()
 	map->Draw();
 	grid->DrawActivatedObject();
 	Player::GetInstance()->Draw();
+	BossWizard::GetInstance()->Draw();
 }
 
 WorldMap *CharlestonBoss::GetCurrentMap()
@@ -54,6 +57,10 @@ CharlestonBoss::CharlestonBoss() : Scene()
 	Player* player = Player::GetInstance();
 	player->Init();
 	player->SetPosition(50.0f, 100.0f);
+
+	BossWizard* boss = BossWizard::GetInstance();
+	boss->Init();
+	boss->SetPosition(50.0f, 100.0f);
 
 	map = new CharlestonBossMap();
 	cam = Camera::GetInstance();

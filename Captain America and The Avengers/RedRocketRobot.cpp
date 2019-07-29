@@ -262,7 +262,6 @@ bool RedRocketRobot::IsCollisionWithGround(float dt, int delta_y)
 	return false;
 }
 
-
 RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR2 position_goto, bool IsCrossed) : Enemy()
 {
 	this->SetTag(Entity::Entity_Tag::redrobotrocket);
@@ -485,7 +484,6 @@ void RedRocketRobot::UpdateUPDOWNNormalState(float dt)
 	}
 }
 
-
 void RedRocketRobot::UpdateRunningState(float dt)
 {
 	if (this->previous_state == RedRocketRobotState::jumping) {
@@ -494,13 +492,22 @@ void RedRocketRobot::UpdateRunningState(float dt)
 	if (this->IsCollisionWithGround(dt, 18) == false
 		&& previous_state == RedRocketRobotState::idle) 
 	{
+		this->current_state = RedRocketRobotState::jumping;
+		this->current_animation = ducking_ani;
+		this->previous_state = RedRocketRobotState::running;
+		return;
+	}
+	else {
+		// thông minh hơn
+		/*Debug::PrintOut(L"%d\n", this->IsLui);
+
 		if ((Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::ShieldAttack
 			&& IsLui == -1))
 		{
-			if ((this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight 
-			&& this->position.x > Player::GetInstance()->GetPosition().x)
+			if ((this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight
+				&& this->position.x <= Player::GetInstance()->GetPosition().x)
 				|| (this->GetMoveDirection() == Entity::Entity_Direction::RightToLeft
-					&& this->position.x < Player::GetInstance()->GetPosition().x))
+					&& this->position.x >= Player::GetInstance()->GetPosition().x))
 			{
 				this->current_state = RedRocketRobotState::jumping;
 				this->current_animation = ducking_ani;
@@ -515,18 +522,8 @@ void RedRocketRobot::UpdateRunningState(float dt)
 				}
 				return;
 			}
-		}
-
-
-
-
-
-		this->current_state = RedRocketRobotState::jumping;
-		this->current_animation = ducking_ani;
-		this->previous_state = RedRocketRobotState::running;
-		return;
+		}*/
 	}
-
 CHECK:
 	if (abs(this->position.x - this->position_loop.x) < 2.0f && IsChamLanHai) {
 		IsLui = -1;
@@ -593,7 +590,7 @@ void RedRocketRobot::UpdateJumpingState(float dt)
 		if (this->IsChamLanHai == false) {
 			this->IsChamLanHai = true;
 		}
-	}
+	}	
 	this->UpdateJumpingCleverState(dt);
 	if (this->Update_position_one_time == false 
 		&& this->IsCollisionWithGround(dt, 18)	

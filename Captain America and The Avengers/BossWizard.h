@@ -52,7 +52,6 @@ public:
 	int GetPreviousState();
 	virtual int OnCollision(Entity *, float dt);
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
-	bool IsCollisionWithWall(float dt, int delta_y = 3);
 
 	BoundingBox GetBoundingBox();
 

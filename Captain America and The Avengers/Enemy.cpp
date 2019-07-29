@@ -14,13 +14,19 @@ void Enemy::Update(float dt)
 
 int Enemy::OnCollision(Entity* obj, float dt)
 {
-	if (this->IsBeaten == false) {
+	if (this->IsBeaten == false) 
+	{
 		if (obj->GetType() == Entity::Entity_Type::player_weapon_type
 			&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 		{
 			if (this->time_beaten <= 0) {
 				this->time_beaten = ENEMY_TIME_BEATEN;
 				if (obj->GetTag() == Entity::Entity_Tag::shield) {
+					if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::ShieldDown) 
+					{
+						this->hp -= Shield::GetInstance()->GetShieldState()->GetDamage();
+						goto CHECK;
+					}
 					this->hp -= Shield::GetInstance()->GetShieldState()->GetDamage();
 
 				}
@@ -37,6 +43,7 @@ int Enemy::OnCollision(Entity* obj, float dt)
 		}
 		Player *player = Player::GetInstance();
 		if (obj->GetType() == Entity::Entity_Type::player_type
+			&& player->GetCurrentState() != PlayerState::shield_down
 			&& player->time_invisible <= 0
 			&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 		{

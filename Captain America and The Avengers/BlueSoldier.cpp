@@ -282,7 +282,10 @@ void BlueSoldier::Draw()
 
 BoundingBox BlueSoldier::GetBoundingBox()
 {
-	return Enemy::GetBoundingBox();
+	SIZE size;
+	size.cx = 24;
+	size.cy = 46;
+	return BoundingBox(Entity::position, size, Entity::velocity.x, Entity::velocity.y);
 }
 
 bool BlueSoldier::IsCollisionWithGround(float dt, int delta_y)

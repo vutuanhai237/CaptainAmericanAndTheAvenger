@@ -23,10 +23,6 @@ void BossWizardFlyingState::Update(float dt)
 	boss->GetCurrentAnimation()->Update(dt);
 	Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
-	if (boss->IsCollisionWithWall(dt)) {
-		boss->ChangeState(new BossWizardIdleState());
-		return;
-	}
 	if (boss->IsCollisionWithGround(dt)) {
 		boss->ChangeState(new BossWizardIdleState());
 		return;
