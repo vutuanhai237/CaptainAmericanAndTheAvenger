@@ -103,6 +103,14 @@ void Charleston::Init()
 			data >> obj[3] >> obj[4];
 			grid->AddObject2Cell(posX, posY, obj);
 			continue;
+		case Entity::Entity_Tag::green_soldier:
+			obj = new int[5];
+			obj[0] = tag;
+			obj[1] = posX;
+			obj[2] = posY;
+			data >> obj[3] >> obj[4];
+			grid->AddObject2Cell(posX, posY, obj);
+			continue;
 		default:
 			continue;
 		}

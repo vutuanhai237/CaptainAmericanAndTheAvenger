@@ -52,6 +52,15 @@
     <Filter Include="Enemy\BossWizard\EnergyBullet">
       <UniqueIdentifier>{35a4ce6d-a93a-436b-ac3b-4f6554bdecf8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\GreenSoldier">
+      <UniqueIdentifier>{fa880fe6-7a0b-4a0b-a4c1-a7461e9ddd1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\Bat">
+      <UniqueIdentifier>{66a4dc54-ccb6-4c1e-bac2-4a2c36e8c16e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\BossWizard\BossWizardRoad">
+      <UniqueIdentifier>{79fcaf3b-757f-4f17-8224-2a026bea3353}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Animation.cpp">
@@ -114,9 +123,6 @@
     </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>GameComponents</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="EnemyWeapon.cpp">
       <Filter>Enemy</Filter>
@@ -267,6 +273,27 @@
     </ClCompile>
     <ClCompile Include="OnOffSwitch.cpp">
       <Filter>Items</Filter>
+    </ClCompile>
+    <ClCompile Include="GreenSoldier.cpp">
+      <Filter>Enemy\GreenSoldier</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Enemy\Bat</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardUMaxRoad.cpp">
+      <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardRoad.cpp">
+      <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardIdleRoad.cpp">
+      <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardFireRoad.cpp">
+      <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -486,6 +513,24 @@
     </ClInclude>
     <ClInclude Include="OnOffSwitch.h">
       <Filter>Items</Filter>
+    </ClInclude>
+    <ClInclude Include="GreenSoldier.h">
+      <Filter>Enemy\GreenSoldier</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>Enemy\Bat</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardUMaxRoad.h">
+      <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardRoad.h">
+      <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardIdleRoad.h">
+      <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardFireRoad.h">
+      <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

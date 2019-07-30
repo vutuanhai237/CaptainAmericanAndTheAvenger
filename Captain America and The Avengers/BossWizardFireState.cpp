@@ -4,7 +4,7 @@
 #include "BossWizardFireState.h"
 #include "EnergyBullet.h"
 #include "LaserBullet.h"
-BossWizardFireState::BossWizardFireState()
+BossWizardFireState::BossWizardFireState(int max_laser_bullet)
 {
 	BossWizard* boss = BossWizard::GetInstance();
 	boss->SetCurrentState(BossWizardState::NameState::fire);
@@ -15,6 +15,7 @@ BossWizardFireState::BossWizardFireState()
 	this->time_wait_before_fire_four_bullet = 0.0f;
 	this->time_firing = BOSS_WIZARD_TIME_FIRING/2; // để bắn ngay lúc bắt đầu state
 	this->count_bullet = 0;
+	this->max_laser_bullet = max_laser_bullet;
 }
 
 
@@ -31,7 +32,7 @@ void BossWizardFireState::Update(float dt)
 	if (this->time_firing >= BOSS_WIZARD_TIME_FIRING) {
 		this->time_firing = 0.0f;
 		if (this->count_bullet < BOSS_WIZARD_MAX_BULLET) {
-			if (this->count_bullet < BOSS_WIZARD_MAX_LASER_BULLET) {
+			if (this->count_bullet < this->max_laser_bullet) {
 				if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
 					SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 						new LaserBullet(
@@ -81,14 +82,8 @@ void BossWizardFireState::Update(float dt)
 		}
 	
 	}
-	if (this->time_fire >= BOSS_WIZARD_TIME_FIRE) {
-		boss->ChangeState(new BossWizardIdleState());
+	if (this->time_fire >= BOSS_WIZARD_TIME_FIRE) 
 		return;
-	}
-	else {
-		return;
-	}
-
 }
 
 void BossWizardFireState::Draw()

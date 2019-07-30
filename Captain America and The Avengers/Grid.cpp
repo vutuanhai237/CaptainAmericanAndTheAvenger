@@ -4,7 +4,7 @@
 #include "BlueSoldier.h"
 #include "Player.h"
 #include "Shield.h"
-
+#include "GreenSoldier.h"
 Grid::Grid(SIZE MapSize)
 {
 	Init(MapSize.cx, MapSize.cy);
@@ -107,6 +107,13 @@ void Grid::RemoveAndReswampObject()
 							if (this->EnemyCounter < CAPACITY_ENEMY)
 							{
 								grid[i][j]->Object->push_back(new BlueSoldier(item[3], D3DXVECTOR2(item[1], item[2]), item[4]));
+								this->EnemyCounter++;
+							}
+							break;
+						case Entity::Entity_Tag::green_soldier:
+							if (this->EnemyCounter < CAPACITY_ENEMY)
+							{
+								grid[i][j]->Object->push_back(new GreenSoldier(item[3], D3DXVECTOR2(item[1], item[2]), item[4]));
 								this->EnemyCounter++;
 							}
 							break;

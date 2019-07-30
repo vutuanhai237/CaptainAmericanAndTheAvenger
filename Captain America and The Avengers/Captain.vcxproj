@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{3C8F973D-7C46-4F0A-B98D-578BDDF7D1E5}</ProjectGuid>
     <RootNamespace>Map</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
     <ProjectName>Captain America and The Avengers</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -129,9 +129,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="BlueSoldier.cpp" />
     <ClCompile Include="BossWizard.cpp" />
+    <ClCompile Include="BossWizardFireRoad.cpp" />
+    <ClCompile Include="BossWizardIdleRoad.cpp" />
     <ClCompile Include="BossWizardPunchingFireState.cpp" />
+    <ClCompile Include="BossWizardRoad.cpp" />
+    <ClCompile Include="BossWizardUMaxRoad.cpp" />
+    <ClCompile Include="GreenSoldier.cpp" />
     <ClCompile Include="LaserBullet.cpp" />
     <ClCompile Include="EnergyBullet.cpp" />
     <ClCompile Include="BossWizardFireState.cpp" />
@@ -203,9 +209,15 @@
     <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bat.h" />
     <ClInclude Include="BlueSoldier.h" />
     <ClInclude Include="BossWizard.h" />
+    <ClInclude Include="BossWizardFireRoad.h" />
+    <ClInclude Include="BossWizardIdleRoad.h" />
     <ClInclude Include="BossWizardPunchingFireState.h" />
+    <ClInclude Include="BossWizardRoad.h" />
+    <ClInclude Include="BossWizardUMaxRoad.h" />
+    <ClInclude Include="GreenSoldier.h" />
     <ClInclude Include="LaserBullet.h" />
     <ClInclude Include="EnergyBullet.h" />
     <ClInclude Include="BossWizardFireState.h" />

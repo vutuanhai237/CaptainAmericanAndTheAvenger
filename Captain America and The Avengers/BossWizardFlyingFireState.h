@@ -8,7 +8,8 @@ class BossWizardFlyingFireState : public BossWizardState
 public:
 	float time_flying_fire;
 	int count_bullet;
-	BossWizardFlyingFireState();
+	bool IsFire;
+	BossWizardFlyingFireState(bool IsFire);
 	~BossWizardFlyingFireState();
 	virtual void Update(float dt);
 	virtual void Draw();

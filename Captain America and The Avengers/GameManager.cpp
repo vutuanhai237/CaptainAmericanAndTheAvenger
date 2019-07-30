@@ -56,6 +56,16 @@ void GameManager::Init(int fps)
 	texture->Add(ID, L"Resources//Enemy//BossWizard//EnergyBulletHorizontal.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources//Enemy//BossWizard//EnergyBulletVertical.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources//Enemy//BossWizard//EnergyBulletCrossed.png", D3DCOLOR_XRGB(255, 0, 255));
+	// green soldier 17 18 19 20
+	texture->Add(ID, L"Resources//Enemy//GreenSoldier//GreenSoldierIdleState.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//GreenSoldier//GreenSoldierRunningState.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//GreenSoldier//GreenSoldierDuckingState.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//GreenSoldier//GreenSoldierBeatenState.png", D3DCOLOR_XRGB(255, 0, 255));
+	// bat 21 22 23 24
+	texture->Add(ID, L"Resources//Enemy//Bat//BatSpawnFromEgg.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//Bat//BatStartFlying.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//Bat//BatFlying.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//Bat//BatElectric.png", D3DCOLOR_XRGB(255, 0, 255));
 
 
 	texture->Add(ItemsHolder::AnimationID, L"Resources/Items/ItemHolder.png", D3DCOLOR_ARGB(0, 0, 0, 0));

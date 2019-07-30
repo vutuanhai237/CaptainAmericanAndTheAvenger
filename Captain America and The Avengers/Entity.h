@@ -59,7 +59,8 @@ public:
 		// none
 		none,
 		item_exit_orb,
-		on_off_switch
+		on_off_switch,
+		green_soldier
 	};
 	enum Entity_Type {
 		static_type,

@@ -63,11 +63,11 @@ CharlestonBoss::CharlestonBoss() : Scene()
 {
 	Player* player = Player::GetInstance();
 	player->Init();
-	player->SetPosition(50.0f, 100.0f);
+	player->SetPosition(100.0f, 100.0f);
 
 	BossWizard* boss = BossWizard::GetInstance();
 	boss->Init();
-	boss->SetPosition(50.0f, 100.0f);
+	boss->SetPosition(24.0f, 75.0f);
 
 	map = new CharlestonBossMap();
 	cam = Camera::GetInstance();

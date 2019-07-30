@@ -7,7 +7,6 @@ BossWizardPunchingState::BossWizardPunchingState()
 	BossWizard* boss = BossWizard::GetInstance();
 	boss->SetCurrentState(BossWizardState::NameState::punching);
 	this->current_state = BossWizardState::NameState::punching;
-	boss->SetVelocity(0, 0);
 	boss->SetSize(20, 45);
 	this->time_punching = 0.0f;
 }

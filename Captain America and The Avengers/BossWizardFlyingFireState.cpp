@@ -2,15 +2,14 @@
 #include "BossWizardFlyingFireState.h"
 #include "BossWizardFlyingState.h"
 #include "BossWizardFireState.h"
-BossWizardFlyingFireState::BossWizardFlyingFireState()
+BossWizardFlyingFireState::BossWizardFlyingFireState(bool IsFire)
 {
 	BossWizard* boss = BossWizard::GetInstance();
 	boss->SetCurrentState(BossWizardState::NameState::flying_fire);
 	this->current_state = BossWizardState::NameState::flying_fire;
-	boss->SetVelocity(0, 0);
 	boss->SetSize(20, 45);
-	this->time_flying_fire = 0.0f;
 	this->count_bullet = 0;
+	this->IsFire = IsFire;
 }
 
 
@@ -22,9 +21,9 @@ void BossWizardFlyingFireState::Update(float dt)
 {
 	BossWizard* boss = BossWizard::GetInstance();
 	boss->GetCurrentAnimation()->Update(dt);
-	this->time_flying_fire += dt;
-	if (this->time_flying_fire >= BOSS_WIZARD_TIME_FLYING_FIRING 
-		&& this->count_bullet < BOSS_WIZARD_MAX_BULLET_FLYING) 
+	if (abs(Player::GetInstance()->GetPosition().x-BossWizard::GetInstance()->GetPosition().x) < 15
+		&& this->count_bullet < BOSS_WIZARD_MAX_BULLET_FLYING
+		&& this->IsFire) 
 	{
 		if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
 			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
@@ -44,13 +43,6 @@ void BossWizardFlyingFireState::Update(float dt)
 		}
 		this->count_bullet++;
 
-	}
-	if (this->time_flying_fire >= BOSS_WIZARD_TIME_FLYING_FIRE) {
-		boss->ChangeState(new BossWizardFlyingState());
-		return;
-	}
-	else {
-		return;
 	}
 
 }
