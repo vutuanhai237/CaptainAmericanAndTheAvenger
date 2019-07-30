@@ -5,7 +5,7 @@
 #include "Collision.h"
 
 // Player HP = 8
-#define PLAYER_HP 2000
+#define PLAYER_HP 8
 #define PLAYER_SIZE_WIDTH 8
 #define PLAYER_SIZE_HEIGHT 40
 #define PLAYER_FOOT_HEIGHT 8
@@ -115,6 +115,7 @@ public:
 	bool IsLockCollision;
 	bool IsShieldDown;
 	bool OnTheWater;
+	bool LockState;
 	int hp;
 protected:
 	static Player *instance;
@@ -127,6 +128,8 @@ protected:
 	float time_buffer;
 	int i = 0;
 
+	Sprite *HPstatus;
+	void DrawHP();
 private:
 	Player();
 	~Player();

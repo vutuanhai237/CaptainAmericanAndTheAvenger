@@ -295,6 +295,15 @@
     <ClCompile Include="BossWizardFireRoad.cpp">
       <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
     </ClCompile>
+    <ClCompile Include="Pittsburgh.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="PittsburghMap.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Animation.h">
@@ -531,6 +540,15 @@
     </ClInclude>
     <ClInclude Include="BossWizardFireRoad.h">
       <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
+    </ClInclude>
+    <ClInclude Include="Pittsburgh.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PittsburghMap.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

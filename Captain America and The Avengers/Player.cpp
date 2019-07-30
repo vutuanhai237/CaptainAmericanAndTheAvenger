@@ -18,6 +18,35 @@ void Player::Release()
 	delete instance;
 }
 
+void Player::DrawHP()
+{
+	int tmp = hp > 20 ? 20 : hp;
+	// Position of first HP
+	D3DXVECTOR2 pos;
+	pos.x = 28;
+	pos.y = 20;
+
+	if (hp <= 0)
+		return;
+	if (hp <= 2)
+	{
+		if (i >> 3 & 1)
+			return;
+		HPstatus->SetPosition(pos);
+		HPstatus->Draw();
+	}
+	else
+	{
+		tmp = ceilf(tmp / 4.0f);
+		for (int i = 0; i < tmp; i++)
+		{
+			HPstatus->SetPosition(pos);
+			HPstatus->Draw();
+			pos.y += HPstatus->GetInfo()->Height;
+		}
+	}
+}
+
 Player::Player() :Entity()
 {
 	///
@@ -47,6 +76,7 @@ Player::Player() :Entity()
 	Animation* punching = new Animation(PlayerState::NameState::punching, L"Resources//CaptainState//CaptainPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 	Animation* shield_down = new Animation(PlayerState::NameState::shield_up, L"Resources//CaptainState//CaptainShielDownState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	Animation* beaten = new Animation(PlayerState::NameState::beaten, L"Resources//CaptainState//CaptainBeatenState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
+	HPstatus = new Sprite(L"Resources/CaptainState/HP.png", D3DCOLOR_ARGB(0, 0, 0, 0));
 	// Chỉ những animation nào có số sprite > 1 thì mới set time
 	running->SetTime(0.1);
 	dashing->SetTime(0.05f);
@@ -99,6 +129,7 @@ Player::Player() :Entity()
 	this->IsLockCollision = false;
 	this->IsShieldDown = false;
 	this->IsOnAir = false;
+	this->LockState = false;
 	this->time_air_jumping = 0;
 	this->time_kicking = 0;
 	this->time_air_rolling = 0;
@@ -126,7 +157,7 @@ void Player::Update(float dt)
 
 void Player::Draw()
 {
-	
+	i++;
 	if (this->time_invisible <= 0) {
 		this->animation->Draw(this->position);
 	}
@@ -135,7 +166,7 @@ void Player::Draw()
 		if (this->time_invisible <= 0) {
 			this->time_invisible = 0;
 		}
-		if ((i++) % 3 == 1) {
+		if ((i) % 3 == 1) {
 			this->animation->Draw(this->position);
 
 		}
@@ -155,8 +186,7 @@ void Player::Draw()
 	}
 
 	shield->Draw();
-
-
+	DrawHP();
 }
 
 void Player::HandleInput(float dt)
@@ -173,6 +203,11 @@ void Player::Init()
 
 void Player::ChangeState(PlayerState *new_state)
 {
+	if (LockState)
+	{
+		delete new_state;
+		return;
+	}
 	delete this->player_state;
 	player_state = new_state;
 	this->current_state = player_state->GetCurrentState();
@@ -373,6 +408,8 @@ bool Player::IsCollisionWithWall(float dt, int delta_y)
 	SIZE PlayerSize;
 	PlayerSize.cx = PLAYER_SIZE_WIDTH;
 	PlayerSize.cy = PLAYER_SIZE_HEIGHT;
+	if (current_state == PlayerState::NameState::rolling)
+		PlayerSize.cy = PLAYER_SIZE_WIDTH;
 	BoundingBox player(D3DXVECTOR2(position.x, position.y - delta_y), PlayerSize, velocity.x*dt, velocity.y*dt);
 	Collision *Checker = Collision::getInstance();
 
@@ -389,12 +426,16 @@ bool Player::IsCollisionWithWall(float dt, int delta_y)
 			switch (tmp.side)
 			{
 			case CollisionSide::left:
+				if (ret)
+					return ret;
 				position.x = item->GetPosition().x + (item->GetSize().cx + PLAYER_SIZE_WIDTH) / 2 + 1;
 				if (this->GetCurrentState() != PlayerState::NameState::jumping)
 					return true;
 				ret = true;
 				break;
 			case CollisionSide::right:
+				if (ret)
+					return ret;
 				position.x = item->GetPosition().x - (item->GetSize().cx + PLAYER_SIZE_WIDTH) / 2 - 1;
 				if (this->GetCurrentState() != PlayerState::NameState::jumping)
 					return true;
@@ -403,13 +444,15 @@ bool Player::IsCollisionWithWall(float dt, int delta_y)
 			case CollisionSide::top:
 				position.y = item->GetPosition().y - (item->GetSize().cy + PLAYER_SIZE_HEIGHT) / 2;
 				velocity.y = 0.0f;
-				return true;
+				ret = true;
+				break;
 			case CollisionSide::bottom:
 				if (this->GetCurrentState() == PlayerState::NameState::jumping)
 					return false;				
 				position.y = item->GetPosition().y + (item->GetSize().cy + PLAYER_SIZE_HEIGHT) / 2 - delta_y;				
 				velocity.y = 0.0f;
-				return true;
+				ret = true;
+				break;
 			default:
 				break;
 			}
@@ -421,7 +464,7 @@ bool Player::IsCollisionWithWall(float dt, int delta_y)
 bool Player::IsCollisionWithRope(float dt, int delta_y)
 {
 	SIZE ArmSize;
-	ArmSize.cx = PLAYER_SIZE_WIDTH ;
+	ArmSize.cx = PLAYER_SIZE_WIDTH / 2;
 	ArmSize.cy = PLAYER_ARM_HEIGHT;
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y + delta_y), ArmSize, velocity.x*dt, velocity.y*dt);
 

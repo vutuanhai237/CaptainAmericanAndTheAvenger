@@ -120,6 +120,8 @@ void WorldMap::Init(LPCWSTR Path)
 			break;
 		case MAPOBJ_ROPE:
 			top -= 8;
+			left += 4;
+			width -= 4;
 			obj->SetTag(Entity::Entity_Tag::rope);
 			break;
 		default:

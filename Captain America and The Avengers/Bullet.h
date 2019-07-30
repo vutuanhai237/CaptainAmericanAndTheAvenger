@@ -6,13 +6,11 @@
 #define BULLET_DAMAGE 1
 class Bullet : public EnemyWeapon
 {
-
-public:
-	
+public:	
 	virtual void Update(float dt) override;
 	virtual int OnCollision(Entity*, float dt) override;
 	virtual void Draw();
-	Bullet(D3DXVECTOR2, Entity::Entity_Direction direction);
+	Bullet(D3DXVECTOR2, Entity::Entity_Direction direction, FLOAT direction_y = 0.0f);
 	~Bullet() override;
 	bool IsDead;
 	float distance;

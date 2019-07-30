@@ -30,15 +30,17 @@ void PlayerBeatenState::Update(float dt)
 		player->SetPositionX(player->GetPosition().x - VELOCITY_X*dt*2/3);
 
 	}
-	else {
+	else
+	{
 		player->SetPositionX(player->GetPosition().x + VELOCITY_X * dt*2/3);
-
 	}
-	if (time_beaten > TIME_BEATEN_MIN && player->IsCollisionWithGround(dt) && player->hp > 0) {
+	if (time_beaten > TIME_BEATEN_MIN && player->IsCollisionWithGround(dt) && player->hp > 0)
+	{
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
-	if (player->IsCollisionWithGround(dt) == false) {
+	if (player->IsCollisionWithGround(dt) == false) 
+	{
 		player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 		player->SetVelocityY(VELOCITY_Y*1.5);
 		return;
@@ -66,7 +68,7 @@ void PlayerBeatenState::HandleInput(float dt)
 {
 	Player *player = Player::GetInstance();
 	if (player->hp <= 0) {
-		if (player->IsCollisionWithGround(dt, 8))
+		if (player->IsCollisionWithGround(dt, 8) || player->IsCollisionWithWall(dt))
 		{
 			player->ChangeState(new PlayerDieState());
 			return;

@@ -62,7 +62,7 @@ void PlayerRollingState::HandleInput(float dt)
 
 		return;
 	}
-	if (player->GetVelocityY() <= -VELOCITY_Y)
+	if (player->GetVelocityY() <= -VELOCITY_Y || player->time_air_rolling > TIME_ROLLING)
 	{
 		player->ChangeState(new PlayerJumpingDownState());
 		return;

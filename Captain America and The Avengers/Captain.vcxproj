@@ -137,6 +137,7 @@
     <ClCompile Include="BossWizardPunchingFireState.cpp" />
     <ClCompile Include="BossWizardRoad.cpp" />
     <ClCompile Include="BossWizardUMaxRoad.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="GreenSoldier.cpp" />
     <ClCompile Include="LaserBullet.cpp" />
     <ClCompile Include="EnergyBullet.cpp" />
@@ -171,6 +172,8 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemsHolder.cpp" />
     <ClCompile Include="OnOffSwitch.cpp" />
+    <ClCompile Include="Pittsburgh.cpp" />
+    <ClCompile Include="PittsburghMap.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerArm.cpp" />
     <ClCompile Include="PlayerBeatenState.cpp" />
@@ -217,6 +220,7 @@
     <ClInclude Include="BossWizardPunchingFireState.h" />
     <ClInclude Include="BossWizardRoad.h" />
     <ClInclude Include="BossWizardUMaxRoad.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="GreenSoldier.h" />
     <ClInclude Include="LaserBullet.h" />
     <ClInclude Include="EnergyBullet.h" />
@@ -252,6 +256,8 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemsHolder.h" />
     <ClInclude Include="OnOffSwitch.h" />
+    <ClInclude Include="Pittsburgh.h" />
+    <ClInclude Include="PittsburghMap.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerArm.h" />
     <ClInclude Include="PlayerBeatenState.h" />

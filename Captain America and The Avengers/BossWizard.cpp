@@ -78,9 +78,11 @@ void BossWizard::Update(float dt)
 
 void BossWizard::Draw()
 {
+	D3DCOLOR color = SceneManager::GetInstance()->GetCurrentScene()->GetMode() & 1 == 1 ? D3DCOLOR_XRGB(255, 255, 255) : D3DCOLOR_XRGB(0, 0, 0);
+
 	BossWizard *boss = BossWizard::GetInstance();
 	if (this->time_invisible <= 0) {
-		this->animation->Draw(this->position);
+		this->animation->Draw(this->position, color);
 	}
 	else {
 
@@ -88,7 +90,7 @@ void BossWizard::Draw()
 			this->time_invisible = 0;
 		}
 		if ((i++) % 3 == 1) {
-			this->animation->Draw(this->position);
+			this->animation->Draw(this->position, color);
 
 		}
 

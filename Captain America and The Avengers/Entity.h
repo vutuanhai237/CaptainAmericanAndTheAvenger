@@ -42,8 +42,8 @@ public:
 		// item
 		item_container,
 		item,
-		// camera
-		camera_rect,
+		// door
+		door,
 		// boss
 		boss,
 		boss_weapon,

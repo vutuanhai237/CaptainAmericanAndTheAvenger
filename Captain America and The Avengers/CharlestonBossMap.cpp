@@ -36,6 +36,11 @@ void CharlestonBossMap::SwapMode(MapMode mode)
 	CurrentMapMode = mode;
 }
 
+CharlestonBossMap::MapMode CharlestonBossMap::GetMode()
+{
+	return this->CurrentMapMode;
+}
+
 WorldMap *CharlestonBossMap::GetCurrentMap()
 {
 	if (CurrentMapMode == MapMode::Dark)

@@ -23,6 +23,7 @@ public:
 	void SetScale(FLOAT dx, FLOAT dy); // Set Scale
 
 	D3DXMATRIX GetMatrix();
+	D3DXIMAGE_INFO *GetInfo();
 protected:
 
 	void SetRect(RECT Rect);

@@ -5,20 +5,21 @@
 #include "SceneManager.h"
 #include "Framework/DirectInput.h"
 #include <fstream>
+#include "Pittsburgh.h"
+#include "ShieldNomalState.h"
 #include "BossWizard.h"
 void CharlestonBoss::Update(float dt)
 {
 	Player *player = Player::GetInstance();
-	grid->Update(dt);
 	player->HandleInput(dt);
 	player->Update(dt);
 	Shield::GetInstance()->Update(dt);
-
+	grid->Update(dt);
 	BossWizard *boss = BossWizard::GetInstance();
 	boss->Update(dt);
 	// Cheat Fast next map
 	if (DirectInput::GetInstance()->KeyDown(DIK_N))
-		SceneManager::GetInstance()->ReplaceScene(new CharlestonBoss());
+		SceneManager::GetInstance()->ReplaceScene(new Pittsburgh());
 }
 
 void CharlestonBoss::Draw()
@@ -59,12 +60,16 @@ void CharlestonBoss::SwapMap(int code)
 	}
 }
 
+int CharlestonBoss::GetMode()
+{
+	return map->GetMode();
+}
+
 CharlestonBoss::CharlestonBoss() : Scene()
 {
 	Player* player = Player::GetInstance();
-	player->Init();
 	player->SetPosition(100.0f, 100.0f);
-
+	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
 	BossWizard* boss = BossWizard::GetInstance();
 	boss->Init();
 	boss->SetPosition(24.0f, 75.0f);
@@ -78,6 +83,8 @@ CharlestonBoss::CharlestonBoss() : Scene()
 	ExitZone.bottom = 0;
 	ExitZone.left = 0;
 	ExitZone.right = GAME_SCREEN_WIDTH;
+	grid->AddObject2Cell(player);
+	grid->AddObject2Cell(Shield::GetInstance());
 
 	Init();
 }

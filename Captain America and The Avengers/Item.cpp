@@ -1,6 +1,7 @@
 #include "Item.h"
 #include "ItemsHolder.h"
 #include "SceneManager.h"
+#include "Player.h"
 
 Item::Item(float x, float y, int tag)
 {
@@ -82,13 +83,29 @@ void Item::Update(float dt)
 int Item::OnCollision(Entity *obj, float dt)
 {
 	if (obj->GetTag() == Entity::Entity_Tag::player)
+	{
+		Player *player = Player::GetInstance();
 		if (Collision::getInstance()->IsCollide(obj->GetBoundingBox(), GetBoundingBox()))
 		{
-			// loot item
-			if (PriTag == Item_Tag::ExitOrb)
+			switch (PriTag)
+			{
+			case Item_Tag::ExitOrb:
 				SceneManager::GetInstance()->GetCurrentScene()->IsExitAble = true;
+				break;
+			case Item_Tag::HalfHeal:
+				Player::GetInstance()->hp += 4;
+				break;
+			case Item_Tag::FullHeal:
+				player->hp += 8;
+				if (player->hp > PLAYER_HP)
+					player->hp = PLAYER_HP;
+				break;
+			default:
+				break;
+			}
 			return 1;
 		}
+	}
 	if (delta >= ITEM_LOOT_VANISHING)
 	{
 		SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->ItemCounter--;

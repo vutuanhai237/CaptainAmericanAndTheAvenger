@@ -36,6 +36,25 @@ D3DXVECTOR2 Camera::Render2World(const D3DXVECTOR2 &p)
 	return D3DXVECTOR2(p.x + PointBL.x, PointBL.y + GAME_SCREEN_HEIGHT - p.y);
 }
 
+void Camera::RefreshCamera(D3DXVECTOR2 p)
+{
+	FollowPoint = p;
+	if (IsFreze)
+		return;
+
+	PointBL.x = p.x - GAME_SCREEN_WIDTH / 2;
+	PointBL.y = p.y - FAR_BOTTOM;
+
+	if (PointBL.x < 0)
+		PointBL.x = 0;
+	else if (PointBL.x + GAME_SCREEN_WIDTH > PixelWidth)
+		PointBL.x = PixelWidth - GAME_SCREEN_WIDTH;
+	if (PointBL.y < 0)
+		PointBL.y = 0;
+	else if (PointBL.y > PixelHeight - GAME_SCREEN_HEIGHT)
+		PointBL.y = PixelHeight - GAME_SCREEN_HEIGHT;
+}
+
 void Camera::SetCameraPosition(D3DXVECTOR2 p)
 {
 	FollowPoint = p;

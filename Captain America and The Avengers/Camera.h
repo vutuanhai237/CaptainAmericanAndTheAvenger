@@ -19,6 +19,7 @@ public:
 	D3DXVECTOR2 World2Render(const D3DXVECTOR2 &Point);
 	D3DXVECTOR2 Render2World(const D3DXVECTOR2 &Point);
 
+	void RefreshCamera(D3DXVECTOR2 Point);
 	void SetCameraPosition(D3DXVECTOR2 Point);
 	void SetCameraPosition(FLOAT x, FLOAT y);
 	D3DXVECTOR2 GetCameraPosition();

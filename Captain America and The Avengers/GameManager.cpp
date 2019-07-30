@@ -10,6 +10,7 @@
 #include "Framework/Debug.h"
 #include "RedRocketRobot.h"
 #include "ItemsHolder.h"
+#include "Door.h"
 
 DWORD GameManager::StTime = GetTickCount();
 
@@ -77,6 +78,9 @@ void GameManager::Init(int fps)
 	texture->Add(ItemsHolder::ID_HighPoint, L"Resources/Items/HighPoint.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ItemsHolder::ID_LargeGem, L"Resources/Items/LargeGem.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ItemsHolder::ID_SmallGem, L"Resources/Items/SmallGem.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(Door::IDDarkDoor, L"Resources/Map/door_dark.png", D3DCOLOR_ARGB(0, 0, 0, 0));
+	texture->Add(Door::IDLightDoor, L"Resources/Map/door_light.png", D3DCOLOR_ARGB(0, 0, 0, 0));
+	
 	SceneManager::GetInstance()->ReplaceScene(new Charleston());
 }
 

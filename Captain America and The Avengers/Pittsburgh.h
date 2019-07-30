@@ -1,10 +1,8 @@
 #pragma once
 #include "Scene.h"
-#include "CharlestonBossMap.h"
-#include "Camera.h"
-#include <vector>
+#include "PittsburghMap.h"
 
-class CharlestonBoss : public Scene
+class Pittsburgh : public Scene
 {
 public:
 	void Update(float dt) override;
@@ -14,12 +12,13 @@ public:
 	void SwapMap() override;
 	void SwapMap(int code) override;
 	int GetMode() override;
-	CharlestonBoss();
-	~CharlestonBoss() override;
+
+	Pittsburgh();
+	~Pittsburgh(); 
 protected:
-	CharlestonBossMap *map;
+	PittsburghMap *map;
 	Camera *cam;
-	Grid *grid;
 private:
 	void Init();
 };
+

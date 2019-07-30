@@ -69,7 +69,7 @@ void PlayerHangOnState::HandleInput(float dt)
 
 		return;
 	}
-	if (keyboard->KeyDown(DOWN_KEY)) {
+	if (keyboard->KeyPress(DOWN_KEY)) {
 		player->ChangeState(new PlayerJumpingDownState());
 		player->SetPositionY(player->GetPosition().y - 15);
 		return;

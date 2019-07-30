@@ -4,6 +4,8 @@
 
 ShieldUpState::ShieldUpState()
 {
+	if (Player::GetInstance()->LockState)
+		return;
 	this->SetCurrentState(NameState::ShieldUp);
 	Shield::GetInstance()->GetAnimation()->SetFrame(3);
 }

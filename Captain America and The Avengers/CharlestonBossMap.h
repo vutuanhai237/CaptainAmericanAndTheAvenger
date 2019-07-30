@@ -12,7 +12,7 @@ public:
 	void Draw();
 	void SwapMode();
 	void SwapMode(MapMode mode);
-
+	MapMode GetMode();
 	WorldMap *GetCurrentMap();
 	SIZE GetMapSize();
 private:

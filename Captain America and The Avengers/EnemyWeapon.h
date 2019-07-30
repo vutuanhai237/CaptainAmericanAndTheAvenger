@@ -13,5 +13,7 @@ public:
 protected:
 	Animation* explode_ani;
 	int damage;
+
+	virtual bool IsCollisionExplode();
 };
 

@@ -132,6 +132,11 @@ D3DXMATRIX Sprite::GetMatrix()
 	return Matrix;
 }
 
+D3DXIMAGE_INFO *Sprite::GetInfo()
+{
+	return &Info;
+}
+
 void Sprite::UpdateMatrix()
 {
 	D3DXMatrixTransformation2D(&Matrix, &CenterRect, 0, &Scale, &CenterRect, Rotation, &D3DXVECTOR2(Position.x - CenterRect.x, Position.y - CenterRect.y));

@@ -2,8 +2,6 @@
 #include <math.h>
 #include "RedRocketRobot.h"
 #include "BlueSoldier.h"
-#include "Player.h"
-#include "Shield.h"
 #include "GreenSoldier.h"
 Grid::Grid(SIZE MapSize)
 {
@@ -59,10 +57,6 @@ void Grid::Init(int MapSizeWidth, int MapSizeHeight)
 		for (int j = 0; j < CellY; j++)
 			grid[i][j] = new Cell;
 	}
-	Player *player = Player::GetInstance();
-	grid[int(player->GetPosition().x / GRID_CELL_SIZE_WIDTH)][int(player->GetPosition().y / GRID_CELL_SIZE_HEIGHT)]->Object->push_back(player);
-	Shield *shield = Shield::GetInstance();
-	grid[int(shield->GetPosition().x / GRID_CELL_SIZE_WIDTH)][int(shield->GetPosition().y) / GRID_CELL_SIZE_HEIGHT]->Object->push_back(shield);
 
 	ItemCounter = 0;
 	EnemyCounter = 0;
@@ -256,6 +250,12 @@ void Grid::DrawActivatedObject()
 	for (int i = Xfrom; i <= Xto; i++)
 		for (int j = Yfrom; j <= Yto; j++)
 			for (auto obj : *grid[i][j]->Object)
+				if (obj->GetType() == Entity::Entity_Type::static_type)
+					obj->Draw();
+
+	for (int i = Xfrom; i <= Xto; i++)
+		for (int j = Yfrom; j <= Yto; j++)
+			for (auto obj : *grid[i][j]->Object)
 				if (obj->GetType() == Entity::Entity_Type::item_type)
 					obj->Draw();
 
@@ -335,6 +335,7 @@ bool Grid::RemoveObjectInList(std::list<Entity*>* list, std::list<Entity*>::iter
 	it++;
 	switch ((*del)->GetType())
 	{
+	case Entity::Entity_Type::static_type:
 	case Entity::Entity_Type::player_type:
 		goto UN_DELETE;
 	case Entity::Entity_Type::item_type:

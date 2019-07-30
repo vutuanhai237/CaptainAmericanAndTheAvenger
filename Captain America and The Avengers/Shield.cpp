@@ -1,4 +1,5 @@
 #include "Shield.h"
+#include "Player.h"
 #include "Framework/Debug.h"
 
 Shield *Shield::Instance = NULL;
@@ -42,6 +43,11 @@ void Shield::Draw()
 
 void Shield::SetShieldState(ShieldState *state)
 {
+	if (Player::GetInstance()->LockState)
+	{
+		delete state;
+		return;
+	}
 	if (this->state->GetCurrentState() == ShieldState::NameState::ShieldAttack)
 	{
 		buffer = state;

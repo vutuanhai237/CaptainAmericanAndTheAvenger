@@ -53,7 +53,7 @@ void PlayerShieldDownState::Draw()
 BoundingBox PlayerShieldDownState::GetBoundingBox()
 {
 	Player *player = Player::GetInstance();
-	SIZE size; size.cx = 24; size.cy = 28;
+	SIZE size; size.cx = 16; size.cy = 28;
 	D3DXVECTOR2 pos = player->GetPosition(); pos.y -= 7;
 	return BoundingBox(pos, size, player->GetVelocityX(), player->GetVelocityY());
 }

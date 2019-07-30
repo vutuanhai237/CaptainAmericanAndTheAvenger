@@ -152,6 +152,8 @@ Charleston::Charleston() : Scene()
 	ExitZone.bottom = 48;
 	ExitZone.left = 1968;
 	ExitZone.right = 2016;
+	grid->AddObject2Cell(Player::GetInstance());
+	grid->AddObject2Cell(Shield::GetInstance());
 
 	Charleston::Init();
 }
