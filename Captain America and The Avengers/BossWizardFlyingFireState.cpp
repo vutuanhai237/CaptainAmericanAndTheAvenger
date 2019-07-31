@@ -29,7 +29,8 @@ void BossWizardFlyingFireState::Update(float dt)
 			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 				new EnergyBullet(
 					D3DXVECTOR2(boss->GetPosition().x + 15, boss->GetPosition().y - 9),
-					boss->GetMoveDirection()
+					boss->GetMoveDirection(),
+					-ENERGY_BULLET_VELOCITY_X
 				)
 			);
 		}
@@ -37,7 +38,8 @@ void BossWizardFlyingFireState::Update(float dt)
 			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 				new EnergyBullet(
 					D3DXVECTOR2(boss->GetPosition().x - 15, boss->GetPosition().y - 9),
-					boss->GetMoveDirection()
+					boss->GetMoveDirection(),
+					-ENERGY_BULLET_VELOCITY_X
 				)
 			);
 		}

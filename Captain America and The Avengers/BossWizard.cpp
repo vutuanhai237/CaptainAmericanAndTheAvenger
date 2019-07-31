@@ -39,7 +39,7 @@ BossWizard::BossWizard() :Enemy()
 	fire->SetTime(0.1f);
 	flying->SetTime(1000000.0f);
 	punching->SetTime(0.1f);
-	punching_fire->SetTime(0.1f);
+	punching_fire->SetTime(0.6f);
 	beaten->SetTime(0.1f);
 	// Cập nhật vào cơ sở dữ liệu
 	this->animations[BossWizardState::idle] = idle;

@@ -4,6 +4,7 @@
 #include "BossWizardPunchingState.h"
 #include "BossWizardFireState.h"
 #include "BossWizardFlyingState.h"
+#include "BossWizardPunchingFireState.h"
 #include "BossWizardIdleRoad.h"
 #include "BossWizard.h"
 void BossWizardFireRoad::Update(float dt)
@@ -42,7 +43,7 @@ void BossWizardFireRoad::Update(float dt)
 			if (abs(boss->GetPosition().x - Player::GetInstance()->GetPosition().x) <= 80
 				&& abs(boss->GetPosition().x - Player::GetInstance()->GetPosition().x) >= 32)
 			{
-				this->phase = 4;
+				this->phase = 3;
 			}
 		}
 		return;
@@ -73,19 +74,21 @@ void BossWizardFireRoad::Update(float dt)
 			this->IsRunning = true;
 			this->time_fire = 0;
 			this->UpdateOneTime = false;
+			//this->phase++;
 		}
 	}
 	if (this->phase == 3 && IsRunning == false) {
 		this->time_fire += dt;
 		if (this->UpdateOneTime == false) {
-			boss->ChangeState(new BossWizardFireState(0));
+			boss->ChangeState(new BossWizardPunchingFireState());
 			boss->SetVelocity(0, 0);
 			this->UpdateOneTime = true;
 		}
 		if (this->time_fire >= BOSS_WIZARD_TIME_FIRE) {
+			this->IsRunning = true;
 			this->time_fire = 0;
 			this->UpdateOneTime = false;
-			//this->phase++;
+			this->phase++;
 		}
 	}
 	if (this->phase == 4 && IsRunning == false) {

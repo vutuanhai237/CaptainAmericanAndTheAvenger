@@ -8,7 +8,7 @@ class BossWizardFireState : public BossWizardState
 public:
 	float time_fire;
 	float time_firing;
-	float time_wait_before_fire_four_bullet;
+	float time_wait_before_fire_energy_bullet;
 	int count_bullet;
 	int max_laser_bullet;
 	BossWizardFireState(int max_laser_bullet);

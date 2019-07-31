@@ -51,6 +51,7 @@ void PlayerDieState::HandleInput(float dt)
 	player->time_guc += dt;
 	auto keyboard = DirectInput::GetInstance();
 	if (keyboard->KeyDown(DIK_H)) {
+		player->hp = PLAYER_HP;
 		player->GetCurrentAnimation()->ResetAnimation();
 		player->ChangeState(new PlayerIdleState());
 		return;

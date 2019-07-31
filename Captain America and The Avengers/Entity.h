@@ -128,7 +128,6 @@ public:
 	virtual void SetIsLocking(bool Islocking);
 	virtual bool GetIsLocking();
 	virtual BoundingBox GetBoundingBox();
-	virtual std::vector<Entity*> *GetMoreObject();
 	virtual void Draw() {};
 protected:
 	BoundingBox box;
@@ -145,6 +144,5 @@ protected:
 	D3DXVECTOR2 velocity;
 	//size of entity
 	SIZE size;
-	std::vector<Entity*> *MoreObject;
 };
 

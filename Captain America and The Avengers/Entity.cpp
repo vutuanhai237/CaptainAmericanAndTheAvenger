@@ -7,7 +7,7 @@ Entity::Entity()
 	tag = none;
 	type = none_type;
 	this->IsActive = true;
-	MoreObject = new std::vector<Entity*>();
+
 }
 
 
@@ -200,9 +200,3 @@ BoundingBox Entity::GetBoundingBox()
 {
 	return BoundingBox(this->position, this->size, this->velocity.x, this->velocity.y);
 }
-
-std::vector<Entity*>* Entity::GetMoreObject()
-{
-	return MoreObject;
-}
-

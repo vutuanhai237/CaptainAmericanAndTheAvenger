@@ -19,10 +19,15 @@ int LaserBullet::OnCollision(Entity* obj, float dt)
 	if (this->IsDead == true) {
 		return 1;
 	}
+	Player *player = Player::GetInstance();
 	if (obj->GetType() == Entity::Entity_Type::player_weapon_type
 		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 	{
-
+		if (player->time_invisible > 0) {
+			if (this->GetMoveDirection() == player->GetMoveDirection()) {
+				return 0;
+			}
+		}
 		if (IsComeBack) {
 			this->SetVelocityX(100.0f);
 			this->IsComeBack = false;
@@ -40,7 +45,6 @@ int LaserBullet::OnCollision(Entity* obj, float dt)
 		return 0;
 	
 	}
-	Player *player = Player::GetInstance();
 	if (obj->GetType() == Entity::Entity_Type::player_type
 		&& player->time_invisible <= 0
 		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
@@ -48,11 +52,6 @@ int LaserBullet::OnCollision(Entity* obj, float dt)
 		player->ChangeState(new PlayerBeatenState(LASER_BULLET_DAMAGE));
 		return 1;
 	}
-
-
-
-
-
 	return 0;
 
 }

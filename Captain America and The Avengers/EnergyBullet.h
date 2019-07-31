@@ -13,7 +13,7 @@ public:
 	virtual void Update(float dt) override;
 	virtual int OnCollision(Entity*, float dt) override;
 	virtual void Draw();
-	EnergyBullet(D3DXVECTOR2, Entity::Entity_Direction direction);
+	EnergyBullet(D3DXVECTOR2, Entity::Entity_Direction direction, FLOAT direction_y = 0.0f);
 	~EnergyBullet() override;
 	bool IsDead;
 	float distance;

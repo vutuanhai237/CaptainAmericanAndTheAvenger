@@ -12,8 +12,8 @@ BossWizardFireState::BossWizardFireState(int max_laser_bullet)
 	boss->SetVelocity(0, 0);
 	boss->SetSize(20, 45);
 	this->time_fire = 0.0f;
-	this->time_wait_before_fire_four_bullet = 0.0f;
-	this->time_firing = BOSS_WIZARD_TIME_FIRING/2; // để bắn ngay lúc bắt đầu state
+	this->time_wait_before_fire_energy_bullet = 0.0f;
+	this->time_firing = 0.24; // để bắn ngay lúc bắt đầu state
 	this->count_bullet = 0;
 	this->max_laser_bullet = max_laser_bullet;
 }
@@ -51,35 +51,31 @@ void BossWizardFireState::Update(float dt)
 				}
 				this->count_bullet++;
 			}
+			else {
+				if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+					SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+						new EnergyBullet(
+							D3DXVECTOR2(boss->GetPosition().x + 15, boss->GetPosition().y + 9),
+							boss->GetMoveDirection()
+						)
+					);
+				}
+				else {
+					SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+						new EnergyBullet(
+							D3DXVECTOR2(boss->GetPosition().x - 15, boss->GetPosition().y + 9),
+							boss->GetMoveDirection()
+						)
+					);
+				}
+				this->count_bullet++;
+			}
 			
 		}	
 	
 	}
 	else {
-		if (this->count_bullet < BOSS_WIZARD_MAX_BULLET) {
-			if (this->count_bullet == 3) {
-				this->time_wait_before_fire_four_bullet += dt;
-				if (this->time_wait_before_fire_four_bullet >= BOSS_WIZARD_TIME_WAITING_BEFORE_FIRE_FOUR_BULLET) {
-					if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
-						SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
-							new EnergyBullet(
-								D3DXVECTOR2(boss->GetPosition().x + 15, boss->GetPosition().y + 9),
-								boss->GetMoveDirection()
-							)
-						);
-					}
-					else {
-						SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
-							new EnergyBullet(
-								D3DXVECTOR2(boss->GetPosition().x - 15, boss->GetPosition().y + 9),
-								boss->GetMoveDirection()
-							)
-						);
-					}
-					this->count_bullet++;
-				}
-			}
-		}
+		
 	
 	}
 	if (this->time_fire >= BOSS_WIZARD_TIME_FIRE) 
