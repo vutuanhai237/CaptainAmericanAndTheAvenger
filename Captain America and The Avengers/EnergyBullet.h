@@ -1,7 +1,7 @@
 #pragma once
 #include "EnemyWeapon.h"
 #define ENERGY_BULLET_VELOCITY_X 400.0f
-#define ENERGY_BULLET_DAMAGE 2
+#define ENERGY_BULLET_DAMAGE 3
 class EnergyBullet : public EnemyWeapon
 {
 public:

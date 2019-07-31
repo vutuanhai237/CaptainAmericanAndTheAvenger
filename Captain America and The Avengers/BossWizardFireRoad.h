@@ -13,6 +13,7 @@ public:
 	float time_running;
 	int IsJumpingFirst;
 	int previous_player_hp;
+	float time_laugh;
 	Equation* e;
 	virtual void Update(float dt);
 	BossWizardFireRoad();

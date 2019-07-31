@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "PlayerBeatenState.h"
+#include "Framework/Debug.h"
 #include "Shield.h"
 Animation * Enemy::GetCurrentAnimation()
 {
@@ -20,17 +21,26 @@ int Enemy::OnCollision(Entity* obj, float dt)
 			&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 		{
 			if (this->time_beaten <= 0) {
-				this->time_beaten = ENEMY_TIME_BEATEN;
+				
 				if (obj->GetTag() == Entity::Entity_Tag::shield) {
-					if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::ShieldDown) 
+					if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::ShieldDown) 
 					{
 						this->hp -= Shield::GetInstance()->GetShieldState()->GetDamage();
 						goto CHECK;
 					}
+					if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::Nomal)
+					{
+						goto CHECK2;
+					}
 					this->hp -= Shield::GetInstance()->GetShieldState()->GetDamage();
+					this->time_beaten = ENEMY_TIME_BEATEN;
+					if (this->GetTag() == Entity::Entity_Tag::boss) {
+						this->time_beaten = ENEMY_TIME_BEATEN * 3;
 
+					}
 				}
 				else {
+					// PUNCH - KICH
 					this->hp -= 2;
 
 				}
@@ -41,6 +51,7 @@ int Enemy::OnCollision(Entity* obj, float dt)
 			this->IsBeaten = true;
 			goto CHECK;
 		}
+		CHECK2:
 		Player *player = Player::GetInstance();
 		if (obj->GetType() == Entity::Entity_Type::player_type
 			&& player->GetCurrentState() != PlayerState::shield_down
@@ -49,8 +60,12 @@ int Enemy::OnCollision(Entity* obj, float dt)
 		{
 			if (this->time_beaten == 0) {
 				this->time_beaten = ENEMY_TIME_BEATEN;
-				this->hp--;
+				if (this->GetTag() == Entity::Entity_Tag::boss) {
+					this->time_beaten = ENEMY_TIME_BEATEN * 3;
 
+				}
+				this->hp--;
+				
 			}
 			player->ChangeState(new PlayerBeatenState(ENEMY_DAMAGE));
 		}

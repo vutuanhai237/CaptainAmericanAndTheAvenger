@@ -22,6 +22,17 @@ void BossWizardFireRoad::Update(float dt)
 		this->GetOneTime = true;
 	}
 	// xử lý nội cảnh
+	if (abs(boss->GetPosition().y - Player::GetInstance()->GetPosition().y) > 10.0f)
+	{
+		this->time_laugh += dt;
+		if (this->time_laugh > 3.0f) {
+			boss->ChangeRoad(new BossWizardIdleRoad());
+			return;
+		}
+	}
+	else {
+		this->time_laugh = 0;
+	}
 	if (this->IsRunning) {
 		
 		this->time_running += dt;
@@ -40,7 +51,7 @@ void BossWizardFireRoad::Update(float dt)
 			this->IsRunning = false;
 			this->time_running = 0;
 			this->UpdateOneTime = false;
-			if (abs(boss->GetPosition().x - Player::GetInstance()->GetPosition().x) <= 80
+			if (abs(boss->GetPosition().x - Player::GetInstance()->GetPosition().x) <= 85
 				&& abs(boss->GetPosition().x - Player::GetInstance()->GetPosition().x) >= 32)
 			{
 				this->phase = 3;
@@ -85,7 +96,7 @@ void BossWizardFireRoad::Update(float dt)
 			this->UpdateOneTime = true;
 		}
 		if (this->time_fire >= BOSS_WIZARD_TIME_FIRE) {
-			this->IsRunning = true;
+			this->IsRunning = false;
 			this->time_fire = 0;
 			this->UpdateOneTime = false;
 			this->phase++;
@@ -96,17 +107,24 @@ void BossWizardFireRoad::Update(float dt)
 		if (this->e != NULL && IsJumping) { 
 			this->IsJumpingFirst++;
 			boss->SetPositionY(e->GetYFromX(boss->GetPosition().x)); 
+			
 		}
 		//boss->SetVelocityY(VELOCITY_Y);
-		if (this->IsJumpingFirst >= 10 && boss->IsCollisionWithWall(dt)) {
+		CollisionOut out = boss->IsCollisionWithWall(dt);
+		if (this->IsJumpingFirst >= 10 && out.CollisionTime < 1) {
 			this->IsJumping = false;
 			if (Player::GetInstance()->hp < this->previous_player_hp) {
 				boss->ChangeRoad(new BossWizardUMaxRoad());
 				boss->ChangeState(new BossWizardFlyingState());
 				return;
 			}
-			boss->ChangeRoad(new BossWizardIdleRoad());
-			boss->ChangeState(new BossWizardIdleState());
+			if (out.side == CollisionSide::bottom) {
+				boss->IsIdle = false;
+				boss->ChangeRoad(new BossWizardIdleRoad());
+				boss->ChangeState(new BossWizardIdleState());
+				return;
+			}
+			
 			return;
 		}
 		//boss->SetVelocityY(0);*/
@@ -114,10 +132,23 @@ void BossWizardFireRoad::Update(float dt)
 		if (this->UpdateOneTime == false) {
 			boss->ChangeState(new BossWizardFlyingState());
 			boss->SetVelocity(BOSS_WIZARD_VELOCITY_X, 0);
-			this->e = new Equation(
-				boss->GetPosition(),
-				D3DXVECTOR2(boss->GetPosition().x + (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight ? 1 : -1) * 80, boss->GetPosition().y + 48)
-			);
+			int distance_jump = boss->GetPosition().x;
+			if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+				distance_jump += 70; 
+				if (distance_jump > 220) { 
+					distance_jump = 220; 
+					boss->SetVelocity(BOSS_WIZARD_VELOCITY_X * 0.5, 0); 
+				}
+
+			}
+			if (boss->GetMoveDirection() == Entity::Entity_Direction::RightToLeft) {
+				distance_jump -= 70; 
+				if (distance_jump < 30) { 
+					distance_jump = 30; 
+					boss->SetVelocity(BOSS_WIZARD_VELOCITY_X * 0.5, 0); 
+				}
+			}
+			this->e = new Equation(boss->GetPosition(), D3DXVECTOR2(distance_jump, boss->GetPosition().y + 48));
 			this->IsJumping = true;
 			this->UpdateOneTime = true;
 		}
@@ -145,6 +176,7 @@ BossWizardFireRoad::BossWizardFireRoad()
 	this->IsJumpingFirst = 0;
 	this->previous_player_hp = Player::GetInstance()->hp;
 	this->IsJumping = false;
+	this->time_laugh = 0.0f;
 }
 
 

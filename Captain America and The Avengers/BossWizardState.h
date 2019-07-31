@@ -15,7 +15,8 @@ public:
 		punching,
 		punching_fire,
 		flying_fire,
-		beaten
+		beaten,
+		die
 	};
 	BossWizardState();
 	~BossWizardState();

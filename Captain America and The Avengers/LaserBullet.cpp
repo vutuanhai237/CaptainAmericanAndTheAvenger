@@ -58,23 +58,35 @@ int LaserBullet::OnCollision(Entity* obj, float dt)
 
 void LaserBullet::Draw()
 {
-	if (this->GetVelocityX() != 0) {
-		this->current_ani->Draw(this->GetPosition());
-		if (BossWizard::GetInstance()->GetMoveDirection()) {
-			this->current_ani->SetScale(1, 1);
-		}
-		else {
-			this->current_ani->SetScale(-1, 1);
-		}
+	this->current_ani->Draw(this->GetPosition());
+	if (BossWizard::GetInstance()->GetMoveDirection()) {
+		this->current_ani->SetScale(1, 1);
+	}
+	else {
+		this->current_ani->SetScale(-1, 1);
 	}
 }
 
-LaserBullet::LaserBullet(D3DXVECTOR2 position, Entity::Entity_Direction direction)
+LaserBullet::LaserBullet(D3DXVECTOR2 position, Entity::Entity_Direction direction, FLOAT velocity_y)
 {
 	this->SetTag(Entity::Entity_Tag::boss_bullet);
 	this->SetType(Entity::Entity_Type::enemy_weapon_type);
 	this->current_ani = new Animation(13, 1);
 	this->SetVelocityX(LASER_BULLET_VELOCITY_X);
+	if (velocity_y == -1) {
+		this->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
+		float radian = atan(abs(Player::GetInstance()->GetPosition().y - 54)/ (256 - Player::GetInstance()->GetPosition().x));
+		this->SetVelocityY(LASER_BULLET_VELOCITY_X*radian);
+		this->current_ani->SetRotation(radian);
+		goto CHECK;
+	}
+	if (velocity_y > 10) {
+		this->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
+		float radian = atan(velocity_y / (BossWizard::GetInstance()->GetPosition().x - Player::GetInstance()->GetPosition().x));
+		this->SetVelocityY(LASER_BULLET_VELOCITY_X*radian);
+		this->current_ani->SetRotation(radian);
+	}
+	CHECK:
 	this->size.cx = 5; this->size.cy = 5;
 	this->SetPosition(position);
 	this->IsLocking = true;

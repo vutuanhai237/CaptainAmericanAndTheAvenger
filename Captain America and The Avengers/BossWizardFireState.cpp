@@ -26,6 +26,7 @@ BossWizardFireState::~BossWizardFireState()
 void BossWizardFireState::Update(float dt)
 {
 	BossWizard* boss = BossWizard::GetInstance();
+	Player* player = Player::GetInstance();
 	boss->GetCurrentAnimation()->Update(dt);
 	this->time_fire += dt;
 	this->time_firing += dt;
@@ -33,11 +34,14 @@ void BossWizardFireState::Update(float dt)
 		this->time_firing = 0.0f;
 		if (this->count_bullet < BOSS_WIZARD_MAX_BULLET) {
 			if (this->count_bullet < this->max_laser_bullet) {
-				if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+				if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight)
+				{
 					SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 						new LaserBullet(
 							D3DXVECTOR2(boss->GetPosition().x + 15, boss->GetPosition().y + 9),
-							boss->GetMoveDirection()
+							boss->GetMoveDirection(),
+							abs(player->GetPosition().y-boss->GetPosition().y)
+							
 						)
 					);
 				}
@@ -45,7 +49,9 @@ void BossWizardFireState::Update(float dt)
 					SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 						new LaserBullet(
 							D3DXVECTOR2(boss->GetPosition().x - 15, boss->GetPosition().y + 9),
-							boss->GetMoveDirection()
+							boss->GetMoveDirection(),
+							abs(player->GetPosition().y - boss->GetPosition().y)
+
 						)
 					);
 				}

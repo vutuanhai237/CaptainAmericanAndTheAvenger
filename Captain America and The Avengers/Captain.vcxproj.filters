@@ -271,9 +271,6 @@
     <ClCompile Include="PlayerDieState.cpp">
       <Filter>Player\PlayerState</Filter>
     </ClCompile>
-    <ClCompile Include="OnOffSwitch.cpp">
-      <Filter>Items</Filter>
-    </ClCompile>
     <ClCompile Include="GreenSoldier.cpp">
       <Filter>Enemy\GreenSoldier</Filter>
     </ClCompile>
@@ -289,9 +286,6 @@
     <ClCompile Include="BossWizardIdleRoad.cpp">
       <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Framework</Filter>
-    </ClCompile>
     <ClCompile Include="BossWizardFireRoad.cpp">
       <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
     </ClCompile>
@@ -301,8 +295,35 @@
     <ClCompile Include="PittsburghMap.cpp">
       <Filter>Map</Filter>
     </ClCompile>
+    <ClCompile Include="BossWizardSwitchOffRoad.cpp">
+      <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardDieState.cpp">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardBeatenState.cpp">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClCompile>
+    <ClCompile Include="BossWizardBeatenRoad.cpp">
+      <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
+    </ClCompile>
+    <ClCompile Include="DisappearPlatform.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="MovingPlatform.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Platform.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
     <ClCompile Include="Door.cpp">
-      <Filter>Items</Filter>
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="OnOffSwitch.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -520,9 +541,6 @@
     <ClInclude Include="PlayerDieState.h">
       <Filter>Player\PlayerState</Filter>
     </ClInclude>
-    <ClInclude Include="OnOffSwitch.h">
-      <Filter>Items</Filter>
-    </ClInclude>
     <ClInclude Include="GreenSoldier.h">
       <Filter>Enemy\GreenSoldier</Filter>
     </ClInclude>
@@ -547,8 +565,32 @@
     <ClInclude Include="PittsburghMap.h">
       <Filter>Map</Filter>
     </ClInclude>
+    <ClInclude Include="BossWizardSwitchOffRoad.h">
+      <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardDieState.h">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardBeatenState.h">
+      <Filter>Enemy\BossWizard\BossWizardState</Filter>
+    </ClInclude>
+    <ClInclude Include="BossWizardBeatenRoad.h">
+      <Filter>Enemy\BossWizard\BossWizardRoad</Filter>
+    </ClInclude>
+    <ClInclude Include="DisappearPlatform.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="MovingPlatform.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Platform.h">
+      <Filter>Object</Filter>
+    </ClInclude>
     <ClInclude Include="Door.h">
-      <Filter>Items</Filter>
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="OnOffSwitch.h">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

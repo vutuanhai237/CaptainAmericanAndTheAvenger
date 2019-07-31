@@ -16,7 +16,9 @@ public:
 		u_max, // bay hết máp
 		u_normal, // bay cự li hơn nữa máp
 		u_min, // tắt điện
-		jump // nhảy cự li gần theo parapol
+		jump, // nhảy cự li gần theo parapol
+		switch_off, // tắt điện
+		beaten
 	};
 	virtual void Update(float dt) = 0;
 	void SetType(RoadType type);

@@ -17,6 +17,9 @@ public:
 	CharlestonBoss();
 	~CharlestonBoss() override;
 protected:
+	float time_count;
+	int count_bullet;
+	bool UpdateOneTime;
 	CharlestonBossMap *map;
 	Camera *cam;
 	Grid *grid;

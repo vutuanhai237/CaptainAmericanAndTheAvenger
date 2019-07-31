@@ -1,17 +1,22 @@
 ﻿#include "BossWizardIdleRoad.h"
 #include "BossWizardUMaxRoad.h"
+#include "BossWizardSwitchOffRoad.h"
 #include "BossWizardRunningState.h"
 #include "BossWizardPunchingState.h"
+#include "BossWizardFlyingState.h"
 #include "BossWizardFireRoad.h"
 #include "BossWizard.h"
+#include "Framework//DirectInput.h"
 void BossWizardIdleRoad::Update(float dt)
 {
 	BossWizard* boss = BossWizard::GetInstance();
+	auto keyboard = DirectInput::GetInstance();
+	
 	if (this->GetOneTime == false) {
 		// tạo ngoại cảnh
 		boss->SetVelocity(0, BOSS_WIZARD_VELOCITY_Y);
 		boss->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
-		boss->ChangeState(new BossWizardIdleState());
+		
 		if (boss->GetPosition().x > Player::GetInstance()->GetPosition().x) {
 			boss->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		}
@@ -21,6 +26,17 @@ void BossWizardIdleRoad::Update(float dt)
 		this->GetOneTime = true;
 	}
 	// xử lý nội cảnh
+	if (boss->hp <= BOSS_WIZARD_HP/2 && boss->hp > 10) {
+		if (SceneManager::GetInstance()->GetCurrentScene()->GetMode() & 1) {
+			boss->ChangeRoad(new BossWizardSwitchOffRoad());
+			return;
+		}
+	}
+	if (boss->hp <= 10 && boss->IsIdle == false) {
+		boss->ChangeRoad(new BossWizardUMaxRoad());
+		boss->ChangeState(new BossWizardFlyingState());
+		return;
+	}
 	// nếu cả 2 ko ở cùng độ cao thì thằng này chỉ biết đứng cười
 	if (abs(boss->GetPosition().y - Player::GetInstance()->GetPosition().y) > 10.0f
 		&& IsChamDatLanDau) {
@@ -64,8 +80,10 @@ void BossWizardIdleRoad::Update(float dt)
 	}
 
 	// Bay xa
-	if (boss->IsCollisionWithWall(dt)) {
+	CollisionOut out = boss->IsCollisionWithWall(dt);
+	if (out.CollisionTime < 1.0f && out.side == CollisionSide::bottom) {
 		this->IsChamDatLanDau = true;
+		boss->ChangeState(new BossWizardIdleState());
 		boss->SetVelocity(0, 0);
 	/*	if (((0 <= boss->GetPosition().x <= 48) || (208 <= boss->GetPosition().x <= 256))
 			&& boss->IsUMax == false) {

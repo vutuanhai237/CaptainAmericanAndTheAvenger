@@ -7,7 +7,7 @@ Entity::Entity()
 	tag = none;
 	type = none_type;
 	this->IsActive = true;
-
+	this->velocity.x = this->velocity.y = 0;
 }
 
 

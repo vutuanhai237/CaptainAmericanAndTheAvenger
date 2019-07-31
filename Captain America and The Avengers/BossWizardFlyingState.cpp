@@ -38,6 +38,7 @@ void BossWizardFlyingState::Draw()
 
 BoundingBox BossWizardFlyingState::GetBoundingBox()
 {
+
 	return BoundingBox();
 }
 

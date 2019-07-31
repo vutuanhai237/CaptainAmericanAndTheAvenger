@@ -16,13 +16,6 @@ int EnergyBullet::OnCollision(Entity* obj, float dt)
 		return 1;
 	}
 	Player *player = Player::GetInstance();
-	if (obj->GetType() == Entity::Entity_Type::player_weapon_type
-		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
-	{
-		player->ChangeState(new PlayerBeatenState(ENERGY_BULLET_DAMAGE));
-		return 1;
-	}
-
 	if (obj->GetType() == Entity::Entity_Type::player_type
 		&& player->time_invisible <= 0
 		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))

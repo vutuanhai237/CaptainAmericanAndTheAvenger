@@ -5,6 +5,8 @@
 #include "BossWizardIdleState.h"
 #include "BossWizardRoad.h"
 // BossWizard
+#define BOSS_WIZARD_HP 20
+#define BOSS_WIZARD_LOW_HP 10
 #define BOSS_WIZARD_SIZE_WIDTH 8
 #define BOSS_WIZARD_SIZE_HEIGHT 52
 #define BOSS_WIZARD_FOOT_HEIGHT 8
@@ -29,6 +31,8 @@
 // Punching fire
 #define BOSS_WIZARD_TIME_PUNCHING_FIRE 1.2f 
 #define BOSS_WIZARD_MAX_BULLET_PUNCHING_FIRE 1
+// Beaten
+#define BOSS_WIZARD_TIME_BEATEN 0.116* 20
 using namespace std;
 class BossWizard : public Enemy
 {
@@ -57,11 +61,10 @@ public:
 	void SetCurrentRoad(BossWizardRoad::RoadType new_road);
 	void SetCurrentAnimation(Animation* animation);
 	int GetPreviousState();
-	virtual int OnCollision(Entity *, float dt);
+	//virtual int OnCollision(Entity *, float dt);
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
-	bool IsCollisionWithWall(float dt, int delta_y = 4);
+	CollisionOut IsCollisionWithWall(float dt, int delta_y = 4);
 
-	BoundingBox GetBoundingBox();
 
 	float time_flying;
 	float time_runnig;
@@ -72,8 +75,8 @@ public:
 	bool IsIdle = false;
 	bool IsUMax = false;
 	bool IsUMin = false;
-
-
+	bool IsDie = false;
+	bool IsLac = false;
 
 protected:
 	static BossWizard *instance;

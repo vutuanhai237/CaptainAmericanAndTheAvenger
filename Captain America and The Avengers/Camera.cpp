@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "SceneManager.h"
 
 Camera* Camera::Instance = NULL;
 
@@ -118,7 +119,34 @@ RECT Camera::GetCameraViewRect()
 
 void Camera::SetCameraFreeze(bool IsFreeze)
 {
+	if (this->IsFreze == IsFreeze)
+		return;
+	auto objs = SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
+
 	this->IsFreze = IsFreeze;
+	if (IsFreeze)
+	{
+		// put 2 virtual wall
+		Entity *wall = new Entity();
+		wall->SetPosition(D3DXVECTOR2(PointBL.x, PixelHeight / 2));
+		wall->SetSize(16, PixelHeight);
+		wall->SetTag(Entity::Entity_Tag::wall);
+		objs->push_back(wall);
+
+		wall = new Entity();
+		wall->SetPosition(D3DXVECTOR2(PointBL.x + GAME_SCREEN_WIDTH, PixelHeight / 2));
+		wall->SetSize(16, PixelHeight);
+		wall->SetTag(Entity::Entity_Tag::wall);
+		objs->push_back(wall);
+	}
+	else
+	{
+		// remove 2 virtual wall
+		delete (*objs)[objs->size() - 1];
+		objs->pop_back();
+		delete (*objs)[objs->size() - 1];
+		objs->pop_back();
+	}
 }
 
 Camera::Camera()
@@ -129,7 +157,7 @@ Camera::Camera()
 	BoxFollow.right = GAME_SCREEN_WIDTH - FAR_RIGHT; 
 
 	PointBL = FollowPoint = D3DXVECTOR2(0, 0);
-	IsFreze = 0;
+	IsFreze = false;
 }
 
 

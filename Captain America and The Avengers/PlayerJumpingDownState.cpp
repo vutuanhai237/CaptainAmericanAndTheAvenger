@@ -74,6 +74,11 @@ void PlayerJumpingDownState::HandleInput(float dt)
 		player->ChangeState(new PlayerHangOnState());
 		return;
 	}
+	if (player->IsCollisionWithPlatform(dt))
+	{
+		player->ChangeState(new PlayerDuckingState());
+		return;
+	}
 	if (!player->IsDonTho && player->IsCollisionWithGround(dt, 8))
 	{	
 		player->ChangeState(new PlayerDuckingState());

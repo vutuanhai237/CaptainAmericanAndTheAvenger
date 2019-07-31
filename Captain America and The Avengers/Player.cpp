@@ -4,7 +4,7 @@
 #include "SceneManager.h"
 #include "Framework/Debug.h"
 #include "Shield.h"
-Player*Player::instance = NULL;
+Player *Player::instance = NULL;
 
 Player * Player::GetInstance()
 {
@@ -138,6 +138,7 @@ Player::Player() :Entity()
 	this->time_invisible = 0;
 	this->time_guc = 0;
 	this->hp = PLAYER_HP;
+	CarrierObject = NULL;
 }
 
 
@@ -253,32 +254,11 @@ int Player::GetPreviousState()
 
 int Player::OnCollision(Entity *obj, float dt)
 {
-
-	Collision *Checker = Collision::getInstance();
-	auto out = Checker->SweptAABB(this->GetBoundingBox(), obj->GetBoundingBox());
-	if (out.CollisionTime > 1) {
-		return 0;
-	}
-	if (obj->GetType() == Entity::Entity_Type::enemy_type)
+	if (obj->GetType() == Entity::Entity_Type::platform && IsCollisionWithPlatform(dt,obj))
 	{
-		switch (obj->GetTag()) {
-		case Entity::Entity_Tag::redrobotrocket:
-			//Debug::PrintOut(L"%f", 1.0f);
-			break;
-		default:
-			break;
-		}
+		CarrierObject = obj;
 	}
-
-	if (obj->GetType() == Entity::Entity_Type::enemy_weapon_type)
-	{
-		switch (obj->GetTag()) {
-		case Entity::Entity_Tag::red_rocket:
-			break;
-		default:
-			break;
-		}
-	}
+	return 0;
 }
 
 void Player::AddTimeBuffer(float dt)
@@ -366,6 +346,33 @@ bool Player::IsCollisionWithGround(float dt, int delta_y)
 			}
 		}
 	}
+	return false;
+}
+
+bool Player::IsCollisionWithPlatform(float dt, Entity *obj, int delta_y)
+{
+	if (obj == NULL)
+		if (CarrierObject == NULL)
+			return false;
+		else
+			obj = CarrierObject;
+
+	SIZE FootSize;
+	FootSize.cx = PLAYER_SIZE_WIDTH;
+	FootSize.cy = PLAYER_FOOT_HEIGHT;
+	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
+	auto Checker = Collision::getInstance();
+
+	if (foot.vy == 0 && Checker->IsCollide(foot, obj->GetBoundingBox()))
+		return true;
+
+	if (Checker->SweptAABB(foot, obj->GetBoundingBox()).side == CollisionSide::bottom)
+	{
+		position.y = obj->GetPosition().y + (PLAYER_SIZE_HEIGHT + obj->GetSize().cy) / 2 - 4;
+		velocity.y = 0;
+		return true;
+	}	
+
 	return false;
 }
 

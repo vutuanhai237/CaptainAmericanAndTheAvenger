@@ -8,6 +8,7 @@
 #include "Pittsburgh.h"
 #include "ShieldNomalState.h"
 #include "BossWizard.h"
+#include "LaserBullet.h"
 void CharlestonBoss::Update(float dt)
 {
 	Player *player = Player::GetInstance();
@@ -16,7 +17,47 @@ void CharlestonBoss::Update(float dt)
 	Shield::GetInstance()->Update(dt);
 	grid->Update(dt);
 	BossWizard *boss = BossWizard::GetInstance();
-	boss->Update(dt);
+	this->time_count += dt;
+	if (this->time_count >= 4.0f && this->count_bullet == 0) {
+		SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+			new LaserBullet(
+				D3DXVECTOR2(256, 63),
+				Entity::Entity_Direction::RightToLeft,
+				-1
+			)
+		);
+		this->count_bullet++;
+	}
+	if (this->time_count >= 8.0f && this->count_bullet == 1) {
+		SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+			new LaserBullet(
+				D3DXVECTOR2(0, 63),
+				Entity::Entity_Direction::LeftToRight,
+				abs(player->GetPosition().y - 54)
+			)
+		);
+		this->count_bullet++;
+	}
+	if (this->time_count >= 12.0f && this->count_bullet == 2) {
+		SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+			new LaserBullet(
+				D3DXVECTOR2(256, 63),
+				Entity::Entity_Direction::RightToLeft,
+				-1
+			)
+		);
+		this->count_bullet++;
+	}
+	if (this->time_count >= 16.0f && this->count_bullet == 3) {
+		grid->AddObject2Cell(boss);
+		boss->Init();
+		float x = rand() % 170 + 50;
+		boss->SetPosition(x, 200.0f);
+		this->count_bullet++;
+
+	}
+	if (IsExitAble && IsInsideExitZone())
+		SceneManager::GetInstance()->ReplaceScene(new Pittsburgh());
 	// Cheat Fast next map
 	if (DirectInput::GetInstance()->KeyDown(DIK_N))
 		SceneManager::GetInstance()->ReplaceScene(new Pittsburgh());
@@ -27,7 +68,7 @@ void CharlestonBoss::Draw()
 	map->Draw();
 	grid->DrawActivatedObject();
 	Player::GetInstance()->Draw();
-	BossWizard::GetInstance()->Draw();
+	
 }
 
 WorldMap *CharlestonBoss::GetCurrentMap()
@@ -68,12 +109,13 @@ int CharlestonBoss::GetMode()
 CharlestonBoss::CharlestonBoss() : Scene()
 {
 	Player* player = Player::GetInstance();
-	player->SetPosition(100.0f, 100.0f);
+	player->SetPosition(24.0f, 75.0f);
 	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
 	BossWizard* boss = BossWizard::GetInstance();
-	boss->Init();
-	boss->SetPosition(24.0f, 75.0f);
-
+	
+	this->time_count = 0;
+	this->count_bullet = 0;
+	this->UpdateOneTime = false;
 	map = new CharlestonBossMap();
 	cam = Camera::GetInstance();
 	cam->SetCameraPosition(player->GetPosition());
@@ -85,6 +127,7 @@ CharlestonBoss::CharlestonBoss() : Scene()
 	ExitZone.right = GAME_SCREEN_WIDTH;
 	grid->AddObject2Cell(player);
 	grid->AddObject2Cell(Shield::GetInstance());
+
 
 	Init();
 }

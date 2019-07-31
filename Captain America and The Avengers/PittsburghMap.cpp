@@ -1,6 +1,8 @@
 #include "PittsburghMap.h"
 #include "OnOffSwitch.h"
 #include "Door.h"
+#include "DisappearPlatform.h"
+#include "MovingPlatform.h"
 #include "Player.h"
 #include "Shield.h"
 #include <fstream>
@@ -90,6 +92,16 @@ void PittsburghMap::ReadData(LPCWSTR path, int code)
 			item = new Door(posX, posY, obj[0], obj[1], obj[2]);
 			(*grid)[code]->AddObject2Cell(item);
 			delete obj;
+			break;
+		case Entity::Entity_Tag::disappear_platform:
+			item = new DisappearPlatform(posX, posY);
+			(*grid)[code]->AddObject2Cell(item);
+			break;
+		case Entity::Entity_Tag::moving_platform:
+			obj = new int;
+			data >> *obj;
+			item = new MovingPlatform(posX, posY, *obj);
+			(*grid)[code]->AddObject2Cell(item);
 			break;
 		default:
 			break;

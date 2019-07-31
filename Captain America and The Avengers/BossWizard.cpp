@@ -2,6 +2,7 @@
 #include "BossWizardFlyingState.h"
 #include "BossWizardUMaxRoad.h"
 #include "BossWizardIdleRoad.h"
+#include "BossWizardBeatenRoad.h"
 BossWizard*BossWizard::instance = NULL;
 
 BossWizard * BossWizard::GetInstance()
@@ -19,6 +20,8 @@ void BossWizard::Release()
 BossWizard::BossWizard() :Enemy()
 {
 	///
+	this->IsDead = false;
+	this->hp = BOSS_WIZARD_HP;
 	this->time_buffer = 0;
 	this->SetTag(Entity::Entity_Tag::boss);
 	this->SetType(Entity::Entity_Type::enemy_type);
@@ -32,7 +35,8 @@ BossWizard::BossWizard() :Enemy()
 	Animation* flying_fire = new Animation(BossWizardState::NameState::flying_fire, L"Resources//Enemy//BossWizard/BossWizardFlyingFire.png", D3DCOLOR_XRGB(0, 166, 81), 1);
 	Animation* punching = new Animation(BossWizardState::NameState::punching, L"Resources//Enemy//BossWizard/BossWizardPunching.png", D3DCOLOR_XRGB(0, 166, 81), 2);
 	Animation* punching_fire = new Animation(BossWizardState::NameState::punching_fire, L"Resources//Enemy//BossWizard/BossWizardPunchingFire.png", D3DCOLOR_XRGB(0, 166, 81), 2);
-	Animation* beaten = new Animation(BossWizardState::NameState::beaten, L"Resources//Enemy//BossWizard/BossWizardBeaten.png", D3DCOLOR_XRGB(0, 166, 81), 3);
+	Animation* beaten = new Animation(BossWizardState::NameState::beaten, L"Resources//Enemy//BossWizard/BossWizardBeaten.png", D3DCOLOR_XRGB(0, 166, 81), 1);
+	Animation* die = new Animation(BossWizardState::NameState::die, L"Resources//Enemy//BossWizard/BossWizardDie.png", D3DCOLOR_XRGB(0, 166, 81), 2);
 	// Chỉ những animation nào có số sprite > 1 thì mới set time
 	running->SetTime(0.1f);
 	idle->SetTime(0.2f); idle->SetFrameReset(2);
@@ -40,7 +44,7 @@ BossWizard::BossWizard() :Enemy()
 	flying->SetTime(1000000.0f);
 	punching->SetTime(0.1f);
 	punching_fire->SetTime(0.6f);
-	beaten->SetTime(0.1f);
+	die->SetTime(0.3f);
 	// Cập nhật vào cơ sở dữ liệu
 	this->animations[BossWizardState::idle] = idle;
 	this->animations[BossWizardState::running] = running;
@@ -50,6 +54,8 @@ BossWizard::BossWizard() :Enemy()
 	this->animations[BossWizardState::punching_fire] = punching_fire;
 	this->animations[BossWizardState::punching] = punching;
 	this->animations[BossWizardState::beaten] = beaten;
+	this->animations[BossWizardState::die] = die;
+
 	//End load resources
 	this->current_state = BossWizardState::flying;
 	this->current_road = BossWizardRoad::idle;
@@ -57,6 +63,10 @@ BossWizard::BossWizard() :Enemy()
 	this->previous_state = 0;
 	this->time_invisible = 0;
 	this->SetVelocityY(BOSS_WIZARD_VELOCITY_Y);
+
+	Entity::size.cx = 20;
+	Entity::size.cy = 48;
+
 }
 
 
@@ -70,6 +80,24 @@ BossWizard::~BossWizard()
 void BossWizard::Update(float dt)
 {
 	Enemy::Update(dt);
+	BossWizard* boss = BossWizard::GetInstance();
+	if (this->time_beaten == ENEMY_TIME_BEATEN*3 || this->hp <= 0) {
+		boss->ChangeRoad(new BossWizardBeatenRoad());
+	}
+	if (boss->GetCurrentRoad() == BossWizardRoad::RoadType::beaten) {
+		boss->time_beaten -= dt;
+	}
+	else {
+		if (boss->time_beaten < 0) {
+			boss->time_beaten = 0;
+		}
+		if (boss->time_beaten > 0) {
+			boss->time_beaten -= dt;			
+		}
+	}
+	if (this->hp <= 10) {
+		this->IsLac = true;
+	}
 	this->state->Update(dt);
 	this->road->Update(dt);
 	this->time_invisible -= dt;
@@ -79,22 +107,35 @@ void BossWizard::Update(float dt)
 void BossWizard::Draw()
 {
 	D3DCOLOR color = SceneManager::GetInstance()->GetCurrentScene()->GetMode() & 1 == 1 ? D3DCOLOR_XRGB(255, 255, 255) : D3DCOLOR_XRGB(0, 0, 0);
-
 	BossWizard *boss = BossWizard::GetInstance();
-	if (this->time_invisible <= 0) {
-		this->animation->Draw(this->position, color);
+	if (this->IsLac) {
+		goto CHECK2;
 	}
-	else {
+	if (this->IsBeaten) {
+		if (this->IsDie) {
+			goto CHECK2;
+		}
+		this->animation->Draw(this->position, color);
+		
+		goto CHECK;
 
-		if (this->time_invisible <= 0) {
-			this->time_invisible = 0;
+	}
+	if (this->time_beaten == 0) {
+		this->animation->Draw(this->position, color);
+
+	}
+	if (this->time_beaten > 0 || this->time_beaten < 0) {
+		this->time_beaten -= 0.016;
+		CHECK2:
+		if (this->time_beaten <= 0) {
+			this->time_beaten = 0;
 		}
 		if ((i++) % 3 == 1) {
 			this->animation->Draw(this->position, color);
 
 		}
-
 	}
+	CHECK:
 	if (boss->GetMoveDirection()) {
 		boss->GetCurrentAnimation()->SetScale(1, 1);
 	}
@@ -128,7 +169,7 @@ bool BossWizard::IsCollisionWithGround(float dt, int delta_y)
 			tmp = Checker->SweptAABB(foot, box2);
 			if (tmp.side == CollisionSide::bottom)
 			{
-				position.y = item->GetPosition().y + (BOSS_WIZARD_SIZE_HEIGHT + item->GetSize().cy) / 2 - delta_y;
+				position.y = item->GetPosition().y + (BOSS_WIZARD_SIZE_HEIGHT + item->GetSize().cy) / 2 - 4;
 				velocity.y = 0;
 				return true;
 			}
@@ -137,7 +178,7 @@ bool BossWizard::IsCollisionWithGround(float dt, int delta_y)
 	return false;
 }
 
-bool BossWizard::IsCollisionWithWall(float dt, int delta_y)
+CollisionOut BossWizard::IsCollisionWithWall(float dt, int delta_y)
 {
 	SIZE FootSize;
 	FootSize.cx = BOSS_WIZARD_SIZE_WIDTH;
@@ -165,25 +206,25 @@ bool BossWizard::IsCollisionWithWall(float dt, int delta_y)
 				}
 				position.y = item->GetPosition().y + (BOSS_WIZARD_SIZE_HEIGHT + item->GetSize().cy) / 2 - delta_y;
 				velocity.y = 0;
-				return true;
+				return tmp;
 			case CollisionSide::top:
 				position.y = item->GetPosition().y - (BOSS_WIZARD_SIZE_HEIGHT + item->GetSize().cy) / 2 + delta_y - 2;
 				velocity.y = 0;
-				return true;
+				return tmp;
 			case CollisionSide::left:
 				position.x = item->GetPosition().x + (BOSS_WIZARD_SIZE_WIDTH + item->GetSize().cx) / 2 + 2;
 				velocity.x = 0;
-				return true;
+				return tmp;
 			case CollisionSide::right:
 				position.x = item->GetPosition().x - (BOSS_WIZARD_SIZE_WIDTH + item->GetSize().cx) / 2 - 2;
 				velocity.x = 0;
-				return true;
+				return tmp;
 			default:
 				continue;
 			}
 		}
 	}
-	return false;
+	return tmp;
 }
 
 void BossWizard::Init()
@@ -254,15 +295,4 @@ Animation * BossWizard::GetAnimation(BossWizardState::NameState state)
 int BossWizard::GetPreviousState()
 {
 	return this->previous_state;
-}
-
-int BossWizard::OnCollision(Entity *obj, float dt)
-{
-	return Enemy::OnCollision(obj, dt);
-
-}
-
-BoundingBox BossWizard::GetBoundingBox()
-{
-	return this->state->GetBoundingBox();
 }

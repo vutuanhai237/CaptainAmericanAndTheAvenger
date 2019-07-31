@@ -67,16 +67,16 @@ void BossWizardUMaxRoad::Update(float dt)
 	if (this->phase == 5) {
 		if (this->loop > 0) {
 			this->loop--;
-			Debug::PrintOut(L"%d\n", this->loop);
 			this->Release();
 			return;
 		}
 		boss->IsUMax = false;
+		boss->IsIdle = true;
 		boss->ChangeRoad(new BossWizardIdleRoad());
 		return;
 	}
 
-	if (boss->IsCollisionWithWall(dt)) {
+	if (boss->IsCollisionWithWall(dt).CollisionTime < 1.0f) {
 		this->phase++;
 
 	}
@@ -112,6 +112,10 @@ BossWizardUMaxRoad::BossWizardUMaxRoad()
 	boss->SetCurrentRoad(BossWizardRoad::RoadType::u_max);
 	this->current_road = BossWizardRoad::RoadType::u_max;
 	boss->IsUMax = true;
+	if (boss->hp <= 10) {
+		this->loop = rand() % 3 + 1;
+
+	}
 	this->loop = rand() % 1 + 1;
 	this->UpdateOneTime = false;
 	this->UpdateOneTime2 = false;

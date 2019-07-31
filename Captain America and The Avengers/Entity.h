@@ -60,7 +60,12 @@ public:
 		none,
 		item_exit_orb,
 		on_off_switch,
-		green_soldier
+		green_soldier,
+		// Platform
+		disappear_platform,
+		moving_platform,
+		cross_platform,
+		circle_platform
 	};
 	enum Entity_Type {
 		static_type,
@@ -70,6 +75,7 @@ public:
 		enemy_weapon_type,
 		item_type,
 		none_type,
+		platform
 	};
 	enum Entity_AliveState {
 		Alive,
