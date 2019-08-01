@@ -30,6 +30,12 @@ public:
 	int i = 0;
 	Eclipse *e;
 	float distance;
+	float Ax;
+	float Ay;
+	float omega;
+	float t;
+	D3DXVECTOR2 virtual_point;
+	int count_bullet;
 	virtual void Update(float dt);
 	virtual int OnCollision(Entity*, float dt);
 	virtual void Draw();

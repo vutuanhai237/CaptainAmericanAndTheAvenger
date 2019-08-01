@@ -13,7 +13,6 @@ void RedRocket::Update(float dt)
 	}
 	
 	if (this->distance > DISTANCE_OUT || EnemyWeapon::IsCollisionExplode()) {
-		this->Release();
 		this->IsExploding = true;
 	}
 	

@@ -1,7 +1,7 @@
 ﻿#include "GrayRobot.h"
 #include "Shield.h"
 #include "FrameWork//Debug.h"
-#include "RedRocket.h"
+#include "GrayRocket.h"
 void GrayRobot::Update(float dt)
 {
 	Enemy::Update(dt);
@@ -50,9 +50,14 @@ int GrayRobot::OnCollision(Entity* obj, float dt)
 
 void GrayRobot::Draw()
 {
+	if (this->GetMoveDirection() == Entity::Entity_Direction::RightToLeft) {
+		this->GetCurrentAnimation()->SetScale(1, 1);
+	}
+	else {
+		this->GetCurrentAnimation()->SetScale(-1, 1);
+	}
 	if (this->IsBeaten) {
 		this->current_animation->Draw(this->position);
-		goto CHECK;
 	}
 	if (this->time_beaten == 0) {
 		this->current_animation->Draw(this->position);
@@ -69,13 +74,7 @@ void GrayRobot::Draw()
 		}
 
 	}
-CHECK:
-	if (Player::GetInstance()->GetPosition().x <= this->GetPosition().x) {
-		this->GetCurrentAnimation()->SetScale(1, 1);
-	}
-	else {
-		this->GetCurrentAnimation()->SetScale(-1, 1);
-	}
+	
 }
 
 BoundingBox GrayRobot::GetBoundingBox()
@@ -88,65 +87,22 @@ BoundingBox GrayRobot::GetBoundingBox()
 
 void GrayRobot::UpdateIdleState(float dt)
 {
-	auto keyboard = DirectInput::GetInstance();
-	if (keyboard->KeyPress(DIK_D)) IsLui = -1;
-	if (keyboard->KeyPress(DIK_F)) IsLui = 1;
-
-	//if (abs(this->position.x == this->position_loop.x)) IsLui = 1;	
-	//if (abs(this->position.x == this->position_goto.x) < 2.0f) IsLui = -1;
-	if (IsLui == 1) {
-		if (this->GetMoveDirection() == Entity::Entity_Direction::RightToLeft) {
-			this->position.x += GRAY_ROBOT_VELOCITY_X * dt;
-			if (this->position.x > this->position_loop.x) {
-				this->position.x = this->position_loop.x;
-				this->current_state = GrayRobotState::firing;
-
-				this->IsLui = -1;
-			}
-			if (this->e != NULL) {
-				this->SetPositionY(e->GetYFromX(abs(this->GetPosition().x-this->position_spawn.x), this->IsLui) + this->position_spawn.y);
-			}
-		}
-		else {
-			this->position.x -= GRAY_ROBOT_VELOCITY_X * dt;
-			if (this->position.x > this->position_loop.x) {
-				this->position.x = this->position_loop.x;
-				this->current_state = GrayRobotState::firing;
-
-				this->IsLui = -1;
-			}
-			if (this->e != NULL) {
-				this->SetPositionY(e->GetYFromX(abs(this->GetPosition().x - this->position_spawn.x), this->IsLui) + this->position_spawn.y);
-			}
-		}
+	t -= dt;
+	this->position.x = this->virtual_point.x + (Ax * cos(omega*t + PI));
+	this->position.y = this->virtual_point.y + (Ay * cos(omega*t - PI/2));
+	this->time_fire += dt;
+	if (this->time_fire > 2) {
+		this->current_state = GrayRobotState::firing;
+		this->time_fire = 0;
 	}
-	if (IsLui == -1) {
-		if (this->GetMoveDirection() == Entity::Entity_Direction::RightToLeft) {
-			this->position.x -= GRAY_ROBOT_VELOCITY_X * dt;
-			if (this->position.x < this->position_goto.x) {
-				this->position.x = this->position_goto.x;
-				this->current_state = GrayRobotState::firing;
-
-				this->IsLui = 1;
-			}
-			if (this->e != NULL) {
-				this->SetPositionY(e->GetYFromX(abs(this->GetPosition().x - this->position_spawn.x), this->IsLui) + this->position_spawn.y);
-			}
-		}
-		else {
-			this->position.x += GRAY_ROBOT_VELOCITY_X * dt;
-			if (this->position.x < this->position_goto.x) {
-				this->position.x = this->position_goto.x;
-				this->current_state = GrayRobotState::firing;
-
-				this->IsLui = 1;
-			}
-			if (this->e != NULL) {
-				this->SetPositionY(e->GetYFromX(abs(this->GetPosition().x - this->position_spawn.x), this->IsLui) + this->position_spawn.y);
-			}
-		}
+	if (Player::GetInstance()->GetPosition().x <= this->GetPosition().x) {
+		this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
+		this->GetCurrentAnimation()->SetScale(1, 1);
 	}
-
+	else {
+		this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
+		this->GetCurrentAnimation()->SetScale(-1, 1);
+	}
 }
 
 void GrayRobot::UpdateFiringState(float dt)
@@ -156,32 +112,35 @@ void GrayRobot::UpdateFiringState(float dt)
 		this->SetVelocity(0, 0);
 		this->current_animation = firing_ani;
 		this->UpdateOneTime2 = true;
-		if (Player::GetInstance()->GetPosition().x <= this->GetPosition().x) {
+		
+		
+	}
+	this->time_fire += dt;
+	if (this->time_fire > 0.3f && this->count_bullet == 0) {
+		if (this->GetMoveDirection() == Entity::Entity_Direction::RightToLeft) {
 			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
-				new RedRocket(
-					D3DXVECTOR2(this->position.x - 11.5, this->position.y + 13.5),
-					0,
+				new GrayRocket(
+					this->position.x - 11.5, this->position.y + 13.5,
 					this->GetMoveDirection()
 				)
 			);
 		}
 		else {
 			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
-				new RedRocket(
-					D3DXVECTOR2(this->position.x + 11.5, this->position.y + 13.5),
-					0,
+				new GrayRocket(
+					this->position.x + 11.5, this->position.y + 13.5,
 					this->GetMoveDirection()
 				)
 			);
 		}
-		
+		this->count_bullet++;
 	}
-	this->time_fire += dt;
 	if (this->time_fire > GRAY_ROBOT_TIME_FIRING) {
 		this->time_fire = 0;
 		this->UpdateOneTime2 = false;
 		this->current_animation = idle_ani;
 		this->current_state = GrayRobotState::idle;
+		this->count_bullet = 0;
 	}
 }
 
@@ -200,6 +159,11 @@ GrayRobot::GrayRobot(D3DXVECTOR2 position_spawn, float distance) : Enemy()
 	this->beaten_ani->SetTime(0.1);
 	// set properties zone
 	this->position = position_spawn;
+	this->Ax = distance;
+	this->Ay = distance * 0.5;
+	this->omega = 2 * PI / 4;
+	this->t = 0;
+	this->virtual_point = this->position;
 	this->position_spawn = position_spawn;
 	this->current_animation = idle_ani;
 	this->current_state = GrayRobotState::idle;
@@ -209,6 +173,7 @@ GrayRobot::GrayRobot(D3DXVECTOR2 position_spawn, float distance) : Enemy()
 	this->time_fire = 0.0f;
 	this->distance = distance;
 	this->IsLui = 0;
+	this->count_bullet = 0;
 	// init properties
 	if (Player::GetInstance()->GetPosition().x > this->position.x) {
 		this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
@@ -260,5 +225,6 @@ bool GrayRobot::IsCollisionWithGround(float dt, int delta_y)
 
 GrayRobot::~GrayRobot()
 {
+
 }
 

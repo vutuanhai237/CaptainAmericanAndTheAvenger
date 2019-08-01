@@ -112,7 +112,7 @@ void Charleston::Init()
 			grid->AddObject2Cell(posX, posY, obj);
 			continue;
 		case Entity::Entity_Tag::gray_robot:
-			obj = new int[5];
+			obj = new int[4];
 			obj[0] = tag;
 			obj[1] = posX;
 			obj[2] = posY;

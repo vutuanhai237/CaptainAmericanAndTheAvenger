@@ -25,6 +25,9 @@ void ShieldDownState::Update(float dt)
 
 void ShieldDownState::Draw()
 {
+	if (Player::GetInstance()->GetCurrentState() == PlayerState::NameState::beaten) {
+		return;
+	}
 	Shield::GetInstance()->GetAnimation()->Draw(VirtualPoint);
 }
 

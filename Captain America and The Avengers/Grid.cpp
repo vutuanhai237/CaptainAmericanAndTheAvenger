@@ -3,6 +3,7 @@
 #include "RedRocketRobot.h"
 #include "BlueSoldier.h"
 #include "GreenSoldier.h"
+#include "GrayRobot.h"
 Grid::Grid(SIZE MapSize)
 {
 	Init(MapSize.cx, MapSize.cy);
@@ -108,6 +109,13 @@ void Grid::RemoveAndReswampObject()
 							if (this->EnemyCounter < CAPACITY_ENEMY)
 							{
 								grid[i][j]->Object->push_back(new GreenSoldier(item[3], D3DXVECTOR2(item[1], item[2]), item[4]));
+								this->EnemyCounter++;
+							}
+							break;
+						case Entity::Entity_Tag::gray_robot:
+							if (this->EnemyCounter < CAPACITY_ENEMY)
+							{
+								grid[i][j]->Object->push_back(new GrayRobot(D3DXVECTOR2(item[1], item[2]), item[3]));
 								this->EnemyCounter++;
 							}
 							break;
