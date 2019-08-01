@@ -25,6 +25,7 @@ PlayerJumpingState::PlayerJumpingState()
 	player->time_air_rolling = 0;
 	player->time_ducking_before_idle = 0;
 	player->time_jumping_before_flowing = 0;
+	player->CarrierObject = NULL;
 
 	Shield::GetInstance()->SetShieldState(new ShieldOnAirState());
 

@@ -27,6 +27,7 @@ public:
 	// general zone
 	bool IsContinute;
 	bool GetOneTime;
+
 	RoadType type;
 	BossWizardRoad();
 	~BossWizardRoad();

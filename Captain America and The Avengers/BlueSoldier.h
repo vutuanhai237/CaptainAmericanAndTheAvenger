@@ -32,7 +32,8 @@ public:
 	enum Level {
 		stupid,
 		normal,
-		clever
+		clever,
+		master
 	};
 	Level level;
 	int i = 0;
@@ -54,6 +55,8 @@ public:
 	virtual void UpdateStupidLevel(float dt);
 	virtual void UpdateNormalLevel(float dt);
 	virtual void UpdateCleverLevel(float dt);
+	virtual void UpdateMasterLevel(float dt);
+
 	virtual int OnCollision(Entity*, float dt);
 	virtual void Draw();
 	BoundingBox GetBoundingBox() override;

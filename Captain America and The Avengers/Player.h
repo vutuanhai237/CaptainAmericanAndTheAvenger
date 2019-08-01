@@ -85,7 +85,7 @@ public:
 	void SetIsDuckingPunching(bool IsDuckingpunching);
 	bool GetIsDuckingPunching();
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
-	bool IsCollisionWithPlatform(float dt, Entity *obj = NULL, int delta_y = 12);
+	bool IsCollisionWithPlatform(float dt, Entity *obj = NULL, int delta_y = 14);
 	bool IsCollisionWithWater(float dt, int delta_y = 12);
 	bool IsCollisionWithWall(float dt, int delta_y = 3);
 	bool IsCollisionWithRope(float dt, int delta_y = 22);

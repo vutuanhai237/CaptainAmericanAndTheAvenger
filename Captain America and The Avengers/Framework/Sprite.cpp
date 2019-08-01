@@ -113,7 +113,7 @@ void Sprite::SetRotation(float radian)
 
 void Sprite::SetRotation(int degree)
 {
-	SetRotation(degree * 3.14159f / 180);
+	SetRotation(degree * PI / 180);
 }
 
 void Sprite::SetScale(D3DXVECTOR2 scale)

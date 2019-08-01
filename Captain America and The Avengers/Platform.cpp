@@ -10,6 +10,8 @@ Platform::Platform(FLOAT WorldX, FLOAT WorldY) : Entity()
 	Entity::type = Entity::Entity_Type::platform;
 	Entity::position.x = WorldX;
 	Entity::position.y = WorldY;
+	Entity::size.cx = 32;
+	Entity::size.cy = 16;
 }
 
 Platform::~Platform()

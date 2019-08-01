@@ -3,6 +3,9 @@
 #include "BossWizardUMaxRoad.h"
 #include "BossWizardIdleRoad.h"
 #include "BossWizardBeatenRoad.h"
+#include "Shield.h"
+#include "ShieldState.h"
+#include "PlayerBeatenState.h"
 BossWizard*BossWizard::instance = NULL;
 
 BossWizard * BossWizard::GetInstance()
@@ -63,7 +66,8 @@ BossWizard::BossWizard() :Enemy()
 	this->previous_state = 0;
 	this->time_invisible = 0;
 	this->SetVelocityY(BOSS_WIZARD_VELOCITY_Y);
-
+	this->time_die = 0;
+	this->previous_hp = this->hp;
 	Entity::size.cx = 20;
 	Entity::size.cy = 48;
 
@@ -225,6 +229,71 @@ CollisionOut BossWizard::IsCollisionWithWall(float dt, int delta_y)
 		}
 	}
 	return tmp;
+}
+
+int BossWizard::OnCollision(Entity *obj, float dt)
+{
+	if (this->IsBeaten == false)
+	{
+		if (obj->GetType() == Entity::Entity_Type::player_weapon_type
+			&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
+		{
+			if (this->time_beaten <= 0) {
+
+				if (obj->GetTag() == Entity::Entity_Tag::shield) {
+					if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::ShieldDown)
+					{
+						this->hp -= Shield::GetInstance()->GetShieldState()->GetDamage();
+						goto CHECK;
+					}
+					if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::Nomal)
+					{
+						goto CHECK2;
+					}
+					this->previous_hp = this->hp;
+					this->hp -= Shield::GetInstance()->GetShieldState()->GetDamage();
+						this->time_beaten = ENEMY_TIME_BEATEN * 3;
+				}
+				else {
+					// PUNCH - KICH
+					this->previous_hp = this->hp;
+					this->hp -= 2;
+
+				}
+			}
+		}
+		if (this->hp <= 0) {
+			this->IsBeaten = true;
+			goto CHECK;
+		}
+	CHECK2:
+		Player *player = Player::GetInstance();
+		if (obj->GetType() == Entity::Entity_Type::player_type
+			&& player->GetCurrentState() != PlayerState::shield_down
+			&& player->time_invisible <= 0
+			&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
+		{
+			if (this->time_beaten == 0) {
+				this->time_beaten = ENEMY_TIME_BEATEN * 3;
+				this->previous_hp = this->hp;
+				this->hp--;
+
+			}
+			player->ChangeState(new PlayerBeatenState(ENEMY_DAMAGE));
+		}
+		else {
+		}
+
+		if (this->hp <= 0) {
+			this->IsBeaten = true;
+		}
+	}
+	CHECK:
+	if (this->IsDead) {
+
+		return 1;
+	}
+	return 0;
 }
 
 void BossWizard::Init()

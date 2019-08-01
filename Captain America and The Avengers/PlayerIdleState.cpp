@@ -71,6 +71,7 @@ void PlayerIdleState::HandleInput(float dt)
 			if (!player->IsCollisionWithPlatform(dt))
 			{
 				player->ChangeState(new PlayerJumpingDownState());
+				player->IsCollisionWithPlatform(dt);
 				player->CarrierObject = NULL;
 				return;
 			}

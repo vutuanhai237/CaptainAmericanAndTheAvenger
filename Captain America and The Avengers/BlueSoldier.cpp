@@ -47,6 +47,9 @@ void BlueSoldier::Update(float dt)
 	case Level::clever:
 		this->UpdateCleverLevel(dt);
 		break;
+	case Level::master:
+		this->UpdateMasterLevel(dt);
+		break;
 	}
 
 }
@@ -270,6 +273,107 @@ void BlueSoldier::UpdateCleverLevel(float dt)
 	}
 }
 
+void BlueSoldier::UpdateMasterLevel(float dt)
+{
+	// Đang ở trên không
+	if (IsChamDatLanDau == false)
+	{
+		if (this->IsCollisionWithGround(dt)) {
+			this->SetVelocityY(0.0f);
+			this->position_spawn = this->position;
+			IsChamDatLanDau = true;
+		}
+		else {
+			this->SetVelocityY(BLUE_SOLDIER_VELOCITY_Y);
+
+		}
+		return;
+	}
+	// Quay mặt
+	if ((Player::GetInstance()->GetPosition().x - this->GetPosition().x > 0)) {
+		this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
+	}
+	else {
+		this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
+	}
+	// đã ở trên mặt đất
+	if (this->current_state == BlueSoldierState::running) {
+		this->time_idle = 0.0f;
+		this->time_ducking = 0.0f;
+	}
+	// Thực hiện động tác 0.5s ngồi một lần 
+	if (this->IsIdle && this->current_state == BlueSoldierState::idle) {
+		this->time_idle += dt;
+		if (this->IsFire && this->time_idle > 0.016 * 5) {
+			if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new Bullet(
+						D3DXVECTOR2(this->position.x + 11.5, this->position.y + 17.5),
+						this->GetMoveDirection()
+					)
+				);
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new Bullet(
+						D3DXVECTOR2(this->position.x + 11.5, this->position.y + 17.5),
+						this->GetMoveDirection(),
+						-135
+					)
+				);
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new Bullet(
+						D3DXVECTOR2(this->position.x + 11.5, this->position.y + 17.5),
+						this->GetMoveDirection(),
+						135
+					)
+				);
+			}
+			else {
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new Bullet(
+						D3DXVECTOR2(this->position.x - 11.5, this->position.y + 17.5),
+						this->GetMoveDirection()
+					)
+				);
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new Bullet(
+						D3DXVECTOR2(this->position.x - 11.5, this->position.y + 17.5),
+						this->GetMoveDirection(),
+						135
+					)
+				);
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new Bullet(
+						D3DXVECTOR2(this->position.x - 11.5, this->position.y + 17.5),
+						this->GetMoveDirection(),
+						-135
+					)
+				);
+
+			}
+			this->IsFire = false;
+		}
+
+	}
+	if (this->IsDucking && this->current_state == BlueSoldierState::ducking) {
+		this->time_ducking += dt;
+	}
+	if (this->time_idle >= BLUE_SOLDIER_TIME_IDLE && this->current_state == BlueSoldierState::idle) {
+		this->IsIdle = false;
+		this->IsDucking = true;
+		this->current_animation = this->ducking_ani;
+		this->current_state = BlueSoldierState::ducking;
+		this->time_idle = 0.0f;
+	}
+	if (this->time_ducking >= BLUE_SOLDIER_TIME_DUCKING && this->current_state == BlueSoldierState::ducking) {
+		this->IsDucking = false;
+		this->IsIdle = true;
+		this->current_animation = this->idle_ani;
+		this->current_state = BlueSoldierState::idle;
+		this->time_ducking = 0.0f;
+		this->IsFire = true;
+	}
+}
+
 int BlueSoldier::OnCollision(Entity* obj, float dt)
 {
 	return Enemy::OnCollision(obj, dt);
@@ -369,6 +473,9 @@ BlueSoldier::BlueSoldier(int level, D3DXVECTOR2 position_spawn, int direction): 
 	case 2:
 		this->level = Level::clever;
 		break;
+	case 3:
+		this->level = Level::master;
+		break;
 	}
 	switch (this->level) {
 	case Level::stupid:
@@ -388,6 +495,12 @@ BlueSoldier::BlueSoldier(int level, D3DXVECTOR2 position_spawn, int direction): 
 		this->current_state = BlueSoldierState::running;
 		this->SetVelocityX(BLUE_SOLDIER_VELOCITY_X);
 		this->IsRunning = true;
+		break;
+	case Level::master:
+		this->IsIdle = true;
+		this->current_state = BlueSoldierState::idle;
+		this->current_animation = idle_ani;
+		this->SetVelocityX(0.0f);
 		break;
 	}
 }

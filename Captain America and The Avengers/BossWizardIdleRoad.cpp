@@ -105,6 +105,7 @@ BossWizardIdleRoad::BossWizardIdleRoad()
 	this->IsChamDatLanDau = false;
 	this->time_running = 0.0f;
 	this->IsRunning = false;
+
 }
 
 

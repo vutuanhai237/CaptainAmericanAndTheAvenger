@@ -72,4 +72,5 @@ void Pittsburgh::Init()
 	Player* player = Player::GetInstance();
 	player->SetPosition(32.0f, 848.0f);
 	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
+	cam->SetCameraPosition(player->GetPosition());
 }

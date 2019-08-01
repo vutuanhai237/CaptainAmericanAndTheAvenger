@@ -2,6 +2,7 @@
 #include "PlayerBeatenState.h"
 #include "Framework/Debug.h"
 #include "Shield.h"
+#include "BossWizard.h"
 Animation * Enemy::GetCurrentAnimation()
 {
 	return this->current_animation;
@@ -32,15 +33,16 @@ int Enemy::OnCollision(Entity* obj, float dt)
 					{
 						goto CHECK2;
 					}
+
 					this->hp -= Shield::GetInstance()->GetShieldState()->GetDamage();
 					this->time_beaten = ENEMY_TIME_BEATEN;
 					if (this->GetTag() == Entity::Entity_Tag::boss) {
 						this->time_beaten = ENEMY_TIME_BEATEN * 3;
-
 					}
 				}
 				else {
 					// PUNCH - KICH
+
 					this->hp -= 2;
 
 				}
@@ -61,9 +63,11 @@ int Enemy::OnCollision(Entity* obj, float dt)
 			if (this->time_beaten == 0) {
 				this->time_beaten = ENEMY_TIME_BEATEN;
 				if (this->GetTag() == Entity::Entity_Tag::boss) {
+
 					this->time_beaten = ENEMY_TIME_BEATEN * 3;
 
 				}
+
 				this->hp--;
 				
 			}

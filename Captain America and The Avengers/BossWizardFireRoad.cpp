@@ -113,7 +113,7 @@ void BossWizardFireRoad::Update(float dt)
 		CollisionOut out = boss->IsCollisionWithWall(dt);
 		if (this->IsJumpingFirst >= 10 && out.CollisionTime < 1) {
 			this->IsJumping = false;
-			if (Player::GetInstance()->hp < this->previous_player_hp) {
+			if (boss->hp < boss->previous_hp) {
 				boss->ChangeRoad(new BossWizardUMaxRoad());
 				boss->ChangeState(new BossWizardFlyingState());
 				return;
@@ -174,7 +174,6 @@ BossWizardFireRoad::BossWizardFireRoad()
 	this->IsFiring = false;
 	this->UpdateOneTime = false;
 	this->IsJumpingFirst = 0;
-	this->previous_player_hp = Player::GetInstance()->hp;
 	this->IsJumping = false;
 	this->time_laugh = 0.0f;
 }

@@ -129,8 +129,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Barrel.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="BlueSoldier.cpp" />
+    <ClCompile Include="BossGragas.cpp" />
     <ClCompile Include="BossWizard.cpp" />
     <ClCompile Include="BossWizardBeatenRoad.cpp" />
     <ClCompile Include="BossWizardBeatenState.cpp" />
@@ -141,8 +143,12 @@
     <ClCompile Include="BossWizardRoad.cpp" />
     <ClCompile Include="BossWizardSwitchOffRoad.cpp" />
     <ClCompile Include="BossWizardUMaxRoad.cpp" />
+    <ClCompile Include="CirclePlatform.cpp" />
+    <ClCompile Include="CrossPlatform.cpp" />
     <ClCompile Include="DisappearPlatform.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="GrayRobot.cpp" />
+    <ClCompile Include="GrayRocket.cpp" />
     <ClCompile Include="GreenSoldier.cpp" />
     <ClCompile Include="LaserBullet.cpp" />
     <ClCompile Include="EnergyBullet.cpp" />
@@ -215,12 +221,15 @@
     <ClCompile Include="ShieldOnAirState.cpp" />
     <ClCompile Include="ShieldState.cpp" />
     <ClCompile Include="ShieldUpState.cpp" />
+    <ClCompile Include="SuperLaserBullet.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Barrel.h" />
     <ClInclude Include="Bat.h" />
     <ClInclude Include="BlueSoldier.h" />
+    <ClInclude Include="BossGragas.h" />
     <ClInclude Include="BossWizard.h" />
     <ClInclude Include="BossWizardBeatenRoad.h" />
     <ClInclude Include="BossWizardBeatenState.h" />
@@ -231,8 +240,12 @@
     <ClInclude Include="BossWizardRoad.h" />
     <ClInclude Include="BossWizardSwitchOffRoad.h" />
     <ClInclude Include="BossWizardUMaxRoad.h" />
+    <ClInclude Include="CirclePlatform.h" />
+    <ClInclude Include="CrossPlatform.h" />
     <ClInclude Include="DisappearPlatform.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="GrayRobot.h" />
+    <ClInclude Include="GrayRocket.h" />
     <ClInclude Include="GreenSoldier.h" />
     <ClInclude Include="LaserBullet.h" />
     <ClInclude Include="EnergyBullet.h" />
@@ -307,6 +320,7 @@
     <ClInclude Include="ShieldOnAirState.h" />
     <ClInclude Include="ShieldState.h" />
     <ClInclude Include="ShieldUpState.h" />
+    <ClInclude Include="SuperLaserBullet.h" />
     <ClInclude Include="WorldMap.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
 ﻿#include "Equation.h"
-
+#include "Framework/Debug.h"
 
 
 Equation::Equation(D3DXVECTOR2 point1, D3DXVECTOR2 point2)
@@ -33,3 +33,32 @@ Equation::~Equation()
 {
 }
 
+Eclipse::Eclipse(D3DXVECTOR2 point1, Entity::Entity_Direction direction, float distance)
+{
+	this->center = point1;
+	this->a = distance;
+	this->b = distance * 0.5;
+}
+
+float Eclipse::GetYFromX(float x, int IsLui)
+{
+	float in_sqrt = (1 - (x)*(x) / (a*a))*b*b;
+	float y = (sqrt(in_sqrt))*IsLui; 
+	/*if (y > center.y + this->a / 2) {
+		y = center.y + this->a / 2;
+	}
+	if (y < center.y - this->a / 2) {
+		y = center.y - this->a / 2;
+	}*/
+	Debug::PrintOut(L"x = %f, y = %f\n", x, y);
+	return y;
+}
+
+Eclipse::Eclipse()
+{
+	this->a = this->b = 0;
+}
+
+Eclipse::~Eclipse()
+{
+}

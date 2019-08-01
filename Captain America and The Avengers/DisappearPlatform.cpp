@@ -11,8 +11,6 @@ DisappearPlatform::DisappearPlatform(FLOAT WorldX, FLOAT WorldY) : Platform(Worl
 	Right->Stop();
 	Rpos = Entity::position;
 	Rpos.x += 8;
-	Entity::size.cx = 32;
-	Entity::size.cy = 16;
 	IsSplit = false;
 	Started = false;
 	Timer = DISAPPEAR_PLATFORM_TIME_FIRST_DISAPPEAR;

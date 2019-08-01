@@ -12,7 +12,7 @@
 #include "ItemsHolder.h"
 #include "Door.h"
 #include "Platform.h"
-
+#include "GrayRocket.h"
 DWORD GameManager::StTime = GetTickCount();
 
 GameManager* GameManager::Instance = NULL;
@@ -68,6 +68,17 @@ void GameManager::Init(int fps)
 	texture->Add(ID, L"Resources//Enemy//Bat//BatStartFlying.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources//Enemy//Bat//BatFlying.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources//Enemy//Bat//BatElectric.png", D3DCOLOR_XRGB(255, 0, 255));
+	// gray robot 25 26 27
+	texture->Add(ID, L"Resources//Enemy//GrayRobot//GrayRobotIdle.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//GrayRobot//GrayRobotFiring.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//GrayRobot//GrayRobotBeaten.png", D3DCOLOR_XRGB(255, 0, 255));
+	// super laser bullet 28
+	texture->Add(ID, L"Resources//Enemy//BossGragas//BossGragasLaser.png", D3DCOLOR_XRGB(255, 0, 255));
+	// barrel 29
+	texture->Add(ID, L"Resources//Enemy//BossGragas//BossGragasBarrel.png", D3DCOLOR_XRGB(255, 0, 255));
+
+
+
 
 
 	texture->Add(ItemsHolder::AnimationID, L"Resources/Items/ItemHolder.png", D3DCOLOR_ARGB(0, 0, 0, 0));
@@ -85,7 +96,8 @@ void GameManager::Init(int fps)
 	texture->Add(Platform::MovingPlatformID, L"Resources/MovingPlatform.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(Platform::JetEngineVerticalID, L"Resources/JetEngineVertical.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(Platform::JetEngineHorizontalID, L"Resources/JetEngineHorizontal.png", D3DCOLOR_XRGB(255, 0, 255));
-	
+	texture->Add(GrayRocket::ID, L"Resources/Enemy/GrayRobot/GrayRocket.png", D3DCOLOR_XRGB(255, 0, 255));
+
 	SceneManager::GetInstance()->ReplaceScene(new Charleston());
 }
 

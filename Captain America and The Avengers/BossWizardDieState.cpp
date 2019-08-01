@@ -12,7 +12,6 @@ BossWizardDieState::BossWizardDieState()
 	this->current_state = BossWizardState::NameState::die;
 	boss->SetVelocity(0, 0);
 	boss->SetSize(20, 45);
-	this->time_die = 0;
 }
 
 
@@ -25,8 +24,8 @@ void BossWizardDieState::Update(float dt)
 	BossWizard* boss = BossWizard::GetInstance();
 	Player* player = Player::GetInstance();
 	boss->GetCurrentAnimation()->Update(dt);
-	this->time_die += dt;
-	if (this->time_die >= 1.6) {
+	boss->time_die += dt;
+	if (boss->time_die >= 1.6) {
 		SceneManager::GetInstance()->GetCurrentScene()->IsExitAble = true;
 	}
 }

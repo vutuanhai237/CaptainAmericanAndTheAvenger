@@ -4,7 +4,7 @@
 #include "Entity.h"
 #include "Camera.h"
 
-#define GRID_CELL_SIZE_WIDTH 20
+#define GRID_CELL_SIZE_WIDTH 30
 #define GRID_CELL_SIZE_HEIGHT 80
 #define CAPACITY_ITEM 3
 #define CAPACITY_ENEMY 2

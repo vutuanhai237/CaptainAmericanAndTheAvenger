@@ -8,6 +8,7 @@ public:
 	float time_idle;
 	bool IsRunning;
 	float time_running;
+
 	bool IsChamDatLanDau;
 	virtual void Update(float dt);
 	BossWizardIdleRoad();

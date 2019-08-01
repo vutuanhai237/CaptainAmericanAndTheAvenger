@@ -5,6 +5,7 @@
 void EnemyWeapon::Update(float dt)
 {
 	Entity::Update(dt);
+	this->type = Entity::Entity_Type::enemy_weapon_type;
 }
 
 int EnemyWeapon::OnCollision(Entity *, float dt)

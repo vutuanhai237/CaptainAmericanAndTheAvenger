@@ -158,6 +158,12 @@ void Player::Update(float dt)
 
 void Player::Draw()
 {
+	if (CarrierObject)
+	{
+		Entity::position.x += CarrierObject->GetVelocityX();
+		Entity::position.y += CarrierObject->GetVelocityY();
+		Shield::GetInstance()->Update(1 / 60.0f);
+	}
 	i++;
 	if (this->time_invisible <= 0) {
 		this->animation->Draw(this->position);
@@ -363,7 +369,7 @@ bool Player::IsCollisionWithPlatform(float dt, Entity *obj, int delta_y)
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
 	auto Checker = Collision::getInstance();
 
-	if (foot.vy == 0 && Checker->IsCollide(foot, obj->GetBoundingBox()))
+	if (abs(foot.vy) == 0.0f && Checker->IsCollide(foot, obj->GetBoundingBox()))
 		return true;
 
 	if (Checker->SweptAABB(foot, obj->GetBoundingBox()).side == CollisionSide::bottom)

@@ -3,6 +3,8 @@
 #include "Door.h"
 #include "DisappearPlatform.h"
 #include "MovingPlatform.h"
+#include "CrossPlatform.h"
+#include "CirclePlatform.h"
 #include "Player.h"
 #include "Shield.h"
 #include <fstream>
@@ -101,6 +103,18 @@ void PittsburghMap::ReadData(LPCWSTR path, int code)
 			obj = new int;
 			data >> *obj;
 			item = new MovingPlatform(posX, posY, *obj);
+			(*grid)[code]->AddObject2Cell(item);
+			break;
+		case Entity::Entity_Tag::cross_platform:
+			obj = new int;
+			data >> *obj;
+			item = new CrossPlatform(posX, posY, *obj);
+			(*grid)[code]->AddObject2Cell(item);
+			break;
+		case Entity::Entity_Tag::circle_platform:
+			obj = new int[3];
+			data >> obj[0] >> obj[1]>>obj[2];
+			item = new CirclePlatform(posX, posY, obj[0], obj[1], obj[2]);
 			(*grid)[code]->AddObject2Cell(item);
 			break;
 		default:

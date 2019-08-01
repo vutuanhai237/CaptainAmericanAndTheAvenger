@@ -111,6 +111,14 @@ void Charleston::Init()
 			data >> obj[3] >> obj[4];
 			grid->AddObject2Cell(posX, posY, obj);
 			continue;
+		case Entity::Entity_Tag::gray_robot:
+			obj = new int[5];
+			obj[0] = tag;
+			obj[1] = posX;
+			obj[2] = posY;
+			data >> obj[3];
+			grid->AddObject2Cell(posX, posY, obj);
+			continue;
 		default:
 			continue;
 		}
@@ -154,7 +162,7 @@ Charleston::Charleston() : Scene()
 	ExitZone.right = 2016;
 	grid->AddObject2Cell(Player::GetInstance());
 	grid->AddObject2Cell(Shield::GetInstance());
-
+	Scene::Mode = 1;
 	Charleston::Init();
 }
 

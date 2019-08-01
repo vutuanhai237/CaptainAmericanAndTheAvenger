@@ -5,7 +5,7 @@
 #include "BossWizardIdleState.h"
 #include "BossWizardRoad.h"
 // BossWizard
-#define BOSS_WIZARD_HP 20
+#define BOSS_WIZARD_HP 30
 #define BOSS_WIZARD_LOW_HP 10
 #define BOSS_WIZARD_SIZE_WIDTH 8
 #define BOSS_WIZARD_SIZE_HEIGHT 52
@@ -64,13 +64,15 @@ public:
 	//virtual int OnCollision(Entity *, float dt);
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
 	CollisionOut IsCollisionWithWall(float dt, int delta_y = 4);
-
+	int OnCollision(Entity*, float dt) override;
+	int previous_hp;
 
 	float time_flying;
 	float time_runnig;
 	float time_fire;
 	float time_punching;
 	float time_invisible;
+	float time_die;
 	// ROAD ZONE
 	bool IsIdle = false;
 	bool IsUMax = false;

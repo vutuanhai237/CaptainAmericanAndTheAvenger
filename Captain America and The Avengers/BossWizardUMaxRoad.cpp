@@ -72,6 +72,7 @@ void BossWizardUMaxRoad::Update(float dt)
 		}
 		boss->IsUMax = false;
 		boss->IsIdle = true;
+		boss->previous_hp = boss->hp;
 		boss->ChangeRoad(new BossWizardIdleRoad());
 		return;
 	}

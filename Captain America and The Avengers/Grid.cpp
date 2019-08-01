@@ -69,7 +69,7 @@ void Grid::Init(int MapSizeWidth, int MapSizeHeight)
 void Grid::UpdateActivatedZone()
 {
 	D3DXVECTOR2 pos = Camera::GetInstance()->GetCameraPosition();
-	Xfrom = floor((pos.x - 1) / GRID_CELL_SIZE_WIDTH);
+	Xfrom = floor((pos.x - 1) / GRID_CELL_SIZE_WIDTH) - 1;
 	Xto = ceil((pos.x + 1 + GAME_SCREEN_WIDTH) / GRID_CELL_SIZE_WIDTH) + 1;
 	Yfrom = floor(pos.y / GRID_CELL_SIZE_HEIGHT);
 	Yto = ceil((pos.y + GAME_SCREEN_HEIGHT) / GRID_CELL_SIZE_HEIGHT);
@@ -121,9 +121,9 @@ void Grid::RemoveAndReswampObject()
 			{
 				auto it = grid[i][j]->Object->begin();
 				while (it != grid[i][j]->Object->end())
-					if ((*it)->GetTag() == Entity::Entity_Tag::shield)
+					if ((*it)->GetTag() == Entity::Entity_Tag::shield || (*it)->GetTag() == Entity::Entity_Tag::player)
 					{
-						// shield exception
+						// shield & player exception
 						D3DXVECTOR2 pos = (*it)->GetPosition();
 						int LocX = pos.x / GRID_CELL_SIZE_WIDTH;
 						int LocY = pos.y / GRID_CELL_SIZE_HEIGHT;
@@ -137,7 +137,7 @@ void Grid::RemoveAndReswampObject()
 						else
 							it++;
 					}
-					else
+					else 
 						RemoveObjectInList(grid[i][j]->Object, it);
 				grid[i][j]->IsActive = false;
 			}

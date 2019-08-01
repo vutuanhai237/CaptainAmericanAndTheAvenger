@@ -91,7 +91,8 @@ void ItemsHolder::Update(float dt)
 
 void ItemsHolder::Draw()
 {
-	animation->DrawInt(position);
+	if (SceneManager::GetInstance()->GetCurrentScene()->GetMode() & 1)
+		animation->DrawInt(position);
 }
 
 void ItemsHolder::PutOnItem(int Item_Tag)

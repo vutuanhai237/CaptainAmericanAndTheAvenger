@@ -61,6 +61,18 @@
     <Filter Include="Enemy\BossWizard\BossWizardRoad">
       <UniqueIdentifier>{79fcaf3b-757f-4f17-8224-2a026bea3353}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\GrayRobot">
+      <UniqueIdentifier>{5c477ef5-7efa-4271-af72-28d802b5e8e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\BossGragas">
+      <UniqueIdentifier>{562e2a7c-5cf6-4897-b6ef-7cd03a9549f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\BossGragas\SuperLaserBullet">
+      <UniqueIdentifier>{2f03f92d-7afb-4370-a172-b1ca64e1aea5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\BossGragas\Barrel">
+      <UniqueIdentifier>{a887db3d-b75a-45a9-acd1-c91e69ffa149}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Animation.cpp">
@@ -324,6 +336,27 @@
     </ClCompile>
     <ClCompile Include="OnOffSwitch.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GrayRobot.cpp">
+      <Filter>Enemy\GrayRobot</Filter>
+    </ClCompile>
+    <ClCompile Include="BossGragas.cpp">
+      <Filter>Enemy\BossGragas</Filter>
+    </ClCompile>
+    <ClCompile Include="Barrel.cpp">
+      <Filter>Enemy\BossGragas\Barrel</Filter>
+    </ClCompile>
+    <ClCompile Include="SuperLaserBullet.cpp">
+      <Filter>Enemy\BossGragas\SuperLaserBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="CrossPlatform.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="CirclePlatform.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GrayRocket.cpp">
+      <Filter>Enemy\GrayRobot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -591,6 +624,27 @@
     </ClInclude>
     <ClInclude Include="OnOffSwitch.h">
       <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GrayRobot.h">
+      <Filter>Enemy\GrayRobot</Filter>
+    </ClInclude>
+    <ClInclude Include="BossGragas.h">
+      <Filter>Enemy\BossGragas</Filter>
+    </ClInclude>
+    <ClInclude Include="SuperLaserBullet.h">
+      <Filter>Enemy\BossGragas\SuperLaserBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Barrel.h">
+      <Filter>Enemy\BossGragas\Barrel</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossPlatform.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="CirclePlatform.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GrayRocket.h">
+      <Filter>Enemy\GrayRobot</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

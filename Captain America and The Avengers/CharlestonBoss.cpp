@@ -51,8 +51,8 @@ void CharlestonBoss::Update(float dt)
 	if (this->time_count >= 16.0f && this->count_bullet == 3) {
 		grid->AddObject2Cell(boss);
 		boss->Init();
-		float x = rand() % 170 + 50;
-		boss->SetPosition(x, 200.0f);
+		//float x = rand() % 170 + 50;
+		boss->SetPosition(220, 200.0f);
 		this->count_bullet++;
 
 	}
