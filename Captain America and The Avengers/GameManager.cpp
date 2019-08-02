@@ -13,6 +13,7 @@
 #include "Door.h"
 #include "Platform.h"
 #include "GrayRocket.h"
+#include "ElectricShockwaveBarrier.h"
 DWORD GameManager::StTime = GetTickCount();
 
 GameManager* GameManager::Instance = NULL;
@@ -65,8 +66,8 @@ void GameManager::Init(int fps)
 	texture->Add(ID, L"Resources//Enemy//GreenSoldier//GreenSoldierBeatenState.png", D3DCOLOR_XRGB(255, 0, 255));
 	// bat 21 22 23 24
 	texture->Add(ID, L"Resources//Enemy//Bat//BatSpawnFromEgg.png", D3DCOLOR_XRGB(255, 0, 255));
-	texture->Add(ID, L"Resources//Enemy//Bat//BatStartFlying.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources//Enemy//Bat//BatFlying.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//Bat//BatStartFlying.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources//Enemy//Bat//BatElectric.png", D3DCOLOR_XRGB(255, 0, 255));
 	// gray robot 25 26 27
 	texture->Add(ID, L"Resources//Enemy//GrayRobot//GrayRobotIdle.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -76,12 +77,13 @@ void GameManager::Init(int fps)
 	texture->Add(ID, L"Resources//Enemy//BossGragas//BossGragasLaser.png", D3DCOLOR_XRGB(255, 0, 255));
 	// barrel 29
 	texture->Add(ID, L"Resources//Enemy//BossGragas//BossGragasBarrel.png", D3DCOLOR_XRGB(255, 0, 255));
-
-
-
-
+	// turret 30
+	texture->Add(ID, L"Resources//Enemy//Turret//Turret.png", D3DCOLOR_XRGB(255, 0, 255));
+	// bullet turret 31
+	texture->Add(ID, L"Resources//Enemy//Turret//BulletTurret.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	texture->Add(ItemsHolder::AnimationID, L"Resources/Items/ItemHolder.png", D3DCOLOR_ARGB(0, 0, 0, 0));
+	texture->Add(ItemsHolder::AnimationID2, L"Resources/Items/ItemHolder2.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ItemsHolder::ID_ExitOrb, L"Resources/Items/ExitOrb.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ItemsHolder::ID_1up, L"Resources/Items/1up.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ItemsHolder::ID_5Point, L"Resources/Items/5Point.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -97,6 +99,7 @@ void GameManager::Init(int fps)
 	texture->Add(Platform::JetEngineVerticalID, L"Resources/JetEngineVertical.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(Platform::JetEngineHorizontalID, L"Resources/JetEngineHorizontal.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(GrayRocket::ID, L"Resources/Enemy/GrayRobot/GrayRocket.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ElectricShockwaveBarrier::ID, L"Resources/ElectricShockwaveBarrier.png", D3DCOLOR_XRGB(255, 0, 255));
 
 	SceneManager::GetInstance()->ReplaceScene(new Charleston());
 }

@@ -27,12 +27,12 @@ void PlayerBeatenState::Update(float dt)
 	player->GetCurrentAnimation()->Update(dt);
 	this->time_beaten += dt;
 	if (player->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
-		player->SetPositionX(player->GetPosition().x - VELOCITY_X*dt*2/3);
+		player->SetPositionX(player->GetPosition().x - VELOCITY_X*dt*1/3);
 
 	}
 	else
 	{
-		player->SetPositionX(player->GetPosition().x + VELOCITY_X * dt*2/3);
+		player->SetPositionX(player->GetPosition().x + VELOCITY_X * dt*1/3);
 	}
 	if (time_beaten > TIME_BEATEN_MIN && player->IsCollisionWithGround(dt) && player->hp > 0)
 	{

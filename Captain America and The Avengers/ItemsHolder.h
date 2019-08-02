@@ -9,7 +9,7 @@
 class ItemsHolder : public Entity
 {
 public:
-	ItemsHolder(float x, float y);
+	ItemsHolder(float x, float y, int code = 0);
 	~ItemsHolder();
 
 	BoundingBox GetBoundingBox() override;
@@ -19,6 +19,7 @@ public:
 	void PutOnItem(int Item_Tag);
 
 	static int AnimationID;
+	static int AnimationID2;
 	static int ID_1up;
 	static int ID_5Point;
 	static int ID_ExitOrb;

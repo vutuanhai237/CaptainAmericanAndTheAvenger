@@ -3,9 +3,12 @@
 #include "Shield.h"
 #include "ShieldNomalState.h"
 #include "Framework/DirectInput.h"
+#include "PittsburghBoss.h"
+#include "SceneManager.h"
 
 void Pittsburgh::Update(float dt)
 {
+	Scene::Update(dt);
 	Player *player = Player::GetInstance();
 	player->HandleInput(dt);
 	player->Update(dt);
@@ -15,6 +18,15 @@ void Pittsburgh::Update(float dt)
 
 	if (DirectInput::GetInstance()->KeyDown(DIK_Q))
 		map->SwapMode();
+	if (DirectInput::GetInstance()->KeyDown(DIK_GRAVE))
+		SceneManager::GetInstance()->ReplaceScene(new Pittsburgh());
+
+	if (IsExitAble && IsInsideExitZone())
+		SceneManager::GetInstance()->ReplaceScene(new PittsburghBoss());
+
+	// Cheat Fast next map
+	if (DirectInput::GetInstance()->KeyDown(DIK_N))
+		SceneManager::GetInstance()->ReplaceScene(new PittsburghBoss());
 }
 
 void Pittsburgh::Draw()
@@ -22,6 +34,7 @@ void Pittsburgh::Draw()
 	map->Draw();
 	map->GetCurrentGrid()->DrawActivatedObject();
 	Player::GetInstance()->Draw();
+	Scene::Draw();
 }
 
 WorldMap *Pittsburgh::GetCurrentMap()
@@ -55,6 +68,10 @@ Pittsburgh::Pittsburgh()
 	player->SetPosition(0, 0);
 	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
 	map = new PittsburghMap();
+	ExitZone.top = 224;
+	ExitZone.bottom = 48;
+	ExitZone.left = 976;
+	ExitZone.right = 1008;
 	cam = Camera::GetInstance();
 	cam->Init(map->GetCurrentMap()->GetMapSize());
 	cam->SetCameraPosition(player->GetPosition());

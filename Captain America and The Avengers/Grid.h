@@ -23,7 +23,7 @@ struct Cell
 	~Cell()
 	{
 		for (Entity *item : *Object)
-			if (item->GetTag() != Entity::Entity_Tag::player && item->GetTag() != Entity::Entity_Tag::shield)
+			if (item->GetTag() != Entity::Entity_Tag::player && item->GetTag() != Entity::Entity_Tag::shield && item->GetTag() != Entity::Entity_Tag::boss)
 				delete item;
 		for (int *item : *InitObject)
 			delete item;

@@ -66,7 +66,6 @@ Player::Player() :Entity()
 	Animation* ducking_punching = new Animation(PlayerState::NameState::ducking_punching, L"Resources//CaptainState//CaptainDuckingPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 	Animation* rolling = new Animation(PlayerState::NameState::rolling, L"Resources//CaptainState//CaptainRollingState.png", D3DCOLOR_XRGB(255, 0, 255), 4);
 	Animation* die = new Animation(PlayerState::NameState::die, L"Resources//CaptainState//CaptainDieState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
-	Animation* die_on_air = new Animation(PlayerState::NameState::die_on_air, L"Resources//CaptainState//CaptainDieOnAirState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
 	Animation* diving = new Animation(PlayerState::NameState::diving, L"Resources//CaptainState//CaptainDivingState.png", D3DCOLOR_XRGB(255, 0, 255), 6);
 	Animation* flowing = new Animation(PlayerState::NameState::flowing, L"Resources//CaptainState//CaptainFlowingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 	Animation* hang_on = new Animation(PlayerState::NameState::hang_on, L"Resources//CaptainState//CaptainHangOnState.png", D3DCOLOR_XRGB(255, 0, 255), 3);
@@ -76,6 +75,8 @@ Player::Player() :Entity()
 	Animation* punching = new Animation(PlayerState::NameState::punching, L"Resources//CaptainState//CaptainPunchingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
 	Animation* shield_down = new Animation(PlayerState::NameState::shield_up, L"Resources//CaptainState//CaptainShielDownState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	Animation* beaten = new Animation(PlayerState::NameState::beaten, L"Resources//CaptainState//CaptainBeatenState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
+	Animation* shocking = new Animation(PlayerState::NameState::shocking, L"Resources//CaptainState//CaptainShockingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
+
 	HPstatus = new Sprite(L"Resources/CaptainState/HP.png", D3DCOLOR_ARGB(0, 0, 0, 0));
 	// Chỉ những animation nào có số sprite > 1 thì mới set time
 	running->SetTime(0.1);
@@ -84,7 +85,7 @@ Player::Player() :Entity()
 	ducking_punching->SetTime(0.1);
 	rolling->SetTime(0.03);
 	die->SetTime(0.1);
-	die_on_air->SetTime(0.1);
+	shocking->SetTime(0.032);
 	// diving
 	diving->SetTime(0.2);
 	diving->SetFrameReset(4);
@@ -105,7 +106,6 @@ Player::Player() :Entity()
 	this->animations[PlayerState::ducking_punching] = ducking_punching;
 	this->animations[PlayerState::rolling] = rolling;
 	this->animations[PlayerState::die] = die;
-	this->animations[PlayerState::die_on_air] = die_on_air;
 	this->animations[PlayerState::diving] = diving;
 	this->animations[PlayerState::flowing] = flowing;
 	this->animations[PlayerState::hang_on] = hang_on;
@@ -115,6 +115,7 @@ Player::Player() :Entity()
 	this->animations[PlayerState::punching] = punching;
 	this->animations[PlayerState::shield_down] = shield_down;
 	this->animations[PlayerState::beaten] = beaten;
+	this->animations[PlayerState::shocking] = shocking;
 
 	///End load resources
 	this->animation = this->animations[current_state];
@@ -165,6 +166,10 @@ void Player::Draw()
 		Shield::GetInstance()->Update(1 / 60.0f);
 	}
 	i++;
+	if (Player::GetInstance()->GetCurrentState() == PlayerState::NameState::shocking) {
+		this->animation->Draw(this->position);
+		goto CHECK;
+	}
 	if (this->time_invisible <= 0) {
 		this->animation->Draw(this->position);
 	}
@@ -179,9 +184,9 @@ void Player::Draw()
 		}
 
 	}
+	CHECK:
 	Player *player = Player::GetInstance();
 	Shield *shield = Shield::GetInstance();
-
 	if (player->GetMoveDirection()) {
 		player->GetCurrentAnimation()->SetScale(1, 1);
 		shield->GetAnimation()->SetScale(1, 1);

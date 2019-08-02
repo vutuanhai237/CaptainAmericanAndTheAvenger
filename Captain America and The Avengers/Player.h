@@ -52,6 +52,8 @@
 // die
 #define TIME_GUC_BEFORE_NAM 0.016f * 10
 #define TIME_DIE 2.0f
+// shock
+#define TIME_SHOCKING 0.016f*8
 using namespace std;
 class Player : public Entity
 {

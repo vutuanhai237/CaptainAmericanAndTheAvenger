@@ -147,6 +147,7 @@
     <ClCompile Include="CrossPlatform.cpp" />
     <ClCompile Include="DisappearPlatform.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="ElectricShockwaveBarrier.cpp" />
     <ClCompile Include="GrayRobot.cpp" />
     <ClCompile Include="GrayRocket.cpp" />
     <ClCompile Include="GreenSoldier.cpp" />
@@ -185,6 +186,8 @@
     <ClCompile Include="MovingPlatform.cpp" />
     <ClCompile Include="OnOffSwitch.cpp" />
     <ClCompile Include="Pittsburgh.cpp" />
+    <ClCompile Include="PittsburghBoss.cpp" />
+    <ClCompile Include="PittsburghBossMap.cpp" />
     <ClCompile Include="PittsburghMap.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -195,6 +198,7 @@
     <ClCompile Include="PlayerDivingState.cpp" />
     <ClCompile Include="PlayerDuckingPunchingState.cpp" />
     <ClCompile Include="PlayerDuckingState.cpp" />
+    <ClCompile Include="PlayerShockingState.cpp" />
     <ClCompile Include="PlayerFlowingState.cpp" />
     <ClCompile Include="PlayerHangOnState.cpp" />
     <ClCompile Include="PlayerIdleState.cpp" />
@@ -222,6 +226,8 @@
     <ClCompile Include="ShieldState.cpp" />
     <ClCompile Include="ShieldUpState.cpp" />
     <ClCompile Include="SuperLaserBullet.cpp" />
+    <ClCompile Include="Turret.cpp" />
+    <ClCompile Include="TurretBullet.cpp" />
     <ClCompile Include="WinMain.cpp" />
     <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
@@ -244,6 +250,7 @@
     <ClInclude Include="CrossPlatform.h" />
     <ClInclude Include="DisappearPlatform.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="ElectricShockwaveBarrier.h" />
     <ClInclude Include="GrayRobot.h" />
     <ClInclude Include="GrayRocket.h" />
     <ClInclude Include="GreenSoldier.h" />
@@ -283,6 +290,8 @@
     <ClInclude Include="MovingPlatform.h" />
     <ClInclude Include="OnOffSwitch.h" />
     <ClInclude Include="Pittsburgh.h" />
+    <ClInclude Include="PittsburghBoss.h" />
+    <ClInclude Include="PittsburghBossMap.h" />
     <ClInclude Include="PittsburghMap.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />
@@ -293,6 +302,7 @@
     <ClInclude Include="PlayerDivingState.h" />
     <ClInclude Include="PlayerDuckingPunchingState.h" />
     <ClInclude Include="PlayerDuckingState.h" />
+    <ClInclude Include="PlayerShockingState.h" />
     <ClInclude Include="PlayerFlowingState.h" />
     <ClInclude Include="PlayerHangOnState.h" />
     <ClInclude Include="PlayerIdleState.h" />
@@ -321,6 +331,8 @@
     <ClInclude Include="ShieldState.h" />
     <ClInclude Include="ShieldUpState.h" />
     <ClInclude Include="SuperLaserBullet.h" />
+    <ClInclude Include="Turret.h" />
+    <ClInclude Include="TurretBullet.h" />
     <ClInclude Include="WorldMap.h" />
   </ItemGroup>
   <ItemGroup>

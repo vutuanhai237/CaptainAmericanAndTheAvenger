@@ -27,7 +27,6 @@ public:
 		ducking_punching,
 		rolling,
 		die,
-		die_on_air,
 		diving,
 		flowing,
 		hang_on,
@@ -35,7 +34,8 @@ public:
 		jump_from_rope,
 		kicking,
 		punching,
-		shield_down
+		shield_down,
+		shocking
 	};
 	PlayerState();
 	PlayerState(PlayerState::NameState current_state);

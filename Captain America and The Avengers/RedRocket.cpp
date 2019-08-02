@@ -81,7 +81,9 @@ void RedRocket::Release()
 
 void RedRocket::Draw()
 {
-	
+	if (IsDead) {
+		return;
+	}
 	if (this->GetVelocityX() != 0) {
 		this->current_ani->Draw(this->GetPosition());
 		if (this->GetMoveDirection()) {

@@ -1,10 +1,8 @@
-#include <d3dx9.h>
 #include <fstream>
 #include "Charleston.h"
 #include "Framework/DirectInput.h"
 #include "Framework/Debug.h"
 #include "Camera.h"
-#include "WorldMap.h"
 #include "Player.h"
 #include "Shield.h"
 #include "Framework/DirectInput.h"
@@ -15,7 +13,7 @@
 #include "BossWizard.h"
 void Charleston::Update(float dt)
 {
-	
+	Scene::Update(dt);
 	Player *player = Player::GetInstance();
 	// Update zone
 	map->Update(dt);
@@ -39,14 +37,13 @@ void Charleston::Draw()
 {
 	map->Draw();
 	grid->DrawActivatedObject();
-	if (Scene::IsExitAble)
-		DrawExit();
 	Player::GetInstance()->Draw();
 	if (Player::GetInstance()->time_guc >= TIME_DIE) {
 		Player::GetInstance()->time_guc = 0;
 		SceneManager::GetInstance()->ReplaceScene(new Charleston());
 		return;
 	}
+	Scene::Draw();
 }
 
 WorldMap * Charleston::GetCurrentMap()
@@ -119,33 +116,19 @@ void Charleston::Init()
 			data >> obj[3];
 			grid->AddObject2Cell(posX, posY, obj);
 			continue;
+		case Entity::Entity_Tag::cannon:
+			obj = new int[4];
+			obj[0] = tag;
+			obj[1] = posX;
+			obj[2] = posY;
+			data >> obj[3];
+			grid->AddObject2Cell(posX, posY, obj);
+			continue;
 		default:
 			continue;
 		}
 	}
 
-}
-
-void Charleston::DrawExit()
-{
-	if (FrameExitCounter == 0)
-	{
-		FirstExitPosition = Player::GetInstance()->GetPosition();
-		FirstExitPosition.y += PLAYER_SIZE_HEIGHT;
-	}
-	if (FrameExitCounter < 50)
-		exit->DrawInt(FirstExitPosition);
-	else
-	{
-		if (FrameExitCounter == 50)
-		{
-			exit->SetPosition(64, 24);
-		}
-
-		if (FrameExitCounter >> 4 & 1)
-			exit->Draw();
-	}
-	FrameExitCounter++;
 }
 
 Charleston::Charleston() : Scene()
@@ -154,8 +137,6 @@ Charleston::Charleston() : Scene()
 	cam = Camera::GetInstance();
 	cam->Init(map->GetMapSize());
 	grid = new Grid(map->GetMapSize());
-	exit = new Sprite(L"Resources/exit.png", D3DCOLOR_XRGB(255, 0, 255));
-	FrameExitCounter = 0;
 	ExitZone.top = 128;
 	ExitZone.bottom = 48;
 	ExitZone.left = 1968;

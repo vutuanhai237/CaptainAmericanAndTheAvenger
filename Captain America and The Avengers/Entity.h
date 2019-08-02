@@ -66,7 +66,8 @@ public:
 		moving_platform,
 		cross_platform,
 		circle_platform,
-		gray_robot
+		gray_robot,
+		bat
 	};
 	enum Entity_Type {
 		static_type,

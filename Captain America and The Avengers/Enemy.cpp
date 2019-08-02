@@ -142,3 +142,33 @@ void Enemy::Draw()
 		this->GetCurrentAnimation()->SetScale(-1, 1);
 	}
 }
+
+void Enemy::DrawInt()
+{
+	if (this->IsBeaten) {
+		this->current_animation->DrawInt(this->position);
+		goto CHECK;
+	}
+	if (this->time_beaten == 0) {
+		this->current_animation->DrawInt(this->position);
+
+	}
+	else {
+		this->time_beaten -= 0.016;
+		if (this->time_beaten <= 0) {
+			this->time_beaten = 0;
+		}
+		if ((i++) % 3 == 1) {
+			this->current_animation->DrawInt(this->position);
+
+		}
+
+	}
+CHECK:
+	if (this->GetMoveDirection()) {
+		this->GetCurrentAnimation()->SetScale(1, 1);
+	}
+	else {
+		this->GetCurrentAnimation()->SetScale(-1, 1);
+	}
+}

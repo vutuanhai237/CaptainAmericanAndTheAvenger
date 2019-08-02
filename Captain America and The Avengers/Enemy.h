@@ -19,6 +19,7 @@ public:
 	virtual void Spawn(); // sinh ra quái từ vị trí đc đọc từ file
 	virtual bool IsCollisionWithGround(float dt, int delta_y = 12);
 	virtual void Draw();
+	virtual void DrawInt();
 	Enemy();
 	virtual ~Enemy() override;
 	// bool variable

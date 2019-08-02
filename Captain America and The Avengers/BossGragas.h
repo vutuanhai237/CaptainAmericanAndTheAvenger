@@ -6,8 +6,7 @@
 #include "BossWizardRoad.h"
 // BossWizard
 #define BOSS_GRAGAS_DAMAGE 2
-#define BOSS_GRAGAS_HP 30
-#define BOSS_GRAGAS_LOW_HP 10
+#define BOSS_GRAGAS_HP 20
 #define BOSS_GRAGAS_SIZE_WIDTH 8
 #define BOSS_GRAGAS_SIZE_HEIGHT 48
 #define BOSS_GRAGAS_FOOT_HEIGHT 8
@@ -16,14 +15,16 @@
 #define BOSS_GRAGAS_VELOCITY_Y 200
 // idle
 #define BOSS_GRAGAS_TIME_IDLE 1.0f
+#define BOSS_GRAGAS_TIME_IDLE_BEFORE_DIE 2.5f
+
 // throwing
 #define BOSS_GRAGAS_TIME_THROWING 1.50f
 // firing
 #define BOSS_GRAGAS_TIME_FIRING 2.0f
 // running
-#define BOSS_GRAGAS_DISTANCE_RUNNING 160
+#define BOSS_GRAGAS_DISTANCE_RUNNING 180
 // beaten
-#define BOSS_GRAGAS_TIME_BEATEN 1.0f
+#define BOSS_GRAGAS_TIME_BEATEN 1.5f
 using namespace std;
 class BossGragas : public Enemy
 {
@@ -67,11 +68,14 @@ public:
 	float time_throwing;
 	float time_invisible;
 	float time_beaten;
+	float time_gong;
 	float time_die;
 	Mode mode;
 	int phase;
 	bool IsChamDatLanDau;
 	bool UpdateOneTime;
+	bool IsUpdateRunDirection;
+	bool UpdateOneTime2;
 	float distance_running;
 	int count_barrel_explode = 0;
 	Entity::Entity_Direction run_direction;
@@ -83,7 +87,7 @@ protected:
 	BossGragas::NameState current_state;
 	int previous_state;
 	Animation* animation;
-	int i = 0;
+	int j;
 private:
 	BossGragas();
 	~BossGragas();

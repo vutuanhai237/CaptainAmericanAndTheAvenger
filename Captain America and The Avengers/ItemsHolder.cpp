@@ -4,6 +4,7 @@
 #include "Shield.h"
 
 int ItemsHolder::AnimationID = -1;
+int ItemsHolder::AnimationID2 = -1;
 int ItemsHolder::ID_1up = -1;
 int ItemsHolder::ID_5Point = -1;
 int ItemsHolder::ID_ExitOrb= -1;
@@ -13,14 +14,17 @@ int ItemsHolder::ID_HighPoint = -1;
 int ItemsHolder::ID_LargeGem = -1;
 int ItemsHolder::ID_SmallGem = -1;
 
-ItemsHolder::ItemsHolder(float x, float y)
+ItemsHolder::ItemsHolder(float x, float y, int code)
 {
 	Entity::SetTag(Entity::Entity_Tag::item_container);
 	Entity::SetType(Entity::Entity_Type::item_type);
 
 	Entity::position.x = x;
 	Entity::position.y = y;
-	animation = new Animation(AnimationID, 2);
+	if (code == 0)
+		animation = new Animation(AnimationID, 2);
+	else
+		animation = new Animation(AnimationID2, 2);
 	animation->SetAutoPlayBack(false);
 	animation->SetTime(0.25f);
 	animation->Stop();
@@ -48,7 +52,7 @@ int ItemsHolder::OnCollision(Entity *obj, float dt)
 	if (animation->GetNumberCurrentFrame() == 2)
 		return 0;
 
-	if (obj->GetType()==Entity::Entity_Type::player_weapon_type)
+	if (obj->GetType() == Entity::Entity_Type::player_weapon_type)
 	{
 		if (obj->GetTag() == Entity::Entity_Tag::shield && Shield::GetInstance()->GetShieldState()->GetCurrentState() != ShieldState::NameState::ShieldAttack)
 			return 0;

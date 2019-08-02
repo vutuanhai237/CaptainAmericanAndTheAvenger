@@ -5,6 +5,7 @@
 #include "MovingPlatform.h"
 #include "CrossPlatform.h"
 #include "CirclePlatform.h"
+#include "ItemsHolder.h"
 #include "Player.h"
 #include "Shield.h"
 #include <fstream>
@@ -27,6 +28,7 @@ PittsburghMap::PittsburghMap()
 	Mode = MapMode::Dark;
 	ReadData(L"Resources/Map/pittsburgh_item_enemy.txt", 0);
 	ReadData(L"Resources/Map/pittsburgh_portal_1_item_enemy.txt", 1);
+	ReadData(L"Resources/Map/pittsburgh_portal_2_item_enemy.txt", 2);
 }
 
 void PittsburghMap::SwapMode()
@@ -71,9 +73,10 @@ SIZE PittsburghMap::GetMapSize()
 
 void PittsburghMap::ReadData(LPCWSTR path, int code)
 {
-	int n;
+	int n, m;
 	int tag, posX, posY, tmp;
 	Entity *item;
+	ItemsHolder *holder;
 	int *obj;
 
 	fstream data(path, ios_base::in);
@@ -104,19 +107,31 @@ void PittsburghMap::ReadData(LPCWSTR path, int code)
 			data >> *obj;
 			item = new MovingPlatform(posX, posY, *obj);
 			(*grid)[code]->AddObject2Cell(item);
+			delete obj;
 			break;
 		case Entity::Entity_Tag::cross_platform:
 			obj = new int;
 			data >> *obj;
 			item = new CrossPlatform(posX, posY, *obj);
 			(*grid)[code]->AddObject2Cell(item);
+			delete obj;
 			break;
 		case Entity::Entity_Tag::circle_platform:
 			obj = new int[3];
 			data >> obj[0] >> obj[1]>>obj[2];
 			item = new CirclePlatform(posX, posY, obj[0], obj[1], obj[2]);
 			(*grid)[code]->AddObject2Cell(item);
+			delete obj;
 			break;
+		case Entity::Entity_Tag::item_container:
+			holder = new ItemsHolder(posX, posY, 1);
+			data >> m;
+			for (int i = 0; i < m; i++)
+			{
+				data >> tmp;
+				holder->PutOnItem(tmp);
+			}
+			(*grid)[code]->AddObject2Cell(holder);
 		default:
 			break;
 		}

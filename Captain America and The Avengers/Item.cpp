@@ -13,7 +13,7 @@ Item::Item(float x, float y, int tag)
 	CanFalling = true;
 	direction = 1;
 
-	size.cx = 12;
+	size.cx = 4;
 	size.cy = 12;
 	position.x = x;
 	position.y = y;

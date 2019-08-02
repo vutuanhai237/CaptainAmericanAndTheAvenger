@@ -4,6 +4,7 @@
 #include "BlueSoldier.h"
 #include "GreenSoldier.h"
 #include "GrayRobot.h"
+#include "Turret.h"
 Grid::Grid(SIZE MapSize)
 {
 	Init(MapSize.cx, MapSize.cy);
@@ -116,6 +117,13 @@ void Grid::RemoveAndReswampObject()
 							if (this->EnemyCounter < CAPACITY_ENEMY)
 							{
 								grid[i][j]->Object->push_back(new GrayRobot(D3DXVECTOR2(item[1], item[2]), item[3]));
+								this->EnemyCounter++;
+							}
+							break;
+						case Entity::Entity_Tag::cannon:
+							if (this->EnemyCounter < CAPACITY_ENEMY)
+							{
+								grid[i][j]->Object->push_back(new Turret(D3DXVECTOR2(item[1], item[2]), item[3]));
 								this->EnemyCounter++;
 							}
 							break;
@@ -360,6 +368,8 @@ bool Grid::RemoveObjectInList(std::list<Entity*>* list, std::list<Entity*>::iter
 			this->ItemCounter--;
 		break;
 	case Entity::Entity_Type::enemy_type:
+		if ((*del)->GetTag() == Entity::Entity_Tag::boss)
+			goto UN_DELETE;
 		this->EnemyCounter--;
 		break;
 	default:

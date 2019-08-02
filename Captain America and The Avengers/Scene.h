@@ -6,8 +6,8 @@
 class Scene
 {
 public:
-	virtual void Update(float dt) = 0;
-	virtual void Draw() = 0;
+	virtual void Update(float dt);
+	virtual void Draw();
 	virtual WorldMap *GetCurrentMap() = 0;
 	virtual Grid *GetCurrentGrid() = 0;
 
@@ -23,7 +23,12 @@ protected:
 	Scene();
 	D3DCOLOR BackColor;
 	RECT ExitZone;
+	int Mode;
 
 	bool IsInsideExitZone();
-	int Mode;
+private:
+	Sprite* exit;
+	int FrameExitCounter;
+	D3DXVECTOR2 FirstExitPosition;
+	void DrawExit();
 };

@@ -1,22 +1,19 @@
 #pragma once
 #include "Scene.h"
-#include "CharlestonMap.h"
+#include "PittsburghBossMap.h"
 #include "Camera.h"
-#include "Framework/Animation.h"
-#include "Grid.h"
 #include <vector>
-
-class Charleston : public Scene
+class PittsburghBoss : public Scene
 {
 public:
 	void Update(float dt) override;
 	void Draw() override;
 	WorldMap *GetCurrentMap() override;
 	Grid *GetCurrentGrid() override;
-	Charleston();
-	~Charleston() override;
+	PittsburghBoss();
+	~PittsburghBoss() override;
 protected:
-	CharlestonMap *map;
+	PittsburghBossMap *map;
 	Camera *cam;
 	Grid *grid;
 private:

@@ -73,6 +73,9 @@
     <Filter Include="Enemy\BossGragas\Barrel">
       <UniqueIdentifier>{a887db3d-b75a-45a9-acd1-c91e69ffa149}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy\Turret">
+      <UniqueIdentifier>{37aab949-296e-49e7-85bc-f1b37766bad4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framework\Animation.cpp">
@@ -357,6 +360,24 @@
     </ClCompile>
     <ClCompile Include="GrayRocket.cpp">
       <Filter>Enemy\GrayRobot</Filter>
+    </ClCompile>
+    <ClCompile Include="Turret.cpp">
+      <Filter>Enemy\Turret</Filter>
+    </ClCompile>
+    <ClCompile Include="TurretBullet.cpp">
+      <Filter>Enemy\Turret</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerShockingState.cpp">
+      <Filter>Player\PlayerState</Filter>
+    </ClCompile>
+    <ClCompile Include="ElectricShockwaveBarrier.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="PittsburghBoss.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="PittsburghBossMap.cpp">
+      <Filter>Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -645,6 +666,24 @@
     </ClInclude>
     <ClInclude Include="GrayRocket.h">
       <Filter>Enemy\GrayRobot</Filter>
+    </ClInclude>
+    <ClInclude Include="Turret.h">
+      <Filter>Enemy\Turret</Filter>
+    </ClInclude>
+    <ClInclude Include="TurretBullet.h">
+      <Filter>Enemy\Turret</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerShockingState.h">
+      <Filter>Player\PlayerState</Filter>
+    </ClInclude>
+    <ClInclude Include="ElectricShockwaveBarrier.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="PittsburghBoss.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="PittsburghBossMap.h">
+      <Filter>Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
