@@ -1,7 +1,7 @@
 ﻿#include "PlayerKickingState.h"
 #include "PlayerIdleState.h"
 #include "PlayerRollingState.h"
-#include "Framework//Debug.h"
+#include "Framework/SoundManager.h"
 #include "Shield.h"
 #include "ShieldKickState.h"
 #include "PlayerJumpingDownState.h"
@@ -15,7 +15,7 @@ PlayerKickingState::PlayerKickingState()
 	player->SetCurrentState(PlayerState::NameState::kicking);
 	this->current_state = PlayerState::NameState::kicking;
 	Shield::GetInstance()->SetShieldState(new ShieldKickState());
-
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::player_punch_kick);
 	SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(new PlayerLeg());
 }
 PlayerKickingState::~PlayerKickingState()

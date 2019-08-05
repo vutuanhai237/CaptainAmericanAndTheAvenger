@@ -50,7 +50,7 @@ BoundingBox PlayerHangOnState::GetBoundingBox()
 {
 	Player *player = Player::GetInstance();
 	SIZE size; size.cx = 24; size.cy = 28;
-	D3DXVECTOR2 pos = player->GetPosition(); pos.y -= 7;
+	D3DXVECTOR2 pos = player->GetPosition();// pos.y -= 7;
 	return BoundingBox(pos, size, player->GetVelocityX(), player->GetVelocityY());
 }
 

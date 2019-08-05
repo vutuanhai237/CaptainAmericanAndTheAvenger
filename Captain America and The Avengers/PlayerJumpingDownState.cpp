@@ -2,7 +2,7 @@
 #include "PlayerRollingState.h"
 #include "PlayerFlowingState.h"
 #include "PlayerShieldDownState.h"
-#include "Framework//Debug.h"
+#include "Framework//SoundManager.h"
 #include "Shield.h"
 #include "ShieldOnAirState.h"
 #include "PlayerHangOnState.h"
@@ -24,6 +24,9 @@ PlayerJumpingDownState::PlayerJumpingDownState()
 	player->IsRolling = false;
 	player->IsOnAir = true;
 	player->time_don_tho = 0;
+	if (player->GetPreviousState() != 9) {
+		player->CarrierObject = NULL;
+	}
 	// Khi từ đá chuyển về nhảy thì mới có quyền đá tiếp
 	player->time_kicking = 0;
 	Shield::GetInstance()->SetShieldState(new ShieldOnAirState());
@@ -69,18 +72,32 @@ void PlayerJumpingDownState::HandleInput(float dt)
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
+	if (keyboard->KeyPress(DOWN_KEY)) {
+		goto CHECK;
+	}
 	if (player->IsCollisionWithRope(dt))
 	{
 		player->ChangeState(new PlayerHangOnState());
 		return;
 	}
+	CHECK:
 	if (player->IsCollisionWithPlatform(dt))
 	{
-		player->ChangeState(new PlayerDuckingState());
+		player->ChangeState(new PlayerIdleState());
+		return;
+	}
+	if (player->IsCollisionWithSpike(dt))
+	{
+		if (Player::GetInstance()->time_invisible <= 0) {
+			Player::GetInstance()->ChangeState(new PlayerBeatenState(DAMAGE_SPIKE));
+			return;
+		}
+		player->ChangeState(new PlayerIdleState());
 		return;
 	}
 	if (!player->IsDonTho && player->IsCollisionWithGround(dt, 8))
 	{	
+		SoundManager::GetInstance()->Play(SoundManager::SoundList::player_stand);
 		player->ChangeState(new PlayerDuckingState());
 		return;
 	}
@@ -109,6 +126,8 @@ void PlayerJumpingDownState::HandleInput(float dt)
 	}
 	
 	if (IsDuocChuyenAnimation) {
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::player_diving);
+
 		this->time_animation_before_flowing += dt;
 		player->GetCurrentAnimation()->SetFrame(player->GetCurrentAnimation()->GetNumberCurrentFrame() + 1);
 		if (player->GetCurrentAnimation()->GetNumberCurrentFrame() == 7) {

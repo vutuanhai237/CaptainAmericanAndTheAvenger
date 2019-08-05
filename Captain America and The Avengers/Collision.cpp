@@ -21,6 +21,16 @@ CollisionOut Collision::SweptAABB(BoundingBox recta, BoundingBox rectb)
 	if (IsCollide(recta, rectb))
 	{
 		out.CollisionTime = 0.0f;
+		if (recta.top >= rectb.top && recta.vy <= 0 && abs(recta.bottom - rectb.top) <= 8)
+		{
+			out.side = CollisionSide::bottom;
+			return out;
+		}
+		if (recta.bottom <= rectb.bottom && recta.vy >= 0 && abs(recta.top - rectb.bottom) <= 8)
+		{
+			out.side = CollisionSide::top;
+			return out;
+		}
 		if (recta.left <= rectb.left)
 		{
 			out.side = CollisionSide::right;

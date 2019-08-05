@@ -3,7 +3,7 @@
 #include "SceneManager.h"
 #include "PlayerBeatenState.h"
 #include "BossWizard.h"
-
+#include "Framework/SoundManager.h"
 void LaserBullet::Update(float dt)
 {
 	EnemyWeapon::Update(dt);
@@ -40,7 +40,7 @@ int LaserBullet::OnCollision(Entity* obj, float dt)
 			if (Player::GetInstance()->GetMoveDirection() == Entity::Entity_Direction::RightToLeft) {
 				this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 			}
-
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::shield_collision);
 		}
 		return 0;
 	
@@ -94,6 +94,8 @@ LaserBullet::LaserBullet(D3DXVECTOR2 position, Entity::Entity_Direction directio
 	this->IsDead = false;
 	this->SetMoveDirection(direction);
 	this->e = NULL;
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::wizard_laze);
+
 }
 
 

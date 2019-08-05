@@ -45,7 +45,7 @@ public:
 	void AddObject2Cell(Entity *object);
 	void Update(float dt);
 	void DrawActivatedObject();
-
+	void ForceEnemyExplode();
 	int ItemCounter, EnemyCounter;
 private:
 	int CellX, CellY;

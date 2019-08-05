@@ -6,7 +6,7 @@ PittsburghBossMap::PittsburghBossMap() : WorldMap(L"Resources/Map/pittsburgh_bos
 {
 	CaroUp = new Animation(0, L"Resources/Map/CaroUp.png", D3DCOLOR_ARGB(0, 0, 0, 0), 4);
 	CaroUp->SetTime(2.0f / 60);
-	CaroUp->SetFrame(3);
+	CaroUp->SetFrame(2);
 	CaroDown = new Animation(0, L"Resources/Map/CaroDown.png", D3DCOLOR_ARGB(0, 0, 0, 0), 4);
 	CaroDown->SetTime(2.0f / 60);
 	Camera::GetInstance()->Init(this->GetMapSize());

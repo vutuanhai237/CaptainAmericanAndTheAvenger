@@ -25,6 +25,7 @@ void BossWizardSwitchOffRoad::Update(float dt)
 	if (this->phase == 1) {
 		if (this->UpdateOneTime2 == false) {
 			boss->ChangeState(new BossWizardIdleState());
+			boss->IsOnAir = false;
 			boss->SetVelocity(0, 0);
 			this->UpdateOneTime2 == true;
 		}
@@ -38,11 +39,13 @@ void BossWizardSwitchOffRoad::Update(float dt)
 	}
 	if (this->phase == 2) {
 		boss->SetVelocity(0, BOSS_WIZARD_VELOCITY_Y);
+		boss->IsOnAir = true;
 		this->FireOneTime = false;
 		boss->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop); 
 	}
 	if (this->phase == 3) {
 		if (this->UpdateOneTime == false) {
+			boss->IsOnAir = true;
 			boss->SetVelocity(BOSS_WIZARD_FLYING_VELOCITY_X, 0);
 			this->UpdateOneTime = true;
 		}
@@ -52,13 +55,14 @@ void BossWizardSwitchOffRoad::Update(float dt)
 	}
 	if (this->phase == 4) {
 		boss->ChangeState(new BossWizardFlyingState());
+		boss->IsOnAir = true;
 		boss->SetVelocity(0, BOSS_WIZARD_VELOCITY_Y);
 		boss->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 	}
 	if (this->phase == 5) {
 		if (this->UpdateOneTime3 == false) {
 			boss->ChangeState(new BossWizardPunchingState());
-			
+			boss->IsOnAir = false;
 			if (boss->GetPosition().x <= 90) {
 				boss->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 			}
@@ -93,10 +97,12 @@ void BossWizardSwitchOffRoad::Update(float dt)
 			this->IsJumping = false;
 			boss->ChangeRoad(new BossWizardIdleRoad());
 			boss->ChangeState(new BossWizardIdleState());
+			boss->IsOnAir = false;
 			return;
 		}
 		if (this->UpdateOneTime4 == false) {
 			boss->ChangeState(new BossWizardFlyingState());
+			boss->IsOnAir = true;
 			boss->SetVelocity(BOSS_WIZARD_VELOCITY_X, 0);
 			this->e = new Equation(
 				boss->GetPosition(),

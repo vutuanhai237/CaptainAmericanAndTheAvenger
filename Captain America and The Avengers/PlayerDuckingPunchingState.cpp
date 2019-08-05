@@ -3,7 +3,7 @@
 #include "ShieldOnAirState.h"
 #include "PlayerArm.h"
 #include "SceneManager.h"
-
+#include "Framework/SoundManager.h"
 PlayerDuckingPunchingState::PlayerDuckingPunchingState()
 {
 	Player* player = Player::GetInstance();
@@ -14,7 +14,7 @@ PlayerDuckingPunchingState::PlayerDuckingPunchingState()
 	this->time_punch = 0;
 	this->IsGong = false;
 	Shield::GetInstance()->SetShieldState(new ShieldOnAirState());
-
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::player_punch_kick);
 	SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(new PlayerArm());
 }
 PlayerDuckingPunchingState::~PlayerDuckingPunchingState()

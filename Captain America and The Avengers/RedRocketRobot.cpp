@@ -1,6 +1,6 @@
 ﻿#include "RedRocketRobot.h"
 #include "Shield.h"
-#include "FrameWork//Debug.h"
+#include "FrameWork/SoundManager.h"
 void RedRocketRobot::Update(float dt)
 {
 	Enemy::Update(dt);
@@ -25,6 +25,7 @@ void RedRocketRobot::Update(float dt)
 		this->time_beaten += dt;
 		if (this->time_beaten >= TIME_BEATEN) {
 			this->IsExplode = true;
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
 			
 		}
 		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
@@ -62,7 +63,9 @@ void RedRocketRobot::Update(float dt)
 	if (this->level == Level::clever) {
 		this->UpdateCleverLevel(dt);
 	}
-
+	if (this->level == Level::master) {
+		this->UpdateMasterLevel(dt);
+	}
 }
 
 void RedRocketRobot::UpdateStupidLevel(float dt)
@@ -183,6 +186,79 @@ void RedRocketRobot::UpdateNormalLevel(float dt)
 	}
 }
 
+void RedRocketRobot::UpdateMasterLevel(float dt)
+{
+	
+	// Khi không còn va chạm với mặt đất, cho phép một lần nhảy
+	if (IsChamDatLanDau == false)
+	{
+		if (this->IsCollisionWithGround(dt)) {
+			this->SetVelocityY(0);
+			this->position_spawn = this->position;
+			IsChamDatLanDau = true;
+
+		}
+		else {
+			this->SetVelocityY(RED_ROCKET_ROBOT_VELOCITY);
+
+		}
+		return;
+	}
+	// Cập nhật tọa độ khi đang nhảy
+	if (this->current_state == RedRocketRobotState::jumping) {
+		if (this->IsCollisionWithGround(dt) && this->IsJumpingFirst > 5) {
+			this->SetVelocityX(RED_ROCKET_ROBOT_VELOCITY_X);
+			this->current_state = RedRocketRobotState::running;
+			this->current_animation = running_ani;
+			return;
+		}
+		this->IsJumpingFirst++;
+		this->SetMoveDirection(this->goto_direction);
+		this->SetVelocityY(RED_ROCKET_ROBOT_VELOCITY);
+		this->SetPositionY(e->GetYFromX(this->GetPosition().x));
+		return;
+	}
+
+	if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::ShieldAttack
+		&& this->IsJumping == false
+		&& this->current_state == RedRocketRobotState::running
+		&& (this->GetMoveDirection() != Player::GetInstance()->GetMoveDirection())) {
+		this->IsJumping = true;
+		this->current_state = RedRocketRobotState::jumping;
+		this->current_animation = ducking_ani;
+		int move = 0;
+		if (this->position.x - this->position_goto.x > 0) {
+			move = -1;
+		}
+		else {
+			move = 1;
+
+		}
+		e = new Equation(
+			this->position,
+			D3DXVECTOR2(this->position.x + move * 50, this->position.y));
+
+		return;
+	}
+
+	// Đi tới position togo, nếu đã nhảy rồi thì không đi nữa, hoặc đã đi tới điểm cần tới
+
+	if (abs(position.x - position_goto.x) >= 10.0f && this->IsJumpingFirst == 0) {
+		this->SetVelocityX(RED_ROCKET_ROBOT_VELOCITY_X);
+		this->current_state = RedRocketRobotState::running;
+		this->current_animation = this->running_ani;
+		this->SetMoveDirection(this->goto_direction);
+	}
+	else {
+
+		if ((IsLoop == false && this->current_state == RedRocketRobotState::running) || this->IsJumpingFirst > 0) {
+			this->SetVelocityY(0);
+			this->IsLoop = true;
+		}
+		
+	}
+}
+
 void RedRocketRobot::UpdateCleverLevel(float dt)
 {
 
@@ -208,6 +284,21 @@ void RedRocketRobot::UpdateCleverLevel(float dt)
 
 int RedRocketRobot::OnCollision(Entity* obj, float dt)
 {
+	if (Camera::GetInstance()->GetCameraFreeze() == true) {
+		if (Player::GetInstance()->IsBornRocketRobot == false) {
+			if (this->hp <= 0) {
+				Player::GetInstance()->number_rocket_robot += 1;
+				Player::GetInstance()->IsBornRocketRobot = true;
+				this->IsExplode = true;
+				SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
+			}
+			if (this->GetPosition().x <= 260 && this->GetPosition().y <= 200) {
+				Player::GetInstance()->IsBornRocketRobot = true;
+				this->IsExplode = true;
+				SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
+			}
+		}
+	}
 	return Enemy::OnCollision(obj, dt);
 }
 
@@ -302,6 +393,7 @@ RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR
 	this->Update_position_one_time = false;
 	this->IsCapNhatVanToc = true;
 	this->IsCapNhatPositionMotLan = false;
+	this->IsGray = IsGray;
 	//this->time_beaten = 0;
 	this->time_explode = 0;
 	this->IsExplode = false;
@@ -315,6 +407,8 @@ RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR
 	case 2:
 		this->level = Level::clever;
 		break;
+	case 3:
+		this->level = Level::master;
 	}
 	this->position_spawn = position_spawn;
 	this->position_goto = position_goto;
@@ -351,7 +445,7 @@ RedRocketRobot::RedRocketRobot(int level, D3DXVECTOR2 position_spawn, D3DXVECTOR
 	// normal zone
 	else
 	{
-		if (this->level == Level::normal) {
+		if (this->level == Level::normal || this->level == Level::master) {
 			this->current_state = RedRocketRobotState::idle;
 			this->current_animation = idle_ani;
 			this->previous_state = RedRocketRobotState::idle;

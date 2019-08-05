@@ -1,5 +1,5 @@
 #include "PlayerBeatenState.h"
-#include "Framework//Debug.h"
+#include "Framework/SoundManager.h"
 #include "Shield.h"
 #include "PlayerDieState.h"
 PlayerBeatenState::PlayerBeatenState(int damage)
@@ -13,8 +13,7 @@ PlayerBeatenState::PlayerBeatenState(int damage)
 	player->time_invisible = TIME_INVISIBLE;
 	player->hp -= damage;
 	player->OnTheWater = true;
-	Debug::PrintOut(L"%d\n", player->hp);
-
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::enemy_fire);
 }
 PlayerBeatenState::~PlayerBeatenState()
 {
@@ -34,10 +33,13 @@ void PlayerBeatenState::Update(float dt)
 	{
 		player->SetPositionX(player->GetPosition().x + VELOCITY_X * dt*1/3);
 	}
-	if (time_beaten > TIME_BEATEN_MIN && player->IsCollisionWithGround(dt) && player->hp > 0)
+	if (time_beaten > TIME_BEATEN_MIN && player->hp > 0)
 	{
-		player->ChangeState(new PlayerIdleState());
-		return;
+		if (player->IsCollisionWithGround(dt) || player->IsCollisionWithSpike(dt)) {
+			player->ChangeState(new PlayerIdleState());
+			return;
+		}
+	
 	}
 	if (player->IsCollisionWithGround(dt) == false) 
 	{
@@ -45,6 +47,7 @@ void PlayerBeatenState::Update(float dt)
 		player->SetVelocityY(VELOCITY_Y*1.5);
 		return;
 	}
+
 
 }
 
@@ -68,7 +71,9 @@ void PlayerBeatenState::HandleInput(float dt)
 {
 	Player *player = Player::GetInstance();
 	if (player->hp <= 0) {
-		if (player->IsCollisionWithGround(dt, 8) || player->IsCollisionWithWall(dt))
+		if (player->IsCollisionWithGround(dt, 8) 
+			|| player->IsCollisionWithWall(dt)
+			|| player->IsCollisionWithSpike(dt))
 		{
 			player->ChangeState(new PlayerDieState());
 			return;
@@ -92,8 +97,11 @@ void PlayerBeatenState::HandleInput(float dt)
 		player->ChangeState(new PlayerJumpingDownState());
 		return;
 	}
-	else {
-	
+
+	if (player->IsCollisionWithSpike(dt, 8))
+	{
+		player->ChangeState(new PlayerIdleState());
+		return;
 	}
 	if (player->IsCollisionWithWater(dt, 8))
 	{

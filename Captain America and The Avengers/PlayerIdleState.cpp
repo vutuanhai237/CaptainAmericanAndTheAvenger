@@ -68,16 +68,27 @@ void PlayerIdleState::HandleInput(float dt)
 	{ 
 		if (!player->IsCollisionWithGround(dt))
 		{
-			if (!player->IsCollisionWithPlatform(dt))
+			if (!player->IsCollisionWithSpike(dt))
 			{
-				player->ChangeState(new PlayerJumpingDownState());
-				player->IsCollisionWithPlatform(dt);
-				player->CarrierObject = NULL;
-				return;
+				if (!player->IsCollisionWithPlatform(dt))
+				{
+					player->ChangeState(new PlayerJumpingDownState());
+					player->IsCollisionWithPlatform(dt);
+					player->CarrierObject = NULL;
+					return;
+				}
 			}
+			
 		}
 
 	}
+	if (player->IsCollisionWithSpike(dt)) {
+		if (Player::GetInstance()->time_invisible <= 0) {
+			Player::GetInstance()->ChangeState(new PlayerBeatenState(DAMAGE_SPIKE));
+			return;
+		}
+	}
+	
 	// Nếu ấn X thì nhảy
 	if (keyboard->KeyDown(JUMP_KEY)) {
 		player->ChangeState(new PlayerJumpingState());

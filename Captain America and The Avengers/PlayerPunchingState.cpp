@@ -1,14 +1,14 @@
 ﻿#include "PlayerPunchingState.h"
 #include "PlayerArm.h"
 #include "SceneManager.h"
-
+#include "Framework/SoundManager.h"
 PlayerPunchingState::PlayerPunchingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::punching);
 	player->SetTimeBuffer(0);
 	this->current_state = PlayerState::NameState::punching;
-
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::player_punch_kick);
 	SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(new PlayerArm());
 }
 PlayerPunchingState::~PlayerPunchingState()

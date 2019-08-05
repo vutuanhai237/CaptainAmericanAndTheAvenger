@@ -148,8 +148,12 @@
     <ClCompile Include="DisappearPlatform.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="ElectricShockwaveBarrier.cpp" />
+    <ClCompile Include="Framework\dsutil.cpp" />
+    <ClCompile Include="Framework\dxutil.cpp" />
+    <ClCompile Include="Framework\SoundManager.cpp" />
     <ClCompile Include="GrayRobot.cpp" />
     <ClCompile Include="GrayRocket.cpp" />
+    <ClCompile Include="GrayRocketRobot.cpp" />
     <ClCompile Include="GreenSoldier.cpp" />
     <ClCompile Include="LaserBullet.cpp" />
     <ClCompile Include="EnergyBullet.cpp" />
@@ -251,8 +255,12 @@
     <ClInclude Include="DisappearPlatform.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="ElectricShockwaveBarrier.h" />
+    <ClInclude Include="Framework\dsutil.h" />
+    <ClInclude Include="Framework\dxutil.h" />
+    <ClInclude Include="Framework\SoundManager.h" />
     <ClInclude Include="GrayRobot.h" />
     <ClInclude Include="GrayRocket.h" />
+    <ClInclude Include="GrayRocketRobot.h" />
     <ClInclude Include="GreenSoldier.h" />
     <ClInclude Include="LaserBullet.h" />
     <ClInclude Include="EnergyBullet.h" />

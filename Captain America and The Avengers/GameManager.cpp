@@ -13,6 +13,8 @@
 #include "Door.h"
 #include "Platform.h"
 #include "GrayRocket.h"
+#include "BossGragas.h"
+#include "BossWizard.h"
 #include "ElectricShockwaveBarrier.h"
 DWORD GameManager::StTime = GetTickCount();
 
@@ -36,11 +38,10 @@ void GameManager::Init(int fps)
 	int ID;
 	texture->Add(ID, L"Resources/Map/TitleMap.png", D3DCOLOR_ARGB(0, 0, 0, 0));
 
-	// Red robot rocket zone 123
+	// Red robot rocket zone 1 2 3 4
 	texture->Add(ID, L"Resources/Enemy/RedRocketRobot/RedRobotRocketIdle.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources/Enemy/RedRocketRobot/RedRobotRocketRunning.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources/Enemy/RedRocketRobot/RedRobotRocketDucking.png", D3DCOLOR_XRGB(255, 0, 255));
-	// Enemy beaten 4
 	texture->Add(ID, L"Resources/Enemy/RedRocketRobot/RedRobotRocketBeaten.png", D3DCOLOR_XRGB(255, 0, 255));
 	// Red rocket 5 6, explode 7
 	texture->Add(ID, L"Resources//Enemy//RedRocketRobot//RedRocketCrossed.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -65,10 +66,10 @@ void GameManager::Init(int fps)
 	texture->Add(ID, L"Resources//Enemy//GreenSoldier//GreenSoldierDuckingState.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources//Enemy//GreenSoldier//GreenSoldierBeatenState.png", D3DCOLOR_XRGB(255, 0, 255));
 	// bat 21 22 23 24
-	texture->Add(ID, L"Resources//Enemy//Bat//BatSpawnFromEgg.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//Bat//BatIdle.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//Bat//BatIdle2.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources//Enemy//Bat//BatFlying.png", D3DCOLOR_XRGB(255, 0, 255));
-	texture->Add(ID, L"Resources//Enemy//Bat//BatStartFlying.png", D3DCOLOR_XRGB(255, 0, 255));
-	texture->Add(ID, L"Resources//Enemy//Bat//BatElectric.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources//Enemy//Bat//BatFlying2.png", D3DCOLOR_XRGB(255, 0, 255));
 	// gray robot 25 26 27
 	texture->Add(ID, L"Resources//Enemy//GrayRobot//GrayRobotIdle.png", D3DCOLOR_XRGB(255, 0, 255));
 	texture->Add(ID, L"Resources//Enemy//GrayRobot//GrayRobotFiring.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -81,6 +82,15 @@ void GameManager::Init(int fps)
 	texture->Add(ID, L"Resources//Enemy//Turret//Turret.png", D3DCOLOR_XRGB(255, 0, 255));
 	// bullet turret 31
 	texture->Add(ID, L"Resources//Enemy//Turret//BulletTurret.png", D3DCOLOR_XRGB(255, 0, 255));
+	// Gray robot rocket zone 32 33 34
+	texture->Add(ID, L"Resources/Enemy/GrayRocketRobot/GrayRocketRobotRunning.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources/Enemy/GrayRocketRobot/GrayRocketRobotDucking.png", D3DCOLOR_XRGB(255, 0, 255));
+	texture->Add(ID, L"Resources/Enemy/GrayRocketRobot/GrayRocketRobotBeaten.png", D3DCOLOR_XRGB(255, 0, 255));
+
+
+
+
+
 
 	texture->Add(ItemsHolder::AnimationID, L"Resources/Items/ItemHolder.png", D3DCOLOR_ARGB(0, 0, 0, 0));
 	texture->Add(ItemsHolder::AnimationID2, L"Resources/Items/ItemHolder2.png", D3DCOLOR_XRGB(255, 0, 255));
@@ -141,12 +151,13 @@ void GameManager::Release()
 
 GameManager::~GameManager()
 {
+	SceneManager::GetInstance()->Release();
+	
+	Player::GetInstance()->Release();
 	GameTimer::GetInstance()->Release();
 	d3d::GetInstance()->Release();
 	DirectInput::GetInstance()->Release();
 	Texture::GetInstance()->Release();
-	SceneManager::GetInstance()->Release();
-	Player::GetInstance()->Release();
 }
 
 void GameManager::Update(float delta)

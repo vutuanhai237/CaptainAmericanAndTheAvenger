@@ -12,7 +12,10 @@ public:
 	void SwapMap() override;
 	void SwapMap(int code) override;
 	int GetMode() override;
-
+	bool UpdateOneTime;
+	int number;
+	float timer;
+	float timer2;
 	Pittsburgh();
 	~Pittsburgh(); 
 protected:

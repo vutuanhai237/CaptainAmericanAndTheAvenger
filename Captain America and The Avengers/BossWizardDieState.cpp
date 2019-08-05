@@ -26,7 +26,12 @@ void BossWizardDieState::Update(float dt)
 	boss->GetCurrentAnimation()->Update(dt);
 	boss->time_die += dt;
 	if (boss->time_die >= 1.6) {
+		boss->GetCurrentAnimation()->Stop();
+		boss->GetCurrentAnimation()->SetFrame(2);
+	}
+	if (boss->time_die >= 2.6) {
 		SceneManager::GetInstance()->GetCurrentScene()->IsExitAble = true;
+
 	}
 }
 

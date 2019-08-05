@@ -1,6 +1,6 @@
 ﻿#include "PlayerDivingState.h"
 #include "PlayerFlowingState.h"
-#include "Framework//Debug.h"
+#include "Framework/SoundManager.h"
 PlayerDivingState::PlayerDivingState()
 {
 	Player* player = Player::GetInstance();
@@ -10,7 +10,7 @@ PlayerDivingState::PlayerDivingState()
 	player->SetTimeBuffer(0);
 	player->SetVelocity(0, 0);
 	player->SetPositionY(44.0f);
-
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::player_drown);
 	auto tmp = player->GetCurrentAnimation();
 	
 }
@@ -45,6 +45,7 @@ void PlayerDivingState::HandleInput(float dt)
 	auto keyboard = DirectInput::GetInstance();
 
 	if (keyboard->KeyDown(JUMP_KEY)) {
+		SoundManager::GetInstance()->Play(SoundManager::SoundList::player_diving);
 		player->ChangeState(new PlayerJumpingState());
 		return;
 	}

@@ -2,6 +2,7 @@
 #include "PlayerIdleState.h"
 #include "Framework//Debug.h"
 #include "PlayerShieldDownState.h"
+#include "Framework/SoundManager.h"
 PlayerRollingState::PlayerRollingState()
 {
 	Player* player = Player::GetInstance();
@@ -15,6 +16,8 @@ PlayerRollingState::PlayerRollingState()
 
 	//player->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
 	// Khi từ đá chuyển về nhảy thì mới có quyền đá tiếp
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::player_rolling);
+
 	player->time_kicking = 0;
 
 }
@@ -64,6 +67,7 @@ void PlayerRollingState::HandleInput(float dt)
 	}
 	if (player->GetVelocityY() <= -VELOCITY_Y || player->time_air_rolling > TIME_ROLLING)
 	{
+		player->previous_state = 9;
 		player->ChangeState(new PlayerJumpingDownState());
 		return;
 	}

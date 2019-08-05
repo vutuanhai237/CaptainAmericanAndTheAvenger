@@ -10,7 +10,11 @@
 #include "Shield.h"
 #include <fstream>
 #include "Camera.h"
-
+#include "RedRocketRobot.h"
+#include "GreenSoldier.h"
+#include "Bat.h"
+#include "Turret.h"
+#include "ElectricShockwaveBarrier.h"
 PittsburghMap::PittsburghMap()
 {
 	map = new std::vector<WorldMap*>();
@@ -42,11 +46,11 @@ void PittsburghMap::SwapMap(int map)
 	if (Mode >> 1 > 0)
 	{
 		Camera::GetInstance()->SetCameraPosition(0, 0);
-		Camera::GetInstance()->SetCameraFreeze(true);
+		Camera::GetInstance()->Init((*this->map)[Mode]->GetMapSize());
 	}
 	else
 	{
-		Camera::GetInstance()->SetCameraFreeze(false);
+		Camera::GetInstance()->Init((*this->map)[Mode]->GetMapSize());
 		Camera::GetInstance()->RefreshCamera(Player::GetInstance()->GetPosition());
 	}
 }
@@ -132,6 +136,58 @@ void PittsburghMap::ReadData(LPCWSTR path, int code)
 				holder->PutOnItem(tmp);
 			}
 			(*grid)[code]->AddObject2Cell(holder);
+			break;
+		case Entity::Entity_Tag::redrobotrocket:
+			obj = new int[7];
+			obj[0] = tag;
+			obj[1] = posX;
+			obj[2] = posY;
+			(*grid)[code]->AddObject2Cell(posX, posY, obj);
+			break;
+		case Entity::Entity_Tag::green_soldier:
+			obj = new int[5];
+			obj[0] = tag;
+			obj[1] = posX;
+			obj[2] = posY;
+			data >> obj[3] >> obj[4];
+			(*grid)[code]->AddObject2Cell(posX, posY, obj);
+			continue;
+		case Entity::Entity_Tag::gray_robot:
+			obj = new int[4];
+			obj[0] = tag;
+			obj[1] = posX;
+			obj[2] = posY;
+			data >> obj[3];
+			(*grid)[code]->AddObject2Cell(posX, posY, obj);
+			continue;
+		case Entity::Entity_Tag::cannon:
+			obj = new int[4];
+			obj[0] = tag;
+			obj[1] = posX;
+			obj[2] = posY;
+			data >> obj[3];
+			(*grid)[code]->AddObject2Cell(posX, posY, obj);
+			continue;
+		case Entity::Entity_Tag::bat:
+			obj = new int[4];
+			obj[0] = tag;
+			obj[1] = posX;
+			obj[2] = posY;
+			data >> obj[3];
+			(*grid)[code]->AddObject2Cell(posX, posY, obj);
+			continue;
+		case Entity::Entity_Tag::gray_rocket_robot:
+			obj = new int[6];
+			obj[0] = tag;
+			obj[1] = posX;
+			obj[2] = posY;
+			data >> obj[3] >> obj[4] >> obj[5];
+			(*grid)[code]->AddObject2Cell(posX, posY, obj);
+			continue;
+		case Entity::Entity_Tag::electric_shockwave_barrier:
+			item = new ElectricShockwaveBarrier(posX, posY);
+			(*grid)[code]->AddObject2Cell(item);
+			continue;
 		default:
 			break;
 		}

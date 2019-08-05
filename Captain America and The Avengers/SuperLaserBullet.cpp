@@ -1,5 +1,5 @@
 #include "SuperLaserBullet.h"
-#include "FrameWork//Debug.h"
+#include "FrameWork/SoundManager.h"
 #include "SceneManager.h"
 #include "PlayerBeatenState.h"
 void SuperLaserBullet::Update(float dt)
@@ -29,6 +29,7 @@ int SuperLaserBullet::OnCollision(Entity* obj, float dt)
 		if (this->IsExploding == false) {
 			this->Release();
 			this->IsExploding = true;
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
 		}
 	}
 	return 0;
@@ -89,6 +90,8 @@ SuperLaserBullet::SuperLaserBullet(D3DXVECTOR2 position, Entity::Entity_Directio
 	this->SetVelocityX(SUPER_LASER_BULLET_VELOCITY_X);
 	this->SetMoveDirection(direction);
 	this->damage = SUPER_LASER_BULLET_DAMAGE;
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::boss_moving_firing);
+
 }
 
 

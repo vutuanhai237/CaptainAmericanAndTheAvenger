@@ -38,6 +38,7 @@ void BossWizardFireRoad::Update(float dt)
 		this->time_running += dt;
 		if (this->UpdateOneTime == false) {
 			boss->ChangeState(new BossWizardRunningState());
+			boss->IsOnAir = false;
 			boss->SetVelocity(BOSS_WIZARD_VELOCITY_X, 0);
 			this->UpdateOneTime = true;
 			if (boss->GetPosition().x > Player::GetInstance()->GetPosition().x) {
@@ -64,6 +65,7 @@ void BossWizardFireRoad::Update(float dt)
 		if (this->UpdateOneTime == false) {
 			boss->ChangeState(new BossWizardFireState(2));
 			boss->SetVelocity(0, 0);
+			boss->IsOnAir = false;
 			this->UpdateOneTime = true;
 		}
 		if (this->time_fire >= BOSS_WIZARD_TIME_FIRE) {
@@ -78,6 +80,7 @@ void BossWizardFireRoad::Update(float dt)
 		this->time_fire += dt;
 		if (this->UpdateOneTime == false) {
 			boss->ChangeState(new BossWizardFireState(3));
+			boss->IsOnAir = false;
 			boss->SetVelocity(0, 0);
 			this->UpdateOneTime = true;
 		}
@@ -109,7 +112,6 @@ void BossWizardFireRoad::Update(float dt)
 			boss->SetPositionY(e->GetYFromX(boss->GetPosition().x)); 
 			
 		}
-		//boss->SetVelocityY(VELOCITY_Y);
 		CollisionOut out = boss->IsCollisionWithWall(dt);
 		if (this->IsJumpingFirst >= 10 && out.CollisionTime < 1) {
 			this->IsJumping = false;
@@ -119,7 +121,9 @@ void BossWizardFireRoad::Update(float dt)
 				return;
 			}
 			if (out.side == CollisionSide::bottom) {
-				boss->IsIdle = false;
+				boss->IsIdle = true;
+				boss->previous_state == 2;
+				boss->IsOnAir = false;
 				boss->ChangeRoad(new BossWizardIdleRoad());
 				boss->ChangeState(new BossWizardIdleState());
 				return;
@@ -131,6 +135,7 @@ void BossWizardFireRoad::Update(float dt)
 
 		if (this->UpdateOneTime == false) {
 			boss->ChangeState(new BossWizardFlyingState());
+			boss->IsOnAir = true;
 			boss->SetVelocity(BOSS_WIZARD_VELOCITY_X, 0);
 			int distance_jump = boss->GetPosition().x;
 			if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
@@ -176,6 +181,8 @@ BossWizardFireRoad::BossWizardFireRoad()
 	this->IsJumpingFirst = 0;
 	this->IsJumping = false;
 	this->time_laugh = 0.0f;
+	boss->IsOnAir = false;
+
 }
 
 

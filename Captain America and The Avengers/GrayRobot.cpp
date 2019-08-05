@@ -1,6 +1,6 @@
 ﻿#include "GrayRobot.h"
 #include "Shield.h"
-#include "FrameWork//Debug.h"
+#include "FrameWork/SoundManager.h"
 #include "GrayRocket.h"
 void GrayRobot::Update(float dt)
 {
@@ -25,6 +25,7 @@ void GrayRobot::Update(float dt)
 		this->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 		if (this->IsCollisionWithGround(dt)) {
 			this->IsExplode = true;
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
 		}
 		return;
 	}
@@ -160,7 +161,7 @@ GrayRobot::GrayRobot(D3DXVECTOR2 position_spawn, float distance) : Enemy()
 	// set properties zone
 	this->position = position_spawn;
 	this->Ax = distance;
-	this->Ay = distance * 0.5;
+	this->Ay = distance * 0.35;
 	this->omega = 2 * PI / 4;
 	this->t = 0;
 	this->virtual_point = this->position;

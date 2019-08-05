@@ -1,5 +1,6 @@
 #include "GrayRocket.h"
 #include "Framework/GameSetting.h"
+#include "Framework/SoundManager.h"
 #include "PlayerBeatenState.h"
 int GrayRocket::ID = -1;
 
@@ -48,7 +49,10 @@ void GrayRocket::Update(float dt)
 	}
 
 	if (EnemyWeapon::IsCollisionExplode()) {
+		this->Release();
 		this->IsExploding = true;
+		SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
+
 	}
 
 	D3DXVECTOR2 target = Player::GetInstance()->GetPosition();
@@ -105,6 +109,8 @@ int GrayRocket::OnCollision(Entity *obj, float dt)
 		if (this->IsExploding == false) {
 			this->Release();
 			this->IsExploding = true;
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
+
 		}
 	}
 	return 0;
@@ -120,12 +126,16 @@ void GrayRocket::Exploding(float dt)
 	this->time_out_explode += dt;
 	if (this->time_out_explode > TIME_EXPLODE) {
 		this->IsDead = true;
+		this->OnCollision(NULL, dt);
 	}
 }
 
 void GrayRocket::Draw()
 {
-	this->current_ani->Draw(Entity::position);
+	if (IsDead == false) {
+		this->current_ani->Draw(Entity::position);
+
+	}
 }
 
 void GrayRocket::Release()

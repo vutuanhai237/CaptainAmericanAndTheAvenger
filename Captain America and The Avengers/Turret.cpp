@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "PlayerBeatenState.h"
 #include "TurretBullet.h"
-
+#include "Framework/SoundManager.h"
 void Turret::Update(float dt)
 {
 	Enemy::Update(dt);
@@ -42,6 +42,12 @@ int Turret::OnCollision(Entity* obj, float dt)
 					this->current_state = NameState::rolling;
 					this->hp--;
 				}
+				if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::ShieldDown)
+				{
+					this->current_state = NameState::rolling;
+					this->hp--;
+					goto CHECK;
+				}
 			}
 			else {
 				this->current_state = NameState::rolling;
@@ -51,6 +57,7 @@ int Turret::OnCollision(Entity* obj, float dt)
 		if (this->hp <= 0) {
 			this->IsBeaten = true;
 			this->IsExplode = true;
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
 			goto CHECK;
 		}
 		Player *player = Player::GetInstance();
@@ -66,6 +73,8 @@ int Turret::OnCollision(Entity* obj, float dt)
 		if (this->hp <= 0) {
 			this->IsBeaten = true;
 			this->IsExplode = true;
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
+
 		}
 	}
 	CHECK:
@@ -156,6 +165,7 @@ Turret::Turret(D3DXVECTOR2 position_spawn, float alpha) : Enemy()
 	this->current_state = NameState::firing;
 	this->time_rolling = 0;
 	this->hp = TURRET_HP;
+
 }
 
 Turret::~Turret()

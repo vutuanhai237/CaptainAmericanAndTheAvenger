@@ -44,6 +44,18 @@ void PlayerShieldUpState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
+	if (!player->IsCollisionWithPlatform(dt))
+	{
+		if (!player->IsCollisionWithGround(dt)) {
+			if (!player->IsCollisionWithWall(dt)) {
+				if (!player->IsCollisionWithWater(dt)) {
+					player->ChangeState(new PlayerJumpingDownState());
+					return;
+				}
+			}
+
+		}
+	}
 	// Nếu vẫn up và down cùng lúc thì về idle
 	if (keyboard->KeyPress(UP_KEY) && keyboard->KeyPress(DOWN_KEY)) {
 		player->ChangeState(new PlayerIdleState());

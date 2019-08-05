@@ -1,6 +1,6 @@
 ﻿#include "PlayerDashingState.h"
 #include "PlayerIdleState.h"
-#include "Framework//Debug.h"
+#include "Framework/SoundManager.h"
 PlayerDashingState::PlayerDashingState()
 {
 	Player* player = Player::GetInstance();
@@ -8,6 +8,7 @@ PlayerDashingState::PlayerDashingState()
 	player->SetTimeBuffer(0);
 	player->SetVelocityX(VELOCITY_X * 3);
 	this->current_state = PlayerState::NameState::dashing;
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::player_dash);
 	IsDucking = false;
 	IsGong = false;
 }

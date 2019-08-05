@@ -1,5 +1,5 @@
 #include "Barrel.h"
-#include "FrameWork//Debug.h"
+#include "FrameWork/SoundManager.h"
 #include "SceneManager.h"
 #include "PlayerBeatenState.h"
 #include "Shield.h"
@@ -16,6 +16,8 @@ void Barrel::Update(float dt)
 	if (this->IsCollisionWithWall(dt).CollisionTime < 1.0f) {
 		this->Release();
 		this->IsExploding = true;
+		SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
+
 	}
 	this->time_wait += dt;
 	if (this->time_wait >= 1.0) {
@@ -47,6 +49,8 @@ int Barrel::OnCollision(Entity* obj, float dt)
 					if (this->IsExploding == false) {
 						this->Release();
 						this->IsExploding = true;
+						SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
+
 					}
 				}
 			}
@@ -56,6 +60,7 @@ int Barrel::OnCollision(Entity* obj, float dt)
 				if (this->IsExploding == false) {
 					this->Release();
 					this->IsExploding = true;
+					SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
 					boss->count_barrel_explode++;
 					boss->phase = 0;
 					boss->count_bullet = 0;
@@ -78,6 +83,8 @@ int Barrel::OnCollision(Entity* obj, float dt)
 		if (this->IsExploding == false) {
 			this->Release();
 			this->IsExploding = true;
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
+
 		}
 	}
 	return 0;

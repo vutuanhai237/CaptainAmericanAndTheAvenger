@@ -1,8 +1,7 @@
 #include "ShieldAttackState.h"
 #include "Player.h"
 #include "Shield.h"
-
-#include <list>
+#include "Framework/SoundManager.h"
 
 ShieldAttackState::ShieldAttackState()
 {
@@ -16,6 +15,8 @@ ShieldAttackState::ShieldAttackState()
 	delta = 0.0f;
 	IsComeBack = false;
 	DeltaSlow = SHIELD_ATTACK_VELOCITY;
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::shield_attack);
+
 }
 
 int ShieldAttackState::GetDamage()

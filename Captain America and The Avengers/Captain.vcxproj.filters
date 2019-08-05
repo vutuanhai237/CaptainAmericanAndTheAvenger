@@ -28,9 +28,6 @@
     <Filter Include="Enemy\RedRocketRobot">
       <UniqueIdentifier>{be33280e-667a-41db-9367-323c53cf0f99}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Player\Shield">
-      <UniqueIdentifier>{8fa90513-e92e-44d8-9174-17e061a5f19d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Player\PlayerState">
       <UniqueIdentifier>{6afa3bf9-9598-49a9-a529-7e3693b762c9}</UniqueIdentifier>
     </Filter>
@@ -75,6 +72,12 @@
     </Filter>
     <Filter Include="Enemy\Turret">
       <UniqueIdentifier>{37aab949-296e-49e7-85bc-f1b37766bad4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Enemy\GrayRocketRobot">
+      <UniqueIdentifier>{6627e862-999e-4374-95c5-531c70d801a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player\ShieldStatte">
+      <UniqueIdentifier>{8fa90513-e92e-44d8-9174-17e061a5f19d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -149,25 +152,25 @@
       <Filter>Enemy\RedRocketRobot</Filter>
     </ClCompile>
     <ClCompile Include="ShieldKickState.cpp">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClCompile>
     <ClCompile Include="ShieldNomalState.cpp">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClCompile>
     <ClCompile Include="ShieldOnAirState.cpp">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClCompile>
     <ClCompile Include="ShieldState.cpp">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClCompile>
     <ClCompile Include="ShieldUpState.cpp">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClCompile>
     <ClCompile Include="ShieldDownState.cpp">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClCompile>
     <ClCompile Include="ShieldAttackState.cpp">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClCompile>
     <ClCompile Include="PlayerThrowingState.cpp">
       <Filter>Player\PlayerState</Filter>
@@ -379,6 +382,18 @@
     <ClCompile Include="PittsburghBossMap.cpp">
       <Filter>Map</Filter>
     </ClCompile>
+    <ClCompile Include="GrayRocketRobot.cpp">
+      <Filter>Enemy\GrayRocketRobot</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\dsutil.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\dxutil.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\SoundManager.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Animation.h">
@@ -458,25 +473,25 @@
       <Filter>Enemy\RedRocketRobot</Filter>
     </ClInclude>
     <ClInclude Include="ShieldKickState.h">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClInclude>
     <ClInclude Include="ShieldNomalState.h">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClInclude>
     <ClInclude Include="ShieldOnAirState.h">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClInclude>
     <ClInclude Include="ShieldState.h">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClInclude>
     <ClInclude Include="ShieldUpState.h">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClInclude>
     <ClInclude Include="ShieldDownState.h">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClInclude>
     <ClInclude Include="ShieldAttackState.h">
-      <Filter>Player\Shield</Filter>
+      <Filter>Player\ShieldStatte</Filter>
     </ClInclude>
     <ClInclude Include="PlayerThrowingState.h">
       <Filter>Player\PlayerState</Filter>
@@ -684,6 +699,18 @@
     </ClInclude>
     <ClInclude Include="PittsburghBossMap.h">
       <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="GrayRocketRobot.h">
+      <Filter>Enemy\GrayRocketRobot</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\dsutil.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\dxutil.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\SoundManager.h">
+      <Filter>Framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

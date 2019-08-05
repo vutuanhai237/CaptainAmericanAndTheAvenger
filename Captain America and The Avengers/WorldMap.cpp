@@ -124,6 +124,10 @@ void WorldMap::Init(LPCWSTR Path)
 			width -= 4;
 			obj->SetTag(Entity::Entity_Tag::rope);
 			break;
+		case MAPOBJ_SPIKE:
+
+			obj->SetTag(Entity::Entity_Tag::spike);
+			break;
 		default:
 			break;
 		}

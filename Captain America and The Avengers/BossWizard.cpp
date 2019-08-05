@@ -6,6 +6,7 @@
 #include "Shield.h"
 #include "ShieldState.h"
 #include "PlayerBeatenState.h"
+#include "Framework/SoundManager.h"
 BossWizard*BossWizard::instance = NULL;
 
 BossWizard * BossWizard::GetInstance()
@@ -17,7 +18,9 @@ BossWizard * BossWizard::GetInstance()
 
 void BossWizard::Release()
 {
-	delete instance;
+	if (instance)
+		delete instance;
+	this->instance = NULL;
 }
 
 BossWizard::BossWizard() :Enemy()
@@ -70,6 +73,8 @@ BossWizard::BossWizard() :Enemy()
 	this->previous_hp = this->hp;
 	Entity::size.cx = 20;
 	Entity::size.cy = 48;
+	this->UpdateOneTime = false;
+	this->UpdateOneTime2 = false;
 
 }
 
@@ -85,9 +90,15 @@ void BossWizard::Update(float dt)
 {
 	Enemy::Update(dt);
 	BossWizard* boss = BossWizard::GetInstance();
-	if (this->time_beaten == ENEMY_TIME_BEATEN*3 || this->hp <= 0) {
+	if (this->time_beaten >= ENEMY_TIME_BEATEN*3 ) {		
 		boss->ChangeRoad(new BossWizardBeatenRoad());
 	}
+	if (this->UpdateOneTime2 == false && this->hp <= 0) {
+		boss->ChangeRoad(new BossWizardBeatenRoad());
+		this->UpdateOneTime2 = true;
+		goto CHECK;
+	}
+	CHECK:
 	if (boss->GetCurrentRoad() == BossWizardRoad::RoadType::beaten) {
 		boss->time_beaten -= dt;
 	}
@@ -101,6 +112,11 @@ void BossWizard::Update(float dt)
 	}
 	if (this->hp <= 10) {
 		this->IsLac = true;
+		if (this->UpdateOneTime == false) {
+			SoundManager::GetInstance()->Stop(SoundManager::SoundList::actiton_theme);
+			SoundManager::GetInstance()->PlayRepeat(SoundManager::SoundList::main_theme);
+			this->UpdateOneTime = true;
+		}
 	}
 	this->state->Update(dt);
 	this->road->Update(dt);
@@ -194,7 +210,7 @@ CollisionOut BossWizard::IsCollisionWithWall(float dt, int delta_y)
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
 
-	CollisionOut tmp;
+	CollisionOut tmp, ret;
 	BoundingBox box2;
 	for (auto item : obj)
 	{
@@ -216,19 +232,25 @@ CollisionOut BossWizard::IsCollisionWithWall(float dt, int delta_y)
 				velocity.y = 0;
 				return tmp;
 			case CollisionSide::left:
+				if (ret.side == CollisionSide::right)
+					return tmp;
 				position.x = item->GetPosition().x + (BOSS_WIZARD_SIZE_WIDTH + item->GetSize().cx) / 2 + 2;
 				velocity.x = 0;
-				return tmp;
+				ret = tmp;
+				//return tmp;
 			case CollisionSide::right:
+				if (ret.side == CollisionSide::left)
+					return tmp;
 				position.x = item->GetPosition().x - (BOSS_WIZARD_SIZE_WIDTH + item->GetSize().cx) / 2 - 2;
 				velocity.x = 0;
-				return tmp;
+				ret = tmp;
+				//return tmp;
 			default:
 				continue;
 			}
 		}
 	}
-	return tmp;
+	return ret;
 }
 
 int BossWizard::OnCollision(Entity *obj, float dt)

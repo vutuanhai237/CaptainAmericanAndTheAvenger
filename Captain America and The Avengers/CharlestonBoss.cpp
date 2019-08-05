@@ -8,7 +8,9 @@
 #include "Pittsburgh.h"
 #include "ShieldNomalState.h"
 #include "BossWizard.h"
+#include "PlayerIdleState.h"
 #include "LaserBullet.h"
+#include "Framework/SoundManager.h"
 void CharlestonBoss::Update(float dt)
 {
 	Player *player = Player::GetInstance();
@@ -17,6 +19,7 @@ void CharlestonBoss::Update(float dt)
 	Shield::GetInstance()->Update(dt);
 	grid->Update(dt);
 	BossWizard *boss = BossWizard::GetInstance();
+	Camera::GetInstance()->SetCameraFreeze(false);
 	this->time_count += dt;
 	if (this->time_count >= 4.0f && this->count_bullet == 0) {
 		SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
@@ -48,7 +51,8 @@ void CharlestonBoss::Update(float dt)
 		);
 		this->count_bullet++;
 	}
-	if (this->time_count >= 16.0f && this->count_bullet == 3) {
+	//if (this->time_count >= 16.0f && this->count_bullet == 3) {
+	if (this->count_bullet == 0) {
 		grid->AddObject2Cell(boss);
 		boss->Init();
 		float x = rand() % 170 + 50;
@@ -67,8 +71,16 @@ void CharlestonBoss::Draw()
 {
 	map->Draw();
 	grid->DrawActivatedObject();
-	Player::GetInstance()->Draw();
-	
+	Player *player = Player::GetInstance();
+	player->Draw();
+	if (player->time_guc >= TIME_DIE)
+	{
+		player->time_guc = 0;
+		player->hp = PLAYER_HP;
+		player->ChangeState(new PlayerIdleState());
+		SceneManager::GetInstance()->ReplaceScene(new CharlestonBoss());
+		return;
+	}	
 }
 
 WorldMap *CharlestonBoss::GetCurrentMap()
@@ -127,15 +139,17 @@ CharlestonBoss::CharlestonBoss() : Scene()
 	ExitZone.right = GAME_SCREEN_WIDTH;
 	grid->AddObject2Cell(player);
 	grid->AddObject2Cell(Shield::GetInstance());
-
-
 	Init();
+	// sound 
+	SoundManager::GetInstance()->StopAllSound();
+	SoundManager::GetInstance()->PlayRepeat(SoundManager::SoundList::boss_wizard_theme);
 }
 
 CharlestonBoss::~CharlestonBoss()
 {
 	delete map;
 	delete grid;
+	BossWizard::GetInstance()->Release();
 }
 
 void CharlestonBoss::Init()

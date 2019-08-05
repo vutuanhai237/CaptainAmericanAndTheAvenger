@@ -4,7 +4,7 @@
 #include "PlayerIdleState.h"
 #include "Shield.h"
 #include "Framework/DirectInput.h"
-
+#include "Framework/SoundManager.h"
 int Door::IDDarkDoor = -1;
 int Door::IDLightDoor = -1;
 
@@ -56,6 +56,7 @@ int Door::OnCollision(Entity *obj, float dt)
 	{
 		if (Collision::getInstance()->IsCollide(Entity::GetBoundingBox(), player->GetBoundingBox()))
 		{
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::door);
 			door->SetFrame(2);
 			door->Continue();
 			player->ChangeState(new PlayerIdleState());

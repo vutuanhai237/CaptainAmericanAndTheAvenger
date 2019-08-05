@@ -2,6 +2,7 @@
 #include "Item.h"
 #include "SceneManager.h"
 #include "Shield.h"
+#include "Framework/SoundManager.h"
 
 int ItemsHolder::AnimationID = -1;
 int ItemsHolder::AnimationID2 = -1;
@@ -64,7 +65,7 @@ int ItemsHolder::OnCollision(Entity *obj, float dt)
 		auto grid = SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid();
 		if (Items->empty() || grid->ItemCounter >= CAPACITY_ITEM)
 			return 0;
-
+		SoundManager::GetInstance()->Play(SoundManager::SoundList::item_holder);
 		// drop item
 		grid->ItemCounter++;
 		Entity *item = (*Items)[0];

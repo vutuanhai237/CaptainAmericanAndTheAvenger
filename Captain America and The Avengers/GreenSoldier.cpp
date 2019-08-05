@@ -1,6 +1,6 @@
 ﻿#include "GreenSoldier.h"
 #include "Shield.h"
-#include "FrameWork//Debug.h"
+#include "FrameWork/SoundManager.h"
 
 void GreenSoldier::Update(float dt)
 {
@@ -25,6 +25,7 @@ void GreenSoldier::Update(float dt)
 		this->time_beaten += dt;
 		if (this->time_beaten >= TIME_BEATEN) {
 			this->IsExplode = true;
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
 
 		}
 		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
@@ -38,12 +39,94 @@ void GreenSoldier::Update(float dt)
 	}
 
 	switch (this->level) {
+	case Level::very_stupid:
+		this->UpdateVeryStupidLevel(dt);
+		break;
 	case Level::stupid:
 		this->UpdateStupidLevel(dt);
 		break;
 	case Level::normal:
 		this->UpdateNormalLevel(dt);
 		break;
+	case Level::clever:
+		this->UpdateCleverLevel(dt);
+		break;
+	case Level::master:
+		this->UpdateMasterLevel(dt);
+		break;
+	}
+}
+
+void GreenSoldier::UpdateVeryStupidLevel(float dt)
+{
+	// Đang ở trên không
+	if (IsChamDatLanDau == false)
+	{
+		if (this->IsCollisionWithGround(dt)) {
+			this->SetVelocityY(0.0f);
+			this->position_spawn = this->position;
+			IsChamDatLanDau = true;
+		}
+		else {
+			this->SetVelocityY(GREEN_SOLDIER_VELOCITY_Y);
+
+		}
+		return;
+	}
+	// Quay mặt
+	if ((Player::GetInstance()->GetPosition().x - this->GetPosition().x > 0)) {
+		this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
+	}
+	else {
+		this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
+	}
+	// đã ở trên mặt đất
+	if (this->current_state == GreenSoldierState::running) {
+		this->time_idle = 0.0f;
+		this->time_ducking = 0.0f;
+	}
+	// Thực hiện động tác 0.5s ngồi một lần 
+	if (this->IsIdle && this->current_state == GreenSoldierState::idle) {
+		this->time_idle += dt;
+		if (this->IsFire && this->time_idle > 0.016 * 5) {
+			if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new Bullet(
+						D3DXVECTOR2(this->position.x + 11.5, this->position.y + 17.5),
+						this->GetMoveDirection()
+					)
+				);
+			}
+			else {
+				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
+					new Bullet(
+						D3DXVECTOR2(this->position.x - 11.5, this->position.y + 17.5),
+						this->GetMoveDirection()
+					)
+				);
+			}
+			this->IsFire = false;
+		}
+
+	}
+	if (this->IsDucking && this->current_state == GreenSoldierState::ducking) {
+		this->time_ducking += dt;
+	}
+	if (this->time_idle >= GREEN_SOLDIER_TIME_IDLE*4 && this->current_state == GreenSoldierState::idle) {
+		this->IsIdle = false;
+		this->IsDucking = true;
+		this->current_animation = this->ducking_ani;
+		this->current_state = GreenSoldierState::ducking;
+		this->time_idle = 0.0f;
+	}
+	if (this->time_ducking >= GREEN_SOLDIER_TIME_DUCKING*4 && this->current_state == GreenSoldierState::ducking) {
+		this->IsDucking = false;
+		this->IsIdle = true;
+		this->current_animation = this->idle_ani;
+		this->current_state = GreenSoldierState::idle;
+		this->time_ducking = 0.0f;
+
+		this->IsFire = true;
 	}
 }
 
@@ -275,7 +358,7 @@ void GreenSoldier::UpdateCleverLevel(float dt)
 	}
 }
 
-void GreenSoldier::UpdateMasterevel(float dt)
+void GreenSoldier::UpdateMasterLevel(float dt)
 {
 	// Đang ở trên không
 	if (this->position.x <= 10) {
@@ -370,6 +453,21 @@ void GreenSoldier::UpdateMasterevel(float dt)
 
 int GreenSoldier::OnCollision(Entity* obj, float dt)
 {
+	if (Camera::GetInstance()->GetCameraFreeze() == true) {
+		if (Player::GetInstance()->IsBornSoldier == false) {
+			if (this->hp <= 0) {
+				Player::GetInstance()->number_soldier += 1;
+				Player::GetInstance()->IsBornSoldier = true;
+				this->IsExplode = true;
+				SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
+
+			}
+			if (this->GetPosition().x >= 515 && this->GetPosition().y <= 120) {
+				Player::GetInstance()->IsBornSoldier = true;
+				//this->IsExplode = true;
+			}
+		}		
+	}
 	return Enemy::OnCollision(obj, dt);
 }
 
@@ -395,29 +493,26 @@ bool GreenSoldier::IsCollisionWithGround(float dt, int delta_y)
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
 
-	if (foot.vy == 0)
+	/*if (foot.vy == 0)
 	{
 		for (auto item : obj)
 		{
-			if (item->GetTag() == Entity::Entity_Tag::ground && Checker->IsCollide(foot, BoundingBox(item->GetPosition(), item->GetSize(), 0, 0)))
+			if (item->GetTag == Entity::Entity_Tag::wall && Checker->IsCollide(foot, BoundingBox(item->GetPosition(), item->GetSize(), 0, 0)))
 				return true;
 		}
 		return false;
-	}
+	}*/
 
 	CollisionOut tmp;
 	BoundingBox box2;
 	for (auto item : obj)
 	{
-		if (item->GetTag() == Entity::Entity_Tag::ground)
+		box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
+		tmp = Checker->SweptAABB(foot, box2);
+		if (tmp.side == CollisionSide::bottom)
 		{
-			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
-			tmp = Checker->SweptAABB(foot, box2);
-			if (tmp.side == CollisionSide::bottom)
-			{
-				position.y = item->GetPosition().y + GREEN_SOLDIER_SIZE_HEIGHT / 2;
-				return true;
-			}
+			position.y = item->GetPosition().y + (GREEN_SOLDIER_SIZE_HEIGHT + item->GetSize().cy) / 2 - 4;
+			return true;
 		}
 	}
 	return false;
@@ -458,6 +553,9 @@ GreenSoldier::GreenSoldier(int level, D3DXVECTOR2 position_spawn, int direction)
 	this->IsFire = false;
 	// handle follow level zone
 	switch (level) {
+	case -1:
+		this->level = Level::very_stupid;
+		break;
 	case 0:
 		this->level = Level::stupid;
 		break;
@@ -472,6 +570,12 @@ GreenSoldier::GreenSoldier(int level, D3DXVECTOR2 position_spawn, int direction)
 		break;
 	}
 	switch (this->level) {
+	case Level::very_stupid:
+		this->IsIdle = true;
+		this->current_state = GreenSoldierState::idle;
+		this->current_animation = idle_ani;
+		this->SetVelocityX(0.0f);
+		break;
 	case Level::stupid:
 		this->IsIdle = true;
 		this->current_state = GreenSoldierState::idle;

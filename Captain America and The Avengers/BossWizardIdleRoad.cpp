@@ -14,7 +14,20 @@ void BossWizardIdleRoad::Update(float dt)
 	
 	if (this->GetOneTime == false) {
 		// tạo ngoại cảnh
-		boss->SetVelocity(0, BOSS_WIZARD_VELOCITY_Y);
+		if ((boss->previous_state == 7 || boss->previous_state == 2) 
+			&& boss->IsOnAir == false) {
+			boss->SetVelocity(0, 0);
+		}
+		else {
+			if (boss->IsOnAir) {
+				boss->SetVelocity(0, BOSS_WIZARD_FLYING_VELOCITY_X);
+				boss->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
+				if (boss->IsCollisionWithWall(dt).CollisionTime < 1.0f) {
+					boss->SetVelocity(0, 0);
+					boss->IsOnAir = false;
+				}
+			}
+		}
 		boss->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 		
 		if (boss->GetPosition().x > Player::GetInstance()->GetPosition().x) {
@@ -79,17 +92,11 @@ void BossWizardIdleRoad::Update(float dt)
 		return;
 	}
 
-	// Bay xa
 	CollisionOut out = boss->IsCollisionWithWall(dt);
 	if (out.CollisionTime < 1.0f && out.side == CollisionSide::bottom) {
 		this->IsChamDatLanDau = true;
 		boss->ChangeState(new BossWizardIdleState());
 		boss->SetVelocity(0, 0);
-	/*	if (((0 <= boss->GetPosition().x <= 48) || (208 <= boss->GetPosition().x <= 256))
-			&& boss->IsUMax == false) {
-			boss->ChangeRoad(new BossWizardUMaxRoad());
-			return;
-		}*/
 		return;
 	}
 }

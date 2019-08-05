@@ -1,7 +1,7 @@
 #include "OnOffSwitch.h"
 #include "SceneManager.h"
 #include "Shield.h"
-
+#include "Framework/SoundManager.h"
 OnOffSwitch::OnOffSwitch(int x, int y) : Entity()
 {
 	Entity::tag = Entity::Entity_Tag::on_off_switch;
@@ -28,6 +28,7 @@ int OnOffSwitch::OnCollision(Entity *obj, float dt)
 	if (Collision::getInstance()->IsCollide(Entity::GetBoundingBox(), obj->GetBoundingBox()))
 	{
 		SceneManager::GetInstance()->GetCurrentScene()->SwapMap();
+		SoundManager::GetInstance()->Play(SoundManager::SoundList::item_holder);
 		InvincibleTimeCounter = ON_OFF_SWITCH_TIME_BETWEEN_ATTACK;
 	}
 }

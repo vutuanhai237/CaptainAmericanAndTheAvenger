@@ -1,5 +1,6 @@
 #include "Camera.h"
-#include "SceneManager.h"
+#include "SceneManager.h"-
+#include "Player.h"
 
 Camera* Camera::Instance = NULL;
 
@@ -63,10 +64,28 @@ void Camera::SetCameraPosition(D3DXVECTOR2 p)
 		return;
 	D3DXVECTOR2 tmp = World2Render(p);
 
-	if (tmp.x > BoxFollow.right)
+	if (tmp.x >= BoxFollow.right)
 		PointBL.x += tmp.x - BoxFollow.right;
-	else if (tmp.x < BoxFollow.left)
+	else if (tmp.x <= BoxFollow.left)
 		PointBL.x -= BoxFollow.left - tmp.x;
+	else if (IsExtend == 1)
+	{
+		BoxFollow.right = tmp.x;
+		if (BoxFollow.right <= GAME_SCREEN_WIDTH - FAR_RIGHT)
+		{
+			BoxFollow.right = GAME_SCREEN_WIDTH - FAR_RIGHT;
+			IsExtend = 0;
+		}
+	}
+	else if (IsExtend == -1)
+	{
+		BoxFollow.left = tmp.x;
+		if (BoxFollow.left >= FAR_LEFT)
+		{
+			BoxFollow.left = FAR_LEFT;
+			IsExtend = 0;
+		}
+	}
 	if (tmp.y > BoxFollow.bottom)
 		PointBL.y -= tmp.y - BoxFollow.bottom;
 	else if (tmp.y < BoxFollow.top)
@@ -146,7 +165,24 @@ void Camera::SetCameraFreeze(bool IsFreeze)
 		objs->pop_back();
 		delete (*objs)[objs->size() - 1];
 		objs->pop_back();
+		// check extend
+		D3DXVECTOR2 pos = World2Render(Player::GetInstance()->GetPosition());
+		if (pos.x > BoxFollow.right)
+		{
+			IsExtend = 1;
+			BoxFollow.right = pos.x;
+		}
+		else if (pos.x<BoxFollow.left)
+		{
+			IsExtend = -1;
+			BoxFollow.left = pos.x;
+		}
 	}
+}
+
+bool Camera::GetCameraFreeze()
+{
+	return this->IsFreze;
 }
 
 Camera::Camera()
@@ -158,6 +194,7 @@ Camera::Camera()
 
 	PointBL = FollowPoint = D3DXVECTOR2(0, 0);
 	IsFreze = false;
+	IsExtend = 0;
 }
 
 

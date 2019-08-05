@@ -1,5 +1,5 @@
 #include "EnergyBullet.h"
-#include "FrameWork//Debug.h"
+#include "FrameWork/SoundManager.h"
 #include "SceneManager.h"
 #include "BossWizard.h"
 #include "PlayerBeatenState.h"
@@ -66,6 +66,8 @@ EnergyBullet::EnergyBullet(D3DXVECTOR2 position, Entity::Entity_Direction direct
 	this->distance = 0;
 	this->IsDead = false;
 	this->SetMoveDirection(direction);
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::boss_moving_firing);
+
 }
 
 

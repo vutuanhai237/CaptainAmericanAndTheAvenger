@@ -5,6 +5,8 @@
 #include "GreenSoldier.h"
 #include "GrayRobot.h"
 #include "Turret.h"
+#include "Bat.h"
+#include "GrayRocketRobot.h"
 Grid::Grid(SIZE MapSize)
 {
 	Init(MapSize.cx, MapSize.cy);
@@ -124,6 +126,19 @@ void Grid::RemoveAndReswampObject()
 							if (this->EnemyCounter < CAPACITY_ENEMY)
 							{
 								grid[i][j]->Object->push_back(new Turret(D3DXVECTOR2(item[1], item[2]), item[3]));
+							}
+							break;
+						case Entity::Entity_Tag::bat:
+							if (this->EnemyCounter < CAPACITY_ENEMY)
+							{
+								grid[i][j]->Object->push_back(new Bat(item[3], D3DXVECTOR2(item[1], item[2])));
+								this->EnemyCounter++;
+							}
+							break;
+						case Entity::Entity_Tag::gray_rocket_robot:
+							if (this->EnemyCounter < CAPACITY_ENEMY)
+							{
+								grid[i][j]->Object->push_back(new GrayRocketRobot(D3DXVECTOR2(item[1], item[2]), D3DXVECTOR2(item[3], item[4]), item[5]));
 								this->EnemyCounter++;
 							}
 							break;
@@ -293,6 +308,22 @@ void Grid::DrawActivatedObject()
 				if (obj->GetType() == Entity::Entity_Type::enemy_weapon_type && obj->GetActive())
 					obj->Draw();
 
+}
+
+void Grid::ForceEnemyExplode()
+{
+	for (int i = Xfrom; i <= Xto; i++)
+		for (int j = Yfrom; j <= Yto; j++)
+		{
+			std::list<Entity*> *objs = grid[i][j]->Object;
+			std::list<Entity*>::iterator it = objs->begin();
+			while (it != objs->end())
+			{
+				if ((*it)->GetType() == Entity::Entity_Type::enemy_type)
+					dynamic_cast<Enemy*>(*it)->hp = 0;
+				it++;
+			}
+		}
 }
 
 bool Grid::IsActivated(int column, int row)

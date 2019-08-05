@@ -8,7 +8,8 @@ public:
 	float time_beaten;
 	bool UpdateOneTime;
 	int count_jump;
-	int jump_high;
+	int delta_lui;
+	int delta_jump;
 	float previous_y;
 	Equation* e;
 	D3DXVECTOR2 position_goto;

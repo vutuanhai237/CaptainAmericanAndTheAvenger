@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 #include "PlayerIdleState.h"
 #include "PlayerRunningState.h"
+#include "PlayerBeatenState.h"
 #include "SceneManager.h"
 #include "Framework/Debug.h"
 #include "Shield.h"
@@ -140,6 +141,10 @@ Player::Player() :Entity()
 	this->time_guc = 0;
 	this->hp = PLAYER_HP;
 	CarrierObject = NULL;
+	this->number_rocket_robot = 0;
+	this->number_soldier = 0;
+	this->IsBornSoldier = true;
+	this->IsBornRocketRobot = true;
 }
 
 
@@ -154,7 +159,9 @@ void Player::Update(float dt)
 {
 	Entity::Update(dt);
 	this->player_state->Update(dt);
-	this->time_invisible -= dt;
+	if (this->time_invisible > 0) {
+		this->time_invisible -= dt;
+	}
 }
 
 void Player::Draw()
@@ -163,9 +170,22 @@ void Player::Draw()
 	{
 		Entity::position.x += CarrierObject->GetVelocityX();
 		Entity::position.y += CarrierObject->GetVelocityY();
-		Shield::GetInstance()->Update(1 / 60.0f);
+		if (Shield::GetInstance()->GetShieldState()->GetCurrentState() != ShieldState::NameState::ShieldAttack) {
+			Shield::GetInstance()->Update(0);
+		}
 	}
 	i++;
+	Player *player = Player::GetInstance();
+	Shield *shield = Shield::GetInstance();
+	if (player->GetMoveDirection()) {
+		player->GetCurrentAnimation()->SetScale(1, 1);
+		shield->GetAnimation()->SetScale(1, 1);
+	}
+	else {
+
+		player->GetCurrentAnimation()->SetScale(-1, 1);
+		shield->GetAnimation()->SetScale(-1, 1);
+	}
 	if (Player::GetInstance()->GetCurrentState() == PlayerState::NameState::shocking) {
 		this->animation->Draw(this->position);
 		goto CHECK;
@@ -185,17 +205,7 @@ void Player::Draw()
 
 	}
 	CHECK:
-	Player *player = Player::GetInstance();
-	Shield *shield = Shield::GetInstance();
-	if (player->GetMoveDirection()) {
-		player->GetCurrentAnimation()->SetScale(1, 1);
-		shield->GetAnimation()->SetScale(1, 1);
-	}
-	else {
-
-		player->GetCurrentAnimation()->SetScale(-1, 1);
-		shield->GetAnimation()->SetScale(-1, 1);
-	}
+	
 
 	shield->Draw();
 	DrawHP();
@@ -417,7 +427,7 @@ bool Player::IsCollisionWithWater(float dt, int delta_y)
 
 bool Player::IsCollisionWithWall(float dt, int delta_y)
 {
-	bool ret = false;
+	int ret = 0; 
 
 	Entity::IsLocking = false;
 	Entity::Update(dt);
@@ -444,39 +454,39 @@ bool Player::IsCollisionWithWall(float dt, int delta_y)
 			switch (tmp.side)
 			{
 			case CollisionSide::left:
-				if (ret)
-					return ret;
+				if (ret & 1)
+					return ret != 0;
 				position.x = item->GetPosition().x + (item->GetSize().cx + PLAYER_SIZE_WIDTH) / 2 + 1;
 				if (this->GetCurrentState() != PlayerState::NameState::jumping)
 					return true;
-				ret = true;
+				ret |= 1;
 				break;
 			case CollisionSide::right:
-				if (ret)
-					return ret;
+				if (ret & 1)
+					return ret != 0;
 				position.x = item->GetPosition().x - (item->GetSize().cx + PLAYER_SIZE_WIDTH) / 2 - 1;
 				if (this->GetCurrentState() != PlayerState::NameState::jumping)
 					return true;
-				ret = true;
+				ret |= 1;
 				break;
 			case CollisionSide::top:
 				position.y = item->GetPosition().y - (item->GetSize().cy + PLAYER_SIZE_HEIGHT) / 2;
 				velocity.y = 0.0f;
-				ret = true;
+				ret |= 1 << 1;
 				break;
 			case CollisionSide::bottom:
 				if (this->GetCurrentState() == PlayerState::NameState::jumping)
 					return false;				
 				position.y = item->GetPosition().y + (item->GetSize().cy + PLAYER_SIZE_HEIGHT) / 2 - delta_y;				
 				velocity.y = 0.0f;
-				ret = true;
+				ret |= 1 << 1;
 				break;
 			default:
 				break;
 			}
 		}
 	}
-	return ret;
+	return ret != 0;
 }
 
 bool Player::IsCollisionWithRope(float dt, int delta_y)
@@ -500,6 +510,43 @@ bool Player::IsCollisionWithRope(float dt, int delta_y)
 			if (tmp.side == CollisionSide::bottom)
 			{
 				position.y = item->GetPosition().y - PLAYER_SIZE_HEIGHT / 2 + item->GetSize().cy/2;
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool Player::IsCollisionWithSpike(float dt, int delta_y)
+{
+	SIZE FootSize;
+	FootSize.cx = PLAYER_SIZE_WIDTH;
+	FootSize.cy = PLAYER_FOOT_HEIGHT;
+	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
+	auto Checker = Collision::getInstance();
+	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
+
+	/*if (foot.vy == 0)
+	{
+		for (auto item : obj)
+		{
+			if (item->GetTag() == Entity::Entity_Tag::spike && Checker->IsCollide(foot, BoundingBox(item->GetPosition(), item->GetSize(), 0, 0)))
+				return true;
+		}
+		return false;
+	}*/
+
+	CollisionOut tmp;
+	BoundingBox box2;
+	for (auto item : obj)
+	{
+		if (item->GetTag() == Entity::Entity_Tag::spike)
+		{
+			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
+			tmp = Checker->SweptAABB(foot, box2);
+			if (tmp.side == CollisionSide::bottom)
+			{
+				position.y = item->GetPosition().y + PLAYER_SIZE_HEIGHT / 2;
 				return true;
 			}
 		}

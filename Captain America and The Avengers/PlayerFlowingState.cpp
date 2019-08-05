@@ -1,6 +1,6 @@
 ﻿#include "PlayerFlowingState.h"
 #include "PlayerDivingState.h"
-#include "Framework//Debug.h"
+#include "FrameworK/SoundManager.h"
 PlayerFlowingState::PlayerFlowingState()
 {
 	Player* player = Player::GetInstance();
@@ -54,6 +54,7 @@ void PlayerFlowingState::HandleInput(float dt)
 	auto keyboard = DirectInput::GetInstance();
 	
 	if (keyboard->KeyDown(JUMP_KEY)) {
+		SoundManager::GetInstance()->Play(SoundManager::SoundList::player_diving);
 		player->ChangeState(new PlayerJumpingState());
 		player->OnTheWater = false;
 		return;

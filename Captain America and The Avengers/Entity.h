@@ -67,7 +67,9 @@ public:
 		cross_platform,
 		circle_platform,
 		gray_robot,
-		bat
+		bat,
+		gray_rocket_robot,
+		electric_shockwave_barrier
 	};
 	enum Entity_Type {
 		static_type,

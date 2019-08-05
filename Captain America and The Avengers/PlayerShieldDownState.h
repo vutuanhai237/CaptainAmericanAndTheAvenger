@@ -11,6 +11,7 @@ class PlayerShieldDownState : public PlayerState
 public:
 	float time_nhuns;
 	bool IsNhunsLen;
+	bool PlayOneTime;
 	PlayerShieldDownState();
 	~PlayerShieldDownState();
 	virtual void Update(float dt);

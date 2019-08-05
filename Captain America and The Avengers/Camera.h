@@ -2,6 +2,7 @@
 #include <d3dx9.h>
 #include "Framework/GameSetting.h"
 
+#define CAMERA_LIMIT_DELTA 4.0f
 #define FAR_LEFT 104
 #define FAR_RIGHT 104
 #define FAR_TOP 70
@@ -31,12 +32,14 @@ public:
 	RECT GetCameraViewRect();
 
 	void SetCameraFreeze(bool IsFreeze);
+	bool GetCameraFreeze();
 private:
 	Camera();
 	~Camera() {};
 
 	RECT BoxFollow;
 	bool IsFreze;
+	int IsExtend;
 
 	int PixelWidth, PixelHeight;
 	D3DXVECTOR2 PointBL;

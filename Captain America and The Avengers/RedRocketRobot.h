@@ -30,11 +30,13 @@ public:
 	enum Level {
 		stupid,
 		normal,
-		clever
+		clever,
+		master
 	};
 	virtual void Update(float dt);
 	virtual void UpdateStupidLevel(float dt);
 	virtual void UpdateNormalLevel(float dt);
+	virtual void UpdateMasterLevel(float dt);
 	virtual void UpdateCleverLevel(float dt);
 	virtual int OnCollision(Entity*, float dt);
 	virtual void Draw();
@@ -63,7 +65,7 @@ public:
 	int IsJumpingFirst;
 	float time_ducking;
 	float time_idle;
-
+	bool IsGray;
 	int rocket_active;
 	Entity::Entity_Direction goto_direction;
 	Level level;

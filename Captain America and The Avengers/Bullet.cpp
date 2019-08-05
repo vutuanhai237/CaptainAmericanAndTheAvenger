@@ -1,5 +1,5 @@
 ﻿#include "Bullet.h"
-#include "FrameWork//Debug.h"
+#include "FrameWork/SoundManager.h"
 #include "SceneManager.h"
 #include "PlayerBeatenState.h"
 #include "Shield.h"
@@ -15,11 +15,13 @@ int Bullet::OnCollision(Entity* obj, float dt)
 	{
 		return 1;
 	}
+	Player *player = Player::GetInstance();
 
-	if (obj->GetTag() == Entity::Entity_Tag::shield)
+	if (obj->GetTag() == Entity::Entity_Tag::shield && player->time_invisible < 0.016*5)
 	{
 		if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::Nomal && Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 		{
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::shield_collision);
 			if (this->velocity.y == 0) // bay thang
 			{
 				this->jump_direction = Entity::Entity_Jump_Direction::BotToTop;
@@ -38,8 +40,7 @@ int Bullet::OnCollision(Entity* obj, float dt)
 	}
 	else
 	{
-		Player *player = Player::GetInstance();
-		if (obj->GetType() == Entity::Entity_Type::player_type&& player->time_invisible <= 0 && Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
+		if (obj->GetType() == Entity::Entity_Type::player_type && player->time_invisible <= 0 && Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 		{
 			player->ChangeState(new PlayerBeatenState(BULLET_DAMAGE));
 			return 1;
@@ -67,13 +68,14 @@ Bullet::Bullet(D3DXVECTOR2 position, Entity::Entity_Direction direction, FLOAT d
 		this->jump_direction = Entity::Entity_Jump_Direction::BotToTop;
 	else
 		this->jump_direction = Entity::Entity_Jump_Direction::TopToBot;
-	this->size.cx = 5; this->size.cy = 5;
+	this->size.cx = this->size.cy = 2;
 	this->SetPosition(position);
 	this->IsLocking = true;
 	this->distance = 0;
 	this->IsDead = false;
 	this->SetMoveDirection(direction);
 	this->damage = BULLET_DAMAGE;
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::enemy_fire);
 }
 
 

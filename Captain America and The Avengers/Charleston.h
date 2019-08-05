@@ -15,6 +15,10 @@ public:
 	Grid *GetCurrentGrid() override;
 	Charleston();
 	~Charleston() override;
+	float timer;
+	float timer2;
+	bool UpdateOneTime;
+
 protected:
 	CharlestonMap *map;
 	Camera *cam;

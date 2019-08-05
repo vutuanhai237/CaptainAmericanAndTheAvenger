@@ -2,7 +2,7 @@
 #include "ItemsHolder.h"
 #include "SceneManager.h"
 #include "Player.h"
-
+#include "Framework/SoundManager.h"
 Item::Item(float x, float y, int tag)
 {
 	Entity::SetTag(Entity::Entity_Tag::item);
@@ -91,16 +91,22 @@ int Item::OnCollision(Entity *obj, float dt)
 			{
 			case Item_Tag::ExitOrb:
 				SceneManager::GetInstance()->GetCurrentScene()->IsExitAble = true;
+				SoundManager::GetInstance()->Play(SoundManager::SoundList::item_exit_orb);
 				break;
 			case Item_Tag::HalfHeal:
 				Player::GetInstance()->hp += 4;
+				if (player->hp > PLAYER_HP)
+					player->hp = PLAYER_HP;
+				SoundManager::GetInstance()->Play(SoundManager::SoundList::item_hp);
 				break;
 			case Item_Tag::FullHeal:
 				player->hp += 8;
 				if (player->hp > PLAYER_HP)
 					player->hp = PLAYER_HP;
+				SoundManager::GetInstance()->Play(SoundManager::SoundList::item_hp);
 				break;
 			default:
+				SoundManager::GetInstance()->Play(SoundManager::SoundList::item_nomal);
 				break;
 			}
 			return 1;
@@ -125,10 +131,13 @@ void Item::Draw()
 void Item::CheckFalling()
 {
 	auto obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
-	for (Entity *item : obj)
-		if (Collision::getInstance()->SweptAABB(item->GetBoundingBox(), GetBoundingBox()).CollisionTime <= 1.0)
+	for (Entity *item : obj) {
+		if (item->GetTag() != Entity::Entity_Tag::rope 
+			&& Collision::getInstance()->SweptAABB(item->GetBoundingBox(), GetBoundingBox()).CollisionTime <= 1.0)
 		{
 			Entity::position.y = item->GetPosition().y + (item->GetSize().cy + size.cy) / 2 - 4;
 			CanFalling = false;
 		}
+	}
+	
 }

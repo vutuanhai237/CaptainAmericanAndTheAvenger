@@ -65,14 +65,16 @@ void PlayerRunningState::HandleInput(float dt)
 	{
 		if (!player->IsCollisionWithGround(dt))
 		{
-			if (!player->IsCollisionWithPlatform(dt))
+			if (!player->IsCollisionWithSpike(dt))
 			{
-				player->ChangeState(new PlayerJumpingDownState());
-				player->CarrierObject = NULL;
-				return;
-			}
+				if (!player->IsCollisionWithPlatform(dt))
+				{
+					player->ChangeState(new PlayerJumpingDownState());
+					player->CarrierObject = NULL;
+					return;
+				}
+			}	
 		}
-
 	}
 	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyPress(LEFT_KEY)) {
 		player->ChangeState(new PlayerIdleState());

@@ -51,6 +51,40 @@ void PlayerDuckingState::HandleInput(float dt)
 			return;
 		}
 	}
+	if (player->IsCollisionWithPlatform(dt))
+	{
+		if (keyboard->KeyDown(JUMP_KEY)) {
+			player->ChangeState(new PlayerJumpingState());
+			return;
+		}
+		
+	}
+	if (player->IsCollisionWithSpike(dt))
+	{
+		if (keyboard->KeyDown(JUMP_KEY)) {
+			player->ChangeState(new PlayerJumpingState());
+			return;
+		}
+
+	}
+	if (!player->IsCollisionWithPlatform(dt))
+	{
+		if (!player->IsCollisionWithGround(dt)) {
+			if (!player->IsCollisionWithSpike(dt))
+			{
+				if (!player->IsCollisionWithWall(dt)) {
+
+					if (!player->IsCollisionWithWater(dt)) {
+
+						player->ChangeState(new PlayerJumpingDownState());
+						return;
+					}
+				}
+			}
+		
+		}
+	}
+
 	if (player->GetPreviousState() == PlayerState::NameState::jumping_down) {
 		if (player->time_ducking_before_idle >= TIME_DUCKING_BEFORE_IDLE) {
 			player->ChangeState(new PlayerIdleState());

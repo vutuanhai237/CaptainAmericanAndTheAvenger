@@ -1,5 +1,5 @@
 #include "PlayerDieState.h"
-#include "Framework//Debug.h"
+#include "Framework/SoundManager.h"
 #include "Shield.h"
 #include "SceneManager.h"
 #include "Charleston.h"
@@ -13,7 +13,8 @@ PlayerDieState::PlayerDieState()
 	player->SetVelocity(0, 0);
 	this->time_beaten = 0;
 	player->time_guc = 0;
-
+	SoundManager::GetInstance()->StopAllSound();
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::player_dead);
 	player->OnTheWater = true;
 	this->IsGuc = true;
 	Shield::GetInstance()->SetShieldState(new ShieldNomalState());

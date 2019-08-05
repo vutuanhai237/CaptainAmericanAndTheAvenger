@@ -1,5 +1,5 @@
 #include "RedRocket.h"
-#include "FrameWork//Debug.h"
+#include "FrameWork/SoundManager.h"
 #include "SceneManager.h"
 #include "PlayerBeatenState.h"
 void RedRocket::Update(float dt)
@@ -14,6 +14,7 @@ void RedRocket::Update(float dt)
 	
 	if (this->distance > DISTANCE_OUT || EnemyWeapon::IsCollisionExplode()) {
 		this->IsExploding = true;
+		SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
 	}
 	
 	if (IsCrossed) {
@@ -52,6 +53,7 @@ int RedRocket::OnCollision(Entity* obj, float dt)
 		if (this->IsExploding == false) {
 			this->Release();
 			this->IsExploding = true;
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
 		}
 	}
 	return 0;
@@ -118,6 +120,7 @@ RedRocket::RedRocket(D3DXVECTOR2 position, bool IsCrossed, Entity::Entity_Direct
 	this->SetVelocityX(RED_ROCKET_VELOCITY_X);
 	this->SetMoveDirection(direction);
 	this->damage = RED_ROCKET_DAMAGE;
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::enemy_fire);
 }
 
 

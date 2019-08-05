@@ -1,6 +1,6 @@
 ﻿#include "BlueSoldier.h"
 #include "Shield.h"
-#include "FrameWork//Debug.h"
+#include "FrameWork/SoundManager.h"
 
 void BlueSoldier::Update(float dt)
 {
@@ -25,6 +25,7 @@ void BlueSoldier::Update(float dt)
 		this->time_beaten += dt;
 		if (this->time_beaten >= TIME_BEATEN) {
 			this->IsExplode = true;
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
 
 		}
 		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
@@ -376,6 +377,22 @@ void BlueSoldier::UpdateMasterLevel(float dt)
 
 int BlueSoldier::OnCollision(Entity* obj, float dt)
 {
+	if (Camera::GetInstance()->GetCameraFreeze() == true) {
+		if (Player::GetInstance()->IsBornSoldier == false) {
+			if (this->hp <= 0) {
+				Player::GetInstance()->number_soldier++;
+				Player::GetInstance()->IsBornSoldier = true;
+				this->IsExplode = true;
+				SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
+
+
+			}
+			if (this->GetPosition().x >= 517 && this->GetPosition().y <= 120) {
+				Player::GetInstance()->IsBornSoldier = true;
+				//this->IsExplode = true;
+			}
+		}
+	}
 	return Enemy::OnCollision(obj, dt);
 }
 

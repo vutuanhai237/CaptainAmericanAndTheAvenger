@@ -72,6 +72,7 @@ void PlayerJumpingState::HandleInput(float dt)
 	//	player->IsLockCollision == true;
 	//	return;
 	//}
+
 	if (keyboard->KeyDown(ATTACK_KEY)) {
 		player->ChangeState(new PlayerKickingState());
 		return;

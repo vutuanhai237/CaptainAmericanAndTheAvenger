@@ -47,6 +47,7 @@
 // beaten
 #define TIME_BEATEN_MIN 0.016f*8
 #define TIME_INVISIBLE 3.0f
+#define DAMAGE_SPIKE 2
 // hang on
 #define TIME_JUMP_FROM_ROPE 0.016f * 8
 // die
@@ -91,6 +92,7 @@ public:
 	bool IsCollisionWithWater(float dt, int delta_y = 12);
 	bool IsCollisionWithWall(float dt, int delta_y = 3);
 	bool IsCollisionWithRope(float dt, int delta_y = 22);
+	bool IsCollisionWithSpike(float dt, int delta_y = 12);
 
 	BoundingBox GetBoundingBox();
 	// Các biến này đáng lẽ phải ở riêng mỗi state, nhưng ở kicking, khi chuyển từ
@@ -104,9 +106,15 @@ public:
 	float time_don_tho;
 	float time_invisible;
 	float time_guc;
+	int number_rocket_robot;
+	int number_soldier;
 	// Code đi rời để biết tại sao phải tạo những biến này, có một vấn đề là các trạng thái
 	// khi new sẽ khởi tạo vận tốc khác nhau, nên khi jumping -> kicking -> jumping thì vận tốc
 	// bị khởi động lại 1 lần nữa, những biến này sẽ do idle có quyền định đoạt
+	bool IsBornSoldier;
+	bool IsBornRocketRobot;
+
+
 	bool IsJumpingDown;
 	bool IsJumping;
 	bool IsRolling;
@@ -120,12 +128,12 @@ public:
 	bool OnTheWater;
 	bool LockState;
 	Entity *CarrierObject;
+	int previous_state;
 	int hp;
 protected:
 	static Player *instance;
 	std::map<int, Animation*> animations;
 	PlayerState::NameState current_state;
-	int previous_state;
 	PlayerState* player_state;
 	Animation* animation;
 	D3DXVECTOR2 position_idle;

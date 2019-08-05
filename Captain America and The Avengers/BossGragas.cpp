@@ -5,6 +5,7 @@
 #include "PlayerShockingState.h"
 #include "Barrel.h"
 #include "SuperLaserBullet.h"
+#include "Framework/SoundManager.h"
 BossGragas*BossGragas::instance = NULL;
 
 BossGragas * BossGragas::GetInstance()
@@ -16,7 +17,9 @@ BossGragas * BossGragas::GetInstance()
 
 void BossGragas::Release()
 {
-	delete instance;
+	if (instance) 
+		delete instance;
+	this->instance = NULL;
 }
 
 BossGragas::BossGragas() :Enemy()
@@ -105,8 +108,9 @@ void BossGragas::Update(float dt)
 		if (this->time_explode >= TIME_EXPLODE) {
 			this->IsDead = true;
 			this->IsActive = false;
-			SceneManager::GetInstance()->GetCurrentScene()->IsExitAble = true;
-
+			if (this->time_explode >= TIME_EXPLODE * 3) {
+				SceneManager::GetInstance()->GetCurrentScene()->IsExitAble = true;
+			}
 		}
 		return;
 	}
@@ -501,6 +505,8 @@ void BossGragas::UpdateCrazyPhase(float dt)
 		if (boss->time_idle >= BOSS_GRAGAS_TIME_IDLE_BEFORE_DIE) {
 			boss->time_idle = 0;
 			boss->IsExplode = true;
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
+
 		}
 	}
 }

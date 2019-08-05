@@ -2,10 +2,16 @@
 #include "Player.h"
 #include "Shield.h"
 #include "ShieldNomalState.h"
+#include "Framework/SoundManager.h"
 #include "Framework/DirectInput.h"
 #include "PittsburghBoss.h"
+#include "GrayRocketRobot.h"
+#include "GreenSoldier.h"
 #include "SceneManager.h"
-
+#include "ItemsHolder.h"
+#include <fstream>
+#include "PlayerIdleState.h"
+#include "Grid.h"
 void Pittsburgh::Update(float dt)
 {
 	Scene::Update(dt);
@@ -18,12 +24,47 @@ void Pittsburgh::Update(float dt)
 
 	if (DirectInput::GetInstance()->KeyDown(DIK_Q))
 		map->SwapMode();
+	
+	if (this->UpdateOneTime == false) {
+		if (player->GetPosition().x >= 405 && player->GetPosition().x <= 415 && player->GetPosition().y < 120) {
+			map->GetCurrentGrid()->ForceEnemyExplode();
+			cam->SetCameraFreeze(true);
+			this->UpdateOneTime = true;
+			SoundManager::GetInstance()->Stop(SoundManager::SoundList::main_theme);
+			SoundManager::GetInstance()->PlayRepeat(SoundManager::SoundList::actiton_theme);
+		}
+	}
+	if (DirectInput::GetInstance()->KeyDown(DIK_K)) {
+		cam->SetCameraFreeze(false);
+	}
+	this->timer += dt;
+	this->timer2 += dt;
+	if (cam->GetCameraFreeze()) {
+		if (player->IsBornRocketRobot && this->timer2 > 3.0f) {
+			(map->GetCurrentGrid())->AddObject2Cell(new GrayRocketRobot(D3DXVECTOR2(567, 80), D3DXVECTOR2(230, 80), 0));
+			player->IsBornRocketRobot = false;
+			this->timer2 = 0;
+
+		}
+		if (player->IsBornSoldier && this->timer > 3.0f) {
+			(map->GetCurrentGrid())->AddObject2Cell(new GreenSoldier(3, D3DXVECTOR2(229, 75), 0));
+			player->IsBornSoldier = false;
+			this->timer = 0;
+		}
+	}
+	if (player->number_rocket_robot >= 3 && player->number_soldier >= 3) {
+		cam->SetCameraFreeze(false);
+		player->number_rocket_robot = 0;
+		map->GetCurrentGrid()->ForceEnemyExplode();
+
+		SoundManager::GetInstance()->Stop(SoundManager::SoundList::actiton_theme);
+		SoundManager::GetInstance()->PlayRepeat(SoundManager::SoundList::main_theme);
+
+	}
 	if (DirectInput::GetInstance()->KeyDown(DIK_GRAVE))
 		SceneManager::GetInstance()->ReplaceScene(new Pittsburgh());
-
 	if (IsExitAble && IsInsideExitZone())
 		SceneManager::GetInstance()->ReplaceScene(new PittsburghBoss());
-
 	// Cheat Fast next map
 	if (DirectInput::GetInstance()->KeyDown(DIK_N))
 		SceneManager::GetInstance()->ReplaceScene(new PittsburghBoss());
@@ -33,7 +74,16 @@ void Pittsburgh::Draw()
 {
 	map->Draw();
 	map->GetCurrentGrid()->DrawActivatedObject();
-	Player::GetInstance()->Draw();
+	Player *player = Player::GetInstance();
+	player->Draw();
+	if (player->time_guc >= TIME_DIE)
+	{
+		player->time_guc = 0;
+		player->hp = PLAYER_HP;
+		player->ChangeState(new PlayerIdleState());
+		SceneManager::GetInstance()->ReplaceScene(new Pittsburgh());
+		return;
+	}
 	Scene::Draw();
 }
 
@@ -75,8 +125,13 @@ Pittsburgh::Pittsburgh()
 	cam = Camera::GetInstance();
 	cam->Init(map->GetCurrentMap()->GetMapSize());
 	cam->SetCameraPosition(player->GetPosition());
-
+	this->UpdateOneTime = false;
+	this->timer = 3;
+	this->timer2 = 3;
 	Init();
+	// sound 
+	SoundManager::GetInstance()->StopAllSound();
+	SoundManager::GetInstance()->PlayRepeat(SoundManager::SoundList::main_theme);
 }
 
 Pittsburgh::~Pittsburgh()

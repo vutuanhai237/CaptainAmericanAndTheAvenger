@@ -52,7 +52,7 @@ public:
 	void ChangeState(BossWizardState* new_state);
 	void ChangeRoad(BossWizardRoad* new_road);
 	BossWizardState::NameState GetCurrentState();
-	
+	int previous_state;
 	BossWizardState* GetBossWizardState();
 	Animation* GetCurrentAnimation();
 	Animation* GetAnimation(BossWizardState::NameState state);
@@ -61,12 +61,12 @@ public:
 	void SetCurrentRoad(BossWizardRoad::RoadType new_road);
 	void SetCurrentAnimation(Animation* animation);
 	int GetPreviousState();
-	//virtual int OnCollision(Entity *, float dt);
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
 	CollisionOut IsCollisionWithWall(float dt, int delta_y = 4);
 	int OnCollision(Entity*, float dt) override;
 	int previous_hp;
-
+	bool UpdateOneTime;
+	bool UpdateOneTime2;
 	float time_flying;
 	float time_runnig;
 	float time_fire;
@@ -79,13 +79,12 @@ public:
 	bool IsUMin = false;
 	bool IsDie = false;
 	bool IsLac = false;
-
+	bool IsOnAir = false;
 protected:
 	static BossWizard *instance;
 	std::map<int, Animation*> animations;
 
 	BossWizardState::NameState current_state;
-	int previous_state;
 
 	BossWizardRoad::RoadType current_road;
 	int previous_road;

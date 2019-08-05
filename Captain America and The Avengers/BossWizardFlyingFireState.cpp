@@ -2,6 +2,7 @@
 #include "BossWizardFlyingFireState.h"
 #include "BossWizardFlyingState.h"
 #include "BossWizardFireState.h"
+#include "Framework/SoundManager.h"
 BossWizardFlyingFireState::BossWizardFlyingFireState(bool IsFire)
 {
 	BossWizard* boss = BossWizard::GetInstance();

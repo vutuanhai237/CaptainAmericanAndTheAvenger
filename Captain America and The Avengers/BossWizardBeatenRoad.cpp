@@ -12,107 +12,110 @@ void BossWizardBeatenRoad::Update(float dt)
 		boss->SetVelocity(0, 0);
 		this->GetOneTime = true;
 	}
-	// xử lý nội cảnh
-	if (this->e != NULL) {
-		if (boss->GetMoveDirection() == Entity::Entity_Direction::RightToLeft) {
-			//if (boss->GetPosition().x <= 234.5) {
-				boss->SetPositionX(boss->GetPosition().x + 0.5);
-			//}
-			if (this->count_jump < this->jump_high) {
-				if (this->count_jump++ < this->jump_high / 2) {
-					boss->SetPositionY(boss->GetPosition().y + 1);
-				}
-				else {
-					boss->SetPositionY(boss->GetPosition().y - 1);
+	
+	CollisionOut out = boss->IsCollisionWithWall(dt);
+	if (out.CollisionTime < 1.0f && out.side != CollisionSide::top && this->delta_lui >= 10)
+	{	
 
+	if (boss->IsOnAir == true) {
+			if (out.side == CollisionSide::bottom) {
+				if (boss->hp <= 0) {
+					if (this->UpdateOneTime == false) {
+						boss->ChangeState(new BossWizardDieState());
+						boss->IsDie = true;
+						this->UpdateOneTime = true;
+					}
+					return;
 				}
-			}
-			else {
-				boss->SetPositionY(this->previous_y);
-			}
-		
-			
-		}
-		else {
-			boss->SetPositionX(boss->GetPosition().x - 0.5);
-			if (this->count_jump < this->jump_high) {
-				if (this->count_jump++ < this->jump_high / 2) {
-					boss->SetPositionY(boss->GetPosition().y + 1);
-				}
-				else {
-					boss->SetPositionY(boss->GetPosition().y - 1);
-
-				}
-			}
-			else {
-				boss->SetPositionY(this->previous_y);
-			}
-
-			
-		}
-		
-	}
-	Player::GetInstance();
-	if (boss->hp <= 0) {
-		if (this->UpdateOneTime == false) {
-			boss->ChangeState(new BossWizardDieState());
-			boss->IsDie = true;
-			this->UpdateOneTime = true;
-		}
-		return;
-	}
-	else {
-		if (boss->GetPosition().x == this->position_goto.x) {
-			if (boss->IsCollisionWithWall(dt).CollisionTime < 1.0f) {
+				boss->previous_state = 7;
+				boss->SetVelocity(0, 0);
 				boss->ChangeRoad(new BossWizardIdleRoad());
 				boss->ChangeState(new BossWizardIdleState());
+				return;
 			}
 			else {
-				this->e = NULL;
-				boss->SetPositionY(boss->GetPosition().y - 2);
-
+				boss->SetVelocityY(BOSS_WIZARD_FLYING_VELOCITY_X);
+				boss->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
+				goto CHECK;
 			}
+		
+		}
+		else {
+			if (boss->hp <= 0) {
+				if (this->UpdateOneTime == false) {
+					boss->previous_state = 7;
+					boss->ChangeState(new BossWizardDieState());
+					boss->IsDie = true;
+					this->UpdateOneTime = true;
+				}
+				return;
+			}
+			boss->previous_state = 7;
+			boss->SetVelocity(0, 0);
+			boss->ChangeRoad(new BossWizardIdleRoad());
+			boss->ChangeState(new BossWizardIdleState());
 			return;
 		}
-		if (this->UpdateOneTime == false) {
-			boss->ChangeState(new BossWizardBeatenState());
-			if (boss->GetMoveDirection() == Entity::Entity_Direction::RightToLeft) {
-				position_goto = D3DXVECTOR2(boss->GetPosition().x + 10, boss->GetPosition().y + 10);
-				if (position_goto.x >= 236) {
-					int du = 236 - boss->GetPosition().x;
-					position_goto.x = 236 + (boss->GetPosition().x-round(boss->GetPosition().x));
-					position_goto.y = boss->GetPosition().y + du;
-				}
-				this->jump_high = abs(boss->GetPosition().y - position_goto.y);
+		
+	}
+CHECK:
+	if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+		boss->SetPositionX(boss->GetPosition().x - 1);
+		if (delta_lui <= 5) {
+			boss->SetVelocity(0, BOSS_WIZARD_FLYING_VELOCITY_X/10);
+			if (boss->GetPosition().y > 70) {
+				boss->SetVelocity(0, BOSS_WIZARD_FLYING_VELOCITY_X);
 
 			}
-			else {
-				position_goto = D3DXVECTOR2(boss->GetPosition().x - 10, boss->GetPosition().y + 10);
-				if (position_goto.x <= 20) {
-					int du = boss->GetPosition().x - 20;
-					position_goto.x = 20 + (boss->GetPosition().x - round(boss->GetPosition().x));
-					position_goto.y = boss->GetPosition().y + du;
-				}
-				this->jump_high = abs(boss->GetPosition().y - position_goto.y);
-
-			}
-			this->e = new Equation(boss->GetPosition(), position_goto);
-			this->UpdateOneTime = true;
+			boss->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
 		}
+		if (delta_lui >5 && delta_lui <= 10) {
+			boss->SetVelocity(0, BOSS_WIZARD_FLYING_VELOCITY_X/10);
+			if (boss->GetPosition().y > 70) {
+				boss->SetVelocity(0, BOSS_WIZARD_FLYING_VELOCITY_X);
+
+			}
+			boss->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
+		}
+		this->delta_lui += 1;
+		return;
+	}
+	if (boss->GetMoveDirection() == Entity::Entity_Direction::RightToLeft) {
+		boss->SetPositionX(boss->GetPosition().x + 1);
+		if (delta_lui <= 5) {
+			boss->SetVelocity(0, BOSS_WIZARD_FLYING_VELOCITY_X/10);
+			if (boss->GetPosition().y > 70) {
+				boss->SetVelocity(0, BOSS_WIZARD_FLYING_VELOCITY_X);
+
+			}
+			boss->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
+		}
+		if (delta_lui > 5 && delta_lui <= 10) {
+			boss->SetVelocity(0, BOSS_WIZARD_FLYING_VELOCITY_X/10);
+			if (boss->GetPosition().y > 70) {
+				boss->SetVelocity(0, BOSS_WIZARD_FLYING_VELOCITY_X);
+
+			}
+			boss->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
+		}
+		this->delta_lui += 1;
 		return;
 	}
 }
 
 BossWizardBeatenRoad::BossWizardBeatenRoad()
 {
-	this->phase = 1;
 	this->GetOneTime = false;
 	BossWizard* boss = BossWizard::GetInstance();
 	boss->SetCurrentRoad(BossWizardRoad::RoadType::beaten);
+	boss->ChangeState(new BossWizardBeatenState());
 	this->current_road = BossWizardRoad::RoadType::beaten;
+	//boss->IsOnAir = false;
 	this->position_goto = D3DXVECTOR2(0, 0);
 	this->UpdateOneTime = false;
 	this->count_jump = 0;
+	this->previous_y = boss->GetPosition().y;
+	this->delta_lui = 0;
 	this->previous_y = boss->GetPosition().y;
 }
 

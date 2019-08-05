@@ -3,7 +3,7 @@
 #include "PlayerFlowingState.h"
 #include "Shield.h"
 #include "ShieldDownState.h"
-
+#include "Framework/SoundManager.h"
 PlayerShieldDownState::PlayerShieldDownState()
 {
 	Player* player = Player::GetInstance();
@@ -16,7 +16,7 @@ PlayerShieldDownState::PlayerShieldDownState()
 	this->IsNhunsLen = false;
 	this->current_state = PlayerState::NameState::shield_down;
 	this->time_nhuns = 0;
-
+	this->PlayOneTime = false;
 	Shield::GetInstance()->SetShieldState(new ShieldDownState());
 }
 PlayerShieldDownState::~PlayerShieldDownState()
@@ -64,10 +64,28 @@ void PlayerShieldDownState::HandleInput(float dt)
 	auto keyboard = DirectInput::GetInstance();
 	player->time_air_jumping += dt;
 	player->time_air_rolling += dt;
+	if (!player->IsCollisionWithPlatform(dt)) {
+		if (!player->IsCollisionWithGround(dt)) {
+			if (!player->IsCollisionWithSpike(dt)) {
+				if (!player->IsCollisionWithWall(dt)) {
+					if (!player->IsCollisionWithWater(dt)) {
+						if (player->GetVelocityY() == 0) {
+							player->ChangeState(new PlayerJumpingDownState());
+							return;
+						}
+					}
+				}
+			}	
+		}
+	}
 	// Xét trường khi đang lót đít trên mật đất
-	if (player->IsCollisionWithGround(dt, 18) || player->IsCollisionWithWall(dt))
+	if (player->IsCollisionWithGround(dt, 18) || player->IsCollisionWithWall(dt) || player->IsCollisionWithSpike(dt) || player->IsCollisionWithWater(dt))
 	{
-		player->SetVelocityY(0);
+		player->SetVelocityY(0.001);
+		if (this->PlayOneTime == false) {
+			SoundManager::GetInstance()->Play(SoundManager::SoundList::shield_collision);
+			this->PlayOneTime = true;
+		}
 		// Điều kiện tiên quyết là phải ấn giữ down key, nếu không thì về idle
 		if (keyboard->KeyPress(DOWN_KEY)) {
 			// Ưu tiên các trạng thái khác
@@ -93,6 +111,7 @@ void PlayerShieldDownState::HandleInput(float dt)
 			}
 		}
 		else {
+
 			player->ChangeState(new PlayerIdleState());
 			return;
 		}
@@ -100,7 +119,7 @@ void PlayerShieldDownState::HandleInput(float dt)
 	// Xét trường hợp lướt trên nước
 	if (player->IsCollisionWithWater(dt, 16))
 	{
-		player->SetVelocityY(0);
+		player->SetVelocityY(0.001);
 		player->OnTheWater = true;
 		// Xét va chạm 1 lần duy nhất, nếu nhấn giữ thì không có chuyện gì, còn không thì jumping down để
 		// về flowing

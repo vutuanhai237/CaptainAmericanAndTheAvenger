@@ -1,14 +1,19 @@
 #include "PittsburghBoss.h"
 #include "Player.h"
+#include "PlayerIdleState.h"
 #include "Shield.h"
 #include "ShieldNomalState.h"
 #include "SceneManager.h"
 #include "Charleston.h"
 #include "BossGragas.h"
+#include "Framework/SoundManager.h"
+
 void PittsburghBoss::Update(float dt)
 {
 	Scene::Update(dt);
 	Player *player = Player::GetInstance();
+	Camera::GetInstance()->SetCameraFreeze(false);
+
 	// Update zone
 	
 	map->Update(dt);
@@ -31,10 +36,14 @@ void PittsburghBoss::Draw()
 {
 	map->Draw();
 	grid->DrawActivatedObject();
-	Player::GetInstance()->Draw();
-	if (Player::GetInstance()->time_guc >= TIME_DIE) {
-		Player::GetInstance()->time_guc = 0;
-		SceneManager::GetInstance()->ReplaceScene(new PittsburghBoss());
+	Player *player = Player::GetInstance();
+	player->Draw();
+	if (player->time_guc >= TIME_DIE) 
+	{
+		player->time_guc = 0;
+		player->hp = PLAYER_HP;
+		player->ChangeState(new PlayerIdleState());
+		SceneManager::GetInstance()->ReplaceScene(new PittsburghBoss());		
 		return;
 	}
 }
@@ -63,13 +72,16 @@ PittsburghBoss::PittsburghBoss()
 	grid->AddObject2Cell(Shield::GetInstance());
 	Scene::Mode = 1;
 	Init();
+	// sound 
+	SoundManager::GetInstance()->StopAllSound();
+	SoundManager::GetInstance()->PlayRepeat(SoundManager::SoundList::boss_gragas_theme);
 }
 
 PittsburghBoss::~PittsburghBoss()
 {
 	delete map;
 	delete grid;
-	
+	BossGragas::GetInstance()->Release();	
 }
 
 void PittsburghBoss::Init()
