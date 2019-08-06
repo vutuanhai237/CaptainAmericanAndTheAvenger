@@ -1,5 +1,4 @@
 ﻿#include "PlayerIdleState.h"
-#include "Framework//Debug.h"
 #include "Shield.h"
 #include "ShieldNomalState.h"
 #include "PlayerPunchingState.h"

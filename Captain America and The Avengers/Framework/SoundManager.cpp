@@ -49,6 +49,8 @@ HRESULT SoundManager::Play(int index)
 
 HRESULT SoundManager::PlayRepeat(int index)
 {
+	if (sounds[index]->IsSoundPlaying())
+		sounds[index]->Reset();
 	return sounds[index]->Play(0, DSBPLAY_LOOPING);
 }
 

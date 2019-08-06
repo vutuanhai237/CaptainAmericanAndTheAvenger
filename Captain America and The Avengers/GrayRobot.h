@@ -28,7 +28,6 @@ public:
 	int IsLui;
 	int previous_IsLui;
 	int i = 0;
-	Eclipse *e;
 	float distance;
 	float Ax;
 	float Ay;

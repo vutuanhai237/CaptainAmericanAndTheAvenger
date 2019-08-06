@@ -51,8 +51,8 @@ void CharlestonBoss::Update(float dt)
 		);
 		this->count_bullet++;
 	}
-	//if (this->time_count >= 16.0f && this->count_bullet == 3) {
-	if (this->count_bullet == 0) {
+	if (this->time_count >= 16.0f && this->count_bullet == 3) {
+	//if (this->count_bullet == 0) {
 		grid->AddObject2Cell(boss);
 		boss->Init();
 		float x = rand() % 170 + 50;
@@ -132,6 +132,7 @@ CharlestonBoss::CharlestonBoss() : Scene()
 	cam = Camera::GetInstance();
 	cam->SetCameraPosition(player->GetPosition());
 	cam->Init(map->GetMapSize());
+
 	grid = new Grid(map->GetMapSize());
 	ExitZone.top = GAME_SCREEN_HEIGHT;
 	ExitZone.bottom = 0;

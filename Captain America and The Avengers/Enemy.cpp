@@ -1,6 +1,5 @@
 #include "Enemy.h"
 #include "PlayerBeatenState.h"
-#include "Framework/Debug.h"
 #include "Shield.h"
 #include "BossWizard.h"
 Animation * Enemy::GetCurrentAnimation()

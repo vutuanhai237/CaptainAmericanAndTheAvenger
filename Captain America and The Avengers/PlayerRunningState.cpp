@@ -1,7 +1,6 @@
 ﻿#include "PlayerRunningState.h"
 #include "PlayerIdleState.h"
 #include "PlayerDashingState.h"
-#include "Framework//Debug.h"
 #include "Shield.h"
 #include "ShieldNomalState.h"
 PlayerRunningState::PlayerRunningState()

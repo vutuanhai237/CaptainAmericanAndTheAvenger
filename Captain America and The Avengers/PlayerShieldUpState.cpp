@@ -1,5 +1,4 @@
 ﻿#include "PlayerShieldUpState.h"
-#include "Framework//Debug.h"
 #include "ShieldUpState.h"
 #include "Shield.h"
 PlayerShieldUpState::PlayerShieldUpState()

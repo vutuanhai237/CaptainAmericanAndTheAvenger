@@ -1,5 +1,4 @@
 ﻿#include "PlayerHangOnState.h"
-#include "Framework//Debug.h"
 #include "Shield.h"
 #include "ShieldOnAirState.h"
 PlayerHangOnState::PlayerHangOnState()

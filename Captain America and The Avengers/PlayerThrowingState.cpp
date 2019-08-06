@@ -1,5 +1,4 @@
 ﻿#include "PlayerThrowingState.h"
-#include "Framework//Debug.h"
 #include "Shield.h"
 #include "ShieldAttackState.h"
 PlayerThrowingState::PlayerThrowingState()

@@ -1,7 +1,6 @@
 #include "PlayerDieState.h"
 #include "Framework/SoundManager.h"
 #include "Shield.h"
-#include "SceneManager.h"
 #include "Charleston.h"
 #include "Shield.h"
 #include "ShieldNomalState.h"

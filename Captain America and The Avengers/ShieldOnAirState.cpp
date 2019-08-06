@@ -1,7 +1,6 @@
 #include "ShieldOnAirState.h"
 #include "Shield.h"
 #include "Player.h"
-#include "Framework//Debug.h"
 ShieldOnAirState::ShieldOnAirState()
 {
 	SetCurrentState(NameState::OnAir);

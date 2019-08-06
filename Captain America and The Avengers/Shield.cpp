@@ -1,6 +1,5 @@
 #include "Shield.h"
 #include "Player.h"
-#include "Framework/Debug.h"
 
 Shield *Shield::Instance = NULL;
 

@@ -13,14 +13,3 @@ public:
 	~Equation();
 };
 
-class Eclipse {
-private:
-	float a, b;
-	D3DXVECTOR2 center;
-public:
-	Eclipse(D3DXVECTOR2 point1, Entity::Entity_Direction direction, float distance);
-	float GetYFromX(float x, int direction);
-	Eclipse();
-	~Eclipse();
-};
-

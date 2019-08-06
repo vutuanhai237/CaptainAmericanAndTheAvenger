@@ -3,7 +3,6 @@
 #include "PlayerRunningState.h"
 #include "PlayerBeatenState.h"
 #include "SceneManager.h"
-#include "Framework/Debug.h"
 #include "Shield.h"
 Player *Player::instance = NULL;
 

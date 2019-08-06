@@ -1,5 +1,4 @@
 #include "PlayerShockingState.h"
-#include "Framework//Debug.h"
 #include "Shield.h"
 #include "PlayerBeatenState.h"
 PlayerShockingState::PlayerShockingState(int damage)

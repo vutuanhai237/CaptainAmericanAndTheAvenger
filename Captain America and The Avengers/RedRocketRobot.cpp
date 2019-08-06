@@ -292,7 +292,7 @@ int RedRocketRobot::OnCollision(Entity* obj, float dt)
 				this->IsExplode = true;
 				SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
 			}
-			if (this->GetPosition().x <= 260 && this->GetPosition().y <= 200) {
+			if (this->GetPosition().x <= 270 && this->GetPosition().y <= 200) {
 				Player::GetInstance()->IsBornRocketRobot = true;
 				this->IsExplode = true;
 				SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
@@ -591,33 +591,7 @@ void RedRocketRobot::UpdateRunningState(float dt)
 		this->previous_state = RedRocketRobotState::running;
 		return;
 	}
-	else {
-		// thông minh hơn
-		/*Debug::PrintOut(L"%d\n", this->IsLui);
 
-		if ((Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::ShieldAttack
-			&& IsLui == -1))
-		{
-			if ((this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight
-				&& this->position.x <= Player::GetInstance()->GetPosition().x)
-				|| (this->GetMoveDirection() == Entity::Entity_Direction::RightToLeft
-					&& this->position.x >= Player::GetInstance()->GetPosition().x))
-			{
-				this->current_state = RedRocketRobotState::jumping;
-				this->current_animation = ducking_ani;
-				this->previous_state = RedRocketRobotState::running;
-				this->distance = abs(position.x - position_spawn.x);
-				if (this->clever_direction == Entity::Entity_Direction::RightToLeft) {
-					this->position_loop = D3DXVECTOR2(this->position.x + this->distance, this->position_goto.y);
-				}
-				else {
-					this->position_loop = D3DXVECTOR2(this->position.x - this->distance, this->position_goto.y);
-
-				}
-				return;
-			}
-		}*/
-	}
 CHECK:
 	if (abs(this->position.x - this->position_loop.x) < 2.0f && IsChamLanHai) {
 		IsLui = -1;

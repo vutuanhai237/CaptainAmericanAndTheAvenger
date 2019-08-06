@@ -384,10 +384,8 @@ int BlueSoldier::OnCollision(Entity* obj, float dt)
 				Player::GetInstance()->IsBornSoldier = true;
 				this->IsExplode = true;
 				SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
-
-
 			}
-			if (this->GetPosition().x >= 517 && this->GetPosition().y <= 120) {
+			if (this->GetPosition().x >= 520 && this->GetPosition().y <= 120) {
 				Player::GetInstance()->IsBornSoldier = true;
 				//this->IsExplode = true;
 			}

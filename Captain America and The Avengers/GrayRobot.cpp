@@ -30,11 +30,7 @@ void GrayRobot::Update(float dt)
 		return;
 	}
 
-	
-	if (this->UpdateOneTime == false) {
-		this->e = new Eclipse(this->position_spawn, this->GetMoveDirection(), this->distance);
-		this->UpdateOneTime = true;
-	}
+
 
 	if (this->current_state == GrayRobotState::idle) {
 		this->UpdateIdleState(dt);

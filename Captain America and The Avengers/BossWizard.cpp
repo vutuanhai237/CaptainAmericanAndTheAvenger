@@ -113,7 +113,7 @@ void BossWizard::Update(float dt)
 	if (this->hp <= 10) {
 		this->IsLac = true;
 		if (this->UpdateOneTime == false) {
-			SoundManager::GetInstance()->Stop(SoundManager::SoundList::actiton_theme);
+			SoundManager::GetInstance()->Stop(SoundManager::SoundList::boss_wizard_theme);
 			SoundManager::GetInstance()->PlayRepeat(SoundManager::SoundList::main_theme);
 			this->UpdateOneTime = true;
 		}

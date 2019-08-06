@@ -1,7 +1,6 @@
 #include <fstream>
 #include "Charleston.h"
 #include "Framework/DirectInput.h"
-#include "Framework/Debug.h"
 #include "Framework/SoundManager.h"
 #include "Framework/DirectInput.h"
 #include "SceneManager.h"
@@ -38,25 +37,22 @@ void Charleston::Update(float dt)
 			SoundManager::GetInstance()->PlayRepeat(SoundManager::SoundList::actiton_theme);
 		}
 	}
-	if (DirectInput::GetInstance()->KeyDown(DIK_K)) {
-		cam->SetCameraFreeze(false);
-	}
 	this->timer += dt;
 	this->timer2 += dt;
 	if (cam->GetCameraFreeze()) {
 		if (player->IsBornRocketRobot && this->timer2 > 3.0f) {
-			grid->AddObject2Cell(new RedRocketRobot(3, D3DXVECTOR2(517, 70), D3DXVECTOR2(240, 70), 0));
+			grid->AddObject2Cell(new RedRocketRobot(3, D3DXVECTOR2(cam->GetCameraPosition().x + GAME_SCREEN_WIDTH + 8, 70), D3DXVECTOR2(240, 70), 0));
 			player->IsBornRocketRobot = false;
 			this->timer2 = 0;
 
 		}
 		if (player->IsBornSoldier && this->timer > 3.0f) {
-			grid->AddObject2Cell(new BlueSoldier(2, D3DXVECTOR2(230, 70), 0));
+			grid->AddObject2Cell(new BlueSoldier(2, D3DXVECTOR2(cam->GetCameraPosition().x-8, 70), 0));
 			player->IsBornSoldier = false;
 			this->timer = 0;
 		}
 	}
-	if (player->number_rocket_robot >= 2 && player->number_soldier >= 2) {
+	if (player->number_rocket_robot >= 3 && player->number_soldier >= 3) {
 		cam->SetCameraFreeze(false);
 		grid->ForceEnemyExplode();
 		SoundManager::GetInstance()->Stop(SoundManager::SoundList::actiton_theme);
@@ -66,9 +62,16 @@ void Charleston::Update(float dt)
 	}
 	if (IsExitAble && IsInsideExitZone())
 		SceneManager::GetInstance()->ReplaceScene(new CharlestonBoss());
+	if (DirectInput::GetInstance()->KeyDown(DIK_GRAVE))
+		SceneManager::GetInstance()->ReplaceScene(new Charleston());
 	// Cheat Fast next map
 	if (DirectInput::GetInstance()->KeyDown(DIK_N))
+	{
+		if (cam->GetCameraFreeze()) {
+			cam->SetCameraFreeze(false);
+		}
 		SceneManager::GetInstance()->ReplaceScene(new CharlestonBoss());
+	}
 }
 
 void Charleston::Draw()
@@ -82,7 +85,10 @@ void Charleston::Draw()
 		player->time_guc = 0;
 		player->hp = PLAYER_HP;
 		player->ChangeState(new PlayerIdleState());
-		SceneManager::GetInstance()->ReplaceScene(new CharlestonBoss());
+		if (cam->GetCameraFreeze()) {
+			cam->SetCameraFreeze(false);
+		}
+		SceneManager::GetInstance()->ReplaceScene(new Charleston());
 		return;
 	}
 	Scene::Draw();

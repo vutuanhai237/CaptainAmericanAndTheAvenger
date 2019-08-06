@@ -63,6 +63,7 @@ PittsburghBoss::PittsburghBoss()
 	map = new PittsburghBossMap();
 	cam = Camera::GetInstance();
 	cam->Init(map->GetMapSize());
+
 	grid = new Grid(map->GetMapSize());
 	ExitZone.top = GAME_SCREEN_HEIGHT;
 	ExitZone.bottom = 0;

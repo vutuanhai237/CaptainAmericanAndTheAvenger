@@ -16,19 +16,14 @@
 #define BAT_DISTANCE_PHASE_4_10 60
 #define BAT_DISTANCE_PHASE_5_7_9 100
 #define BAT_DISTANCE_PHASE_6_8 45
-
-
-
 class Bat : public Enemy
 {
 private:
-	Animation* idle_ani;
-	Animation* idle2_ani;
-	Animation* flying_ani;
-	Animation* flying2_ani;
-
+	Animation* idle_ani; // bat normal in egg
+	Animation* idle2_ani; // bat electric idle
+	Animation* flying_ani; // bat normal flying
+	Animation* flying2_ani; // bat electric flying
 public:
-	// Share zone
 	enum BatState {
 		idle = 21,
 		idle2 = 22,
@@ -42,13 +37,14 @@ public:
 	Level level;
 	int i = 0;
 	int phase;
-	bool active;
+	// scaler
 	float distance;
 	float time_idle;
+	// bool var
+	bool active;
 	bool IsChamDatLanDau;
 	bool UpdateOneTime;
 	bool UpdateOneTime2;
-
 	bool IsRunning;
 	bool IsVoDich;
 	// Function
@@ -60,7 +56,6 @@ public:
 	BoundingBox GetBoundingBox() override;
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
 	bool IsCollisionWithSpike(float dt, int delta_y = 12);
-
 	BatState current_state;
 	BatState previous_state;
 	Bat(int level, D3DXVECTOR2 position_spawn);
