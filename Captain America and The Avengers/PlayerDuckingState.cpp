@@ -5,13 +5,11 @@ PlayerDuckingState::PlayerDuckingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetSize(24, 12);
-
 	player->SetCurrentState(PlayerState::NameState::ducking);
-	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
 	this->current_state = PlayerState::NameState::ducking;
 	player->SetTimeBuffer(0);
 	player->SetVelocity(0, 0);
-
+	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
 }
 PlayerDuckingState::~PlayerDuckingState()
 {
@@ -22,7 +20,6 @@ void PlayerDuckingState::Update(float dt)
 {
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
-
 }
 
 void PlayerDuckingState::Draw()
@@ -45,14 +42,16 @@ void PlayerDuckingState::HandleInput(float dt)
 	player->time_ducking_before_idle += dt;
 	if (player->IsCollisionWithWall(dt))
 	{
-		if (keyboard->KeyDown(JUMP_KEY)) {
+		if (keyboard->KeyDown(JUMP_KEY))
+		{
 			player->ChangeState(new PlayerJumpingState());
 			return;
 		}
 	}
 	if (player->IsCollisionWithPlatform(dt))
 	{
-		if (keyboard->KeyDown(JUMP_KEY)) {
+		if (keyboard->KeyDown(JUMP_KEY))
+		{
 			player->ChangeState(new PlayerJumpingState());
 			return;
 		}
@@ -60,7 +59,8 @@ void PlayerDuckingState::HandleInput(float dt)
 	}
 	if (player->IsCollisionWithSpike(dt))
 	{
-		if (keyboard->KeyDown(JUMP_KEY)) {
+		if (keyboard->KeyDown(JUMP_KEY)) 
+		{
 			player->ChangeState(new PlayerJumpingState());
 			return;
 		}
@@ -68,63 +68,69 @@ void PlayerDuckingState::HandleInput(float dt)
 	}
 	if (!player->IsCollisionWithPlatform(dt))
 	{
-		if (!player->IsCollisionWithGround(dt)) {
+		if (!player->IsCollisionWithGround(dt)) 
+		{
 			if (!player->IsCollisionWithSpike(dt))
 			{
-				if (!player->IsCollisionWithWall(dt)) {
-
-					if (!player->IsCollisionWithWater(dt)) {
-
+				if (!player->IsCollisionWithWall(dt)) 
+				{
+					if (!player->IsCollisionWithWater(dt)) 
+					{
 						player->ChangeState(new PlayerJumpingDownState());
 						return;
 					}
 				}
-			}
-		
+			}	
 		}
 	}
 
-	if (player->GetPreviousState() == PlayerState::NameState::jumping_down) {
-		if (player->time_ducking_before_idle >= TIME_DUCKING_BEFORE_IDLE) {
+	if (player->GetPreviousState() == PlayerState::NameState::jumping_down)
+	{
+		if (player->time_ducking_before_idle >= TIME_DUCKING_BEFORE_IDLE)
+		{
 			player->ChangeState(new PlayerIdleState());
 			return;
 		}
 		return;
 	}
  	// Ngồi đấm
-	if (keyboard->KeyDown(ATTACK_KEY) && keyboard->KeyPress(DOWN_KEY)) {
+	if (keyboard->KeyDown(ATTACK_KEY) && keyboard->KeyPress(DOWN_KEY)) 
+	{
 		player->ChangeState(new PlayerDuckingPunchingState());
 		return;
-	}
-	
+	}	
 	// Ưu tiên trạng thái running
-	if (keyboard->KeyDown(RIGHT_KEY)) {
+	if (keyboard->KeyDown(RIGHT_KEY)) 
+	{
 		player->ChangeState(new PlayerRunningState());
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		return;
 	}
-	if (keyboard->KeyDown(LEFT_KEY)) {
+	if (keyboard->KeyDown(LEFT_KEY))
+	{
 		player->ChangeState(new PlayerRunningState());
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		return;
 	}
 	// Chuyển sang đứng
-	if (keyboard->KeyPress(UP_KEY)) {
+	if (keyboard->KeyPress(UP_KEY))
+	{
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
 	// Chuyển sang state chui xuyên đất hoặc nhảy lên nếu tường không lọt được
-	if (keyboard->KeyDown(JUMP_KEY)) {
+	if (keyboard->KeyDown(JUMP_KEY))
+	{
 		player->ChangeState(new PlayerJumpingDownState());
 		player->IsDonTho = true;
 		return;
 	}
 	// Tiếp tục giữ state
-	if (keyboard->KeyPress(DOWN_KEY)) {
+	if (keyboard->KeyPress(DOWN_KEY)) 
+	{
 		player->ChangeState(new PlayerDuckingState());
 		return;
 	}
-
 	player->ChangeState(new PlayerIdleState());
 	return;
 }

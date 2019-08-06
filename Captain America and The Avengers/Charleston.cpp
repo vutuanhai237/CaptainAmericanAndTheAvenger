@@ -17,9 +17,7 @@ void Charleston::Update(float dt)
 {
 	Scene::Update(dt);
 	Player *player = Player::GetInstance();
-	// Update zone
 	map->Update(dt);
-
 	player->HandleInput(dt);
 	player->Update(dt);
 
@@ -27,9 +25,10 @@ void Charleston::Update(float dt)
 	grid->Update(dt);
 	cam->SetCameraPosition(player->GetPosition());
 
-	
-	if (this->UpdateOneTime == false) {
-		if (player->GetPosition().x >= 415 && player->GetPosition().y < 120) {
+	if (this->UpdateOneTime == false) 
+	{
+		if (player->GetPosition().x >= 415 && player->GetPosition().y < 120) 
+		{
 			grid->ForceEnemyExplode();
 			cam->SetCameraFreeze(true);
 			this->UpdateOneTime = true;
@@ -39,20 +38,23 @@ void Charleston::Update(float dt)
 	}
 	this->timer += dt;
 	this->timer2 += dt;
-	if (cam->GetCameraFreeze()) {
-		if (player->IsBornRocketRobot && this->timer2 > 3.0f) {
+	if (cam->GetCameraFreeze())
+	{
+		if (player->IsBornRocketRobot && this->timer2 > 3.0f)
+		{
 			grid->AddObject2Cell(new RedRocketRobot(3, D3DXVECTOR2(cam->GetCameraPosition().x + GAME_SCREEN_WIDTH + 8, 70), D3DXVECTOR2(240, 70), 0));
 			player->IsBornRocketRobot = false;
 			this->timer2 = 0;
-
 		}
-		if (player->IsBornSoldier && this->timer > 3.0f) {
+		if (player->IsBornSoldier && this->timer > 3.0f)
+		{
 			grid->AddObject2Cell(new BlueSoldier(2, D3DXVECTOR2(cam->GetCameraPosition().x-8, 70), 0));
 			player->IsBornSoldier = false;
 			this->timer = 0;
 		}
 	}
-	if (player->number_rocket_robot >= 3 && player->number_soldier >= 3) {
+	if (player->number_rocket_robot >= 3 && player->number_soldier >= 3)
+	{
 		cam->SetCameraFreeze(false);
 		grid->ForceEnemyExplode();
 		SoundManager::GetInstance()->Stop(SoundManager::SoundList::actiton_theme);
@@ -61,13 +63,18 @@ void Charleston::Update(float dt)
 		player->number_soldier = 0;
 	}
 	if (IsExitAble && IsInsideExitZone())
+	{
 		SceneManager::GetInstance()->ReplaceScene(new CharlestonBoss());
+	}
 	if (DirectInput::GetInstance()->KeyDown(DIK_GRAVE))
+	{
 		SceneManager::GetInstance()->ReplaceScene(new Charleston());
+	}
 	// Cheat Fast next map
 	if (DirectInput::GetInstance()->KeyDown(DIK_N))
 	{
-		if (cam->GetCameraFreeze()) {
+		if (cam->GetCameraFreeze()) 
+		{
 			cam->SetCameraFreeze(false);
 		}
 		SceneManager::GetInstance()->ReplaceScene(new CharlestonBoss());
@@ -85,7 +92,8 @@ void Charleston::Draw()
 		player->time_guc = 0;
 		player->hp = PLAYER_HP;
 		player->ChangeState(new PlayerIdleState());
-		if (cam->GetCameraFreeze()) {
+		if (cam->GetCameraFreeze()) 
+		{
 			cam->SetCameraFreeze(false);
 		}
 		SceneManager::GetInstance()->ReplaceScene(new Charleston());
@@ -114,7 +122,7 @@ void Charleston::Init()
 	int tag, posX, posY, tmp;
 	fstream data(L"Resources/Map/charleston_map_items_enemy.txt", ios_base::in);
 	int *obj;
-	Entity *item;
+	Entity *item = NULL;
 	ItemsHolder *holder;
 	data >> n;
 	for (int i = 0; i < n; i++)
@@ -123,7 +131,7 @@ void Charleston::Init()
 		switch (tag)
 		{
 		case Entity::Entity_Tag::item_container:
-			holder = new ItemsHolder(posX, posY);
+			holder = new ItemsHolder((float)posX, (float)posY);
 			data >> m;
 			for (int i = 0; i < m; i++)
 			{
@@ -196,7 +204,6 @@ Charleston::Charleston() : Scene()
 	this->UpdateOneTime = false;
 	this->timer2 = 0.0f;
 	Charleston::Init();
-	// sound 
 	SoundManager::GetInstance()->StopAllSound();
 	SoundManager::GetInstance()->PlayRepeat(SoundManager::SoundList::main_theme);
 }

@@ -25,10 +25,7 @@ PlayerJumpingState::PlayerJumpingState()
 	player->time_ducking_before_idle = 0;
 	player->time_jumping_before_flowing = 0;
 	player->CarrierObject = NULL;
-
 	Shield::GetInstance()->SetShieldState(new ShieldOnAirState());
-
-
 }
 PlayerJumpingState::~PlayerJumpingState()
 {
@@ -39,7 +36,8 @@ void PlayerJumpingState::Update(float dt)
 {
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
-	if (player->GetVelocityY() >= VELOCITY_Y) {
+	if (player->GetVelocityY() >= VELOCITY_Y)
+	{
 		player->SetVelocityY(abs(player->GetVelocityY()) - JUMPING_ACCELERATION);
 	}
 }
@@ -65,14 +63,8 @@ void PlayerJumpingState::HandleInput(float dt)
 {
 	Player* player = Player::GetInstance();
 	auto keyboard = DirectInput::GetInstance();
-	//if (player->IsCollisionWithGround(dt, 8) && player->IsLockCollision == false && player->GetPreviousState() == PlayerState::NameState::flowing)
-	//{
-	//	//player->ChangeState(new PlayerDuckingState());
-	//	player->IsLockCollision == true;
-	//	return;
-	//}
-
-	if (keyboard->KeyDown(ATTACK_KEY)) {
+	if (keyboard->KeyDown(ATTACK_KEY)) 
+	{
 		player->ChangeState(new PlayerKickingState());
 		return;
 	}
@@ -80,13 +72,15 @@ void PlayerJumpingState::HandleInput(float dt)
 	if (keyboard->KeyPress(JUMP_KEY))
 	{
 		player->time_air_jumping += dt;
-		if (player->GetVelocityY() <= 0) {
+		if (player->GetVelocityY() <= 0)
+		{
 			player->ChangeState(new PlayerJumpingDownState());
 			return;
 		}
 		if (player->time_air_jumping >= TIME_AIR)
 		{
-			if (player->GetPreviousState() == PlayerState::NameState::flowing || player->GetPreviousState() == PlayerState::NameState::diving) {
+			if (player->GetPreviousState() == PlayerState::NameState::flowing || player->GetPreviousState() == PlayerState::NameState::diving) 
+			{
 				player->ChangeState(new PlayerJumpingDownState());
 				return;
 			}
@@ -97,7 +91,8 @@ void PlayerJumpingState::HandleInput(float dt)
 	else
 	{
 		player->time_air_jumping += dt;
-		if (player->GetVelocityY() <= 0) {
+		if (player->GetVelocityY() <= 0) 
+		{
 			player->ChangeState(new PlayerJumpingDownState());
 			return;
 		}
@@ -105,31 +100,25 @@ void PlayerJumpingState::HandleInput(float dt)
 		if (player->time_air_jumping >= TIME_JUMPING)
 		{
 			player->ChangeState(new PlayerJumpingDownState());
-
 			return;
-		}
-		
+		}		
 	}
-	if (!keyboard->KeyPress(RIGHT_KEY) && !keyboard->KeyPress(LEFT_KEY)) {
+
+	if (!keyboard->KeyPress(RIGHT_KEY) && !keyboard->KeyPress(LEFT_KEY))
+	{
 		player->SetVelocityX(0);
 		return;
 	}
-	
 	// Đang ở trên không, nếu ấn left thì dịch qua trái
-	if (keyboard->KeyPress(LEFT_KEY)) {
+	if (keyboard->KeyPress(LEFT_KEY))
+	{
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		player->SetPositionX(player->GetPosition().x - DELTA_JUMP * dt);
 	}
 	// Đang ở trên không, nếu ấn left thì dịch qua phải
-	if (keyboard->KeyPress(RIGHT_KEY)) {
+	if (keyboard->KeyPress(RIGHT_KEY)) 
+	{
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		player->SetPositionX(player->GetPosition().x + DELTA_JUMP * dt);
 	}
-	
-
-	
-	// Code xong va chạm thì xóa hàm này với bỏ comment return chỗ left & right
-	// SWEPT AABB sẽ giải quyết được bug chỗ này
-	
-	
 }

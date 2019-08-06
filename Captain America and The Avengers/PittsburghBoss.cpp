@@ -13,23 +13,21 @@ void PittsburghBoss::Update(float dt)
 	Scene::Update(dt);
 	Player *player = Player::GetInstance();
 	Camera::GetInstance()->SetCameraFreeze(false);
-
-	// Update zone
-	
 	map->Update(dt);
-
 	player->HandleInput(dt);
 	player->Update(dt);
-
 	Shield::GetInstance()->Update(dt);
 	grid->Update(dt);
 	cam->SetCameraPosition(player->GetPosition());
-
 	if (IsExitAble && IsInsideExitZone())
+	{
 		SceneManager::GetInstance()->ReplaceScene(new Charleston());
+	}
 	// Cheat Fast next map
 	if (DirectInput::GetInstance()->KeyDown(DIK_N))
+	{
 		SceneManager::GetInstance()->ReplaceScene(new Charleston());
+	}
 }
 
 void PittsburghBoss::Draw()
@@ -63,17 +61,15 @@ PittsburghBoss::PittsburghBoss()
 	map = new PittsburghBossMap();
 	cam = Camera::GetInstance();
 	cam->Init(map->GetMapSize());
-
 	grid = new Grid(map->GetMapSize());
-	ExitZone.top = GAME_SCREEN_HEIGHT;
+	ExitZone.top = (LONG)GAME_SCREEN_HEIGHT;
 	ExitZone.bottom = 0;
 	ExitZone.left = 0;
-	ExitZone.right = GAME_SCREEN_WIDTH;
+	ExitZone.right = (LONG)GAME_SCREEN_WIDTH;
 	grid->AddObject2Cell(Player::GetInstance());
 	grid->AddObject2Cell(Shield::GetInstance());
 	Scene::Mode = 1;
 	Init();
-	// sound 
 	SoundManager::GetInstance()->StopAllSound();
 	SoundManager::GetInstance()->PlayRepeat(SoundManager::SoundList::boss_gragas_theme);
 }
@@ -93,7 +89,6 @@ void PittsburghBoss::Init()
 	grid->AddObject2Cell(player);
 	Shield* shield = Shield::GetInstance();
 	grid->AddObject2Cell(shield);
-
 	cam->SetCameraPosition(player->GetPosition());
 	BossGragas *boss = BossGragas::GetInstance();
 	grid->AddObject2Cell(boss);

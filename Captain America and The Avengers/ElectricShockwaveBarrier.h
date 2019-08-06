@@ -10,12 +10,10 @@ class ElectricShockwaveBarrier : public Entity
 public:
 	ElectricShockwaveBarrier(int WorldX, int WorldY);
 	~ElectricShockwaveBarrier();
-
 	int OnCollision(Entity *, float dt) override;
 	BoundingBox GetBoundingBox() override;
 	void Update(float dt) override;
 	void Draw() override;
-
 	static int ID;
 private:
 	Animation *animation;

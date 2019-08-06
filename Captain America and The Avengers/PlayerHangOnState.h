@@ -1,10 +1,6 @@
 #pragma once
-#include "PlayerState.h"
 #include "Player.h"
-#include "PlayerRunningState.h"
 #include "PlayerJumpingState.h"
-#include "PlayerDuckingPunchingState.h"
-#include "PlayerIdleState.h"
 #include "Framework//DirectInput.h"
 class PlayerHangOnState : public PlayerState
 {

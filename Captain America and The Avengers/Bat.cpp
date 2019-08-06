@@ -3,33 +3,42 @@
 #include "FrameWork/SoundManager.h"
 #include "PlayerShockingState.h"
 #include "PlayerBeatenState.h"
+
 void Bat::Update(float dt)
 {
 	Enemy::Update(dt);
 	this->current_animation->Update(dt);
-	if (this->level == Level::electric && (this->position.x - Player::GetInstance()->GetPosition().x) < 50) this->active = true;
-	if (this->level == Level::normal && this->hp == 1) this->active = true;
-	if (this->IsCollisionWithSpike(dt)) this->hp = 0;
+
+	if (this->level == Level::electric && (this->position.x - Player::GetInstance()->GetPosition().x) < 50) {
+		this->active = true;
+	}
+
+	if (this->level == Level::normal && this->hp == 1) {
+		this->active = true;
+	}
+
+	if (this->IsCollisionWithSpike(dt)) {
+		this->hp = 0;
+	}
+	
 	if (this->IsExplode) {
 		this->time_explode += dt;
 		this->current_animation = this->explode_ani;
 		this->SetVelocity(0, 0);
-
 		if (this->time_explode >= TIME_EXPLODE) {
 			this->IsDead = true;
 			this->IsActive = false;
 		}
 		return;
 	}
+
 	if (this->IsBeaten) {
 		this->current_animation = beaten_ani;
 		this->SetVelocity(0, BAT_VELOCITY_Y);
 		this->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 		if (this->IsCollisionWithGround(dt)) {
-			this->IsExplode = true;
-	
+			this->IsExplode = true;	
 			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
-
 		}
 		return;
 	}
@@ -50,21 +59,22 @@ void Bat::UpdateNormalLevel(float dt)
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->flying_ani;
 			this->SetVelocity(0, 0);
-			this->UpdateOneTime == true;
+			this->UpdateOneTime = true;
 		}
 		this->time_idle += dt;
 		if (time_idle > BAT_TIME_IDLE) {
 			this->time_idle = 0;
 			this->phase = 2;
-			this->UpdateOneTime == false;
+			this->UpdateOneTime = false;
 		}
 	}
+
 	if (phase == 1) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->idle_ani;
 			this->current_animation->Stop();
 			this->SetVelocity(0, 0);
-			this->UpdateOneTime == true;
+			this->UpdateOneTime = true;
 		}
 		if (this->active) {
 			this->current_animation->Continue();
@@ -78,116 +88,63 @@ void Bat::UpdateNormalLevel(float dt)
 		if (time_idle > BAT_TIME_IDLE) {
 			this->time_idle = 0;
 			this->phase++;
-			this->UpdateOneTime == false;
+			this->UpdateOneTime = false;
 			this->UpdateOneTime2 = false;
 
 		}
 	}
+
 	if (phase == 2) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->flying_ani;
 			this->SetVelocity(0, BAT_VELOCITY_Y);
 			this->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
-			this->UpdateOneTime == true;
+			this->UpdateOneTime = true;
 		}
 		this->distance += BAT_VELOCITY_Y * dt;
 		if (this->distance > BAT_DISTANCE_PHASE_2_12) {
 			this->distance = 0;
 			this->phase++;
-			this->UpdateOneTime == false;
+			this->UpdateOneTime = false;
 		}
 	}
+
 	if (phase == 3) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->flying_ani;
 			this->SetVelocity(BAT_VELOCITY_X, 0);
 			this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-			this->UpdateOneTime == true;
+			this->UpdateOneTime = true;
 		}
 		this->distance += BAT_VELOCITY_X * dt;
 		if (this->distance > BAT_DISTANCE_PHASE_3_11 + 20) {
 			this->distance = 0;
 			this->phase++;
-			this->UpdateOneTime == false;
+			this->UpdateOneTime = false;
 		}
 	}
+
 	if (phase == 4) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->flying_ani;
 			this->SetVelocity(0, BAT_VELOCITY_Y);
 			this->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
-			this->UpdateOneTime == true;
+			this->UpdateOneTime = true;
 		}
 		this->distance += BAT_VELOCITY_Y * dt;
 		if (this->distance > BAT_DISTANCE_PHASE_4_10 - 20) {
 			this->distance = 0;
 			this->phase++;
-			this->UpdateOneTime == false;
+			this->UpdateOneTime = false;
 		}
 	}
+
 	if (phase == 5) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->flying_ani;
 			this->SetVelocity(BAT_VELOCITY_X, 0);
 			this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-			this->UpdateOneTime == true;
-		}
-		this->distance += BAT_VELOCITY_X * dt;
-		if (this->distance > BAT_DISTANCE_PHASE_5_7_9 + 40) {
-			this->distance = 0;
-			this->phase++;
-			this->UpdateOneTime == false;
-		}
-	}
-	if (phase == 6) {
-		if (this->UpdateOneTime == false) {
-			this->current_animation = this->flying_ani;
-			this->IsVoDich = false;
-			this->SetVelocity(0, BAT_VELOCITY_Y);
-			this->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
-			this->UpdateOneTime == true;
-		}
-		this->distance += BAT_VELOCITY_Y * dt;
-		if (this->distance > BAT_DISTANCE_PHASE_6_8 - 10) {
-			this->distance = 0;
-			this->phase++;
-			this->UpdateOneTime == false;
-		}
-	}
-	if (phase == 7) {
-		if (this->UpdateOneTime == false) {
-			this->current_animation = this->flying_ani;
-			this->SetVelocity(BAT_VELOCITY_X, 0);
-			this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-			this->UpdateOneTime == true;
-		}
-		this->distance += BAT_VELOCITY_X * dt;
-		if (this->distance > BAT_DISTANCE_PHASE_5_7_9 + 40) {
-			this->distance = 0;
-			this->phase++;
-			this->UpdateOneTime == false;
-		}
-	}
-	if (phase == 8) {
-		if (this->UpdateOneTime == false) {
-			this->current_animation = this->flying_ani;
-			this->SetVelocity(0, BAT_VELOCITY_Y);
-			this->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
-			this->UpdateOneTime == true;
-		}
-		this->distance += BAT_VELOCITY_Y * dt;
-		if (this->distance > BAT_DISTANCE_PHASE_6_8 - 10) {
-			this->distance = 0;
-			this->phase++;
-			this->UpdateOneTime == false;
-		}
-	}
-	if (phase == 9) {
-		if (this->UpdateOneTime == false) {
-			this->current_animation = this->flying_ani;
-			this->SetVelocity(BAT_VELOCITY_X, 0);
-			this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-			this->UpdateOneTime == true;
+			this->UpdateOneTime = true;
 		}
 		this->distance += BAT_VELOCITY_X * dt;
 		if (this->distance > BAT_DISTANCE_PHASE_5_7_9 + 40) {
@@ -196,6 +153,68 @@ void Bat::UpdateNormalLevel(float dt)
 			this->UpdateOneTime = false;
 		}
 	}
+
+	if (phase == 6) {
+		if (this->UpdateOneTime == false) {
+			this->current_animation = this->flying_ani;
+			this->IsVoDich = false;
+			this->SetVelocity(0, BAT_VELOCITY_Y);
+			this->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
+			this->UpdateOneTime = true;
+		}
+		this->distance += BAT_VELOCITY_Y * dt;
+		if (this->distance > BAT_DISTANCE_PHASE_6_8 - 10) {
+			this->distance = 0;
+			this->phase++;
+			this->UpdateOneTime = false;
+		}
+	}
+
+	if (phase == 7) {
+		if (this->UpdateOneTime == false) {
+			this->current_animation = this->flying_ani;
+			this->SetVelocity(BAT_VELOCITY_X, 0);
+			this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
+			this->UpdateOneTime = true;
+		}
+		this->distance += BAT_VELOCITY_X * dt;
+		if (this->distance > BAT_DISTANCE_PHASE_5_7_9 + 40) {
+			this->distance = 0;
+			this->phase++;
+			this->UpdateOneTime = false;
+		}
+	}
+
+	if (phase == 8) {
+		if (this->UpdateOneTime == false) {
+			this->current_animation = this->flying_ani;
+			this->SetVelocity(0, BAT_VELOCITY_Y);
+			this->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
+			this->UpdateOneTime = true;
+		}
+		this->distance += BAT_VELOCITY_Y * dt;
+		if (this->distance > BAT_DISTANCE_PHASE_6_8 - 10) {
+			this->distance = 0;
+			this->phase++;
+			this->UpdateOneTime = false;
+		}
+	}
+
+	if (phase == 9) {
+		if (this->UpdateOneTime == false) {
+			this->current_animation = this->flying_ani;
+			this->SetVelocity(BAT_VELOCITY_X, 0);
+			this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
+			this->UpdateOneTime = true;
+		}
+		this->distance += BAT_VELOCITY_X * dt;
+		if (this->distance > BAT_DISTANCE_PHASE_5_7_9 + 40) {
+			this->distance = 0;
+			this->phase++;
+			this->UpdateOneTime = false;
+		}
+	}
+
 	if (phase == 10) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->flying_ani;
@@ -210,6 +229,7 @@ void Bat::UpdateNormalLevel(float dt)
 			this->UpdateOneTime = false;
 		}
 	}
+
 	if (phase == 11) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->flying_ani;
@@ -224,6 +244,7 @@ void Bat::UpdateNormalLevel(float dt)
 			this->UpdateOneTime = false;
 		}
 	}
+
 	if (phase == 12) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->flying_ani;
@@ -240,6 +261,7 @@ void Bat::UpdateNormalLevel(float dt)
 			this->UpdateOneTime = false;
 		}
 	}
+
 	if (phase == 13) {
 		phase = 0;
 	}
@@ -250,10 +272,9 @@ void Bat::UpdateElectricLevel(float dt)
 	if (phase == 1) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->idle2_ani;
-			//this->current_animation->SetFrame(1);
 			this->current_animation->Stop();
 			this->SetVelocity(0, 0);
-			this->UpdateOneTime == true;
+			this->UpdateOneTime = true;
 		}
 		if (this->active) {
 			this->current_animation->Continue();
@@ -262,7 +283,9 @@ void Bat::UpdateElectricLevel(float dt)
 				this->UpdateOneTime2 = true;
 			}		
 		}
-		else return;
+		else {
+			return;
+		}
 		this->time_idle += dt;
 		if (this->time_idle > BAT_TIME_IDLE) {
 			this->time_idle = 0;
@@ -271,49 +294,52 @@ void Bat::UpdateElectricLevel(float dt)
 			this->UpdateOneTime2 = false;
 		}
 	}
+
 	if (phase == 2) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->flying2_ani;
 			this->IsVoDich = true;
 			this->SetVelocity(0, BAT_VELOCITY_Y);
 			this->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
-			this->UpdateOneTime == true;
+			this->UpdateOneTime = true;
 		}
 		this->distance += BAT_VELOCITY_Y * dt;
 		if (this->distance > BAT_DISTANCE_PHASE_2_12) {
 			this->distance = 0;
 			this->phase++;
-			this->UpdateOneTime == false;
+			this->UpdateOneTime = false;
 		}
 	}
+
 	if (phase == 3) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->flying2_ani;
 			this->IsVoDich = true;
 			this->SetVelocity(BAT_VELOCITY_X, 0);
 			this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-			this->UpdateOneTime == true;
+			this->UpdateOneTime = true;
 		}
 		this->distance += BAT_VELOCITY_X * dt;
 		if (this->distance > BAT_DISTANCE_PHASE_3_11) {
 			this->distance = 0;
 			this->phase++;
-			this->UpdateOneTime == false;
+			this->UpdateOneTime = false;
 		}
 	}
+
 	if (phase == 4) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->flying2_ani;
 			this->IsVoDich = true;
 			this->SetVelocity(0, BAT_VELOCITY_Y);
 			this->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
-			this->UpdateOneTime == true;
+			this->UpdateOneTime = true;
 		}
 		this->distance += BAT_VELOCITY_Y * dt;
 		if (this->distance > BAT_DISTANCE_PHASE_4_10) {
 			this->distance = 0;
 			this->phase++;
-			this->UpdateOneTime == false;
+			this->UpdateOneTime = false;
 		}
 	}
 	if (phase == 5) {
@@ -322,67 +348,7 @@ void Bat::UpdateElectricLevel(float dt)
 			this->IsVoDich = true;
 			this->SetVelocity(BAT_VELOCITY_X, 0);
 			this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-			this->UpdateOneTime == true;
-		}
-		this->distance += BAT_VELOCITY_X * dt;
-		if (this->distance > BAT_DISTANCE_PHASE_5_7_9) {
-			this->distance = 0;
-			this->phase++;
-			this->UpdateOneTime == false;
-		}
-	}
-	if (phase == 6) {
-		if (this->UpdateOneTime == false) {
-			this->current_animation = this->flying_ani;
-			this->IsVoDich = false;
-			this->SetVelocity(0, BAT_VELOCITY_Y);
-			this->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
-			this->UpdateOneTime == true;
-		}
-		this->distance += BAT_VELOCITY_Y * dt;
-		if (this->distance > BAT_DISTANCE_PHASE_6_8) {
-			this->distance = 0;
-			this->phase++;
-			this->UpdateOneTime == false;
-		}
-	}
-	if (phase == 7) {
-		if (this->UpdateOneTime == false) {
-			this->current_animation = this->flying_ani;
-			this->IsVoDich = false;
-			this->SetVelocity(BAT_VELOCITY_X, 0);
-			this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-			this->UpdateOneTime == true;
-		}
-		this->distance += BAT_VELOCITY_X * dt;
-		if (this->distance > BAT_DISTANCE_PHASE_5_7_9) {
-			this->distance = 0;
-			this->phase++;
-			this->UpdateOneTime == false;
-		}
-	}
-	if (phase == 8) {
-		if (this->UpdateOneTime == false) {
-			this->current_animation = this->flying2_ani;
-			this->IsVoDich = true;
-			this->SetVelocity(0, BAT_VELOCITY_Y);
-			this->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
-			this->UpdateOneTime == true;
-		}
-		this->distance += BAT_VELOCITY_Y * dt;
-		if (this->distance > BAT_DISTANCE_PHASE_6_8) {
-			this->distance = 0;
-			this->phase++;
-			this->UpdateOneTime == false;
-		}
-	}
-	if (phase == 9) {
-		if (this->UpdateOneTime == false) {
-			this->current_animation = this->flying2_ani;
-			this->IsVoDich = true;
-			this->SetVelocity(BAT_VELOCITY_X, 0);
-			this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
-			this->UpdateOneTime == true;
+			this->UpdateOneTime = true;
 		}
 		this->distance += BAT_VELOCITY_X * dt;
 		if (this->distance > BAT_DISTANCE_PHASE_5_7_9) {
@@ -391,6 +357,70 @@ void Bat::UpdateElectricLevel(float dt)
 			this->UpdateOneTime = false;
 		}
 	}
+	if (phase == 6) {
+		if (this->UpdateOneTime == false) {
+			this->current_animation = this->flying_ani;
+			this->IsVoDich = false;
+			this->SetVelocity(0, BAT_VELOCITY_Y);
+			this->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
+			this->UpdateOneTime = true;
+		}
+		this->distance += BAT_VELOCITY_Y * dt;
+		if (this->distance > BAT_DISTANCE_PHASE_6_8) {
+			this->distance = 0;
+			this->phase++;
+			this->UpdateOneTime = false;
+		}
+	}
+
+	if (phase == 7) {
+		if (this->UpdateOneTime == false) {
+			this->current_animation = this->flying_ani;
+			this->IsVoDich = false;
+			this->SetVelocity(BAT_VELOCITY_X, 0);
+			this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
+			this->UpdateOneTime = true;
+		}
+		this->distance += BAT_VELOCITY_X * dt;
+		if (this->distance > BAT_DISTANCE_PHASE_5_7_9) {
+			this->distance = 0;
+			this->phase++;
+			this->UpdateOneTime = false;
+		}
+	}
+
+	if (phase == 8) {
+		if (this->UpdateOneTime == false) {
+			this->current_animation = this->flying2_ani;
+			this->IsVoDich = true;
+			this->SetVelocity(0, BAT_VELOCITY_Y);
+			this->SetJumpDirection(Entity::Entity_Jump_Direction::BotToTop);
+			this->UpdateOneTime = true;
+		}
+		this->distance += BAT_VELOCITY_Y * dt;
+		if (this->distance > BAT_DISTANCE_PHASE_6_8) {
+			this->distance = 0;
+			this->phase++;
+			this->UpdateOneTime = false;
+		}
+	}
+
+	if (phase == 9) {
+		if (this->UpdateOneTime == false) {
+			this->current_animation = this->flying2_ani;
+			this->IsVoDich = true;
+			this->SetVelocity(BAT_VELOCITY_X, 0);
+			this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
+			this->UpdateOneTime = true;
+		}
+		this->distance += BAT_VELOCITY_X * dt;
+		if (this->distance > BAT_DISTANCE_PHASE_5_7_9) {
+			this->distance = 0;
+			this->phase++;
+			this->UpdateOneTime = false;
+		}
+	}
+
 	if (phase == 10) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->flying2_ani;
@@ -406,6 +436,7 @@ void Bat::UpdateElectricLevel(float dt)
 			this->UpdateOneTime = false;
 		}
 	}
+
 	if (phase == 11) {
 		if (this->UpdateOneTime == false) {
 			this->current_animation = this->flying2_ani;
@@ -437,6 +468,7 @@ void Bat::UpdateElectricLevel(float dt)
 			this->UpdateOneTime = false;
 		}
 	}
+
 	if (phase == 13) {
 		phase = 1;
 	}
@@ -455,11 +487,11 @@ int Bat::OnCollision(Entity* obj, float dt)
 				this->time_beaten = ENEMY_TIME_BEATEN;
 			}
 		}
+
 		if (this->hp <= 0) {
 			this->IsBeaten = true;
 			goto CHECK;
 		}
-	CHECK2:
 		Player *player = Player::GetInstance();
 		if (obj->GetType() == Entity::Entity_Type::player_type
 			&& player->GetCurrentState() != PlayerState::shield_down
@@ -516,7 +548,6 @@ bool Bat::IsCollisionWithGround(float dt, int delta_y)
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
-
 	if (foot.vy == 0)
 	{
 		for (auto item : obj)
@@ -526,7 +557,6 @@ bool Bat::IsCollisionWithGround(float dt, int delta_y)
 		}
 		return false;
 	}
-
 	CollisionOut tmp;
 	BoundingBox box2;
 	for (auto item : obj)
@@ -535,12 +565,10 @@ bool Bat::IsCollisionWithGround(float dt, int delta_y)
 		tmp = Checker->SweptAABB(foot, box2);
 		if (tmp.side == CollisionSide::bottom)
 		{
-			//position.y = item->GetPosition().y + BAT_SIZE_HEIGHT / 2;
 			return true;
 		}
 		if (tmp.side == CollisionSide::top)
 		{
-			//position.y = item->GetPosition().y - BAT_SIZE_HEIGHT / 2;
 			return true;
 		}
 	}
@@ -555,7 +583,6 @@ bool Bat::IsCollisionWithSpike(float dt, int delta_y)
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
-
 	CollisionOut tmp;
 	BoundingBox box2;
 	for (auto item : obj)
@@ -566,14 +593,12 @@ bool Bat::IsCollisionWithSpike(float dt, int delta_y)
 			tmp = Checker->SweptAABB(foot, box2);
 			if (tmp.side == CollisionSide::bottom)
 			{
-				//position.y = item->GetPosition().y + PLAYER_SIZE_HEIGHT / 2;
 				return true;
 			}
 		}
 	}
 	return false;
 }
-
 
 Bat::Bat(int level, D3DXVECTOR2 position_spawn) : Enemy()
 {
@@ -586,19 +611,18 @@ Bat::Bat(int level, D3DXVECTOR2 position_spawn) : Enemy()
 	this->flying2_ani = new Animation(BatState::flying2, 2);
 	this->explode_ani = new Animation(7, 3);
 	this->beaten_ani = new Animation(BatState::flying, 2);
-	this->beaten_ani->SetFrame(2); this->beaten_ani->Stop();
-	this->explode_ani->SetTime(0.083, 10000);
 	// set animation zone
-	this->idle_ani->SetTime(0.3);
-
-	this->idle2_ani->SetTime(0.3);
-
-	this->flying_ani->SetTime(0.1);
-	this->flying2_ani->SetTime(0.1);
+	this->idle_ani->SetTime(0.3f);
+	this->idle2_ani->SetTime(0.3f);
+	this->flying_ani->SetTime(0.1f);
+	this->flying2_ani->SetTime(0.1f);
+	this->explode_ani->SetTime(0.083f, 10000.0f);
+	this->beaten_ani->SetFrame(2); this->beaten_ani->Stop();
 	// set properties zone
 	this->position = position_spawn;
 	this->position_spawn = position_spawn;
 	this->current_animation = idle_ani;
+	this->i = 0;
 	this->hp = BAT_HP;
 	if (direction == 0) {
 		this->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
@@ -607,8 +631,8 @@ Bat::Bat(int level, D3DXVECTOR2 position_spawn) : Enemy()
 		this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 	}
 	this->distance = 0;
-	// time zone
 	this->time_idle = 0;
+	this->phase = 1;
 	// flag zone
 	this->active = false;
 	this->UpdateOneTime = false;
@@ -623,24 +647,9 @@ Bat::Bat(int level, D3DXVECTOR2 position_spawn) : Enemy()
 		this->level = Level::electric;
 		break;
 	}
-	switch (this->level) {
-	case Level::normal:
-		//this->IsIdle = true;
-		//this->current_state = BatState::idle;
-		//this->current_animation = idle_ani;
-		//this->SetVelocityX(0.0f);
-		this->phase = 1;
-		break;
-	case Level::electric:
-		//this->current_state = BatState::running;
-		//this->current_animation = running_ani;
-		//this->SetVelocityX(BAT_VELOCITY_X);
-		this->phase = 1;
-		break;
-	}
 }
 
 Bat::~Bat()
 {
-}
 
+}

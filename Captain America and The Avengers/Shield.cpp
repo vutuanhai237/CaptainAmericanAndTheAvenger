@@ -6,7 +6,9 @@ Shield *Shield::Instance = NULL;
 Shield *Shield::GetInstance()
 {
 	if (!Instance)
+	{
 		Instance = new Shield();
+	}
 	return Instance;
 }
 

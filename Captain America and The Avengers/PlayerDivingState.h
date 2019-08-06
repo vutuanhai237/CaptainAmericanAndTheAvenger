@@ -6,6 +6,7 @@
 #include "PlayerDuckingPunchingState.h"
 #include "PlayerIdleState.h"
 #include "Framework//DirectInput.h"
+
 class PlayerDivingState : public PlayerState
 {
 public:
@@ -15,6 +16,5 @@ public:
 	virtual void Draw();
 	BoundingBox GetBoundingBox() override;
 	virtual void HandleInput(float dt);
-	
 };
 

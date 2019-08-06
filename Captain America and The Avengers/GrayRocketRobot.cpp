@@ -1,36 +1,41 @@
-﻿#include "GrayRocketRobot.h"
+﻿#include "FrameWork/SoundManager.h"
+#include "GrayRocketRobot.h"
 #include "Shield.h"
-#include "FrameWork/SoundManager.h"
+
 void GrayRocketRobot::Update(float dt)
 {
 	Enemy::Update(dt);
 	Player *player = Player::GetInstance();
 	this->current_animation->Update(dt);
-	if (this->IsExplode) {
+	if (this->IsExplode)
+	{
 		this->time_explode += dt;
 		this->current_animation = explode_ani;
 		this->SetVelocityX(0.0f);
-
-		if (this->time_explode >= TIME_EXPLODE) {
+		if (this->time_explode >= TIME_EXPLODE) 
+		{
 			this->IsDead = true;
 			this->IsActive = false;
 		}
 		return;
 	}
-	if (this->IsBeaten) {
+	if (this->IsBeaten)
+	{
 		this->current_state = GrayRocketRobotState::beaten;
 		this->current_animation = beaten_ani;
 		this->SetVelocityX(0.0f);
 		this->time_beaten += dt;
-		if (this->time_beaten >= TIME_BEATEN) {
+		if (this->time_beaten >= TIME_BEATEN)
+		{
 			this->IsExplode = true;
 			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
 		}
-		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+		if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight)
+		{
 			this->position.x -= 1;
-
 		}
-		else {
+		else 
+		{
 			this->position.x += 1;
 		}
 		return;
@@ -39,19 +44,23 @@ void GrayRocketRobot::Update(float dt)
 	// Khi không còn va chạm với mặt đất, cho phép một lần nhảy
 	if (IsChamDatLanDau == false)
 	{
-		if (this->IsCollisionWithGround(dt)) {
+		if (this->IsCollisionWithGround(dt)) 
+		{
 			this->SetVelocityY(0);
 			this->position_spawn = this->position;
 			IsChamDatLanDau = true;
 		}
-		else {
+		else 
+		{
 			this->SetVelocityY(GRAY_ROCKET_ROBOT_VELOCITY);
 		}
 		return;
 	}
 	// Cập nhật tọa độ khi đang nhảy
-	if (this->current_state == GrayRocketRobotState::jumping) {
-		if (this->IsCollisionWithGround(dt) && this->IsJumpingFirst > 5) {
+	if (this->current_state == GrayRocketRobotState::jumping)
+	{
+		if (this->IsCollisionWithGround(dt) && this->IsJumpingFirst > 5) 
+		{
 			this->current_state = GrayRocketRobotState::running;
 			this->current_animation = running_ani;
 			return;
@@ -66,34 +75,34 @@ void GrayRocketRobot::Update(float dt)
 	if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::ShieldAttack
 		&& this->IsJumping == false
 		&& this->current_state == GrayRocketRobotState::running
-		&& (this->GetMoveDirection() != Player::GetInstance()->GetMoveDirection())) {
+		&& (this->GetMoveDirection() != Player::GetInstance()->GetMoveDirection()))
+	{
 		this->IsJumping = true;
 		this->current_state = GrayRocketRobotState::jumping;
 		this->current_animation = ducking_ani;
 		e = new Equation(
 			this->position,
 			D3DXVECTOR2(this->position.x - 50, this->position.y));
-
 		return;
 	}
-
 	// Đi tới position togo, nếu đã nhảy rồi thì không đi nữa, hoặc đã đi tới điểm cần tới
-
-	if (abs(position.x - position_goto.x) >= 10.0f && this->IsJumpingFirst == 0) {
+	if (abs(position.x - position_goto.x) >= 10.0f && this->IsJumpingFirst == 0)
+	{
 		this->SetVelocityX(GRAY_ROCKET_ROBOT_VELOCITY_X);
 		this->current_state = GrayRocketRobotState::running;
 		this->current_animation = this->running_ani;
 	}
-	else {
-
-		if ((IsLoop == false && this->current_state == GrayRocketRobotState::running) || this->IsJumpingFirst > 0) {
+	else
+	{
+		if ((IsLoop == false && this->current_state == GrayRocketRobotState::running) || this->IsJumpingFirst > 0)
+		{
 			this->SetVelocityY(0);
 			this->IsLoop = true;
 		}
-		if (this->current_state == GrayRocketRobotState::running) {
+		if (this->current_state == GrayRocketRobotState::running)
+		{
 			this->current_state = GrayRocketRobotState::running;
 			this->current_animation = running_ani;
-
 		}
 	}
 }
@@ -108,11 +117,9 @@ int GrayRocketRobot::OnCollision(Entity* obj, float dt)
 				Player::GetInstance()->IsBornRocketRobot = true;
 				this->IsExplode = true;
 				SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
-
 			}
 			if (this->GetPosition().x <= 255 && this->GetPosition().y <= 120) {
 				Player::GetInstance()->IsBornRocketRobot = true;
-				//this->IsExplode = true;
 			}
 		}
 	}
@@ -140,7 +147,6 @@ bool GrayRocketRobot::IsCollisionWithGround(float dt, int delta_y)
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
-
 	if (foot.vy == 0)
 	{
 		for (auto item : obj)
@@ -150,7 +156,6 @@ bool GrayRocketRobot::IsCollisionWithGround(float dt, int delta_y)
 		}
 		return false;
 	}
-
 	CollisionOut tmp;
 	BoundingBox box2;
 	for (auto item : obj)
@@ -173,45 +178,29 @@ GrayRocketRobot::GrayRocketRobot(D3DXVECTOR2 position_spawn, D3DXVECTOR2 positio
 {
 	this->SetTag(Entity::Entity_Tag::gray_rocket_robot);
 	this->SetType(Entity::Entity_Type::enemy_type);
+	this->SetVelocityY(-5.0f);
+	this->SetVelocityX(0.0f);
 	this->running_ani = new Animation(GrayRocketRobot::GrayRocketRobotState::running, 3);
 	this->ducking_ani = new Animation(GrayRocketRobot::GrayRocketRobotState::ducking, 2);
 	this->beaten_ani = new Animation(GrayRocketRobot::GrayRocketRobotState::beaten, 1);
 	//
-	this->running_ani->SetTime(0.1);
-	this->ducking_ani->SetTime(0.5);
+	this->running_ani->SetTime(0.1f);
+	this->ducking_ani->SetTime(0.5f);
 	//
-	this->hp = GRAY_ROCKET_ROBOT_HP;
-	this->IsChamDatLanDau = false;
-	this->IsChamLanHai = false;
-	this->IsLoop = false;
-	this->IsJumping = false;
 	this->position = position_spawn;
-	this->time_ducking = 0.0f;
-	this->IsDucking = false;
-	this->IsRunning = false;
-	this->IsIdle = true;
-	this->SetVelocityY(-5.0f);
-	this->SetVelocityX(0.0f);
-	this->rocket_active = 0;
-	this->IsLockChangeRocket;
-	this->IsJumpingFirst = 0;
-	this->IsLoopClever = false;
-	this->IsCrossed = IsCrossed;
-	this->IsFire = true;
-
-	this->IsCapNhatVanToc = true;
-	this->IsCapNhatPositionMotLan = false;
-	this->time_explode = 0;
-	this->IsExplode = false;
-
 	this->position_spawn = position_spawn;
 	this->position_goto = position_goto;
-	this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
-	this->IsLockClever = false;
-	this->IsLockDuckingClever = false;
+	this->hp = GRAY_ROCKET_ROBOT_HP;
+	this->IsChamDatLanDau = false;
+	this->IsLoop = false;
+	this->IsJumping = false;
+	this->IsFire = true;
+	this->IsExplode = false;
+	this->IsJumpingFirst = 0;
+	this->i = 0;
+	this->time_explode = 0;
 	this->IsLui = -1;
-
-	// normal zone
+	this->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 	this->current_state = GrayRocketRobotState::running;
 	this->current_animation = running_ani;
 	this->previous_state = GrayRocketRobotState::running;
@@ -219,5 +208,5 @@ GrayRocketRobot::GrayRocketRobot(D3DXVECTOR2 position_spawn, D3DXVECTOR2 positio
 
 GrayRocketRobot::~GrayRocketRobot()
 {
-	//if (this->rocket != NULL) delete this->rocket;
+
 }

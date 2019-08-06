@@ -28,15 +28,10 @@ void CharlestonMap::Draw(D3DCOLOR ColorMode)
 	LPD3DXSPRITE Hander = d3d::GetInstance()->GetSpriteHander();
 	D3DXMATRIX OldMatrix;
 	Hander->GetTransform(&OldMatrix);
-
 	D3DXVECTOR2 pos = Camera::GetInstance()->GetCameraPosition();
 	int gStartX = (int)(pos.x / PIXEL_PER_TITLE);
 	int gStartY = Height - (int)(pos.y / PIXEL_PER_TITLE) - GRID_HIGHT_BLOCK - 1;
-
-	//Debug::PrintOut(L"%d ", gStartY);
-
 	Hander->Begin(D3DXSPRITE_ALPHABLEND);
-
 	int x = (PIXEL_PER_TITLE >> 1) - ((int)pos.x % PIXEL_PER_TITLE);
 	for (int i = gStartX; i <= gStartX + GRID_WIDTH_BLOCK; i++)
 	{
@@ -51,20 +46,20 @@ void CharlestonMap::Draw(D3DCOLOR ColorMode)
 			switch (Map[j][i])
 			{
 			case CHARLESTON_REPLACEID_0:
-				sewer->SetPosition(x, y);
+				sewer->SetPosition((FLOAT)x, (FLOAT)y);
 				sewer->ImperiouslyDraw();
 				break;
 			case CHARLESTON_REPLACEID_1:
-				warter1->SetPosition(x, y);
+				warter1->SetPosition((FLOAT)x, (FLOAT)y);
 				warter1->ImperiouslyDraw();
 				break;
 			case CHARLESTON_REPLACEID_2:
-				warter2->SetPosition(x, y);
+				warter2->SetPosition((FLOAT)x, (FLOAT)y);
 				warter2->ImperiouslyDraw();
 				break;
 			default:
 				SetRect(Map[j][i]);
-				Sprite::SetPosition(x, y);
+				Sprite::SetPosition((FLOAT)x, (FLOAT)y);
 				Hander->SetTransform(&Matrix);
 				Hander->Draw(texture, &rect, NULL, NULL, ColorMode);
 				break;
@@ -73,11 +68,8 @@ void CharlestonMap::Draw(D3DCOLOR ColorMode)
 		}
 		x += PIXEL_PER_TITLE;
 	}
-
 	Hander->End();
-
 	Hander->SetTransform(&OldMatrix);
-
 	exit->DrawInt(1840, 24);
 }
 

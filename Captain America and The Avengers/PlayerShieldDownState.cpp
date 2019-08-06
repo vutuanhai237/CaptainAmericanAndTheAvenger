@@ -7,15 +7,14 @@ PlayerShieldDownState::PlayerShieldDownState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::shield_down);
+	this->current_state = PlayerState::NameState::shield_down;
+	player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 	player->SetTimeBuffer(0);
 	player->IsJumping = false;
-	player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 	player->SetVelocityY(VELOCITY_Y);
-
 	this->IsNhunsLen = false;
-	this->current_state = PlayerState::NameState::shield_down;
-	this->time_nhuns = 0;
 	this->PlayOneTime = false;
+	this->time_nhuns = 0;
 	Shield::GetInstance()->SetShieldState(new ShieldDownState());
 }
 PlayerShieldDownState::~PlayerShieldDownState()
@@ -25,17 +24,19 @@ PlayerShieldDownState::~PlayerShieldDownState()
 
 void PlayerShieldDownState::Update(float dt)
 {
-	
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
-	if (player->OnTheWater) {
+	if (player->OnTheWater)
+	{
 		this->time_nhuns += dt;
-		if (this->time_nhuns >= 0.4f && this->IsNhunsLen) {
+		if (this->time_nhuns >= 0.4f && this->IsNhunsLen)
+		{
 			this->time_nhuns = 0;
 			this->IsNhunsLen = false;
 			player->SetPositionY(player->GetPosition().y + 2);
 		}
-		if (this->time_nhuns >= 0.4f && this->IsNhunsLen == false) {
+		if (this->time_nhuns >= 0.4f && this->IsNhunsLen == false) 
+		{
 			this->time_nhuns = 0;
 			this->IsNhunsLen = true;
 			player->SetPositionY(player->GetPosition().y - 2);
@@ -63,12 +64,18 @@ void PlayerShieldDownState::HandleInput(float dt)
 	auto keyboard = DirectInput::GetInstance();
 	player->time_air_jumping += dt;
 	player->time_air_rolling += dt;
-	if (!player->IsCollisionWithPlatform(dt)) {
-		if (!player->IsCollisionWithGround(dt)) {
-			if (!player->IsCollisionWithSpike(dt)) {
-				if (!player->IsCollisionWithWall(dt)) {
-					if (!player->IsCollisionWithWater(dt)) {
-						if (player->GetVelocityY() == 0) {
+	if (!player->IsCollisionWithPlatform(dt)) 
+	{
+		if (!player->IsCollisionWithGround(dt))
+		{
+			if (!player->IsCollisionWithSpike(dt)) 
+			{
+				if (!player->IsCollisionWithWall(dt)) 
+				{
+					if (!player->IsCollisionWithWater(dt)) 
+					{
+						if (player->GetVelocityY() == 0) 
+						{
 							player->ChangeState(new PlayerJumpingDownState());
 							return;
 						}
@@ -80,37 +87,43 @@ void PlayerShieldDownState::HandleInput(float dt)
 	// Xét trường khi đang lót đít trên mật đất
 	if (player->IsCollisionWithGround(dt, 18) || player->IsCollisionWithWall(dt) || player->IsCollisionWithSpike(dt) || player->IsCollisionWithWater(dt))
 	{
-		player->SetVelocityY(0.001);
-		if (this->PlayOneTime == false) {
+		player->SetVelocityY(0.001f);
+		if (this->PlayOneTime == false)
+		{
 			SoundManager::GetInstance()->Play(SoundManager::SoundList::shield_collision);
 			this->PlayOneTime = true;
 		}
 		// Điều kiện tiên quyết là phải ấn giữ down key, nếu không thì về idle
-		if (keyboard->KeyPress(DOWN_KEY)) {
+		if (keyboard->KeyPress(DOWN_KEY))
+		{
 			// Ưu tiên các trạng thái khác
-			if (keyboard->KeyPress(LEFT_KEY)) {
+			if (keyboard->KeyPress(LEFT_KEY)) 
+			{
 				player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 				player->ChangeState(new PlayerRunningState());
 				return;
 			}
-			if (keyboard->KeyPress(RIGHT_KEY)) {
+			if (keyboard->KeyPress(RIGHT_KEY)) 
+			{
 				player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 				player->ChangeState(new PlayerRunningState());
 				return;
 			}
-			if (keyboard->KeyDown(JUMP_KEY)) {
+			if (keyboard->KeyDown(JUMP_KEY)) 
+			{
 				player->time_air_jumping = 0;
 				player->ChangeState(new PlayerJumpingState());
 				return;
 			}
 			// Đặc biệt chuyển qua ngồi đấm chứ không phải đứng đấm
-			if (keyboard->KeyDown(ATTACK_KEY)) {
+			if (keyboard->KeyDown(ATTACK_KEY))
+			{
 				player->ChangeState(new PlayerDuckingPunchingState());
 				return;
 			}
 		}
-		else {
-
+		else
+		{
 			player->ChangeState(new PlayerIdleState());
 			return;
 		}
@@ -118,21 +131,23 @@ void PlayerShieldDownState::HandleInput(float dt)
 	// Xét trường hợp lướt trên nước
 	if (player->IsCollisionWithWater(dt, 16))
 	{
-		player->SetVelocityY(0.001);
+		player->SetVelocityY(0.001f);
 		player->OnTheWater = true;
 		// Xét va chạm 1 lần duy nhất, nếu nhấn giữ thì không có chuyện gì, còn không thì jumping down để
 		// về flowing
-		if (keyboard->KeyPress(DOWN_KEY)) {
+		if (keyboard->KeyPress(DOWN_KEY))
+		{
 			return;
 		}
-		else {
-			
+		else 
+		{		
 			player->ChangeState(new PlayerJumpingDownState());
 			return;
 		}
 	}
 	// Xét va chạm với mặt nước các lần tiếp theo
-	if (player->OnTheWater) {
+	if (player->OnTheWater) 
+	{
 		// Ưu tiên trạng thái flowing
 		if (keyboard->KeyUp(DOWN_KEY) || keyboard->KeyPress(UP_KEY) || keyboard->KeyPress(LEFT_KEY) || 
 			keyboard->KeyPress(RIGHT_KEY) || keyboard->KeyDown(ATTACK_KEY)) 
@@ -141,32 +156,34 @@ void PlayerShieldDownState::HandleInput(float dt)
 			player->ChangeState(new PlayerJumpingDownState());
 			return;
 		}
-		if (keyboard->KeyDown(JUMP_KEY)) {
+		if (keyboard->KeyDown(JUMP_KEY))
+		{
 			player->ChangeState(new PlayerJumpingState());
 			return;
 		}
 	}
 	// Xét đang lót đít ở trên không
-	if (keyboard->KeyUp(DOWN_KEY)) {
-		if (player->time_air_rolling < TIME_ROLLING && player->GetPreviousState() == PlayerState::NameState::rolling) {
+	if (keyboard->KeyUp(DOWN_KEY))
+	{
+		if (player->time_air_rolling < TIME_ROLLING && player->GetPreviousState() == PlayerState::NameState::rolling) 
+		{
 			player->ChangeState(new PlayerRollingState());
 			return;
 		}
 		player->ChangeState(new PlayerJumpingDownState());
 		return;
-
 	}
 	// Di chuyển khi đang lót đít ở trên không
-	if (keyboard->KeyPress(LEFT_KEY)) {
+	if (keyboard->KeyPress(LEFT_KEY))
+	{
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		player->SetPositionX(player->GetPosition().x - DELTA_JUMP * dt);
 		return;
 	}
-	if (keyboard->KeyPress(RIGHT_KEY)) {
+	if (keyboard->KeyPress(RIGHT_KEY)) 
+	{
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		player->SetPositionX(player->GetPosition().x + DELTA_JUMP * dt);
 		return;
 	}
-
-	
 }

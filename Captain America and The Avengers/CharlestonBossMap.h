@@ -4,11 +4,12 @@
 class CharlestonBossMap
 {
 public:
+	enum MapMode { 
+		Dark, 
+		Light 
+	};
 	CharlestonBossMap();
 	~CharlestonBossMap();
-
-	enum MapMode {Dark, Light};
-
 	void Draw();
 	void SwapMode();
 	void SwapMode(MapMode mode);

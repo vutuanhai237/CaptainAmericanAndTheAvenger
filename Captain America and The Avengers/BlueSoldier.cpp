@@ -90,7 +90,7 @@ void BlueSoldier::UpdateStupidLevel(float dt)
 			if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new Bullet(
-						D3DXVECTOR2(this->position.x + 11.5, this->position.y + 17.5),
+						D3DXVECTOR2((FLOAT)(this->position.x + 11.5), (FLOAT)(this->position.y + 17.5)),
 						this->GetMoveDirection()
 					)
 				);
@@ -98,7 +98,7 @@ void BlueSoldier::UpdateStupidLevel(float dt)
 			else {
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new Bullet(
-						D3DXVECTOR2(this->position.x - 11.5, this->position.y + 17.5),
+						D3DXVECTOR2((FLOAT)(this->position.x - 11.5), (FLOAT)(this->position.y + 17.5)),
 						this->GetMoveDirection()
 					)
 				);
@@ -233,7 +233,7 @@ void BlueSoldier::UpdateCleverLevel(float dt)
 			if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new Bullet(
-						D3DXVECTOR2(this->position.x + 11.5, this->position.y + 17.5),
+						D3DXVECTOR2((FLOAT)(this->position.x + 11.5), (FLOAT)(this->position.y + 17.5)),
 						this->GetMoveDirection()
 					)
 				);
@@ -241,7 +241,7 @@ void BlueSoldier::UpdateCleverLevel(float dt)
 			else {
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new Bullet(
-						D3DXVECTOR2(this->position.x - 11.5, this->position.y + 17.5),
+						D3DXVECTOR2((FLOAT)(this->position.x - 11.5), (FLOAT)(this->position.y + 17.5)),
 						this->GetMoveDirection()
 					)
 				);
@@ -309,20 +309,20 @@ void BlueSoldier::UpdateMasterLevel(float dt)
 			if (this->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new Bullet(
-						D3DXVECTOR2(this->position.x + 11.5, this->position.y + 17.5),
+						D3DXVECTOR2((FLOAT)(this->position.x + 11.5), (FLOAT)(this->position.y + 17.5)),
 						this->GetMoveDirection()
 					)
 				);
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new Bullet(
-						D3DXVECTOR2(this->position.x + 11.5, this->position.y + 17.5),
+						D3DXVECTOR2((FLOAT)(this->position.x + 11.5), (FLOAT)(this->position.y + 17.5)),
 						this->GetMoveDirection(),
 						-135
 					)
 				);
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new Bullet(
-						D3DXVECTOR2(this->position.x + 11.5, this->position.y + 17.5),
+						D3DXVECTOR2((FLOAT)(this->position.x + 11.5), (FLOAT)(this->position.y + 17.5)),
 						this->GetMoveDirection(),
 						135
 					)
@@ -331,20 +331,20 @@ void BlueSoldier::UpdateMasterLevel(float dt)
 			else {
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new Bullet(
-						D3DXVECTOR2(this->position.x - 11.5, this->position.y + 17.5),
+						D3DXVECTOR2((FLOAT)(this->position.x - 11.5), (FLOAT)(this->position.y + 17.5)),
 						this->GetMoveDirection()
 					)
 				);
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new Bullet(
-						D3DXVECTOR2(this->position.x - 11.5, this->position.y + 17.5),
+						D3DXVECTOR2((FLOAT)(this->position.x - 11.5), (FLOAT)(this->position.y + 17.5)),
 						this->GetMoveDirection(),
 						135
 					)
 				);
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new Bullet(
-						D3DXVECTOR2(this->position.x - 11.5, this->position.y + 17.5),
+						D3DXVECTOR2((FLOAT)(this->position.x - 11.5), (FLOAT)(this->position.y + 17.5)),
 						this->GetMoveDirection(),
 						-135
 					)
@@ -454,9 +454,9 @@ BlueSoldier::BlueSoldier(int level, D3DXVECTOR2 position_spawn, int direction): 
 	this->ducking_ani = new Animation(BlueSoldierState::ducking, 1);
 	this->beaten_ani = new Animation(BlueSoldierState::beaten, 1);
 	// set animation zone
-	this->idle_ani->SetTime(0.5);
-	this->running_ani->SetTime(0.1);
-	this->ducking_ani->SetTime(0.5);
+	this->idle_ani->SetTime(0.5f);
+	this->running_ani->SetTime(0.1f);
+	this->ducking_ani->SetTime(0.5f);
 	// set properties zone
 	this->position = position_spawn;
 	this->current_animation = idle_ani;

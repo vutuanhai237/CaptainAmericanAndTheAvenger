@@ -58,7 +58,7 @@ void Sprite::DrawInt(D3DXVECTOR2 WorldPosition, D3DCOLOR ColorMode)
 
 void Sprite::DrawInt(INT X, INT Y, D3DCOLOR ColorMode)
 {
-	DrawInt(D3DXVECTOR2(X, Y), ColorMode);
+	DrawInt(D3DXVECTOR2((FLOAT)X, (FLOAT)Y), ColorMode);
 }
 
 void Sprite::ImperiouslyDraw(D3DCOLOR ColorMode) // Only call inside other draw function
@@ -75,8 +75,8 @@ void Sprite::SetRect(RECT Rect)
 	rect.left = Rect.left;
 	rect.right = Rect.right;
 
-	CenterRect.x = (Rect.right - Rect.left) / 2;
-	CenterRect.y = (Rect.bottom - Rect.top) / 2;
+	CenterRect.x = (FLOAT)((Rect.right - Rect.left) / 2);
+	CenterRect.y = (FLOAT)((Rect.bottom - Rect.top) / 2);
 
 	UpdateMatrix();
 }
@@ -88,8 +88,8 @@ void Sprite::SetRect(LONG top, LONG bottom, LONG left, LONG right)
 	rect.left = left;
 	rect.right = right;
 
-	CenterRect.x = (right - left) / 2;
-	CenterRect.y = (bottom - top) / 2;
+	CenterRect.x = (FLOAT)((right - left) / 2);
+	CenterRect.y = (FLOAT)((bottom - top) / 2);
 
 	UpdateMatrix();
 }

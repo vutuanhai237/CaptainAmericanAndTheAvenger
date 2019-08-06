@@ -10,7 +10,8 @@ ShieldDownState::ShieldDownState()
 
 int ShieldDownState::GetDamage()
 {
-	if (Player::GetInstance()->time_invisible > 0) {
+	if (Player::GetInstance()->time_invisible > 0)
+	{
 		return 0;
 	}
 	return SHIELD_DOWN_DAMAGE;
@@ -25,8 +26,8 @@ void ShieldDownState::Update(float dt)
 
 void ShieldDownState::Draw()
 {
-	if (Player::GetInstance()->GetCurrentState() == PlayerState::NameState::beaten
-		|| Player::GetInstance()->GetCurrentState() == PlayerState::NameState::shocking) {
+	if (Player::GetInstance()->GetCurrentState() == PlayerState::NameState::beaten || Player::GetInstance()->GetCurrentState() == PlayerState::NameState::shocking)
+	{
 		return;
 	}
 	Shield::GetInstance()->GetAnimation()->Draw(VirtualPoint);

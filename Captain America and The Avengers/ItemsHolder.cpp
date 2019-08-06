@@ -19,22 +19,23 @@ ItemsHolder::ItemsHolder(float x, float y, int code)
 {
 	Entity::SetTag(Entity::Entity_Tag::item_container);
 	Entity::SetType(Entity::Entity_Type::item_type);
-
 	Entity::position.x = x;
 	Entity::position.y = y;
 	if (code == 0)
+	{
 		animation = new Animation(AnimationID, 2);
+	}
 	else
+	{
 		animation = new Animation(AnimationID2, 2);
+	}
 	animation->SetAutoPlayBack(false);
 	animation->SetTime(0.25f);
 	animation->Stop();
-
 	SIZE size;
 	size.cx = ITEMS_HOLDER_SIZE_WIDTH;
 	size.cy = ITEMS_HOLDER_SIZE_HEIGHT;
 	HitBox = BoundingBox(D3DXVECTOR2(x, y), size, 0, 0);
-
 	Items = new std::vector<Entity*>();
 }
 
@@ -51,20 +52,26 @@ BoundingBox ItemsHolder::GetBoundingBox()
 int ItemsHolder::OnCollision(Entity *obj, float dt)
 {
 	if (animation->GetNumberCurrentFrame() == 2)
+	{
 		return 0;
-
+	}
 	if (obj->GetType() == Entity::Entity_Type::player_weapon_type)
 	{
 		if (obj->GetTag() == Entity::Entity_Tag::shield && Shield::GetInstance()->GetShieldState()->GetCurrentState() != ShieldState::NameState::ShieldAttack)
+		{
 			return 0;
+		}
 		if (Collision::getInstance()->SweptAABB(obj->GetBoundingBox(), GetBoundingBox()).CollisionTime > 1.0f)
+		{
 			return 0;
+		}
 		animation->SetFrame(2);
 		animation->Continue();
-
 		auto grid = SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid();
 		if (Items->empty() || grid->ItemCounter >= CAPACITY_ITEM)
+		{
 			return 0;
+		}
 		SoundManager::GetInstance()->Play(SoundManager::SoundList::item_holder);
 		// drop item
 		grid->ItemCounter++;
@@ -97,7 +104,9 @@ void ItemsHolder::Update(float dt)
 void ItemsHolder::Draw()
 {
 	if (SceneManager::GetInstance()->GetCurrentScene()->GetMode() & 1)
+	{
 		animation->DrawInt(position);
+	}
 }
 
 void ItemsHolder::PutOnItem(int Item_Tag)

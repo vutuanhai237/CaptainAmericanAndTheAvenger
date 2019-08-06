@@ -1,5 +1,4 @@
 #include "BossWizardState.h"
-#include "Player.h"
 
 BossWizardState::BossWizardState()
 {
@@ -24,5 +23,3 @@ void BossWizardState::SetCurrentState(BossWizardState::NameState current_state)
 {
 	this->current_state = current_state;
 }
-
-

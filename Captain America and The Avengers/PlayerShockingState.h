@@ -6,14 +6,13 @@
 class PlayerShockingState : public PlayerState
 {
 public:
-	float time_shocking;
 	int damage;
+	float time_shocking;
 	PlayerShockingState(int damage);
 	~PlayerShockingState();
 	virtual void Update(float dt);
 	virtual void Draw();
 	BoundingBox GetBoundingBox() override;
-
 	virtual void HandleInput(float dt);
 };
 

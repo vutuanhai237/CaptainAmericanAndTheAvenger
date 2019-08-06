@@ -6,9 +6,8 @@ class BossWizardIdleRoad : public BossWizardRoad
 public:
 	int phase;
 	float time_idle;
-	bool IsRunning;
 	float time_running;
-
+	bool IsRunning;
 	bool IsChamDatLanDau;
 	virtual void Update(float dt);
 	BossWizardIdleRoad();

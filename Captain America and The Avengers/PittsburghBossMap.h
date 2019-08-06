@@ -4,11 +4,12 @@
 class PittsburghBossMap : public WorldMap
 {
 public:
-	PittsburghBossMap();
 	void Update(float dt);
 	void Draw(D3DCOLOR ColorMode = Sprite::DefaultColorMode) override;
+	PittsburghBossMap();
 	~PittsburghBossMap();
 private:
-	Animation *CaroUp, *CaroDown;
+	Animation *CaroUp;
+	Animation *CaroDown;
 };
 

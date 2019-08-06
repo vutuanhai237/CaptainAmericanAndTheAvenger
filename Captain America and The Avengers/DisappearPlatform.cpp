@@ -39,19 +39,25 @@ BoundingBox DisappearPlatform::GetBoundingBox()
 int DisappearPlatform::OnCollision(Entity *obj, float dt)
 {
 	if (Started || obj->GetTag() != Entity::Entity_Tag::player)
+	{
 		return 0;
+	}
 	BoundingBox BoundingBoxPlayer = obj->GetBoundingBox();
 	BoundingBoxPlayer.vx *= dt;
 	BoundingBoxPlayer.vy *= dt;
 	if (Collision::getInstance()->SweptAABB(BoundingBoxPlayer, this->GetBoundingBox()).side == CollisionSide::bottom)
+	{
 		Started = true;
+	}
 	return 0;
 }
 
 void DisappearPlatform::Update(float dt)
 {
 	if (!Started)
+	{
 		return;
+	}
 	Timer += dt;
 	if (!IsSplit && Timer > DISAPPEAR_PLATFORM_TIME_SPLIT)
 	{

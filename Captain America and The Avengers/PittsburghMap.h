@@ -6,9 +6,6 @@
 class PittsburghMap
 {
 public:
-	PittsburghMap();
-	~PittsburghMap();
-
 	enum MapMode
 	{
 		Dark = 0,			// 000
@@ -18,20 +15,19 @@ public:
 		DarkPortal2 = 4,	// 100
 		LightPortal2 = 5	// 110
 	};
-
 	void Draw();
 	void SwapMode(); // dark/light
 	void SwapMap(int map); // map, portal1, portal2
-
 	int GetMapMode(); 
 	WorldMap *GetCurrentMap();
 	Grid *GetCurrentGrid();
 	SIZE GetMapSize();
+	PittsburghMap();
+	~PittsburghMap();
 private:
 	std::vector<WorldMap*> *map;
 	std::vector<Grid*> *grid;
 	int Mode;
-
 	void ReadData(LPCWSTR path, int code);
 };
 

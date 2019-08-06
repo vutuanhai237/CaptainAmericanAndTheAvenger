@@ -137,7 +137,7 @@ void GameManager::Running()
 	}
 	else
 	{
-		Sleep((TPF - delta)*900);
+		Sleep((DWORD)((TPF - delta)*900));
 		delta = TPF;
 	}
 

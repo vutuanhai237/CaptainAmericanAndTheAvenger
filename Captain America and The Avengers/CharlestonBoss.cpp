@@ -11,6 +11,7 @@
 #include "PlayerIdleState.h"
 #include "LaserBullet.h"
 #include "Framework/SoundManager.h"
+
 void CharlestonBoss::Update(float dt)
 {
 	Player *player = Player::GetInstance();
@@ -21,7 +22,9 @@ void CharlestonBoss::Update(float dt)
 	BossWizard *boss = BossWizard::GetInstance();
 	Camera::GetInstance()->SetCameraFreeze(false);
 	this->time_count += dt;
-	if (this->time_count >= 4.0f && this->count_bullet == 0) {
+
+	if (this->time_count >= 4.0f && this->count_bullet == 0) 
+	{
 		SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 			new LaserBullet(
 				D3DXVECTOR2(256, 63),
@@ -31,7 +34,8 @@ void CharlestonBoss::Update(float dt)
 		);
 		this->count_bullet++;
 	}
-	if (this->time_count >= 8.0f && this->count_bullet == 1) {
+	if (this->time_count >= 8.0f && this->count_bullet == 1)
+	{
 		SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 			new LaserBullet(
 				D3DXVECTOR2(0, 63),
@@ -41,7 +45,8 @@ void CharlestonBoss::Update(float dt)
 		);
 		this->count_bullet++;
 	}
-	if (this->time_count >= 12.0f && this->count_bullet == 2) {
+	if (this->time_count >= 12.0f && this->count_bullet == 2)
+	{
 		SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 			new LaserBullet(
 				D3DXVECTOR2(256, 63),
@@ -51,20 +56,23 @@ void CharlestonBoss::Update(float dt)
 		);
 		this->count_bullet++;
 	}
-	if (this->time_count >= 16.0f && this->count_bullet == 3) {
-	//if (this->count_bullet == 0) {
+	if (this->time_count >= 16.0f && this->count_bullet == 3) 
+	{
 		grid->AddObject2Cell(boss);
 		boss->Init();
-		float x = rand() % 170 + 50;
+		float x = (float)(rand() % 170 + 50);
 		boss->SetPosition(x, 200.0f);
 		this->count_bullet++;
-
 	}
 	if (IsExitAble && IsInsideExitZone())
+	{
 		SceneManager::GetInstance()->ReplaceScene(new Pittsburgh());
+	}
 	// Cheat Fast next map
 	if (DirectInput::GetInstance()->KeyDown(DIK_N))
+	{
 		SceneManager::GetInstance()->ReplaceScene(new Pittsburgh());
+	}
 }
 
 void CharlestonBoss::Draw()
@@ -124,7 +132,6 @@ CharlestonBoss::CharlestonBoss() : Scene()
 	player->SetPosition(24.0f, 75.0f);
 	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
 	BossWizard* boss = BossWizard::GetInstance();
-	
 	this->time_count = 0;
 	this->count_bullet = 0;
 	this->UpdateOneTime = false;
@@ -132,16 +139,14 @@ CharlestonBoss::CharlestonBoss() : Scene()
 	cam = Camera::GetInstance();
 	cam->SetCameraPosition(player->GetPosition());
 	cam->Init(map->GetMapSize());
-
 	grid = new Grid(map->GetMapSize());
-	ExitZone.top = GAME_SCREEN_HEIGHT;
+	ExitZone.top = (LONG)GAME_SCREEN_HEIGHT;
 	ExitZone.bottom = 0;
 	ExitZone.left = 0;
-	ExitZone.right = GAME_SCREEN_WIDTH;
+	ExitZone.right = (LONG)GAME_SCREEN_WIDTH;
 	grid->AddObject2Cell(player);
 	grid->AddObject2Cell(Shield::GetInstance());
 	Init();
-	// sound 
 	SoundManager::GetInstance()->StopAllSound();
 	SoundManager::GetInstance()->PlayRepeat(SoundManager::SoundList::boss_wizard_theme);
 }
@@ -156,9 +161,8 @@ CharlestonBoss::~CharlestonBoss()
 void CharlestonBoss::Init()
 {
 	int n;
-	int tag, posX, posY, tmp;
+	int tag, posX, posY;
 	Entity *item;
-
 	fstream data(L"Resources/Map/charleston_boss_item_enemy.txt", ios_base::in);
 	data >> n;
 	for (int i = 0; i < n; i++)

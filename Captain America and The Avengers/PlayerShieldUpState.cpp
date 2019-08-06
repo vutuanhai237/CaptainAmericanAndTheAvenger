@@ -4,11 +4,10 @@
 PlayerShieldUpState::PlayerShieldUpState()
 {
 	Player* player = Player::GetInstance();
-	player->SetSize(24, 43);
-
 	player->SetCurrentState(PlayerState::NameState::shield_up);
-	player->SetTimeBuffer(0);
 	this->current_state = PlayerState::NameState::shield_up;
+	player->SetSize(24, 43);
+	player->SetTimeBuffer(0);
 	Shield::GetInstance()->SetShieldState(new ShieldUpState());
 }
 PlayerShieldUpState::~PlayerShieldUpState()
@@ -45,44 +44,53 @@ void PlayerShieldUpState::HandleInput(float dt)
 	auto keyboard = DirectInput::GetInstance();
 	if (!player->IsCollisionWithPlatform(dt))
 	{
-		if (!player->IsCollisionWithGround(dt)) {
-			if (!player->IsCollisionWithWall(dt)) {
-				if (!player->IsCollisionWithWater(dt)) {
+		if (!player->IsCollisionWithGround(dt))
+		{
+			if (!player->IsCollisionWithWall(dt)) 
+			{
+				if (!player->IsCollisionWithWater(dt)) 
+				{
 					player->ChangeState(new PlayerJumpingDownState());
 					return;
 				}
 			}
-
 		}
 	}
 	// Nếu vẫn up và down cùng lúc thì về idle
-	if (keyboard->KeyPress(UP_KEY) && keyboard->KeyPress(DOWN_KEY)) {
+	if (keyboard->KeyPress(UP_KEY) && keyboard->KeyPress(DOWN_KEY)) 
+	{
 		player->ChangeState(new PlayerIdleState());
-
 		return;
 	}
 	// Ưu tiên các trạng thái khái
-	if (keyboard->KeyDown(RIGHT_KEY)) {
+	if (keyboard->KeyDown(RIGHT_KEY)) 
+	{
 		player->ChangeState(new PlayerRunningState());
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		return;
 	}
 
-	if (keyboard->KeyDown(LEFT_KEY)) {
+	if (keyboard->KeyDown(LEFT_KEY)) 
+	{
 		player->ChangeState(new PlayerRunningState());
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		return;
 	}
-	if (keyboard->KeyDown(ATTACK_KEY)) {
+
+	if (keyboard->KeyDown(ATTACK_KEY))
+	{
 		player->ChangeState(new PlayerThrowingState());
 		return;
 	}
-	if (keyboard->KeyDown(JUMP_KEY)) {
+
+	if (keyboard->KeyDown(JUMP_KEY)) 
+	{
 		player->ChangeState(new PlayerJumpingState());
 		return;
 	}
 	// Nếu vẫn nhấn thì giữ nguyên trạng thái
-	if (keyboard->KeyPress(UP_KEY)) {
+	if (keyboard->KeyPress(UP_KEY))
+	{
 		return;
 	}
 	player->ChangeState(new PlayerIdleState());

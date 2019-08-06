@@ -17,7 +17,6 @@ PlayerIdleState::PlayerIdleState()
 	player->time_air_rolling = 0;
 	player->time_ducking_before_idle = 0;
 	player->time_jumping_before_flowing = 0;
-
 	player->IsJumpingDown = false;
 	player->IsJumping = false;
 	player->IsRolling = false;
@@ -38,9 +37,6 @@ void PlayerIdleState::Update(float dt)
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
 	player->SetVelocity(0, 0);
-
-	//Debug::PrintOut(L"x = %f\n", player->GetPosition().x);
-
 }
 
 void PlayerIdleState::Draw()
@@ -56,7 +52,6 @@ BoundingBox PlayerIdleState::GetBoundingBox()
 		player->GetVelocityX(), 
 		player->GetVelocityY()
 	);
-
 }
 
 void PlayerIdleState::HandleInput(float dt)
@@ -76,63 +71,66 @@ void PlayerIdleState::HandleInput(float dt)
 					player->CarrierObject = NULL;
 					return;
 				}
-			}
-			
+			}			
 		}
-
 	}
-	if (player->IsCollisionWithSpike(dt)) {
-		if (Player::GetInstance()->time_invisible <= 0) {
+	if (player->IsCollisionWithSpike(dt))
+	{
+		if (Player::GetInstance()->time_invisible <= 0)
+		{
 			Player::GetInstance()->ChangeState(new PlayerBeatenState(DAMAGE_SPIKE));
 			return;
 		}
 	}
-	
 	// Nếu ấn X thì nhảy
-	if (keyboard->KeyDown(JUMP_KEY)) {
+	if (keyboard->KeyDown(JUMP_KEY))
+	{
 		player->ChangeState(new PlayerJumpingState());
 		return;
 	}
-	if (keyboard->KeyDown(ATTACK_KEY)) {
-		if (Shield::GetInstance()->GetShieldState()->GetFrameLock() >= 2) {
+	if (keyboard->KeyDown(ATTACK_KEY))
+	{
+		if (Shield::GetInstance()->GetShieldState()->GetFrameLock() >= 2)
+		{
 			player->ChangeState(new PlayerPunchingState());
 			return;
 		}
-		else {
-			
+		else 
+		{		
 			player->ChangeState(new PlayerThrowingState());
 			return;
 		}
-	
 	}
-	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyPress(LEFT_KEY)) {
+	if (keyboard->KeyPress(RIGHT_KEY) && keyboard->KeyPress(LEFT_KEY)) 
+	{
 		return;
 	}
 	// Nếu vừa ấn cả up và down arrow thì giữ nghuyên idle
-	if (keyboard->KeyPress(UP_KEY) && keyboard->KeyPress(DOWN_KEY)) {
+	if (keyboard->KeyPress(UP_KEY) && keyboard->KeyPress(DOWN_KEY))
+	{
 		return;
 	}
-
 	// Nếu nhấn up-arrow thì gồng - shield up 
 	if (keyboard->KeyPress(UP_KEY)) {
 		player->ChangeState(new PlayerShieldUpState());
 		return;
 	} 
-	
 	// Nếu nhấn down-arrow thì duck
-	if (keyboard->KeyPress(DOWN_KEY)) {
+	if (keyboard->KeyPress(DOWN_KEY))
+	{
 		player->ChangeState(new PlayerDuckingState());
 		return;
 	}
 	// Nếu ấn right-arrow thì chạy qua phải
-	if (keyboard->KeyDown(RIGHT_KEY) || keyboard->KeyPress(RIGHT_KEY)) {
+	if (keyboard->KeyDown(RIGHT_KEY) || keyboard->KeyPress(RIGHT_KEY)) 
+	{
 		player->ChangeState(new PlayerRunningState());
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		return;
 	}
-
 	// Nếu ấn left-arrow thì chạy qua trái
-	if (keyboard->KeyDown(LEFT_KEY) || keyboard->KeyPress(LEFT_KEY)) {
+	if (keyboard->KeyDown(LEFT_KEY) || keyboard->KeyPress(LEFT_KEY)) 
+	{
 		player->ChangeState(new PlayerRunningState());
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		return;

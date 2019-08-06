@@ -18,17 +18,25 @@ CharlestonBossMap::~CharlestonBossMap()
 void CharlestonBossMap::Draw()
 {
 	if (CurrentMapMode == MapMode::Dark)
+	{
 		DarkMap->Draw();
+	}
 	else
+	{
 		LightMap->Draw();
+	}
 }
 
 void CharlestonBossMap::SwapMode()
 {
 	if (CurrentMapMode == MapMode::Light)
+	{
 		CurrentMapMode = MapMode::Dark;
+	}
 	else
+	{
 		CurrentMapMode = MapMode::Light;
+	}
 }
 
 void CharlestonBossMap::SwapMode(MapMode mode)
@@ -44,9 +52,13 @@ CharlestonBossMap::MapMode CharlestonBossMap::GetMode()
 WorldMap *CharlestonBossMap::GetCurrentMap()
 {
 	if (CurrentMapMode == MapMode::Dark)
+	{
 		return DarkMap;
+	}
 	else
+	{
 		return LightMap;
+	}
 }
 
 SIZE CharlestonBossMap::GetMapSize()

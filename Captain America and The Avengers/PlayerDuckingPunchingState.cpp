@@ -51,20 +51,20 @@ void PlayerDuckingPunchingState::HandleInput(float dt)
 		player->GetCurrentAnimation()->Pause(TIME_WAITING_DUCKING_PUNCHING);
 		this->IsGong = true;
 	}
-	if (this->time_punch >= TIME_WAITING_DUCKING_PUNCHING) {
+	if (this->time_punch >= TIME_WAITING_DUCKING_PUNCHING) 
+	{
 		player->GetCurrentAnimation()->SetFrame(2);
 		player->GetCurrentAnimation()->Pause(TIME_WAITING_DUCKING_PUNCHING);
 	}
 	if (this->time_punch >= TIME_DUCKING_PUNCHING)
 	{
-		
 		player->GetCurrentAnimation()->SetAnimationTime(0.0f);
 		player->GetCurrentAnimation()->ResetAnimation();
 		player->ChangeState(new PlayerDuckingState());
 		return;
 	}
-
-	if (keyboard->KeyUp(ATTACK_KEY)) {
+	if (keyboard->KeyUp(ATTACK_KEY)) 
+	{
 		return;
 	}
 }

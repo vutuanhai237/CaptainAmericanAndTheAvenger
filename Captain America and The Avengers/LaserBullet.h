@@ -5,13 +5,7 @@
 #define LASER_BULLET_VELOCITY_X 150.0f
 class LaserBullet : public EnemyWeapon
 {
-
 public:
-	enum LaserBulletType {
-		horizontal,
-		vertical,
-		crossed
-	};
 	virtual void Update(float dt) override;
 	virtual int OnCollision(Entity*, float dt) override;
 	virtual void Draw();
@@ -19,10 +13,9 @@ public:
 	~LaserBullet() override;
 	bool IsDead;
 	bool IsComeBack;
-	float distance;
 	Equation* e;
 	Animation* current_ani;
-protected:
 	float time_out_straight;
+	float distance;
 };
 

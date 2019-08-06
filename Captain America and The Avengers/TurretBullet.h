@@ -12,10 +12,9 @@ public:
 	virtual void Draw();
 	TurretBullet(D3DXVECTOR2, Entity::Entity_Direction direction, int alpha);
 	~TurretBullet() override;
-	bool IsDead;
-	float distance;
-	Animation* current_ani;
-protected:
 	float time_out_straight;
+	float distance;
+	bool IsDead;
+	Animation* current_ani;
 };
 

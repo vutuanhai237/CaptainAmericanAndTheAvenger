@@ -9,9 +9,9 @@ PlayerBeatenState::PlayerBeatenState(int damage)
 	this->current_state = PlayerState::NameState::beaten;
 	player->SetVelocity(0, 0);
 	this->time_beaten = 0;
-	player->OnTheWater = true;
 	player->time_invisible = TIME_INVISIBLE;
 	player->hp -= damage;
+	player->OnTheWater = true;
 	player->OnTheWater = true;
 	SoundManager::GetInstance()->Play(SoundManager::SoundList::enemy_fire);
 }
@@ -25,9 +25,9 @@ void PlayerBeatenState::Update(float dt)
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
 	this->time_beaten += dt;
-	if (player->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+	if (player->GetMoveDirection() == Entity::Entity_Direction::LeftToRight)
+	{
 		player->SetPositionX(player->GetPosition().x - VELOCITY_X*dt*1/3);
-
 	}
 	else
 	{
@@ -35,7 +35,8 @@ void PlayerBeatenState::Update(float dt)
 	}
 	if (time_beaten > TIME_BEATEN_MIN && player->hp > 0)
 	{
-		if (player->IsCollisionWithGround(dt) || player->IsCollisionWithSpike(dt)) {
+		if (player->IsCollisionWithGround(dt) || player->IsCollisionWithSpike(dt))
+		{
 			player->ChangeState(new PlayerIdleState());
 			return;
 		}
@@ -47,8 +48,6 @@ void PlayerBeatenState::Update(float dt)
 		player->SetVelocityY(VELOCITY_Y*1.5);
 		return;
 	}
-
-
 }
 
 void PlayerBeatenState::Draw()
@@ -70,7 +69,8 @@ BoundingBox PlayerBeatenState::GetBoundingBox()
 void PlayerBeatenState::HandleInput(float dt)
 {
 	Player *player = Player::GetInstance();
-	if (player->hp <= 0) {
+	if (player->hp <= 0) 
+	{
 		if (player->IsCollisionWithGround(dt, 8) 
 			|| player->IsCollisionWithWall(dt)
 			|| player->IsCollisionWithSpike(dt))
@@ -78,7 +78,8 @@ void PlayerBeatenState::HandleInput(float dt)
 			player->ChangeState(new PlayerDieState());
 			return;
 		}
-		else {
+		else
+		{
 			player->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 			player->SetVelocityY(VELOCITY_Y*1.5);
 			return;

@@ -1,21 +1,19 @@
 ﻿#pragma once
 #include "Enemy.h"
-#include "BossWizardState.h"
 #include "Collision.h"
+#include "BossWizardState.h"
 #include "BossWizardIdleState.h"
 #include "BossWizardRoad.h"
-// BossWizard
+// Boss Wizard properties zone
 #define BOSS_WIZARD_HP 30
 #define BOSS_WIZARD_LOW_HP 10
 #define BOSS_WIZARD_SIZE_WIDTH 8
 #define BOSS_WIZARD_SIZE_HEIGHT 52
 #define BOSS_WIZARD_FOOT_HEIGHT 8
 #define BOSS_WIZARD_ARM_HEIGHT 8
-//
 #define BOSS_WIZARD_VELOCITY_X 80.0f
 #define BOSS_WIZARD_FLYING_VELOCITY_X 160.0f
 #define BOSS_WIZARD_VELOCITY_Y 150.0f
-
 // Fire zone
 #define BOSS_WIZARD_TIME_FIRE 1.0f
 #define BOSS_WIZARD_TIME_FIRING 0.38f
@@ -28,74 +26,68 @@
 #define BOSS_WIZARD_TIME_FLYING_FIRE 0.2f
 #define BOSS_WIZARD_TIME_FLYING_FIRING 0.1f
 #define BOSS_WIZARD_MAX_BULLET_FLYING 1
-// Punching fire
+// Punching fire zone
 #define BOSS_WIZARD_TIME_PUNCHING_FIRE 1.2f 
 #define BOSS_WIZARD_MAX_BULLET_PUNCHING_FIRE 1
-// Beaten
+// Beaten zone
 #define BOSS_WIZARD_TIME_BEATEN 0.116* 20
+
 using namespace std;
+
 class BossWizard : public Enemy
 {
 public:
-	enum AttackOption {
-		energy_only, // bắn năng lượng đơn
-		energy_laser3, // bắn 3 laser và 1 năng lượng sau cùng
-		energy_laser2, // 
-		punch,
-	};
 	static BossWizard* GetInstance();
 	void Release();
 	void Update(float dt);
 	void Draw();
-	void HandleInput(float dt);
 	void Init();
-	void ChangeState(BossWizardState* new_state);
-	void ChangeRoad(BossWizardRoad* new_road);
+	// get
 	BossWizardState::NameState GetCurrentState();
-	int previous_state;
 	BossWizardState* GetBossWizardState();
+	BossWizardRoad::RoadType GetCurrentRoad();
 	Animation* GetCurrentAnimation();
 	Animation* GetAnimation(BossWizardState::NameState state);
+	int GetPreviousState();
+	// set 
 	void SetCurrentState(BossWizardState::NameState new_state);
-	BossWizardRoad::RoadType GetCurrentRoad();
 	void SetCurrentRoad(BossWizardRoad::RoadType new_road);
 	void SetCurrentAnimation(Animation* animation);
-	int GetPreviousState();
+	void ChangeState(BossWizardState* new_state);
+	void ChangeRoad(BossWizardRoad* new_road);
+	// collusion
+	int OnCollision(Entity*, float dt) override;
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
 	CollisionOut IsCollisionWithWall(float dt, int delta_y = 4);
-	int OnCollision(Entity*, float dt) override;
-	int previous_hp;
-	bool UpdateOneTime;
-	bool UpdateOneTime2;
+	// time zone
 	float time_flying;
 	float time_runnig;
 	float time_fire;
 	float time_punching;
 	float time_invisible;
 	float time_die;
-	// ROAD ZONE
+	int previous_hp;
+	int previous_state;
+	// flag zone
 	bool IsIdle = false;
 	bool IsUMax = false;
 	bool IsUMin = false;
 	bool IsDie = false;
 	bool IsLac = false;
 	bool IsOnAir = false;
+	bool UpdateOneTime;
+	bool UpdateOneTime2;
 protected:
 	static BossWizard *instance;
 	std::map<int, Animation*> animations;
-
-	BossWizardState::NameState current_state;
-
-	BossWizardRoad::RoadType current_road;
-	int previous_road;
-
 	BossWizardState* state;
 	BossWizardRoad* road;
-
+	BossWizardState::NameState current_state;
+	BossWizardRoad::RoadType current_road;
 	Animation* animation;
-	D3DXVECTOR2 position_idle;
 	float time_buffer;
-	int i = 0;
+	int previous_road;
+	int i = 0;	
 private:
 	BossWizard();
 	~BossWizard();

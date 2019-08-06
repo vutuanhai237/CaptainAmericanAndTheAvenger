@@ -8,11 +8,10 @@ PlayerShockingState::PlayerShockingState(int damage)
 	this->current_state = PlayerState::NameState::shocking;
 	player->SetVelocity(0, 0);
 	this->time_shocking = 0;
-	player->OnTheWater = true;
 	player->time_invisible = TIME_INVISIBLE;
 	this->damage = damage;
 	player->OnTheWater = true;
-
+	player->OnTheWater = true;
 }
 PlayerShockingState::~PlayerShockingState()
 {
@@ -24,9 +23,9 @@ void PlayerShockingState::Update(float dt)
 	Player* player = Player::GetInstance();
 	player->GetCurrentAnimation()->Update(dt);
 	this->time_shocking += dt;
-	if (player->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+	if (player->GetMoveDirection() == Entity::Entity_Direction::LeftToRight)
+	{
 		player->SetPositionX(player->GetPosition().x - VELOCITY_X * dt * 2 / 3);
-
 	}
 	else
 	{
@@ -47,6 +46,7 @@ void PlayerShockingState::Update(float dt)
 
 void PlayerShockingState::Draw()
 {
+
 }
 
 BoundingBox PlayerShockingState::GetBoundingBox()
@@ -58,7 +58,6 @@ BoundingBox PlayerShockingState::GetBoundingBox()
 		player->GetVelocityX(),
 		player->GetVelocityY()
 	);
-
 }
 
 void PlayerShockingState::HandleInput(float dt)

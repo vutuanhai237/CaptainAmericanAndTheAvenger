@@ -8,16 +8,14 @@ Item::Item(float x, float y, int tag)
 	Entity::SetTag(Entity::Entity_Tag::item);
 	Entity::SetType(Entity::Entity_Type::item_type);
 	PriTag = tag;
-	delta = 0;
-	FrameCounter = 0;
-	CanFalling = true;
-	direction = 1;
-
-	size.cx = 4;
-	size.cy = 12;
 	position.x = x;
 	position.y = y;
-
+	delta = 0;
+	FrameCounter = 0;
+	direction = 1;
+	size.cx = 4;
+	size.cy = 12;
+	CanFalling = true;
 	switch (tag)
 	{
 	case Item_Tag::ExitOrb:
@@ -68,15 +66,17 @@ void Item::Update(float dt)
 	delta += dt;
 	animation->Update(dt);	
 	FrameCounter++;
-
 	if (CanFalling)
 	{
 		if (direction > 0 && delta >= ITEM_TIME_REVERT)
+		{
 			direction = -1;
-
+		}
 		Entity::position.y += ITEM_VELOCITY_Y * direction;
 		if (direction < 0)
+		{
 			CheckFalling();
+		}
 	}
 }
 
@@ -123,15 +123,20 @@ int Item::OnCollision(Entity *obj, float dt)
 void Item::Draw()
 {
 	if (delta > ITEM_LOOT_WARNING)
+	{
 		if (FrameCounter >> 2 & 1)
+		{
 			return;
+		}
+	}		
 	animation->Draw(Entity::position);
 }
 
 void Item::CheckFalling()
 {
 	auto obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
-	for (Entity *item : obj) {
+	for (Entity *item : obj)
+	{
 		if (item->GetTag() != Entity::Entity_Tag::rope 
 			&& Collision::getInstance()->SweptAABB(item->GetBoundingBox(), GetBoundingBox()).CollisionTime <= 1.0)
 		{
@@ -139,5 +144,4 @@ void Item::CheckFalling()
 			CanFalling = false;
 		}
 	}
-	
 }

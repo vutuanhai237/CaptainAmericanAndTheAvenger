@@ -4,12 +4,15 @@
 #include "PlayerBeatenState.h"
 #include "SceneManager.h"
 #include "Shield.h"
+
 Player *Player::instance = NULL;
 
 Player * Player::GetInstance()
 {
 	if (!instance)
+	{
 		instance = new Player();
+	}
 	return instance;
 }
 
@@ -25,19 +28,22 @@ void Player::DrawHP()
 	D3DXVECTOR2 pos;
 	pos.x = 28;
 	pos.y = 20;
-
 	if (hp <= 0)
+	{
 		return;
+	}
 	if (hp <= 2)
 	{
 		if (i >> 3 & 1)
+		{
 			return;
+		}
 		HPstatus->SetPosition(pos);
 		HPstatus->Draw();
 	}
 	else
 	{
-		tmp = ceilf(tmp / 4.0f);
+		tmp = (int)ceilf(tmp / 4.0f);
 		for (int i = 0; i < tmp; i++)
 		{
 			HPstatus->SetPosition(pos);
@@ -49,13 +55,11 @@ void Player::DrawHP()
 
 Player::Player() :Entity()
 {
-	///
-	this->time_buffer = 0;
 	this->SetTag(Entity::Entity_Tag::player);
 	this->SetType(Entity::Entity_Type::player_type);
 	this->SetAliveState(Entity::Entity_AliveState::Alive);
 	this->SetActive(true);
-	/// Load resources
+	// Load resources
 	Animation* idle = new Animation(PlayerState::NameState::idle, L"Resources//CaptainState//CaptainIdleState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	Animation* running = new Animation(PlayerState::NameState::running, L"Resources//CaptainState//CaptainRunningState.png", D3DCOLOR_XRGB(255, 0, 255), 4);
 	Animation* jumping = new Animation(PlayerState::NameState::jumping, L"Resources//CaptainState//CaptainJumpingState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
@@ -76,25 +80,23 @@ Player::Player() :Entity()
 	Animation* shield_down = new Animation(PlayerState::NameState::shield_up, L"Resources//CaptainState//CaptainShielDownState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	Animation* beaten = new Animation(PlayerState::NameState::beaten, L"Resources//CaptainState//CaptainBeatenState.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	Animation* shocking = new Animation(PlayerState::NameState::shocking, L"Resources//CaptainState//CaptainShockingState.png", D3DCOLOR_XRGB(255, 0, 255), 2);
-
 	HPstatus = new Sprite(L"Resources/CaptainState/HP.png", D3DCOLOR_ARGB(0, 0, 0, 0));
 	// Chỉ những animation nào có số sprite > 1 thì mới set time
-	running->SetTime(0.1);
+	running->SetTime(0.1f);
 	dashing->SetTime(0.05f);
-	throwing->SetTime(0.1);
-	ducking_punching->SetTime(0.1);
-	rolling->SetTime(0.03);
-	die->SetTime(0.1);
-	shocking->SetTime(0.032);
+	throwing->SetTime(0.1f);
+	ducking_punching->SetTime(0.1f);
+	rolling->SetTime(0.03f);
+	die->SetTime(0.1f);
+	shocking->SetTime(0.032f);
 	// diving
-	diving->SetTime(0.2);
+	diving->SetTime(0.2f);
 	diving->SetFrameReset(4);
-	flowing->SetTime(0.1);
+	flowing->SetTime(0.1f);
 	// hang on
-	hang_on->SetTime(0.15);
-	jump_from_rope->SetTime(0.2);
-	punching->SetTime(0.1);
-
+	hang_on->SetTime(0.15f);
+	jump_from_rope->SetTime(0.2f);
+	punching->SetTime(0.1f);
 	// Cập nhật vào cơ sở dữ liệu
 	this->animations[PlayerState::idle] = idle;
 	this->animations[PlayerState::running] = running;
@@ -116,12 +118,8 @@ Player::Player() :Entity()
 	this->animations[PlayerState::shield_down] = shield_down;
 	this->animations[PlayerState::beaten] = beaten;
 	this->animations[PlayerState::shocking] = shocking;
-
-	///End load resources
-	this->animation = this->animations[current_state];
-	this->previous_state = 0;
+	// bool
 	Entity::IsLocking = true;
-	// Cập nhật trạng thái rolling hay diving
 	this->IsJumpingDown = false;
 	this->IsJumping = false;
 	this->IsRolling = false;
@@ -131,6 +129,9 @@ Player::Player() :Entity()
 	this->IsShieldDown = false;
 	this->IsOnAir = false;
 	this->LockState = false;
+	this->IsBornSoldier = true;
+	this->IsBornRocketRobot = true;
+	// time
 	this->time_air_jumping = 0;
 	this->time_kicking = 0;
 	this->time_air_rolling = 0;
@@ -138,18 +139,21 @@ Player::Player() :Entity()
 	this->time_don_tho = 0;
 	this->time_invisible = 0;
 	this->time_guc = 0;
+	this->time_buffer = 0;
+	// other
+	this->animation = this->animations[current_state];
+	this->previous_state = 0;
 	this->hp = PLAYER_HP;
-	CarrierObject = NULL;
+	this->i = 0;
+	this->CarrierObject = NULL;
 	this->number_rocket_robot = 0;
 	this->number_soldier = 0;
-	this->IsBornSoldier = true;
-	this->IsBornRocketRobot = true;
 }
-
 
 Player::~Player()
 {
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 20; i++)
+	{
 		delete this->animations[i];
 	}
 }
@@ -158,7 +162,8 @@ void Player::Update(float dt)
 {
 	Entity::Update(dt);
 	this->player_state->Update(dt);
-	if (this->time_invisible > 0) {
+	if (this->time_invisible > 0) 
+	{
 		this->time_invisible -= dt;
 	}
 }
@@ -169,14 +174,16 @@ void Player::Draw()
 	{
 		Entity::position.x += CarrierObject->GetVelocityX();
 		Entity::position.y += CarrierObject->GetVelocityY();
-		if (Shield::GetInstance()->GetShieldState()->GetCurrentState() != ShieldState::NameState::ShieldAttack) {
+		if (Shield::GetInstance()->GetShieldState()->GetCurrentState() != ShieldState::NameState::ShieldAttack) 
+		{
 			Shield::GetInstance()->Update(0);
 		}
 	}
 	i++;
 	Player *player = Player::GetInstance();
 	Shield *shield = Shield::GetInstance();
-	if (player->GetMoveDirection()) {
+	if (player->GetMoveDirection()) 
+	{
 		player->GetCurrentAnimation()->SetScale(1, 1);
 		shield->GetAnimation()->SetScale(1, 1);
 	}
@@ -185,27 +192,27 @@ void Player::Draw()
 		player->GetCurrentAnimation()->SetScale(-1, 1);
 		shield->GetAnimation()->SetScale(-1, 1);
 	}
-	if (Player::GetInstance()->GetCurrentState() == PlayerState::NameState::shocking) {
+	if (Player::GetInstance()->GetCurrentState() == PlayerState::NameState::shocking) 
+	{
 		this->animation->Draw(this->position);
 		goto CHECK;
 	}
-	if (this->time_invisible <= 0) {
+	if (this->time_invisible <= 0) 
+	{
 		this->animation->Draw(this->position);
 	}
-	else {
-	
-		if (this->time_invisible <= 0) {
+	else
+	{
+		if (this->time_invisible <= 0) 
+		{
 			this->time_invisible = 0;
 		}
-		if ((i) % 3 == 1) {
+		if ((i) % 3 == 1)
+		{
 			this->animation->Draw(this->position);
-
 		}
-
 	}
 	CHECK:
-	
-
 	shield->Draw();
 	DrawHP();
 }
@@ -219,7 +226,6 @@ void Player::HandleInput(float dt)
 void Player::Init()
 {
 	this->player_state = new PlayerIdleState();
-
 }
 
 void Player::ChangeState(PlayerState *new_state)
@@ -233,7 +239,6 @@ void Player::ChangeState(PlayerState *new_state)
 	player_state = new_state;
 	this->current_state = player_state->GetCurrentState();
 	this->SetCurrentAnimation(this->animations[current_state]);
-	
 }
 
 PlayerState::NameState Player::GetCurrentState()
@@ -316,7 +321,6 @@ bool Player::GetIsThrowing()
 	return this->IsThrowing;
 }
 
-
 D3DXVECTOR2 Player::GetPositionIdle()
 {
 	return this->position_idle;
@@ -340,17 +344,17 @@ bool Player::IsCollisionWithGround(float dt, int delta_y)
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
-
 	if (foot.vy == 0)
 	{
 		for (auto item : obj)
 		{
 			if (item->GetTag() == Entity::Entity_Tag::ground && Checker->IsCollide(foot, BoundingBox(item->GetPosition(), item->GetSize(), 0, 0)))
+			{
 				return true;
+			}
 		}
 		return false;
 	}
-
 	CollisionOut tmp;
 	BoundingBox box2;
 	for (auto item : obj)
@@ -372,19 +376,25 @@ bool Player::IsCollisionWithGround(float dt, int delta_y)
 bool Player::IsCollisionWithPlatform(float dt, Entity *obj, int delta_y)
 {
 	if (obj == NULL)
+	{
 		if (CarrierObject == NULL)
+		{
 			return false;
+		}
 		else
+		{
 			obj = CarrierObject;
-
+		}
+	}
 	SIZE FootSize;
 	FootSize.cx = PLAYER_SIZE_WIDTH;
 	FootSize.cy = PLAYER_FOOT_HEIGHT;
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
 	auto Checker = Collision::getInstance();
-
 	if (abs(foot.vy) == 0.0f && Checker->IsCollide(foot, obj->GetBoundingBox()))
+	{
 		return true;
+	}
 
 	if (Checker->SweptAABB(foot, obj->GetBoundingBox()).side == CollisionSide::bottom)
 	{
@@ -392,7 +402,6 @@ bool Player::IsCollisionWithPlatform(float dt, Entity *obj, int delta_y)
 		velocity.y = 0;
 		return true;
 	}	
-
 	return false;
 }
 
@@ -402,21 +411,18 @@ bool Player::IsCollisionWithWater(float dt, int delta_y)
 	FootSize.cx = PLAYER_SIZE_WIDTH;
 	FootSize.cy = PLAYER_FOOT_HEIGHT;
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
-	
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
 	CollisionOut tmp;
 	BoundingBox box2;
 	for (auto item : obj)
 	{
-		
 		if (item->GetTag() == Entity::Entity_Tag::water)
 		{
 			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
 			tmp = Checker->SweptAABB(foot, box2);
 			if (tmp.side == CollisionSide::bottom)
 			{
-				//position.y = item->GetPosition().y + PLAYER_SIZE_HEIGHT / 2;
 				return true;
 			}
 		}
@@ -427,23 +433,21 @@ bool Player::IsCollisionWithWater(float dt, int delta_y)
 bool Player::IsCollisionWithWall(float dt, int delta_y)
 {
 	int ret = 0; 
-
 	Entity::IsLocking = false;
 	Entity::Update(dt);
 	Entity::IsLocking = true;
-
 	SIZE PlayerSize;
 	PlayerSize.cx = PLAYER_SIZE_WIDTH;
 	PlayerSize.cy = PLAYER_SIZE_HEIGHT;
 	if (current_state == PlayerState::NameState::rolling)
+	{
 		PlayerSize.cy = PLAYER_SIZE_WIDTH;
+	}
 	BoundingBox player(D3DXVECTOR2(position.x, position.y - delta_y), PlayerSize, velocity.x*dt, velocity.y*dt);
 	Collision *Checker = Collision::getInstance();
-
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
 	CollisionOut tmp;
 	BoundingBox box2;
-
 	for (auto item : obj)
 	{
 		if (item->GetTag() == Entity::Entity_Tag::wall)
@@ -454,18 +458,26 @@ bool Player::IsCollisionWithWall(float dt, int delta_y)
 			{
 			case CollisionSide::left:
 				if (ret & 1)
+				{
 					return ret != 0;
+				}
 				position.x = item->GetPosition().x + (item->GetSize().cx + PLAYER_SIZE_WIDTH) / 2 + 1;
 				if (this->GetCurrentState() != PlayerState::NameState::jumping)
+				{
 					return true;
+				}
 				ret |= 1;
 				break;
 			case CollisionSide::right:
 				if (ret & 1)
+				{
 					return ret != 0;
+				}
 				position.x = item->GetPosition().x - (item->GetSize().cx + PLAYER_SIZE_WIDTH) / 2 - 1;
 				if (this->GetCurrentState() != PlayerState::NameState::jumping)
+				{
 					return true;
+				}
 				ret |= 1;
 				break;
 			case CollisionSide::top:
@@ -475,7 +487,9 @@ bool Player::IsCollisionWithWall(float dt, int delta_y)
 				break;
 			case CollisionSide::bottom:
 				if (this->GetCurrentState() == PlayerState::NameState::jumping)
-					return false;				
+				{
+					return false;
+				}
 				position.y = item->GetPosition().y + (item->GetSize().cy + PLAYER_SIZE_HEIGHT) / 2 - delta_y;				
 				velocity.y = 0.0f;
 				ret |= 1 << 1;
@@ -494,14 +508,12 @@ bool Player::IsCollisionWithRope(float dt, int delta_y)
 	ArmSize.cx = PLAYER_SIZE_WIDTH / 2;
 	ArmSize.cy = PLAYER_ARM_HEIGHT;
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y + delta_y), ArmSize, velocity.x*dt, velocity.y*dt);
-
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
 	CollisionOut tmp;
 	BoundingBox box2;
 	for (auto item : obj)
 	{
-
 		if (item->GetTag() == Entity::Entity_Tag::rope)
 		{
 			box2 = BoundingBox(item->GetPosition(), item->GetSize(), 0, 0);
@@ -524,17 +536,6 @@ bool Player::IsCollisionWithSpike(float dt, int delta_y)
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, velocity.x*dt, velocity.y*dt);
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
-
-	/*if (foot.vy == 0)
-	{
-		for (auto item : obj)
-		{
-			if (item->GetTag() == Entity::Entity_Tag::spike && Checker->IsCollide(foot, BoundingBox(item->GetPosition(), item->GetSize(), 0, 0)))
-				return true;
-		}
-		return false;
-	}*/
-
 	CollisionOut tmp;
 	BoundingBox box2;
 	for (auto item : obj)

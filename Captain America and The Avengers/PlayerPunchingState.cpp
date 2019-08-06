@@ -6,8 +6,8 @@ PlayerPunchingState::PlayerPunchingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::punching);
-	player->SetTimeBuffer(0);
 	this->current_state = PlayerState::NameState::punching;
+	player->SetTimeBuffer(0);
 	SoundManager::GetInstance()->Play(SoundManager::SoundList::player_punch_kick);
 	SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(new PlayerArm());
 }
@@ -37,7 +37,6 @@ BoundingBox PlayerPunchingState::GetBoundingBox()
 		player->GetVelocityX(),
 		player->GetVelocityY()
 	);
-
 }
 
 void PlayerPunchingState::HandleInput(float dt)
@@ -48,7 +47,6 @@ void PlayerPunchingState::HandleInput(float dt)
 	{
 		player->GetCurrentAnimation()->Pause(TIME_WAIT_PUNCHING);
 	}
-
 	// Dừng throwing khi time out, chuyển về idle
 	if (player->GetCurrentAnimation()->GetAnimationTime() >= TIME_PUNCHING)
 	{
@@ -57,36 +55,43 @@ void PlayerPunchingState::HandleInput(float dt)
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
-	else {
+	else 
+	{
 		return;
 	}
 	// Ưu tiên các trạng thái khái
-	if (keyboard->KeyDown(RIGHT_KEY)) {
+	if (keyboard->KeyDown(RIGHT_KEY))
+	{
 		player->ChangeState(new PlayerRunningState());
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		return;
 	}
 
-	if (keyboard->KeyDown(LEFT_KEY)) {
+	if (keyboard->KeyDown(LEFT_KEY))
+	{
 		player->ChangeState(new PlayerRunningState());
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		return;
 	}
 
-	if (keyboard->KeyDown(ATTACK_KEY)) {
+	if (keyboard->KeyDown(ATTACK_KEY))
+	{
 		return;
 	}
-	if (keyboard->KeyDown(JUMP_KEY)) {
+	if (keyboard->KeyDown(JUMP_KEY))
+	{
 		player->ChangeState(new PlayerJumpingState());
 		return;
 	}
 
-	if (keyboard->KeyDown(UP_KEY)) {
+	if (keyboard->KeyDown(UP_KEY)) 
+	{
 		player->ChangeState(new PlayerShieldUpState());
 		return;
 	}
 
-	if (keyboard->KeyDown(DOWN_KEY)) {
+	if (keyboard->KeyDown(DOWN_KEY))
+	{
 		player->ChangeState(new PlayerDuckingState());
 		return;
 	}

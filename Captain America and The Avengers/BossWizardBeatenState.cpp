@@ -18,7 +18,6 @@ void BossWizardBeatenState::Update(float dt)
 	BossWizard* boss = BossWizard::GetInstance();
 	Player* player = Player::GetInstance();
 	boss->GetCurrentAnimation()->Update(dt);
-	
 }
 
 void BossWizardBeatenState::Draw()

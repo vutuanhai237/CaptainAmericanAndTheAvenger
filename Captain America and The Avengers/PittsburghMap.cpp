@@ -28,7 +28,6 @@ PittsburghMap::PittsburghMap()
 	map->push_back(new WorldMap(L"Resources/Map/pittsburgh_dark_map_portal_2.txt", 0));
 	map->push_back(new WorldMap(L"Resources/Map/pittsburgh_light_map_portal_2.txt", 0));
 	grid->push_back(new Grid((*map)[map->size() - 1]->GetMapSize()));
-
 	Mode = MapMode::Dark;
 	ReadData(L"Resources/Map/pittsburgh_item_enemy.txt", 0);
 	ReadData(L"Resources/Map/pittsburgh_portal_1_item_enemy.txt", 1);
@@ -82,10 +81,8 @@ void PittsburghMap::ReadData(LPCWSTR path, int code)
 	Entity *item;
 	ItemsHolder *holder;
 	int *obj;
-
 	fstream data(path, ios_base::in);
 	data >> n;
-
 	for (int i = 0; i < n; i++)
 	{
 		data >> tag >> posX >> posY;
@@ -103,32 +100,32 @@ void PittsburghMap::ReadData(LPCWSTR path, int code)
 			delete obj;
 			break;
 		case Entity::Entity_Tag::disappear_platform:
-			item = new DisappearPlatform(posX, posY);
+			item = new DisappearPlatform((FLOAT)posX, (FLOAT)posY);
 			(*grid)[code]->AddObject2Cell(item);
 			break;
 		case Entity::Entity_Tag::moving_platform:
 			obj = new int;
 			data >> *obj;
-			item = new MovingPlatform(posX, posY, *obj);
+			item = new MovingPlatform((FLOAT)posX, (FLOAT)posY, *obj);
 			(*grid)[code]->AddObject2Cell(item);
 			delete obj;
 			break;
 		case Entity::Entity_Tag::cross_platform:
 			obj = new int;
 			data >> *obj;
-			item = new CrossPlatform(posX, posY, *obj);
+			item = new CrossPlatform((FLOAT)posX, (FLOAT)posY, *obj);
 			(*grid)[code]->AddObject2Cell(item);
 			delete obj;
 			break;
 		case Entity::Entity_Tag::circle_platform:
 			obj = new int[3];
 			data >> obj[0] >> obj[1]>>obj[2];
-			item = new CirclePlatform(posX, posY, obj[0], obj[1], obj[2]);
+			item = new CirclePlatform((FLOAT)posX, (FLOAT)posY, (FLOAT)obj[0], (FLOAT)obj[1], (FLOAT)obj[2]);
 			(*grid)[code]->AddObject2Cell(item);
 			delete obj;
 			break;
 		case Entity::Entity_Tag::item_container:
-			holder = new ItemsHolder(posX, posY, 1);
+			holder = new ItemsHolder((FLOAT)posX, (FLOAT)posY, 1);
 			data >> m;
 			for (int i = 0; i < m; i++)
 			{
@@ -192,7 +189,6 @@ void PittsburghMap::ReadData(LPCWSTR path, int code)
 			break;
 		}
 	}
-
 	(*grid)[code]->AddObject2Cell(Player::GetInstance());
 	(*grid)[code]->AddObject2Cell(Shield::GetInstance());
 }
@@ -200,11 +196,15 @@ void PittsburghMap::ReadData(LPCWSTR path, int code)
 PittsburghMap::~PittsburghMap()
 {
 	for (WorldMap *item : *map)
+	{
 		delete item;
+	}
 	map->clear();
 	delete map;
 	for (Grid *item : *grid)
+	{
 		delete item;
+	}
 	grid->clear();
 	delete grid;
 }

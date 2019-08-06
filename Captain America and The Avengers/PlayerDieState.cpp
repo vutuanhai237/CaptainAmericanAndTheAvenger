@@ -4,6 +4,7 @@
 #include "Charleston.h"
 #include "Shield.h"
 #include "ShieldNomalState.h"
+
 PlayerDieState::PlayerDieState()
 {
 	Player* player = Player::GetInstance();
@@ -12,11 +13,11 @@ PlayerDieState::PlayerDieState()
 	player->SetVelocity(0, 0);
 	this->time_beaten = 0;
 	player->time_guc = 0;
-	SoundManager::GetInstance()->StopAllSound();
-	SoundManager::GetInstance()->Play(SoundManager::SoundList::player_dead);
 	player->OnTheWater = true;
 	this->IsGuc = true;
 	Shield::GetInstance()->SetShieldState(new ShieldNomalState());
+	SoundManager::GetInstance()->StopAllSound();
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::player_dead);
 }
 PlayerDieState::~PlayerDieState()
 {
@@ -50,17 +51,20 @@ void PlayerDieState::HandleInput(float dt)
 	player->GetCurrentAnimation()->Update(dt);
 	player->time_guc += dt;
 	auto keyboard = DirectInput::GetInstance();
-	if (keyboard->KeyDown(DIK_H)) {
+	if (keyboard->KeyDown(DIK_H)) 
+	{
 		player->hp = PLAYER_HP;
 		player->GetCurrentAnimation()->ResetAnimation();
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
+
 	if (player->GetCurrentAnimation()->GetNumberCurrentFrame() == 1 && this->IsGuc)
 	{
 		player->GetCurrentAnimation()->Pause(TIME_GUC_BEFORE_NAM);
 		IsGuc = false;
 	}
+
 	if (player->GetCurrentAnimation()->GetNumberCurrentFrame() == 2)
 	{
 		player->GetCurrentAnimation()->Pause(100000);

@@ -16,7 +16,6 @@ ShieldAttackState::ShieldAttackState()
 	IsComeBack = false;
 	DeltaSlow = SHIELD_ATTACK_VELOCITY;
 	SoundManager::GetInstance()->Play(SoundManager::SoundList::shield_attack);
-
 }
 
 int ShieldAttackState::GetDamage()
@@ -26,16 +25,13 @@ int ShieldAttackState::GetDamage()
 
 void ShieldAttackState::Update(float dt)
 {
-
 	delta += dt;
-
 	Player *player = Player::GetInstance();
 	Shield *shield = Shield::GetInstance();
-
-	if (player->GetCurrentAnimation()->GetName() == PlayerState::NameState::throwing) {
+	if (player->GetCurrentAnimation()->GetName() == PlayerState::NameState::throwing)
+	{
 		if (this->FrameLock < 2)
 		{
-
 			FrameLock = player->GetCurrentAnimation()->GetNumberCurrentFrame();
 			if (FrameLock == 2)
 			{
@@ -47,11 +43,11 @@ void ShieldAttackState::Update(float dt)
 			return;
 		}
 	}
-	else {
+	else 
+	{
 		this->FrameLock = 2;
 	}
-	
-	
+		
 	if (delta >= SHIELD_ATTACK_TIME_OUT && !IsComeBack)
 	{
 		DeltaSlow -= SHIELD_ATTACK_ACCELERATION;
@@ -68,12 +64,12 @@ void ShieldAttackState::Update(float dt)
 	{
 		float deltaY = player->GetPosition().y - VirtualPoint.y;
 		if (abs(deltaY) > SHIELD_FOLLOW_VELOCITY_Y)
+		{
 			deltaY = deltaY > 0 ? SHIELD_FOLLOW_VELOCITY_Y : -SHIELD_FOLLOW_VELOCITY_Y;
-
+		}
 		VirtualPoint.y += deltaY;
 	}
 	VirtualPoint.x += SHIELD_ATTACK_VELOCITY * direction;
-
 	if (IsComeBack && abs(VirtualPoint.x - player->GetPosition().x) <= PLAYER_SIZE_WIDTH)
 	{
 		this->SetCurrentState(NameState::Nomal);
@@ -122,4 +118,3 @@ BoundingBox ShieldAttackState::GetBoundingBox()
 	}
 	return BoundingBox(VirtualPoint, size, 0, 0);
 }
-

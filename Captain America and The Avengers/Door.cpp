@@ -5,6 +5,7 @@
 #include "Shield.h"
 #include "Framework/DirectInput.h"
 #include "Framework/SoundManager.h"
+
 int Door::IDDarkDoor = -1;
 int Door::IDLightDoor = -1;
 
@@ -12,21 +13,19 @@ Door::Door(int WorldX, int WorldY, int GotoCode, int PositionGotoX, int Position
 {
 	Entity::tag = Entity::Entity_Tag::door;
 	Entity::type = Entity::Entity_Type::static_type;
-	Entity::position.x = WorldX;
-	Entity::position.y = WorldY;
+	Entity::position.x = (FLOAT)WorldX;
+	Entity::position.y = (FLOAT)WorldY;
 	Entity::size.cx = 32;
 	Entity::size.cy = 48;
 	this->GotoCode = GotoCode;
-	PositionGoto.x = PositionGotoX;
-	PositionGoto.y = PositionGotoY;
-
+	PositionGoto.x = (FLOAT)PositionGotoX;
+	PositionGoto.y = (FLOAT)PositionGotoY;
 	animation = new std::vector<Animation*>();
 	Animation *push = new Animation(IDDarkDoor, 4);
 	push->Stop();
 	push->SetTime(1 / 15.0f);
 	push->SetAutoPlayBack(false);
 	animation->push_back(push);
-
 	push = new Animation(IDLightDoor, 4);
 	push->Stop();
 	push->SetTime(1 / 15.0f);
@@ -37,7 +36,9 @@ Door::Door(int WorldX, int WorldY, int GotoCode, int PositionGotoX, int Position
 Door::~Door()
 {
 	for (auto item : *animation)
+	{
 		delete item;
+	}
 	animation->clear();
 	delete animation;
 }
@@ -46,11 +47,17 @@ int Door::OnCollision(Entity *obj, float dt)
 {
 	Animation *door = (*animation)[SceneManager::GetInstance()->GetCurrentScene()->GetMode() & 1];
 	if (door->GetNumberCurrentFrame() != 1)
+	{
 		return 0;
+	}
 	if (!DirectInput::GetInstance()->KeyDown(UP_KEY))
+	{
 		return 0;
+	}
 	if (obj->GetTag() != Entity::Entity_Tag::player)
+	{
 		return 0;
+	}
 	Player *player = Player::GetInstance();
 	if (player->GetCurrentState() == PlayerState::NameState::shield_up)
 	{
@@ -76,8 +83,9 @@ void Door::Draw()
 {
 	Player *player = Player::GetInstance();
 	if (!player->LockState)
+	{
 		return;
-
+	}
 	Animation *door = (*animation)[SceneManager::GetInstance()->GetCurrentScene()->GetMode() & 1];
 	door->DrawInt(Entity::position);
 	if (door->GetNumberCurrentFrame() == 1)

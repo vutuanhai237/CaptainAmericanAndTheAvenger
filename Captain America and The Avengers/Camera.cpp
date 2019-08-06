@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "SceneManager.h"-
+#include "SceneManager.h"
 #include "Player.h"
 
 Camera* Camera::Instance = NULL;
@@ -70,16 +70,16 @@ void Camera::SetCameraPosition(D3DXVECTOR2 p)
 		PointBL.x -= BoxFollow.left - tmp.x;
 	else if (IsExtend == 1)
 	{
-		BoxFollow.right = tmp.x;
+		BoxFollow.right = (LONG)tmp.x;
 		if (BoxFollow.right <= GAME_SCREEN_WIDTH - FAR_RIGHT)
 		{
-			BoxFollow.right = GAME_SCREEN_WIDTH - FAR_RIGHT;
+			BoxFollow.right = (LONG)(GAME_SCREEN_WIDTH - FAR_RIGHT);
 			IsExtend = 0;
 		}
 	}
 	else if (IsExtend == -1)
 	{
-		BoxFollow.left = tmp.x;
+		BoxFollow.left = (LONG)tmp.x;
 		if (BoxFollow.left >= FAR_LEFT)
 		{
 			BoxFollow.left = FAR_LEFT;
@@ -129,10 +129,10 @@ void Camera::MoveY(float dy)
 RECT Camera::GetCameraViewRect()
 {
 	RECT ret;
-	ret.bottom = PointBL.y;
-	ret.top = ret.bottom + GAME_SCREEN_HEIGHT;
-	ret.left = PointBL.x;
-	ret.right = ret.left + GAME_SCREEN_WIDTH;
+	ret.bottom = (LONG)PointBL.y;
+	ret.top = (LONG)(ret.bottom + GAME_SCREEN_HEIGHT);
+	ret.left = (LONG)PointBL.x;
+	ret.right = (LONG)(ret.left + GAME_SCREEN_WIDTH);
 	return ret;
 }
 
@@ -147,13 +147,13 @@ void Camera::SetCameraFreeze(bool IsFreeze)
 	{
 		// put 2 virtual wall
 		Entity *wall = new Entity();
-		wall->SetPosition(D3DXVECTOR2(PointBL.x, PixelHeight / 2));
+		wall->SetPosition(D3DXVECTOR2(PointBL.x, (FLOAT)(PixelHeight / 2)));
 		wall->SetSize(16, PixelHeight);
 		wall->SetTag(Entity::Entity_Tag::wall);
 		objs->push_back(wall);
 
 		wall = new Entity();
-		wall->SetPosition(D3DXVECTOR2(PointBL.x + GAME_SCREEN_WIDTH, PixelHeight / 2));
+		wall->SetPosition(D3DXVECTOR2(PointBL.x + GAME_SCREEN_WIDTH, (FLOAT)(PixelHeight / 2)));
 		wall->SetSize(16, PixelHeight);
 		wall->SetTag(Entity::Entity_Tag::wall);
 		objs->push_back(wall);
@@ -170,12 +170,12 @@ void Camera::SetCameraFreeze(bool IsFreeze)
 		if (pos.x > BoxFollow.right)
 		{
 			IsExtend = 1;
-			BoxFollow.right = pos.x;
+			BoxFollow.right = (LONG)pos.x;
 		}
 		else if (pos.x<BoxFollow.left)
 		{
 			IsExtend = -1;
-			BoxFollow.left = pos.x;
+			BoxFollow.left = (LONG)pos.x;
 		}
 	}
 }
@@ -188,9 +188,9 @@ bool Camera::GetCameraFreeze()
 Camera::Camera()
 {
 	BoxFollow.top = FAR_TOP;
-	BoxFollow.bottom = GAME_SCREEN_HEIGHT - FAR_BOTTOM; 
+	BoxFollow.bottom = (LONG)(GAME_SCREEN_HEIGHT - FAR_BOTTOM); 
 	BoxFollow.left = FAR_LEFT;
-	BoxFollow.right = GAME_SCREEN_WIDTH - FAR_RIGHT; 
+	BoxFollow.right = (LONG)(GAME_SCREEN_WIDTH - FAR_RIGHT);
 
 	PointBL = FollowPoint = D3DXVECTOR2(0, 0);
 	IsFreze = false;

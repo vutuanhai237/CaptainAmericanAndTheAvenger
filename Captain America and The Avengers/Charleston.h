@@ -9,16 +9,15 @@
 class Charleston : public Scene
 {
 public:
+	float timer;
+	float timer2;
+	bool UpdateOneTime;
 	void Update(float dt) override;
 	void Draw() override;
 	WorldMap *GetCurrentMap() override;
 	Grid *GetCurrentGrid() override;
 	Charleston();
 	~Charleston() override;
-	float timer;
-	float timer2;
-	bool UpdateOneTime;
-
 protected:
 	CharlestonMap *map;
 	Camera *cam;

@@ -1,10 +1,5 @@
 ﻿#include "BossWizardIdleState.h"
-#include "BossWizardFlyingState.h"
-#include "BossWizardRunningState.h"
-#include "BossWizardFireState.h"
-#include "BossWizardPunchingState.h"
-#include "BossWizardPunchingFireState.h"
-#include "BossWizardRoad.h"
+
 BossWizardIdleState::BossWizardIdleState()
 {
 	BossWizard* boss = BossWizard::GetInstance();
@@ -13,7 +8,6 @@ BossWizardIdleState::BossWizardIdleState()
 	boss->SetSize(20, 45);
 	boss->GetCurrentAnimation()->SetFrame(1);
 }
-
 
 BossWizardIdleState::~BossWizardIdleState()
 {

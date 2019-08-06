@@ -1,7 +1,6 @@
 #pragma once
 #include "Enemy.h"
-#include "Bullet.h"
-#include "Equation.h"
+// properties for bat
 #define BAT_HP 2
 #define BAT_DAMAGE 2
 #define BAT_TIME_IDLE 0.9f
@@ -10,7 +9,7 @@
 #define BAT_FOOT_HEIGHT 8
 #define BAT_VELOCITY_Y 100
 #define BAT_VELOCITY_X 100
-// Distance
+// Distance for each phase
 #define BAT_DISTANCE_PHASE_2_12 35
 #define BAT_DISTANCE_PHASE_3_11 50
 #define BAT_DISTANCE_PHASE_4_10 60
@@ -34,9 +33,11 @@ public:
 		normal,
 		electric
 	};
-	Level level;
-	int i = 0;
+	int i;
 	int phase;
+	Level level;
+	BatState current_state;
+	BatState previous_state;
 	// scaler
 	float distance;
 	float time_idle;
@@ -51,13 +52,12 @@ public:
 	virtual void Update(float dt);
 	virtual void UpdateElectricLevel(float dt);
 	virtual void UpdateNormalLevel(float dt);
-	virtual int OnCollision(Entity*, float dt);
 	virtual void Draw();
 	BoundingBox GetBoundingBox() override;
+	// Process collision
+	virtual int OnCollision(Entity*, float dt);
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
 	bool IsCollisionWithSpike(float dt, int delta_y = 12);
-	BatState current_state;
-	BatState previous_state;
 	Bat(int level, D3DXVECTOR2 position_spawn);
 	~Bat() override;
 };

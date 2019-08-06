@@ -1,22 +1,19 @@
 #pragma once
 #include "BossWizardRoad.h"
 #include "Entity.h"
+
 class BossWizardUMaxRoad: public BossWizardRoad
 {
 public:
-
-	virtual void Update(float dt);
-	Entity::Entity_Direction direction_u_max;
+	int phase;
+	int loop;
+	float time_fire;
 	float time_idle_before_jump;
-
+	bool FireOneTime;
 	bool UpdateOneTime;
 	bool UpdateOneTime2;
-
-	int phase;	
-	bool FireOneTime;
-	int loop;
-	//bool UpdateFireOn
-	float time_fire;
+	Entity::Entity_Direction direction_u_max;
+	virtual void Update(float dt);
 	void Release();
 	BossWizardUMaxRoad();
 	~BossWizardUMaxRoad();

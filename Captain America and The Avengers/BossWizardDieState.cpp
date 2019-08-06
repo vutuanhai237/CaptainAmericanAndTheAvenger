@@ -1,10 +1,5 @@
-#include "BossWizardIdleState.h"
-#include "BossWizardFlyingState.h"
-#include "BossWizardRunningState.h"
 #include "BossWizardDieState.h"
-#include "EnergyBullet.h"
-#include "LaserBullet.h"
-#include "SceneManager.h"
+
 BossWizardDieState::BossWizardDieState()
 {
 	BossWizard* boss = BossWizard::GetInstance();
@@ -13,7 +8,6 @@ BossWizardDieState::BossWizardDieState()
 	boss->SetVelocity(0, 0);
 	boss->SetSize(20, 45);
 }
-
 
 BossWizardDieState::~BossWizardDieState()
 {
@@ -25,13 +19,14 @@ void BossWizardDieState::Update(float dt)
 	Player* player = Player::GetInstance();
 	boss->GetCurrentAnimation()->Update(dt);
 	boss->time_die += dt;
-	if (boss->time_die >= 1.6) {
+	if (boss->time_die >= 1.6)
+	{
 		boss->GetCurrentAnimation()->Stop();
 		boss->GetCurrentAnimation()->SetFrame(2);
 	}
-	if (boss->time_die >= 2.6) {
+	if (boss->time_die >= 2.6) 
+	{
 		SceneManager::GetInstance()->GetCurrentScene()->IsExitAble = true;
-
 	}
 }
 

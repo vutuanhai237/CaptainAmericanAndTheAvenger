@@ -21,22 +21,18 @@ public:
 		FivePoint,
 		HighPoint
 	};
-
 	Item(float x, float y, int tag);
 	~Item() override;
-
 	BoundingBox GetBoundingBox() override;
 	void Update(float dt) override;
 	int OnCollision(Entity*, float dt) override;
 	void Draw() override;
-
 private:
 	Animation *animation;
 	float delta;
 	int FrameCounter;
 	bool CanFalling;
 	int direction, PriTag;
-
 	void CheckFalling();
 };
 

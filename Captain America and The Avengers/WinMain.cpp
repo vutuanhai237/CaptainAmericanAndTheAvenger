@@ -35,5 +35,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	}
 
 	GameManager::GetInstance()->Release();
-	return msg.wParam;
+	return (int)msg.wParam;
 }

@@ -40,7 +40,7 @@ void WorldMap::Draw(D3DCOLOR ColorMode)
 				continue;
 			}
 			SetRect(Map[j][i]);
-			Sprite::SetPosition(x, y);
+			Sprite::SetPosition((FLOAT)x, (FLOAT)y);
 			Hander->SetTransform(&Matrix);
 			Hander->Draw(texture, &rect, NULL, NULL, ColorMode);
 			y += PIXEL_PER_TITLE;

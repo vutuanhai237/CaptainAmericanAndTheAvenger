@@ -14,7 +14,6 @@
 class PlayerState
 {
 public:
-	
 	enum NameState {
 		idle,
 		running,
@@ -46,7 +45,6 @@ public:
 	virtual void HandleInput(float dt) = 0;
 	PlayerState::NameState GetCurrentState();
 	void SetCurrentState(PlayerState::NameState current_state);
-
 protected:
 	PlayerState::NameState current_state;
 	bool IsDucking;

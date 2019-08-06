@@ -17,9 +17,8 @@ public:
 	~EnergyBullet() override;
 	bool IsDead;
 	float distance;
-	Animation* current_ani;
-protected:
 	float time_out_straight;
+	Animation* current_ani;
 	Animation* horizontal_ani;
 	Animation* vertical_ani;
 	Animation* crossed_ani;

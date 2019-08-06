@@ -18,14 +18,13 @@ public:
 	float time_rolling;
 	float alpha;
 	float omega;
-	// Function
-	void Update(float dt) override;
-	int OnCollision(Entity*, float dt) override;
-	void Draw() override;
-	BoundingBox GetBoundingBox() override;
 	NameState current_state;
+	void Update(float dt) override;
 	void UpdateRollingState(float dt);
 	void UpdateFiringState(float dt);
+	int OnCollision(Entity*, float dt) override;
+	BoundingBox GetBoundingBox() override;
+	void Draw() override;
 	Turret(D3DXVECTOR2 position_spawn, float alpha);
 	~Turret() override;
 };

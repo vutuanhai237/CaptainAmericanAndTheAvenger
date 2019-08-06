@@ -5,12 +5,12 @@ PlayerDashingState::PlayerDashingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::dashing);
+	this->current_state = PlayerState::NameState::dashing;
 	player->SetTimeBuffer(0);
 	player->SetVelocityX(VELOCITY_X * 3);
-	this->current_state = PlayerState::NameState::dashing;
-	SoundManager::GetInstance()->Play(SoundManager::SoundList::player_dash);
 	IsDucking = false;
 	IsGong = false;
+	SoundManager::GetInstance()->Play(SoundManager::SoundList::player_dash);
 }
 
 PlayerDashingState::~PlayerDashingState()
@@ -48,7 +48,6 @@ void PlayerDashingState::HandleInput(float dt)
 			player->ChangeState(new PlayerJumpingDownState());
 			return;
 		}
-
 	}
 	if (keyboard->KeyDown(JUMP_KEY)) {
 		player->ChangeState(new PlayerJumpingState());
@@ -82,13 +81,15 @@ void PlayerDashingState::HandleInput(float dt)
 		return;
 	}
 	else {
-		if (player->GetMoveDirection() == Entity::Entity_Direction::LeftToRight && keyboard->KeyUp(RIGHT_KEY)) {
+		if (player->GetMoveDirection() == Entity::Entity_Direction::LeftToRight && keyboard->KeyUp(RIGHT_KEY))
+		{
 			player->GetCurrentAnimation()->SetAnimationTime(0.0f);
 			player->GetCurrentAnimation()->ResetAnimation();
 			player->ChangeState(new PlayerIdleState());
 			return;
 		}
-		if (player->GetMoveDirection() == Entity::Entity_Direction::RightToLeft && keyboard->KeyUp(LEFT_KEY)) {
+		if (player->GetMoveDirection() == Entity::Entity_Direction::RightToLeft && keyboard->KeyUp(LEFT_KEY)) 
+		{
 			player->GetCurrentAnimation()->SetAnimationTime(0.0f);
 			player->GetCurrentAnimation()->ResetAnimation();
 			player->ChangeState(new PlayerIdleState());
@@ -96,7 +97,4 @@ void PlayerDashingState::HandleInput(float dt)
 		}
 		
 	}
-		
-
-
 }

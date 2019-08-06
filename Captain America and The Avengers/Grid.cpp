@@ -73,10 +73,10 @@ void Grid::Init(int MapSizeWidth, int MapSizeHeight)
 void Grid::UpdateActivatedZone()
 {
 	D3DXVECTOR2 pos = Camera::GetInstance()->GetCameraPosition();
-	Xfrom = floor((pos.x - 1) / GRID_CELL_SIZE_WIDTH) - 1;
-	Xto = ceil((pos.x + 1 + GAME_SCREEN_WIDTH) / GRID_CELL_SIZE_WIDTH) + 1;
-	Yfrom = floor(pos.y / GRID_CELL_SIZE_HEIGHT);
-	Yto = ceil((pos.y + GAME_SCREEN_HEIGHT) / GRID_CELL_SIZE_HEIGHT);
+	Xfrom = (int)(floor((pos.x - 1) / GRID_CELL_SIZE_WIDTH) - 1);
+	Xto = (int)(ceil((pos.x + 1 + GAME_SCREEN_WIDTH) / GRID_CELL_SIZE_WIDTH) + 1);
+	Yfrom = (int)(floor(pos.y / GRID_CELL_SIZE_HEIGHT));
+	Yto = (int)(ceil((pos.y + GAME_SCREEN_HEIGHT) / GRID_CELL_SIZE_HEIGHT));
 	if (Xfrom < 0)
 		Xfrom = 0;
 	if (Xto >= CellX)
@@ -97,48 +97,48 @@ void Grid::RemoveAndReswampObject()
 						case Entity::Entity_Tag::redrobotrocket:
 							if (this->EnemyCounter < CAPACITY_ENEMY)
 							{
-								grid[i][j]->Object->push_back(new RedRocketRobot(item[3], D3DXVECTOR2(item[1], item[2]), D3DXVECTOR2(item[4], item[5]), item[6]));
+								grid[i][j]->Object->push_back(new RedRocketRobot(item[3], D3DXVECTOR2((FLOAT)item[1], (FLOAT)item[2]), D3DXVECTOR2((FLOAT)item[4], (FLOAT)item[5]), item[6]));
 								this->EnemyCounter++;
 							}
 							break;
 						case Entity::Entity_Tag::blue_soldier:
 							if (this->EnemyCounter < CAPACITY_ENEMY)
 							{
-								grid[i][j]->Object->push_back(new BlueSoldier(item[3], D3DXVECTOR2(item[1], item[2]), item[4]));
+								grid[i][j]->Object->push_back(new BlueSoldier(item[3], D3DXVECTOR2((FLOAT)item[1], (FLOAT)item[2]), item[4]));
 								this->EnemyCounter++;
 							}
 							break;
 						case Entity::Entity_Tag::green_soldier:
 							if (this->EnemyCounter < CAPACITY_ENEMY)
 							{
-								grid[i][j]->Object->push_back(new GreenSoldier(item[3], D3DXVECTOR2(item[1], item[2]), item[4]));
+								grid[i][j]->Object->push_back(new GreenSoldier(item[3], D3DXVECTOR2((FLOAT)item[1], (FLOAT)item[2]), item[4]));
 								this->EnemyCounter++;
 							}
 							break;
 						case Entity::Entity_Tag::gray_robot:
 							if (this->EnemyCounter < CAPACITY_ENEMY)
 							{
-								grid[i][j]->Object->push_back(new GrayRobot(D3DXVECTOR2(item[1], item[2]), item[3]));
+								grid[i][j]->Object->push_back(new GrayRobot(D3DXVECTOR2((FLOAT)item[1], (FLOAT)item[2]), (float)item[3]));
 								this->EnemyCounter++;
 							}
 							break;
 						case Entity::Entity_Tag::cannon:
 							if (this->EnemyCounter < CAPACITY_ENEMY)
 							{
-								grid[i][j]->Object->push_back(new Turret(D3DXVECTOR2(item[1], item[2]), item[3]));
+								grid[i][j]->Object->push_back(new Turret(D3DXVECTOR2((FLOAT)item[1], (FLOAT)item[2]), (float)item[3]));
 							}
 							break;
 						case Entity::Entity_Tag::bat:
 							if (this->EnemyCounter < CAPACITY_ENEMY)
 							{
-								grid[i][j]->Object->push_back(new Bat(item[3], D3DXVECTOR2(item[1], item[2])));
+								grid[i][j]->Object->push_back(new Bat(item[3], D3DXVECTOR2((FLOAT)item[1], (FLOAT)item[2])));
 								this->EnemyCounter++;
 							}
 							break;
 						case Entity::Entity_Tag::gray_rocket_robot:
 							if (this->EnemyCounter < CAPACITY_ENEMY)
 							{
-								grid[i][j]->Object->push_back(new GrayRocketRobot(D3DXVECTOR2(item[1], item[2]), D3DXVECTOR2(item[3], item[4]), item[5]));
+								grid[i][j]->Object->push_back(new GrayRocketRobot(D3DXVECTOR2((FLOAT)item[1], (FLOAT)item[2]), D3DXVECTOR2((FLOAT)item[3], (FLOAT)item[4]), item[5]));
 								this->EnemyCounter++;
 							}
 							break;
@@ -156,8 +156,8 @@ void Grid::RemoveAndReswampObject()
 					{
 						// shield & player exception
 						D3DXVECTOR2 pos = (*it)->GetPosition();
-						int LocX = pos.x / GRID_CELL_SIZE_WIDTH;
-						int LocY = pos.y / GRID_CELL_SIZE_HEIGHT;
+						int LocX = (int)(pos.x / GRID_CELL_SIZE_WIDTH);
+						int LocY = (int)(pos.y / GRID_CELL_SIZE_HEIGHT);
 						if ((LocX != i || LocY != j) && 0 < LocX && LocX < CellX)
 						{
 							grid[LocX][LocY]->Object->push_back(*it);
@@ -186,8 +186,8 @@ void Grid::UpdateGrid()
 			while (it != grid[i][j]->Object->end())
 			{
 				pos = (*it)->GetPosition();
-				LocX = pos.x / GRID_CELL_SIZE_WIDTH;
-				LocY = pos.y / GRID_CELL_SIZE_HEIGHT;
+				LocX = (int)(pos.x / GRID_CELL_SIZE_WIDTH);
+				LocY = (int)(pos.y / GRID_CELL_SIZE_HEIGHT);
 				if ((LocX != i || LocY != j) && 0 <= LocX && LocX < CellX && 0 <= LocY && LocY < CellY) 
 				{
 					grid[LocX][LocY]->Object->push_back(*it);

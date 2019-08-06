@@ -24,7 +24,7 @@ HRESULT Texture::Add(int &ID, LPCWSTR path, D3DCOLOR Trans)
 
 	Textures.push_back(texture);
 	Info.push_back(info);
-	ID = Textures.size() - 1;
+	ID = (int)(Textures.size() - 1);
 
 	return result;
 }

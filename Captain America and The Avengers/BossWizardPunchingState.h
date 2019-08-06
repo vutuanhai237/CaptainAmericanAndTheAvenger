@@ -1,7 +1,6 @@
 #pragma once
 #include "BossWizardState.h"
 #include "BossWizard.h"
-#include "Framework//DirectInput.h"
 
 class BossWizardPunchingState : public BossWizardState
 {

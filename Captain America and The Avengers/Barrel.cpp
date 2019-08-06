@@ -1,7 +1,7 @@
-#include "Barrel.h"
 #include "FrameWork/SoundManager.h"
 #include "SceneManager.h"
 #include "PlayerBeatenState.h"
+#include "Barrel.h"
 #include "Shield.h"
 void Barrel::Update(float dt)
 {
@@ -21,15 +21,12 @@ void Barrel::Update(float dt)
 	}
 	this->time_wait += dt;
 	if (this->time_wait >= 1.0) {
-		this->SetVelocityX(distance_out*1.5);
+		this->SetVelocityX((float)(distance_out*1.5));
 		if (this->e != NULL) {
 			this->SetPositionY(this->e->GetYFromX(this->GetPosition().x));
 		}
 	}
-	
-
 	this->distance += abs(this->GetVelocityX()*dt);
-
 }
 
 int Barrel::OnCollision(Entity* obj, float dt)
@@ -40,13 +37,18 @@ int Barrel::OnCollision(Entity* obj, float dt)
 	BossGragas* boss = BossGragas::GetInstance();
 	if (obj->GetType() == Entity::Entity_Type::player_weapon_type)
 	{
-		if (Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox())) {
-			if (obj->GetTag() == Entity::Entity_Tag::shield) {
-				if (this->GetVelocityX() == 0) {
+		if (Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
+		{
+			if (obj->GetTag() == Entity::Entity_Tag::shield) 
+			{
+				if (this->GetVelocityX() == 0) 
+				{
 					goto CHECK;
 				}
-				else {
-					if (this->IsExploding == false) {
+				else 
+				{
+					if (this->IsExploding == false) 
+					{
 						this->Release();
 						this->IsExploding = true;
 						SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
@@ -54,10 +56,11 @@ int Barrel::OnCollision(Entity* obj, float dt)
 					}
 				}
 			}
-			else {
-				// PUNCH - KICH
-				CHECK:
-				if (this->IsExploding == false) {
+			else 
+			{
+			CHECK:
+				if (this->IsExploding == false) 
+				{
 					this->Release();
 					this->IsExploding = true;
 					SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
@@ -66,29 +69,27 @@ int Barrel::OnCollision(Entity* obj, float dt)
 					boss->count_bullet = 0;
 					boss->time_throwing = 0;
 				}
-				
 			}
-
-		
 		}
-
 	}
 	Player *player = Player::GetInstance();
 	if (obj->GetType() != Entity::Entity_Type::player_type)
+	{
 		return 0;
+	}
+
 	if (player->time_invisible <= 0
 		&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 	{
 		player->ChangeState(new PlayerBeatenState(BARREL_DAMAGE));
-		if (this->IsExploding == false) {
+		if (this->IsExploding == false) 
+		{
 			this->Release();
 			this->IsExploding = true;
 			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);
-
 		}
 	}
 	return 0;
-
 }
 
 void Barrel::Exploding(float dt)
@@ -101,59 +102,58 @@ void Barrel::Exploding(float dt)
 	if (this->time_out_explode > TIME_EXPLODE) {
 		this->IsDead = true;
 	}
-
 }
 
 void Barrel::Release()
 {
 	this->distance = 0;
-	this->IsStraight = true;
 	this->time_out_straight = 0;
 	this->time_out_explode = 0;
 }
 
 void Barrel::Draw()
 {
-	this->current_ani->Draw(this->GetPosition());
-	if (this->GetMoveDirection()) {
+	if (this->GetMoveDirection()) 
+	{
 		this->current_ani->SetScale(1, 1);
 	}
-	else {
+	else 
+	{
 		this->current_ani->SetScale(-1, 1);
 	}
-	
-
+	this->current_ani->Draw(this->GetPosition());
 }
 
 Barrel::Barrel(D3DXVECTOR2 position, Entity::Entity_Direction direction)
 {
 	this->SetTag(Entity::Entity_Tag::red_rocket);
 	this->SetType(Entity::Entity_Type::enemy_weapon_type);
-	this->explode_ani = new Animation(7, 3);
-	this->explode_ani->SetTime(0.083, 10000);
-	this->current_ani = new Animation(29, 1);
-	this->size.cx = 13; this->size.cy = 13;
 	this->SetPosition(position);
-	this->IsDead = false;
+	this->SetMoveDirection(direction);
+	this->SetVelocityX(0);
+	// Animation zone
+	this->explode_ani = new Animation(7, 3);
+	this->explode_ani->SetTime(0.083f, 10000.0f);
+	this->current_ani = new Animation(29, 1);
+	// properties zone
+	this->damage = BARREL_DAMAGE;
+	this->size.cx = 13; this->size.cy = 13;
 	this->time_out_straight = 0;
+	this->time_wait = 0;
+	this->IsDead = false;
 	this->IsLocking = true;
 	this->IsExploding = false;
-	this->SetVelocityX(0);
-	this->SetMoveDirection(direction);
-	this->damage = BARREL_DAMAGE;
-	this->time_wait = 0;
+	// equation zone
 	BossGragas* boss = BossGragas::GetInstance();
 	this->distance_out = abs(boss->GetPosition().x - Player::GetInstance()->GetPosition().x);
 	if (distance_out < 10) { distance_out = 10; };
 	if (distance_out > 50) { distance_out = 50; };
-
 	this->e = new Equation(
-		this->position,	D3DXVECTOR2(
+		this->position, D3DXVECTOR2(
 			this->position.x + (boss->GetMoveDirection() == Entity::Entity_Direction::RightToLeft ? -1 : 1) * distance_out,
 			this->position.y + 20
 		)
 	);
-
 }
 
 CollisionOut Barrel::IsCollisionWithWall(float dt, int delta_y)

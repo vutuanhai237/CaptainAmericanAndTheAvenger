@@ -11,40 +11,38 @@
 #define GRAY_ROBOT_TIME_FIRING 0.7f
 class GrayRobot : public Enemy
 {
-private:
-	Animation* firing_ani;
-	Animation* idle_ani;
 public:
-	// Share zone
 	enum GrayRobotState {
-		none,
 		idle = 25,
 		firing = 26,
 		beaten = 27
 	};
-	bool UpdateOneTime;
-	bool UpdateOneTime2;
-	float time_fire;
 	int IsLui;
 	int previous_IsLui;
-	int i = 0;
+	int count_bullet;
+	int i;
+	float time_fire;	
 	float distance;
 	float Ax;
 	float Ay;
 	float omega;
 	float t;
+	bool UpdateOneTime;
+	bool UpdateOneTime2;
 	D3DXVECTOR2 virtual_point;
-	int count_bullet;
-	virtual void Update(float dt);
-	virtual int OnCollision(Entity*, float dt);
-	virtual void Draw();
-	BoundingBox GetBoundingBox() override;
 	GrayRobotState current_state;
+	virtual void Update(float dt);
 	void UpdateIdleState(float dt);
 	void UpdateFiringState(float dt);
+	virtual void Draw();
+	// on collusion
+	BoundingBox GetBoundingBox() override;
+	virtual int OnCollision(Entity*, float dt);
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
-
 	GrayRobot(D3DXVECTOR2 position_spawn, float distance);
 	~GrayRobot() override;
+protected:
+	Animation* firing_ani;
+	Animation* idle_ani;
 };
 

@@ -1,8 +1,6 @@
 #include "EnergyBullet.h"
 #include "BossWizardFlyingFireState.h"
-#include "BossWizardFlyingState.h"
-#include "BossWizardFireState.h"
-#include "Framework/SoundManager.h"
+
 BossWizardFlyingFireState::BossWizardFlyingFireState(bool IsFire)
 {
 	BossWizard* boss = BossWizard::GetInstance();
@@ -13,7 +11,6 @@ BossWizardFlyingFireState::BossWizardFlyingFireState(bool IsFire)
 	this->IsFire = IsFire;
 }
 
-
 BossWizardFlyingFireState::~BossWizardFlyingFireState()
 {
 }
@@ -23,8 +20,7 @@ void BossWizardFlyingFireState::Update(float dt)
 	BossWizard* boss = BossWizard::GetInstance();
 	boss->GetCurrentAnimation()->Update(dt);
 	if (abs(Player::GetInstance()->GetPosition().x-BossWizard::GetInstance()->GetPosition().x) < 15
-		&& this->count_bullet < BOSS_WIZARD_MAX_BULLET_FLYING
-		&& this->IsFire) 
+		&& this->count_bullet < BOSS_WIZARD_MAX_BULLET_FLYING && this->IsFire) 
 	{
 		if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
 			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
@@ -35,7 +31,8 @@ void BossWizardFlyingFireState::Update(float dt)
 				)
 			);
 		}
-		else {
+		else 
+		{
 			SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 				new EnergyBullet(
 					D3DXVECTOR2(boss->GetPosition().x - 15, boss->GetPosition().y - 9),
@@ -45,9 +42,7 @@ void BossWizardFlyingFireState::Update(float dt)
 			);
 		}
 		this->count_bullet++;
-
 	}
-
 }
 
 void BossWizardFlyingFireState::Draw()

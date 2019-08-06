@@ -11,8 +11,8 @@ ShieldNomalState::ShieldNomalState()
 
 int ShieldNomalState::GetDamage()
 {
-	if (Player::GetInstance()->time_invisible <= 0 
-		&& Player::GetInstance()->GetCurrentState() == PlayerState::NameState::dashing) {
+	if (Player::GetInstance()->time_invisible <= 0 && Player::GetInstance()->GetCurrentState() == PlayerState::NameState::dashing)
+	{
 		return 6;
 	}
 	return 0;
@@ -46,7 +46,7 @@ void ShieldNomalState::Update(float dt)
 			VirtualPoint.y += SHIELD_NOMAL_DASHING_FRAME_2_DELTA_Y;
 			break;
 		case 3:
-			VirtualPoint.x += SHIELD_NOMAL_DASHING_FRAME_3_DELTA_X * direction;
+			VirtualPoint.x += (FLOAT)(SHIELD_NOMAL_DASHING_FRAME_3_DELTA_X * direction);
 			VirtualPoint.y += SHIELD_NOMAL_DASHING_FRAME_3_DELTA_Y;
 			break;
 		default:
@@ -60,7 +60,8 @@ void ShieldNomalState::Update(float dt)
 
 void ShieldNomalState::Draw()
 {
-	if (Player::GetInstance()->OnTheWater) {
+	if (Player::GetInstance()->OnTheWater)
+	{
 		return;
 	}
 	Shield::GetInstance()->GetAnimation()->Draw(VirtualPoint);

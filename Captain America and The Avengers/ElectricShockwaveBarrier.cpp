@@ -8,8 +8,8 @@ ElectricShockwaveBarrier::ElectricShockwaveBarrier(int WorldX, int WorldY) : Ent
 {
 	Entity::tag = Entity::Entity_Tag::electric_shockwave_barrier;
 	Entity::type = Entity::Entity_Type::static_type;
-	Entity::position.x = WorldX;
-	Entity::position.y = WorldY;
+	Entity::position.x = (FLOAT)WorldX;
+	Entity::position.y = (FLOAT)WorldY;
 	Entity::size.cx = 16;
 	Entity::size.cy = 48;
 	animation = new Animation(ElectricShockwaveBarrier::ID, 6);
@@ -26,13 +26,21 @@ ElectricShockwaveBarrier::~ElectricShockwaveBarrier()
 int ElectricShockwaveBarrier::OnCollision(Entity *obj, float dt)
 {
 	if (!IsHaveElectric)
+	{
 		return 0;
+	}
 	if (obj->GetTag() != Entity::Entity_Tag::player)
+	{
 		return 0;
+	}
 	if (Player::GetInstance()->time_invisible > 0)
+	{
 		return 0;
+	}
 	if (Collision::getInstance()->IsCollide(obj->GetBoundingBox(), this->GetBoundingBox()))
+	{
 		Player::GetInstance()->ChangeState(new PlayerShockingState(PLAYER_HP));
+	}
 	return 0;
 }
 
@@ -67,5 +75,7 @@ void ElectricShockwaveBarrier::Update(float dt)
 void ElectricShockwaveBarrier::Draw()
 {
 	if (IsHaveElectric)
+	{
 		animation->DrawInt(Entity::position);
+	}
 }

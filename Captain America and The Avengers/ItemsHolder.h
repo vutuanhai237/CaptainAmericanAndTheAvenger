@@ -2,7 +2,6 @@
 #include <vector>
 #include "Entity.h"
 #include "Framework/Animation.h"
-
 #define ITEMS_HOLDER_SIZE_WIDTH 16
 #define ITEMS_HOLDER_SIZE_HEIGHT 16
 
@@ -11,13 +10,11 @@ class ItemsHolder : public Entity
 public:
 	ItemsHolder(float x, float y, int code = 0);
 	~ItemsHolder();
-
 	BoundingBox GetBoundingBox() override;
 	int OnCollision(Entity *, float dt) override;
 	void Update(float dt) override;
 	void Draw() override;
 	void PutOnItem(int Item_Tag);
-
 	static int AnimationID;
 	static int AnimationID2;
 	static int ID_1up;

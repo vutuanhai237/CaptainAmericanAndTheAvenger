@@ -1,9 +1,7 @@
 #pragma once
-#include "Framework//Animation.h"
-#include "Framework//DirectInput.h"
-#include "DataCollect.h"
+#include "Framework/Animation.h"
 #include "Entity.h"
-#include <math.h>
+
 class BossWizardState
 {
 public:
@@ -18,16 +16,17 @@ public:
 		beaten,
 		die
 	};
+	BossWizardState(BossWizardState::NameState current_state);
 	BossWizardState();
 	~BossWizardState();
-	BossWizardState(BossWizardState::NameState current_state);
 	virtual void Update(float dt) = 0;
-	virtual BoundingBox GetBoundingBox() = 0;
 	virtual void Draw() = 0;
 	virtual void HandleInput(float dt) = 0;
+	// get
+	virtual BoundingBox GetBoundingBox() = 0;
 	BossWizardState::NameState GetCurrentState();
+	// set
 	void SetCurrentState(BossWizardState::NameState current_state);
-
 protected:
 	BossWizardState::NameState current_state;
 	bool IsDucking;
@@ -35,6 +34,4 @@ protected:
 	bool IsThrowing;
 	bool IsPunching;
 	bool IsRolling;
-
 };
-

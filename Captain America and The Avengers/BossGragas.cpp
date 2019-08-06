@@ -11,28 +11,33 @@ BossGragas*BossGragas::instance = NULL;
 BossGragas * BossGragas::GetInstance()
 {
 	if (!instance)
+	{
 		instance = new BossGragas();
+	}
 	return instance;
 }
 
 void BossGragas::Release()
 {
-	if (instance) 
+	if (instance)
+	{
 		delete instance;
+	}
 	this->instance = NULL;
 }
 
 BossGragas::BossGragas() :Enemy()
 {
-	///
+	//
 	this->IsDead = false;
 	this->hp = BOSS_GRAGAS_HP;
 	this->SetTag(Entity::Entity_Tag::boss);
 	this->SetType(Entity::Entity_Type::enemy_type);
 	this->SetAliveState(Entity::Entity_AliveState::Alive);
+	this->SetVelocityY(BOSS_GRAGAS_VELOCITY_Y);
+	this->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
 	this->SetActive(true);
 	this->SetPosition(220, 200.0f);
-
 	// Load resources
 	Animation* idle = new Animation(BossGragas::NameState::idle, L"Resources//Enemy//BossGragas/BossGragasIdle.png", D3DCOLOR_XRGB(255, 0, 255), 1);
 	Animation* beaten = new Animation(BossGragas::NameState::beaten, L"Resources//Enemy//BossGragas/BossGragasBeaten.png", D3DCOLOR_XRGB(255, 0, 255), 2);
@@ -57,37 +62,35 @@ BossGragas::BossGragas() :Enemy()
 	this->animations[BossGragas::running] = running;
 	this->animations[BossGragas::running2] = running2;
 	this->animations[BossGragas::throwing] = throwing;
-
-
-	//End load resources
+	// Update properties
 	this->current_state = BossGragas::falling;
+	this->mode = Mode::normal;
 	this->animation = this->animations[current_state];
 	this->current_animation = this->animations[current_state];
 	this->previous_state = 0;
-	this->time_invisible = 0;
-	this->SetVelocityY(BOSS_GRAGAS_VELOCITY_Y);
-	this->SetJumpDirection(Entity::Entity_Jump_Direction::TopToBot);
-	this->time_die = 0;
-	this->time_idle = 0;
-	this->time_throwing = 0;
-	this->time_runnig = 0;
-	this->mode = Mode::normal;
 	this->phase = 1;
-	this->time_beaten = 0;
-	this->IsBeaten = false;
 	this->distance_running = 0;
-	this->time_gong = 0;
-	this->IsChamDatLanDau = false;
-	this->UpdateOneTime = false;
-	this->UpdateOneTime2 = false;
-	this->IsUpdateRunDirection = false;
+	this->count_barrel_explode = 0;
 	this->run_direction = Entity::Entity_Direction::RightToLeft;
 	Entity::size.cx = 20;
 	Entity::size.cy = 48;
 	this->count_bullet = 0;
 	this->j = 0;
+	// time zone
+	this->time_invisible = 0;
+	this->time_die = 0;
+	this->time_idle = 0;
+	this->time_throwing = 0;
+	this->time_runnig = 0;
+	this->time_beaten = 0;
+	this->time_gong = 0;
+	// bool zone
+	this->IsBeaten = false;
+	this->IsChamDatLanDau = false;
+	this->UpdateOneTime = false;
+	this->UpdateOneTime2 = false;
+	this->IsUpdateRunDirection = false;
 }
-
 
 BossGragas::~BossGragas()
 {
@@ -99,40 +102,38 @@ BossGragas::~BossGragas()
 void BossGragas::Update(float dt)
 {
 	Enemy::Update(dt);
+	BossGragas* boss = BossGragas::GetInstance();
 	this->current_animation->Update(dt);
-	if (this->IsExplode) {
+
+	if (this->IsExplode) 
+	{
 		this->time_explode += dt;
 		this->current_animation = explode_ani;
 		this->SetVelocityX(0.0f);
-
-		if (this->time_explode >= TIME_EXPLODE) {
+		if (this->time_explode >= TIME_EXPLODE) 
+		{
 			this->IsDead = true;
 			this->IsActive = false;
-			if (this->time_explode >= TIME_EXPLODE * 3) {
+			if (this->time_explode >= TIME_EXPLODE * 3) 
+			{
 				SceneManager::GetInstance()->GetCurrentScene()->IsExitAble = true;
 			}
 		}
 		return;
 	}
-	BossGragas* boss = BossGragas::GetInstance();
-	//if (this->IsBeaten) {
-	//	this->current_state = BossGragas::NameState::beaten;
-	//	this->current_animation = beaten_ani;
-	//	this->SetVelocityX(0.0f);
-	//	this->time_beaten += dt;
-	//	if (this->time_beaten >= TIME_BEATEN) {
-	//		this->IsExplode = true;
 
-	//	}
-	//	return;
-	//}
-	if (boss->time_beaten < 0) {
+	if (boss->time_beaten < 0) 
+	{
 		boss->time_beaten = 0;
 	}
-	if (boss->time_beaten > 0) {
+
+	if (boss->time_beaten > 0) 
+	{
 		boss->time_beaten -= dt;
 	}
-	switch (this->mode) {
+
+	switch (this->mode) 
+	{
 	case Mode::normal:
 		this->UpdateNormalPhase(dt);
 		break;
@@ -140,27 +141,32 @@ void BossGragas::Update(float dt)
 		this->UpdateCrazyPhase(dt);
 		break;
 	}
-
-
 }
 
 void BossGragas::Draw()
 {
 	BossGragas* boss = BossGragas::GetInstance();
-	if (this->time_beaten == 0) {
-		boss->current_animation->Draw(this->position);
-	}
-	if (this->time_beaten > 0) {	
-		if ((j++) % 3 == 1) {
-			boss->current_animation->Draw(this->position);
-		}
-	}
 
-	if (boss->GetMoveDirection()) {
+	if (boss->GetMoveDirection()) 
+	{
 		boss->current_animation->SetScale(1, 1);
 	}
-	else {
+	else 
+	{
 		boss->current_animation->SetScale(-1, 1);
+	}
+
+	if (this->time_beaten == 0) 
+	{
+		boss->current_animation->Draw(this->position);
+	}
+
+	if (this->time_beaten > 0) 
+	{	
+		if ((j++) % 3 == 1) 
+		{
+			boss->current_animation->Draw(this->position);
+		}
 	}
 }
 
@@ -172,11 +178,9 @@ CollisionOut BossGragas::IsCollisionWithWall(float dt, int delta_y)
 	FootSize.cy = BOSS_GRAGAS_SIZE_HEIGHT;
 	int direction_x = BossGragas::GetInstance()->GetMoveDirection() == Entity::Entity_Direction::LeftToRight ? 1 : -1;
 	int direction_y = BossGragas::GetInstance()->GetJumpDirection() == Entity::Entity_Jump_Direction::BotToTop ? 1 : -1;
-
 	BoundingBox foot(D3DXVECTOR2(position.x, position.y - delta_y), FootSize, abs(velocity.x*dt)*direction_x, abs(velocity.y)*dt*direction_y);
 	auto Checker = Collision::getInstance();
 	vector<Entity*> obj = *SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
-
 	CollisionOut tmp;
 	BoundingBox box2;
 	for (auto item : obj)
@@ -222,9 +226,10 @@ int BossGragas::OnCollision(Entity *obj, float dt)
 			&& this->mode == Mode::crazy
 			&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 		{
-			if (this->time_beaten <= 0) {
-
-				if (obj->GetTag() == Entity::Entity_Tag::shield) {
+			if (this->time_beaten <= 0) 
+			{
+				if (obj->GetTag() == Entity::Entity_Tag::shield) 
+				{
 					if (Shield::GetInstance()->GetShieldState()->GetCurrentState() != ShieldState::NameState::Nomal)
 					{
 						this->hp -= Shield::GetInstance()->GetShieldState()->GetDamage();
@@ -233,40 +238,37 @@ int BossGragas::OnCollision(Entity *obj, float dt)
 					}
 			
 				}
-				else {
-					// PUNCH - KICH
+				else 
+				{
 					this->hp -= 2;
 					this->time_beaten = ENEMY_TIME_BEATEN;
 					goto CHECK;
 				}
 			}
 		}
-		if (this->hp <= 0) {
+		if (this->hp <= 0) 
+		{
 			this->IsBeaten = true;
 			goto CHECK;
 		}
-	CHECK2:
 		Player *player = Player::GetInstance();
 		if (obj->GetType() == Entity::Entity_Type::player_type
 			&& player->time_invisible <= 0
 			&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 		{
-			if (BossGragas::GetInstance()->mode == Mode::crazy) {
+			if (BossGragas::GetInstance()->mode == Mode::crazy)
+			{
 				player->ChangeState(new PlayerShockingState(BOSS_GRAGAS_DAMAGE*2));
-
 			}
-			else {
+			else 
+			{
 				player->ChangeState(new PlayerBeatenState(BOSS_GRAGAS_DAMAGE));
-
 			}
 		}
-		else {
-		}
-
 	}
 	CHECK:
-	if (this->IsDead) {
-
+	if (this->IsDead)
+	{
 		return 1;
 	}
 	return 0;
@@ -274,24 +276,32 @@ int BossGragas::OnCollision(Entity *obj, float dt)
 
 void BossGragas::Init()
 {
+
 }
 
 void BossGragas::UpdateNormalPhase(float dt)
 {
 	BossGragas *boss = BossGragas::GetInstance();
-	if (boss->IsChamDatLanDau == false) {
-		if (boss->IsCollisionWithWall(dt).CollisionTime < 1.0f) {
+
+	if (boss->IsChamDatLanDau == false) 
+	{
+		if (boss->IsCollisionWithWall(dt).CollisionTime < 1.0f)
+		{
 			boss->SetVelocityY(0);
 			boss->phase++;
 			boss->IsChamDatLanDau = true;
 		}
 	}
-	if (boss->count_barrel_explode == 3) {
+
+	if (boss->count_barrel_explode == 3)
+	{
 		boss->mode = Mode::crazy;
 		boss->phase = 1;
 		return;
 	}
-	if (boss->phase == 0) {
+
+	if (boss->phase == 0) 
+	{
 		boss->current_animation = boss->GetAnimation(NameState::beaten);
 		boss->SetCurrentState(NameState::beaten);
 		boss->SetVelocity(0, 0);
@@ -302,27 +312,35 @@ void BossGragas::UpdateNormalPhase(float dt)
 		}
 		return;
 	}
-	if (boss->phase == 1) {
 
+	if (boss->phase == 1)
+	{
 		return;
 	}
-	if (boss->phase == 2) {
-		if (boss->GetPosition().x > Player::GetInstance()->GetPosition().x) {
+
+	if (boss->phase == 2)
+	{
+		if (boss->GetPosition().x > Player::GetInstance()->GetPosition().x)
+		{
 			boss->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		}
-		else {
+		else
+		{
 			boss->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		}
 		boss->current_animation = boss->GetAnimation(NameState::idle);
 		boss->SetCurrentState(NameState::idle);
 		boss->SetVelocity(0, 0);
 		boss->time_idle += dt;
-		if (boss->time_idle > BOSS_GRAGAS_TIME_IDLE) {
+		if (boss->time_idle > BOSS_GRAGAS_TIME_IDLE) 
+		{
 			boss->phase++;
 			boss->time_idle = 0;
 		}
 	}
-	if (boss->phase == 3) {
+
+	if (boss->phase == 3) 
+	{
 		boss->current_animation = boss->GetAnimation(NameState::throwing);
 		boss->current_animation->SetFrame(1);
 		boss->SetCurrentState(NameState::throwing);
@@ -338,21 +356,26 @@ void BossGragas::UpdateNormalPhase(float dt)
 			boss->count_bullet++;
 		}
 		
-		if (boss->time_throwing > 1.0f) {
+		if (boss->time_throwing > 1.0f) 
+		{
 			boss->current_animation->SetFrame(2);
 		}
 	
-		if (boss->time_throwing > BOSS_GRAGAS_TIME_THROWING) {
+		if (boss->time_throwing > BOSS_GRAGAS_TIME_THROWING) 
+		{
 			boss->phase++;
 			boss->count_bullet = 0;
 			boss->time_throwing = 0;
 		}
 	}
-	if (boss->phase == 4) {
+
+	if (boss->phase == 4)
+	{
 		boss->current_animation = boss->GetAnimation(NameState::firing);
 		boss->SetCurrentState(NameState::firing);
 		boss->time_fire += dt;
-		if (boss->count_bullet == 0 && boss->time_fire >= 0.6) {
+		if (boss->count_bullet == 0 && boss->time_fire >= 0.6)
+		{
 			if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new SuperLaserBullet(
@@ -361,7 +384,8 @@ void BossGragas::UpdateNormalPhase(float dt)
 					)
 				);
 			}
-			else {
+			else 
+			{
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new SuperLaserBullet(
 						D3DXVECTOR2(boss->position.x - 20, this->position.y + 12),
@@ -371,8 +395,11 @@ void BossGragas::UpdateNormalPhase(float dt)
 			}
 			boss->count_bullet++;
 		}
-		if (boss->count_bullet == 1 && boss->time_fire >= 1.6) {
-			if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+
+		if (boss->count_bullet == 1 && boss->time_fire >= 1.6)
+		{
+			if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) 
+			{
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new SuperLaserBullet(
 						D3DXVECTOR2(boss->position.x + 20, this->position.y + 12),
@@ -380,7 +407,8 @@ void BossGragas::UpdateNormalPhase(float dt)
 					)
 				);
 			}
-			else {
+			else
+			{
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new SuperLaserBullet(
 						D3DXVECTOR2(boss->position.x - 20, this->position.y + 12),
@@ -390,21 +418,28 @@ void BossGragas::UpdateNormalPhase(float dt)
 			}
 			boss->count_bullet++;
 		}
-		if (boss->time_fire > BOSS_GRAGAS_TIME_FIRING) {
+
+		if (boss->time_fire > BOSS_GRAGAS_TIME_FIRING)
+		{
 			boss->current_animation->ResetAnimation();
 			boss->phase++;
 			boss->time_fire = 0;
 			boss->count_bullet = 0;
 		}
 	}
-	if (boss->phase == 5) {
-		if (boss->UpdateOneTime == false) {
+
+	if (boss->phase == 5) 
+	{
+		if (boss->UpdateOneTime == false) 
+		{
 			if (boss->IsUpdateRunDirection == false) goto CHECK;
-			if (boss->run_direction == Entity::Entity_Direction::RightToLeft) {
+			if (boss->run_direction == Entity::Entity_Direction::RightToLeft) 
+			{
 				boss->run_direction = Entity::Entity_Direction::LeftToRight;
 				goto CHECK;
 			}
-			if (boss->run_direction == Entity::Entity_Direction::LeftToRight) {
+			if (boss->run_direction == Entity::Entity_Direction::LeftToRight) 
+			{
 				boss->run_direction = Entity::Entity_Direction::RightToLeft;
 				goto CHECK;
 			}
@@ -413,43 +448,51 @@ void BossGragas::UpdateNormalPhase(float dt)
 			boss->SetCurrentState(NameState::running);
 			boss->SetVelocityX(BOSS_GRAGAS_VELOCITY_X);
 			boss->UpdateOneTime = true;
-		}
-		
+		}		
 		boss->SetMoveDirection(boss->run_direction);
 		boss->distance_running += VELOCITY_X * dt;
-		if (boss->distance_running > BOSS_GRAGAS_DISTANCE_RUNNING) {
+		if (boss->distance_running > BOSS_GRAGAS_DISTANCE_RUNNING) 
+		{
 			boss->phase = 2;
 			boss->distance_running = 0;
 			boss->UpdateOneTime = false;
 			boss->IsUpdateRunDirection = true;
 		}
 	}
-	
 }
 
 void BossGragas::UpdateCrazyPhase(float dt)
 {
 	BossGragas *boss = BossGragas::GetInstance();
-	if (boss->hp <= 0) {
+	if (boss->hp <= 0) 
+	{
 		boss->phase = 3;
 	}
-	if (boss->phase == 1) {
+
+	if (boss->phase == 1)
+	{
 		boss->current_animation = boss->GetAnimation(NameState::idle2);
 		boss->SetCurrentState(NameState::idle2);
 		boss->time_idle += dt;
-		if (boss->time_idle >= BOSS_GRAGAS_TIME_IDLE) {
+		if (boss->time_idle >= BOSS_GRAGAS_TIME_IDLE)
+		{
 			boss->time_idle = 0;
 			boss->phase++;
 		}
 	}
-	if (boss->phase == 2) {
-		if (boss->UpdateOneTime == false) {
+
+	if (boss->phase == 2) 
+	{
+		if (boss->UpdateOneTime == false)
+		{
 			if (boss->IsUpdateRunDirection == false) goto CHECK;
-			if (boss->run_direction == Entity::Entity_Direction::RightToLeft) {
+			if (boss->run_direction == Entity::Entity_Direction::RightToLeft)
+			{
 				boss->run_direction = Entity::Entity_Direction::LeftToRight;
 				goto CHECK;
 			}
-			if (boss->run_direction == Entity::Entity_Direction::LeftToRight) {
+			if (boss->run_direction == Entity::Entity_Direction::LeftToRight)
+			{
 				boss->run_direction = Entity::Entity_Direction::RightToLeft;
 				goto CHECK;
 			}
@@ -459,12 +502,13 @@ void BossGragas::UpdateCrazyPhase(float dt)
 			boss->SetVelocityX(BOSS_GRAGAS_VELOCITY_X);
 			boss->UpdateOneTime = true;
 		}
-
 		boss->SetMoveDirection(boss->run_direction);
 		boss->distance_running += VELOCITY_X * dt;
 		boss->time_fire += dt;
-		if (boss->time_fire > 1) {
-			if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight) {
+		if (boss->time_fire > 1) 
+		{
+			if (boss->GetMoveDirection() == Entity::Entity_Direction::LeftToRight)
+			{
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new SuperLaserBullet(
 						D3DXVECTOR2(boss->position.x + 20, this->position.y + 12),
@@ -472,7 +516,8 @@ void BossGragas::UpdateCrazyPhase(float dt)
 					)
 				);
 			}
-			else {
+			else
+			{
 				SceneManager::GetInstance()->GetCurrentScene()->GetCurrentGrid()->AddObject2Cell(
 					new SuperLaserBullet(
 						D3DXVECTOR2(boss->position.x - 20, this->position.y + 12),
@@ -482,27 +527,36 @@ void BossGragas::UpdateCrazyPhase(float dt)
 			}
 			boss->time_fire = 0;
 		}
-		if (boss->distance_running > BOSS_GRAGAS_DISTANCE_RUNNING) {
+
+		if (boss->distance_running > BOSS_GRAGAS_DISTANCE_RUNNING) 
+		{
 			boss->phase = 2;
 			boss->distance_running = 0;
 			boss->UpdateOneTime = false;
 		}
 	}
-	if (boss->phase == 3) {
-		if (this->UpdateOneTime2 == false) {
+
+	if (boss->phase == 3) 
+	{
+		if (this->UpdateOneTime2 == false) 
+		{
 			boss->current_animation = boss->GetAnimation(NameState::idle2);
 			boss->SetCurrentState(NameState::idle2);
 			boss->SetVelocity(0, 0);
 		}
-		if ((j) % 6 == 3 || (j) % 6 == 2 || (j) % 6 == 4) {
+
+		if ((j) % 6 == 3 || (j) % 6 == 2 || (j) % 6 == 4) 
+		{
 			boss->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		}
-		else {
+		else 
+		{
 			boss->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		}
 		j++;
 		boss->time_idle += dt;
-		if (boss->time_idle >= BOSS_GRAGAS_TIME_IDLE_BEFORE_DIE) {
+		if (boss->time_idle >= BOSS_GRAGAS_TIME_IDLE_BEFORE_DIE) 
+		{
 			boss->time_idle = 0;
 			boss->IsExplode = true;
 			SoundManager::GetInstance()->Play(SoundManager::SoundList::entity_explode);

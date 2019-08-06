@@ -67,7 +67,7 @@ DWORD d3d::Init(HINSTANCE hInstance, int nCmdShow)
 	RegisterClassEx(&wc);
 
 	DWORD ErrorCode;
-	hWnd = CreateWindow(GAME_CLASS, GAME_NAME, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT, NULL, NULL, hInstance, NULL);
+	hWnd = CreateWindow(GAME_CLASS, GAME_NAME, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, (int)GAME_SCREEN_WIDTH, (int)GAME_SCREEN_HEIGHT, NULL, NULL, hInstance, NULL);
 	if (!hWnd)
 	{
 		ErrorCode = GetLastError();
@@ -90,8 +90,8 @@ DWORD d3d::Init(HINSTANCE hInstance, int nCmdShow)
 	d3dpp.Windowed = true;
 	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	d3dpp.BackBufferFormat = D3DFMT_X8R8G8B8;
-	d3dpp.BackBufferWidth = GAME_SCREEN_WIDTH;
-	d3dpp.BackBufferHeight = GAME_SCREEN_HEIGHT;
+	d3dpp.BackBufferWidth = (UINT)GAME_SCREEN_WIDTH;
+	d3dpp.BackBufferHeight = (UINT)GAME_SCREEN_HEIGHT;
 	d3dpp.BackBufferCount = 1;
 	d3dpp.hDeviceWindow = hWnd;
 	d3d9->CreateDevice(D3DADAPTER_DEFAULT, D3DDEVTYPE_HAL, hWnd, D3DCREATE_SOFTWARE_VERTEXPROCESSING, &d3dpp, &d3ddev); // Create device into d3ddev

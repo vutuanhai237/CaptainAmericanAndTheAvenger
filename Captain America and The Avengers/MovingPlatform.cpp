@@ -7,8 +7,8 @@ MovingPlatform::MovingPlatform(FLOAT WorldX, FLOAT WorldY, int Distance) : Platf
 	platform->Stop();
 	JetEngine = new Animation(Platform::JetEngineHorizontalID, 1);
 	JetEngine->Stop();
-	FarLeft = WorldX - Distance / 2;
-	FarRight = WorldX + Distance / 2;
+	FarLeft = (int)(WorldX - Distance / 2);
+	FarRight = (int)(WorldX + Distance / 2);
 	flag = false;
 	way = 1;
 	Timer = 0;
@@ -23,12 +23,12 @@ MovingPlatform::~MovingPlatform()
 
 D3DXVECTOR2 MovingPlatform::GetVelocity()
 {
-	return D3DXVECTOR2(MOVING_PLATFORM_VELOCITY_X*way*(flag ? 0 : 1), 0);
+	return D3DXVECTOR2((FLOAT)(MOVING_PLATFORM_VELOCITY_X*way*(flag ? 0 : 1)), (FLOAT)(0));
 }
 
 float MovingPlatform::GetVelocityX()
 {
-	return MOVING_PLATFORM_VELOCITY_X * way*(flag ? 0 : 1);
+	return (float)(MOVING_PLATFORM_VELOCITY_X * way*(flag ? 0 : 1));
 }
 
 float MovingPlatform::GetVelocityY()
@@ -54,16 +54,22 @@ void MovingPlatform::Update(float dt)
 	else
 	{
 		if (FarLeft < Entity::position.x && Entity::position.x < FarRight)
+		{
 			Entity::position.x += MOVING_PLATFORM_VELOCITY_X * way;
+		}
 		else
+		{
 			flag = true;
+		}
 	}
-	JetEngine->SetScale(way, 1);
+	JetEngine->SetScale((FLOAT)way, (FLOAT)(1));
 }
 
 void MovingPlatform::Draw()
 {
 	platform->DrawInt(Entity::position);
 	if (!flag && FrameCounter >> 2 & 1)
-		JetEngine->DrawInt(Entity::position.x + 20 * (-way), Entity::position.y);
+	{
+		JetEngine->DrawInt((INT)(Entity::position.x + 20 * (-way)), (INT)(Entity::position.y));
+	}
 }

@@ -5,17 +5,14 @@
 #include <math.h>
 #include <vector>
 
-
-/// Onllision return:
-///	0 : doing nothing
-/// 1 : delete this (delete object call function OnCollision)
-/// -1 : delete obj2 (delete object parameter)
-
+// Onllision return:
+//	0 : doing nothing
+// 1 : delete this (delete object call function OnCollision)
+// -1 : delete obj2 (delete object parameter)
 
 class Entity
 {
 public:
-	// enum zone
 	enum Side_Collision {
 		left,
 		right,
@@ -27,6 +24,7 @@ public:
 		bottom_right,
 		unknown
 	};
+
 	enum Entity_Tag {
 		// player
 		player,
@@ -71,6 +69,7 @@ public:
 		gray_rocket_robot,
 		electric_shockwave_barrier
 	};
+
 	enum Entity_Type {
 		static_type,
 		player_type,
@@ -81,12 +80,14 @@ public:
 		none_type,
 		platform
 	};
+
 	enum Entity_AliveState {
 		Alive,
 		Beaten,
 		Die,
 		Remove
 	};
+
 	enum Entity_Direction {
 		LeftToRight,
 		RightToLeft
@@ -96,55 +97,66 @@ public:
 		BotToTop,
 		TopToBot
 	};
+
 	enum Status_Item {
 		AvailableItem,
 		UnavailableItem
 	};
 
-	// function zone
 	Entity();
 	virtual ~Entity();
-	virtual int OnCollision(Entity *, float dt) { return 0; }; // Return after collide code
+	virtual int OnCollision(Entity *, float dt) { return 0; };
+	// active
 	virtual void SetActive(bool _IsActive);
 	virtual bool GetActive();
+	// tag
 	virtual void SetTag(Entity_Tag _tag);
 	virtual Entity_Tag GetTag();
+	// type
 	virtual void SetType(Entity_Type _type);
 	virtual Entity_Type GetType();
+	// static
 	virtual void SetStatic(bool _IsStatic);
+	// state
 	virtual void SetAliveState(Entity_AliveState _alive);
+	// velocity
 	virtual void SetVelocity(D3DXVECTOR2 _velocity);
 	virtual void SetVelocity(float x, float y);
-	virtual void SetPosition(float x, float y);
-	virtual void SetPosition(D3DXVECTOR2 position);
-	virtual D3DXVECTOR2 GetPosition();
-	virtual D3DXVECTOR2 GetVelocity();
 	virtual float GetVelocityX();
 	virtual void SetVelocityX(float x);
 	virtual void AddVelocityX(float dx);
 	virtual float GetVelocityY();
 	virtual void SetVelocityY(float y);
 	virtual void AddVelocityY(float dy);
+	// position
+	virtual void SetPosition(float x, float y);
+	virtual void SetPosition(D3DXVECTOR2 position);
+	virtual D3DXVECTOR2 GetPosition();
+	virtual D3DXVECTOR2 GetVelocity();
 	virtual void SetPositionX(float x);
 	virtual void SetPositionY(float y);
+	// direction
 	virtual void SetMoveDirection(Entity_Direction _direction);
 	virtual Entity_Direction GetMoveDirection();
 	virtual void SetJumpDirection(Entity_Jump_Direction _jump_direction);
 	virtual Entity_Jump_Direction GetJumpDirection();
-	virtual void Update(float dt);
+	// size
 	virtual void SetSize(const SIZE &size);
 	virtual void SetSize(long width, long height);
 	virtual SIZE GetSize();
+	// locking (no update position)
 	virtual void SetIsLocking(bool Islocking);
 	virtual bool GetIsLocking();
+	// other
+	virtual void Update(float dt);
 	virtual BoundingBox GetBoundingBox();
 	virtual void Draw() {};
 protected:
-	BoundingBox box;
+	int ID;
 	bool IsLocking;
 	bool IsStatic;
 	bool IsActive;
-	int ID;
+	BoundingBox box;
 	Entity_Tag tag;
 	Entity_Type type;
 	Entity_AliveState alive_state;
@@ -152,7 +164,6 @@ protected:
 	Entity_Jump_Direction jump_direction;
 	D3DXVECTOR2 position;
 	D3DXVECTOR2 velocity;
-	//size of entity
 	SIZE size;
 };
 

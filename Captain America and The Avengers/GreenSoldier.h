@@ -12,6 +12,7 @@
 #define GREEN_SOLDIER_FOOT_HEIGHT 8
 #define GREEN_SOLDIER_VELOCITY_Y 80
 #define GREEN_SOLDIER_VELOCITY_X 80
+
 class GreenSoldier : public Enemy
 {
 private:
@@ -19,7 +20,6 @@ private:
 	Animation* ducking_ani;
 	Animation* idle_ani;
 public:
-	// Share zone
 	enum GreenSoldierState {
 		none,
 		idle = 17,
@@ -36,12 +36,14 @@ public:
 		clever,
 		master
 	};
-	Level level;
 	int i = 0;
-	Equation *e;
 	float distance;
 	bool IsChamDatLanDau;
 	bool IsFire;
+	Equation* e;
+	Level level;
+	GreenSoldierState current_state;
+	GreenSoldierState previous_state;
 	// stupid zone
 	float time_idle;
 	float time_ducking;
@@ -58,13 +60,10 @@ public:
 	virtual void UpdateNormalLevel(float dt);
 	virtual void UpdateCleverLevel(float dt);
 	virtual void UpdateMasterLevel(float dt);
-
 	virtual int OnCollision(Entity*, float dt);
 	virtual void Draw();
 	BoundingBox GetBoundingBox() override;
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
-	GreenSoldierState current_state;
-	GreenSoldierState previous_state;
 	GreenSoldier(int level, D3DXVECTOR2 position_spawn, int direction);
 	~GreenSoldier() override;
 };

@@ -10,17 +10,19 @@ class MovingPlatform : public Platform
 public:
 	MovingPlatform(FLOAT WorldX, FLOAT WorldY, int Distance);
 	~MovingPlatform();
-
 	D3DXVECTOR2 GetVelocity() override;
 	float GetVelocityX() override;
 	float GetVelocityY() override;
 	void Update(float dt) override;
 	void Draw() override;
 private:
-	Animation *platform, *JetEngine;
-	int FarLeft, FarRight;
-	bool flag;
-	int way, FrameCounter;
+	Animation *platform;
+	Animation *JetEngine;
+	int FarLeft;
+	int FarRight;
+	int way;
+	int FrameCounter;
 	float Timer;
+	bool flag;
 };
 

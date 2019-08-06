@@ -1,8 +1,6 @@
 #pragma once
 #include "Enemy.h"
-#include "RedRocket.h"
 #include "Equation.h"
-#include <vector>
 #define GRAY_ROCKET_ROBOT_HP 5
 #define TIME_DUCKING 2.0f
 #define TIME_IDLE 2.0f
@@ -13,10 +11,6 @@
 #define GRAY_ROCKET_ROBOT_VELOCITY_X 80
 class GrayRocketRobot : public Enemy
 {
-private:
-	Animation* running_ani;
-	Animation* ducking_ani;
-
 public:
 	enum GrayRocketRobotState {
 		running = 32,
@@ -29,36 +23,21 @@ public:
 	virtual void Draw();
 	BoundingBox GetBoundingBox() override;
 	bool IsCollisionWithGround(float dt, int delta_y = 12);
-	bool IsRunning;
-	bool IsDucking;
-	bool IsIdle;
-	bool IsExplode;
-	bool IsHaveJump;
-	bool IsLoop;
-	bool IsCrossed;
-	bool IsLock;
-	bool IsLockChangeRocket;
-	bool IsLockDuckingClever;
-	bool IsChamDatLanDau;
-	bool IsChamLanHai;
-	bool IsFire;
-	bool IsLoopClever;
-	bool IsCapNhatVanToc;
-	bool IsCapNhatPositionMotLan;
-	bool IsLockClever;
-
+	int i;
 	int IsLui;
 	int IsJumpingFirst;
-	float time_ducking;
-	float time_idle;
-
-	int rocket_active;
+	bool IsExplode;
+	bool IsLoop;
+	bool IsChamDatLanDau;
+	bool IsFire;
 	Entity::Entity_Direction goto_direction;
 	GrayRocketRobotState current_state;
 	GrayRocketRobotState previous_state;
-	int i = 0;
 	Equation *e;
 	GrayRocketRobot(D3DXVECTOR2 position_spawn, D3DXVECTOR2 position_goto, bool IsCrossed);
 	~GrayRocketRobot() override;
+protected:
+	Animation* running_ani;
+	Animation* ducking_ani;
 };
 

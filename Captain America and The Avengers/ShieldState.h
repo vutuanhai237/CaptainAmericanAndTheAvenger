@@ -19,11 +19,9 @@ public:
 	virtual int GetDamage() { return 0; };
 	virtual void Update(float dt) {};
 	virtual void Draw() {};
-	virtual BoundingBox GetBoundingBox(); // Nomal
+	virtual BoundingBox GetBoundingBox();
 	int GetFrameLock();
-
 	D3DXVECTOR2 GetVirtualPoint();
-
 	void SetCurrentState(NameState State);
 	NameState GetCurrentState();
 protected:

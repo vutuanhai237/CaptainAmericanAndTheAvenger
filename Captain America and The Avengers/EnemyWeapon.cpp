@@ -16,9 +16,7 @@ EnemyWeapon::EnemyWeapon() : Entity()
 {
 	this->explode_ani = NULL;
 	this->type = Entity::Entity_Type::enemy_weapon_type;
-
 }
-
 
 EnemyWeapon::~EnemyWeapon()
 {
@@ -30,7 +28,6 @@ bool EnemyWeapon::IsCollisionExplode()
 	std::vector<Entity*> *objs = SceneManager::GetInstance()->GetCurrentScene()->GetCurrentMap()->GetMapObj();
 	Collision *Checker = Collision::getInstance();
 	CollisionOut out;
-
 	for (Entity *item : *objs)
 	{
 		switch (item->GetTag())
@@ -39,7 +36,9 @@ bool EnemyWeapon::IsCollisionExplode()
 		case Entity::Entity_Tag::wall:
 		case Entity::Entity_Tag::spike:
 			if (Checker->IsCollide(this->GetBoundingBox(), item->GetBoundingBox()))
+			{
 				return true;
+			}
 			break;
 		default:
 			break;

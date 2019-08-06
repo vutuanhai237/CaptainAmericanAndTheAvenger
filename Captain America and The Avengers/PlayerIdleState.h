@@ -4,10 +4,10 @@
 #include "PlayerRunningState.h"
 #include "PlayerJumpingState.h"
 #include "PlayerShieldUpState.h"
-#include "Framework//DirectInput.h"
 #include "PlayerDuckingState.h"
 #include "PlayerThrowingState.h"
 #include "PlayerDashingState.h"
+#include "Framework//DirectInput.h"
 class PlayerIdleState: public PlayerState
 {
 public:
@@ -16,7 +16,6 @@ public:
 	virtual void Update(float dt);
 	virtual void Draw();
 	BoundingBox GetBoundingBox() override;
-
 	virtual void HandleInput(float dt);
 };
 

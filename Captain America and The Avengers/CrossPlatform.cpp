@@ -9,8 +9,8 @@ CrossPlatform::CrossPlatform(FLOAT WorldX, FLOAT WorldY, int Distance) : Platfor
 	JetEngineHorizontal->Stop();
 	JetEngineVertical = new Animation(Platform::JetEngineVerticalID, 1);
 	JetEngineVertical->Stop();
-	From = WorldX;
-	To = WorldX + Distance; 
+	From = (int) WorldX;
+	To = (int)(WorldX + Distance); 
 	flag = false;
 	way = -1;
 	Timer = 0;
@@ -63,9 +63,11 @@ void CrossPlatform::Update(float dt)
 			Entity::position.y += CROSS_PLATFORM_VELOCITY * way;
 		}
 		else
+		{
 			flag = true;
+		}
 	}
-	JetEngineHorizontal->SetScale(way, 1);
+	JetEngineHorizontal->SetScale((FLOAT)(way), (FLOAT)(1));
 }
 
 void CrossPlatform::Draw()

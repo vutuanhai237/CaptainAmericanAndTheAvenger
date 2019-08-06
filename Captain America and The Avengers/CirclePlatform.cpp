@@ -59,7 +59,7 @@ void CirclePlatform::Update(float dt)
 	VirtualPoint.y += deltaY;
 	DrawPoint.x = Entity::position.x + VirtualPoint.x;
 	DrawPoint.y = Entity::position.y + VirtualPoint.y;
-	JetEngineHorizontal->SetScale(deltaX > 0 ? 1 : -1, 1);
+	JetEngineHorizontal->SetScale((FLOAT)(deltaX > 0 ? 1 : -1), (FLOAT)1);
 }
 
 void CirclePlatform::Draw()
@@ -68,7 +68,9 @@ void CirclePlatform::Draw()
 	if (FrameCounter >> 2 & 1)
 	{
 		if (abs(deltaX) < 0.25f || abs(deltaY) < 0.25f)
+		{
 			return;
+		}
 		JetEngineHorizontal->Draw(DrawPoint.x + 20 * (deltaX < 0 ? 1 : -1), DrawPoint.y);
 		JetEngineVertical->Draw(DrawPoint.x - 8, DrawPoint.y - 13);
 		JetEngineVertical->Draw(DrawPoint.x + 8, DrawPoint.y - 13);

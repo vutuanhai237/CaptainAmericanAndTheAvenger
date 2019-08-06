@@ -5,9 +5,8 @@ PlayerThrowingState::PlayerThrowingState()
 {
 	Player* player = Player::GetInstance();
 	player->SetCurrentState(PlayerState::NameState::throwing);
-	player->SetTimeBuffer(0);
 	this->current_state = PlayerState::NameState::throwing;
-
+	player->SetTimeBuffer(0);
 	Shield::GetInstance()->SetShieldState(new ShieldAttackState());
 }
 PlayerThrowingState::~PlayerThrowingState()
@@ -47,32 +46,35 @@ void PlayerThrowingState::HandleInput(float dt)
 	{
 		player->GetCurrentAnimation()->Pause(TIME_WAIT_THROWING);
 	}
-
-	
 	// Ưu tiên các trạng thái khái
-	if (keyboard->KeyDown(RIGHT_KEY)) {
+	if (keyboard->KeyDown(RIGHT_KEY))
+	{
 		player->ChangeState(new PlayerRunningState());
 		player->SetMoveDirection(Entity::Entity_Direction::LeftToRight);
 		return;
 	}
 
-	if (keyboard->KeyDown(LEFT_KEY)) {
+	if (keyboard->KeyDown(LEFT_KEY)) 
+	{
 		player->ChangeState(new PlayerRunningState());
 		player->SetMoveDirection(Entity::Entity_Direction::RightToLeft);
 		return;
 	}
 
-	if (keyboard->KeyPress(JUMP_KEY)) {
+	if (keyboard->KeyPress(JUMP_KEY))
+	{
 		player->ChangeState(new PlayerJumpingState());
 		return;
 	}
 	
-	if (keyboard->KeyDown(UP_KEY)) {
+	if (keyboard->KeyDown(UP_KEY))
+	{
 		player->ChangeState(new PlayerShieldUpState());
 		return;
 	}
 	
-	if (keyboard->KeyDown(DOWN_KEY)) {
+	if (keyboard->KeyDown(DOWN_KEY)) 
+	{
 		player->ChangeState(new PlayerDuckingState());
 		return;
 	}
@@ -84,7 +86,8 @@ void PlayerThrowingState::HandleInput(float dt)
 		player->ChangeState(new PlayerIdleState());
 		return;
 	}
-	else {
+	else 
+	{
 		return;
 	}
 	player->ChangeState(new PlayerIdleState());
