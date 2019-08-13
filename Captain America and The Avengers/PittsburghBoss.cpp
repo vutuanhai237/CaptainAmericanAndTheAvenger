@@ -78,7 +78,7 @@ PittsburghBoss::~PittsburghBoss()
 {
 	delete map;
 	delete grid;
-	BossGragas::GetInstance()->Release();	
+	//BossGragas::GetInstance()->Release();	
 }
 
 void PittsburghBoss::Init()

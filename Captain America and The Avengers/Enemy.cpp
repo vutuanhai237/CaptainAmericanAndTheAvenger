@@ -28,6 +28,11 @@ int Enemy::OnCollision(Entity* obj, float dt)
 					if (Shield::GetInstance()->GetShieldState()->GetCurrentState() == ShieldState::NameState::ShieldDown) 
 					{
 						this->hp -= Shield::GetInstance()->GetShieldState()->GetDamage();
+						this->time_beaten = ENEMY_TIME_BEATEN;
+						if (this->GetTag() == Entity::Entity_Tag::boss)
+						{
+							this->time_beaten = ENEMY_TIME_BEATEN * 3;
+						}
 						goto CHECK;
 					}
 
@@ -68,7 +73,13 @@ int Enemy::OnCollision(Entity* obj, float dt)
 				}
 				this->hp--;			
 			}
-			player->ChangeState(new PlayerBeatenState(ENEMY_DAMAGE));
+			if (player->GetCurrentState() != PlayerState::dashing)
+			{
+				player->ChangeState(new PlayerBeatenState(ENEMY_DAMAGE));
+			}
+			else {
+				this->hp -= 5;
+			}
 		}	
 		if (this->hp <= 0) 
 		{

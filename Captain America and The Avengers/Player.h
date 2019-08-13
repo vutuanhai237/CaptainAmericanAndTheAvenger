@@ -45,7 +45,7 @@
 #define TIME_DON_THO 0.016f*10
 // beaten
 #define TIME_BEATEN_MIN 0.016f*8
-#define TIME_INVISIBLE 3.0f
+#define TIME_INVISIBLE 2.0f
 #define DAMAGE_SPIKE 2
 // hang on
 #define TIME_JUMP_FROM_ROPE 0.016f * 8

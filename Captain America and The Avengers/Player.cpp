@@ -4,6 +4,7 @@
 #include "PlayerBeatenState.h"
 #include "SceneManager.h"
 #include "Shield.h"
+#include "Framework/DirectInput.h"
 
 Player *Player::instance = NULL;
 
@@ -219,6 +220,8 @@ void Player::Draw()
 
 void Player::HandleInput(float dt)
 {
+	if (DirectInput::GetInstance()->KeyDown(DIK_H))
+		this->hp = PLAYER_HP;
 	this->player_state->HandleInput(dt);
 	IsCollisionWithWall(dt);
 }

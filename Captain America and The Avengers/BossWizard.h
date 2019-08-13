@@ -5,7 +5,7 @@
 #include "BossWizardIdleState.h"
 #include "BossWizardRoad.h"
 // Boss Wizard properties zone
-#define BOSS_WIZARD_HP 30
+#define BOSS_WIZARD_HP 80
 #define BOSS_WIZARD_LOW_HP 10
 #define BOSS_WIZARD_SIZE_WIDTH 8
 #define BOSS_WIZARD_SIZE_HEIGHT 52

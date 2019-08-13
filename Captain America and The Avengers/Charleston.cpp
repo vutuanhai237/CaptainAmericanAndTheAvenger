@@ -42,7 +42,7 @@ void Charleston::Update(float dt)
 	{
 		if (player->IsBornRocketRobot && this->timer2 > 3.0f)
 		{
-			grid->AddObject2Cell(new RedRocketRobot(3, D3DXVECTOR2(cam->GetCameraPosition().x + GAME_SCREEN_WIDTH + 8, 70), D3DXVECTOR2(240, 70), 0));
+			grid->AddObject2Cell(new RedRocketRobot(3, D3DXVECTOR2(cam->GetCameraPosition().x + GAME_SCREEN_WIDTH, 70), D3DXVECTOR2(240, 70), 0));
 			player->IsBornRocketRobot = false;
 			this->timer2 = 0;
 		}
@@ -71,6 +71,13 @@ void Charleston::Update(float dt)
 		SceneManager::GetInstance()->ReplaceScene(new Charleston());
 	}
 	// Cheat Fast next map
+	if (DirectInput::GetInstance()->KeyDown(DIK_N)) {
+		grid->ForceEnemyExplode();
+		SoundManager::GetInstance()->Stop(SoundManager::SoundList::actiton_theme);
+		SoundManager::GetInstance()->PlayRepeat(SoundManager::SoundList::main_theme);
+		player->number_rocket_robot = 0;
+		player->number_soldier = 0;
+	}
 	if (DirectInput::GetInstance()->KeyDown(DIK_N))
 	{
 		if (cam->GetCameraFreeze()) 
