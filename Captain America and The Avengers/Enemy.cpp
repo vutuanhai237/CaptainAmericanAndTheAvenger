@@ -62,6 +62,7 @@ int Enemy::OnCollision(Entity* obj, float dt)
 		Player *player = Player::GetInstance();
 		if (obj->GetType() == Entity::Entity_Type::player_type
 			&& player->GetCurrentState() != PlayerState::shield_down
+			&& player->GetCurrentState() != PlayerState::die
 			&& player->time_invisible <= 0
 			&& Collision::getInstance()->IsCollide(this->GetBoundingBox(), obj->GetBoundingBox()))
 		{

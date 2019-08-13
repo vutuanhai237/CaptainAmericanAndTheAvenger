@@ -94,6 +94,10 @@ void Pittsburgh::Draw()
 		player->time_guc = 0;
 		player->hp = PLAYER_HP;
 		player->ChangeState(new PlayerIdleState());
+		if (cam->GetCameraFreeze())
+		{
+			cam->SetCameraFreeze(false);
+		}
 		SceneManager::GetInstance()->ReplaceScene(new Pittsburgh());
 		return;
 	}
